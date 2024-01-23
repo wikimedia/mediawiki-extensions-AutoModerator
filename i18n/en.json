@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jsn.sherman"
+		]
+	},
+	"automoderator-desc": "Automatically reverts bad edits based on scoring from a machine learning model."
+}

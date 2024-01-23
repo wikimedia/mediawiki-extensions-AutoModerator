@@ -1,0 +1,48 @@
+{
+	"name": "AutoModerator",
+	"author": [
+		"Jason Sherman"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:AutoModerator",
+	"descriptionmsg": "automoderator-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.41"
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\AutoModerator\\": "src/"
+	},
+	"config": {
+		"AutoModeratorEnable": {
+			"description": "Enable AutoModerator.",
+			"value": false
+		}
+	},
+	"HookHandlers": {
+		"AutoModeratorHooks": {
+			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks"
+		}
+	},
+	"Hooks": {
+		"RevisionFromEditComplete": "AutoModeratorHooks"
+	},
+	"MessagesDirs": {
+		"AutoModerator": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {
+		"ext.autoModerator": {
+			"localBasePath": "resources/ext.autoModerator",
+			"remoteExtPath": "AutoModerator/resources/ext.autoModerator",
+			"dependencies": [],
+			"styles": [],
+			"packageFiles": [
+				"init.js"
+			],
+			"messages": []
+		}
+	},
+	"manifest_version": 2
+}
