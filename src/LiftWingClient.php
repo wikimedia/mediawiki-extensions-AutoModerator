@@ -33,12 +33,17 @@ class LiftWingClient {
 	/** @var string */
 	private $lang;
 
+	/** @var bool */
+	private $passedPreCheck;
+
 	public function __construct(
 		string $model,
-		string $lang
+		string $lang,
+		bool $passedPreCheck = false
 	) {
 		$this->model = $model;
 		$this->lang = $lang;
+		$this->passedPreCheck = $passedPreCheck;
 	}
 
 	/**
@@ -80,6 +85,9 @@ class LiftWingClient {
 	 * @return array Decoded response
 	 */
 	public function get( $revId ) {
+		if ( !$this->passedPreCheck ) {
+			return [];
+		}
 		$url = 'https://api.wikimedia.org/service/lw/inference/v1/models/' . $this->model . ':predict';
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$logger->debug( "AutoModerator Requesting: {$url} " . __METHOD__ );

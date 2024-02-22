@@ -48,7 +48,6 @@ class Hooks implements
 
 		if ( $config->get( 'AutoModeratorEnable' ) ) {
 			// @todo replace 'en' with getWikiID()
-			$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en' );
 			$autoModeratorUser = Util::getUser();
 			$revisionStore = MediaWikiServices::getInstance()->getRevisionStoreFactory()->getRevisionStore();
 			$changeTagsStore = MediaWikiServices::getInstance()->getChangeTagsStore();
@@ -58,6 +57,7 @@ class Hooks implements
 						RevisionRecord::RAW
 				)->getModel() );
 			$logger = LoggerFactory::getInstance( 'AutoModerator' );
+			$userGroupManager = MediaWikiServices::getInstance()->getUserGroupManager();
 			$revisionCheck = new RevisionCheck(
 				$wikiPage,
 				$rev,
@@ -68,17 +68,23 @@ class Hooks implements
 				$revisionStore,
 				$changeTagsStore,
 				$contentHandler,
-				$logger
+				$logger,
+				$userGroupManager
 			);
-			// Wrap in a POSTSEND deferred update to avoid blocking the HTTP response
-			DeferredUpdates::addCallableUpdate( static function () use (
-				$liftWingClient,
-				$revisionCheck,
-				$rev
-			) {
-				$score = $liftWingClient->get( $rev->getId() );
-				$revisionCheck->maybeRevert( $score );
-			} );
+			$revisionCheck->revertPreCheck();
+			$passedPreCheck = $revisionCheck->getPassedPreCheck();
+			$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $passedPreCheck );
+			if ( $passedPreCheck ) {
+				// Wrap in a POSTSEND deferred update to avoid blocking the HTTP response
+				DeferredUpdates::addCallableUpdate( static function () use (
+					$liftWingClient,
+					$revisionCheck,
+					$rev
+				) {
+					$score = $liftWingClient->get( $rev->getId() );
+					$revisionCheck->maybeRevert( $score );
+				} );
+			}
 		}
 	}
 }

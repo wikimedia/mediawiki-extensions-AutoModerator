@@ -14,6 +14,8 @@ use MediaWiki\Revision\RevisionStoreRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\PageUpdater;
 use MediaWiki\User\User;
+use MediaWiki\User\UserGroupManager;
+use MediaWiki\User\UserGroupMembership;
 use MediaWikiUnitTestCase;
 use MockHttpTrait;
 use MockTitleTrait;
@@ -135,6 +137,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
 		$this->contentHandler->method( 'getUndoContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
 		$this->logger = $this->createMock( \Psr\Log\LoggerInterface::class );
+		$this->userGroupManager = $this->createMock( UserGroupManager::class );
 	}
 
 	protected function tearDown(): void {
@@ -153,6 +156,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
 		parent::tearDown();
 	}
@@ -172,6 +176,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
 		$reverted = $revisionCheck->maybeRevert(
 			$this->failingScore
@@ -194,6 +199,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
 		$reverted = $revisionCheck->maybeRevert(
 			$this->passingScore
@@ -202,9 +208,9 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers ::maybeRevert
+	 * @covers ::revertPreCheck
 	 */
-	public function testMaybeRevertNullEdit() {
+	public function testRevertPreCheckNullEdit() {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,
@@ -216,17 +222,16 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
-		$reverted = $revisionCheck->maybeRevert(
-			$this->failingScore
-		);
-		$this->assertFalse( $reverted );
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
 	}
 
 	/**
-	 * @covers ::maybeRevert
+	 * @covers ::revertPreCheck
 	 */
-	public function testMaybeRevertAutoModeratorEdit() {
+	public function testRevertPreCheckAutoModeratorEdit() {
 		$this->user->method( 'equals' )->willReturn( true );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
@@ -239,17 +244,16 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
-		$reverted = $revisionCheck->maybeRevert(
-			$this->failingScore
-		);
-		$this->assertFalse( $reverted );
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
 	}
 
 	/**
-	 * @covers ::maybeRevert
+	 * @covers ::revertPreCheck
 	 */
-	public function testMaybeRevertTagRevertEdit() {
+	public function testRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
@@ -262,17 +266,16 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
-		$reverted = $revisionCheck->maybeRevert(
-			$this->failingScore
-		);
-		$this->assertFalse( $reverted );
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
 	}
 
 	/**
-	 * @covers ::maybeRevert
+	 * @covers ::revertPreCheck
 	 */
-	public function testMaybeRevertTagRollbackEdit() {
+	public function testRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ 'mw-rollback' ];
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
@@ -285,17 +288,16 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
-		$reverted = $revisionCheck->maybeRevert(
-			$this->failingScore
-		);
-		$this->assertFalse( $reverted );
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
 	}
 
 	/**
-	 * @covers ::maybeRevert
+	 * @covers ::revertPreCheck
 	 */
-	public function testMaybeRevertTagUndoEdit() {
+	public function testRevertPreCheckTagUndoEdit() {
 		$this->tags = [ 'mw-undo' ];
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
@@ -308,10 +310,32 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->changeTagsStore,
 			$this->contentHandler,
 			$this->logger,
+			$this->userGroupManager,
 		);
-		$reverted = $revisionCheck->maybeRevert(
-			$this->failingScore
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckSysOp() {
+		$this->userGroupManager->method( 'getUserGroupMemberships' )
+			->willReturn( [ 'sysop' => $this->createMock( UserGroupMembership::class ) ] );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->systemUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
 		);
-		$this->assertFalse( $reverted );
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
 	}
 }

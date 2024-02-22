@@ -26,6 +26,7 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\User;
+use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 
 class RevisionCheck {
@@ -60,6 +61,12 @@ class RevisionCheck {
 	/** @var \Psr\Log\LoggerInterface */
 	private $logger;
 
+	/** @var UserGroupManager */
+	private $userGroupManager;
+
+	/** @var bool */
+	private $passedPreCheck;
+
 	/**
 	 * @param \WikiPage $wikiPage WikiPage edited
 	 * @param RevisionRecord $rev New revision
@@ -74,6 +81,8 @@ class RevisionCheck {
 	 * @param ChangeTagsStore $changeTagsStore
 	 * @param ContentHandler $contentHandler
 	 * @param \Psr\Log\LoggerInterface $logger
+	 * @param UserGroupManager $userGroupManager
+	 * @param bool $passedPreCheck
 	 */
 	public function __construct(
 		\WikiPage $wikiPage,
@@ -85,7 +94,9 @@ class RevisionCheck {
 		RevisionStore $revisionStore,
 		ChangeTagsStore $changeTagsStore,
 		ContentHandler $contentHandler,
-		\Psr\Log\LoggerInterface $logger
+		\Psr\Log\LoggerInterface $logger,
+		UserGroupManager $userGroupManager,
+		bool $passedPreCheck = false
 	) {
 		$this->wikiPage = $wikiPage;
 		$this->rev = $rev;
@@ -97,6 +108,8 @@ class RevisionCheck {
 		$this->changeTagsStore = $changeTagsStore;
 		$this->contentHandler = $contentHandler;
 		$this->logger = $logger;
+		$this->userGroupManager = $userGroupManager;
+		$this->passedPreCheck = $passedPreCheck;
 	}
 
 		/**
@@ -115,30 +128,85 @@ class RevisionCheck {
 			\MediaWiki\Revision\RevisionRecord $oldRev,
 			&$error
 		) {
-			$currentContent = $this->wikiPage->getRevisionRecord()
-				->getContent( SlotRecord::MAIN );
-			$undoContent = $this->rev->getContent( SlotRecord::MAIN );
-			$undoAfterContent = $oldRev->getContent( SlotRecord::MAIN );
-			$undoIsLatest = $this->wikiPage->getRevisionRecord()->getId() === $this->rev->getId();
-			if ( $currentContent === null
-				|| $undoContent === null
-				|| $undoAfterContent === null
-			) {
-				$error = 'norev';
-				return false;
-			}
-
-			$content = $this->contentHandler->getUndoContent(
-				$currentContent,
-				$undoContent,
-				$undoAfterContent,
-				$undoIsLatest,
-			);
-			if ( $content === false ) {
-				$error = 'failure';
-			}
-			return $content;
+		$currentContent = $this->wikiPage->getRevisionRecord()
+		->getContent( SlotRecord::MAIN );
+		$undoContent = $this->rev->getContent( SlotRecord::MAIN );
+		$undoAfterContent = $oldRev->getContent( SlotRecord::MAIN );
+		$undoIsLatest = $this->wikiPage->getRevisionRecord()->getId() === $this->rev->getId();
+		if ( $currentContent === null
+		|| $undoContent === null
+		|| $undoAfterContent === null
+		) {
+			$error = 'norev';
+			return false;
 		}
+
+		$content = $this->contentHandler->getUndoContent(
+		$currentContent,
+		$undoContent,
+		$undoAfterContent,
+		$undoIsLatest,
+		);
+		if ( $content === false ) {
+			$error = 'failure';
+		}
+		return $content;
+		}
+
+	/**
+	 * Get the passedPreCheck variable
+	 * @return bool
+	 */
+	public function getPassedPreCheck() {
+		return $this->passedPreCheck;
+	}
+
+	/**
+	 * Set the passedPreCheck variable
+	 * @param bool $value
+	 * @return void
+	 */
+	public function setPassedPreCheck( $value ) {
+		$this->passedPreCheck = $value;
+	}
+
+	/**
+	 * Precheck a revision; if any of the checks don't pass,
+	 * a revision won't be scored
+	 *
+	 * @return void
+	 */
+	public function revertPreCheck() {
+		$passedPreCheck = true;
+		// Skip null edits
+		if ( $this->originalRevId ) {
+			$passedPreCheck = false;
+		}
+		// Skip edits with known tags; eg. reverts
+		$skipTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo' ];
+		foreach ( $skipTags as $skipTag ) {
+			if ( in_array( $skipTag, $this->tags ) ) {
+				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
+				$passedPreCheck = false;
+			}
+		}
+		// Skip AutoModerator edits
+		if ( $this->user->equals( $this->autoModeratorUser ) ) {
+			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
+			$passedPreCheck = false;
+		}
+		// Skip sysop user edits
+		$skipGroups = [ 'sysop' ];
+		$userGroups = $this->userGroupManager->getUserGroupMemberships( $this->user );
+		foreach ( $skipGroups as $skipGroup ) {
+			if ( array_key_exists( $skipGroup, $userGroups ) ) {
+				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
+				$passedPreCheck = false;
+			}
+		}
+
+		$this->setPassedPreCheck( $passedPreCheck );
+	}
 
 	/**
 	 * Check revision; revert if it meets configured critera
@@ -148,23 +216,6 @@ class RevisionCheck {
 	 */
 	public function maybeRevert( $score ) {
 		$reverted = false;
-		// Skip null edits
-		if ( $this->originalRevId ) {
-			return $reverted;
-		}
-		// Skip edits with known tags; eg. reverts
-		$skipTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo' ];
-		foreach ( $skipTags as $skipTag ) {
-			if ( in_array( $skipTag, $this->tags ) ) {
-				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
-				return $reverted;
-			}
-		}
-		// Skip AutoModerator edits
-		if ( $this->user->equals( $this->autoModeratorUser ) ) {
-			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
-			return $reverted;
-		}
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		// Automoderator system user may perform updates
 		$pageUpdater = $this->wikiPage->newPageUpdater( $this->autoModeratorUser );
