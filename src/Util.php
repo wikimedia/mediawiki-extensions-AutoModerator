@@ -19,39 +19,31 @@
 
 namespace MediaWiki\Extension\AutoModerator;
 
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
+use UnexpectedValueException;
 
 class Util {
 	/**
-	 * Cribbed from AbuseFilter
-	 * @todo use i18n instead of hardcoded username
+	 * Get a user to perform moderation actions.
 	 * @return User
 	 */
-	public static function getUser(): User {
-		$logger = LoggerFactory::getInstance( 'AutoModerator' );
-		$username = 'automoderator-username';
-		$systemUser = User::newSystemUser( $username, [ 'steal' => true ] );
-		if ( !$systemUser ) {
-			// User name is invalid. Don't throw because this is a system message, easy
-			// to change and make wrong either by mistake or intentionally to break the site.
-			$logger->warning(
-				'The AutoModerator user\'s name is invalid. Please change it.'
+	public static function getAutoModeratorUser(): User {
+		$config = MediaWikiServices::getInstance()->getMainConfig();
+		$username = $config->get( 'AutoModeratorUsername' );
+		$autoModeratorUser = User::newSystemUser( $username, [ 'steal' => true ] );
+		'@phan-var User $autoModeratorUser';
+		if ( !$autoModeratorUser ) {
+			throw new UnexpectedValueException(
+				"{$username} is invalid. Please change it."
 			);
-			// Use the default name to avoid breaking other stuff. This should have no harm,
-			// aside from blocks temporarily attributed to another user.
-			// Don't use the database in case the English onwiki message is broken, T284364
-			$defaultName = 'automoderator-username';
-			$systemUser = User::newSystemUser( $defaultName, [ 'steal' => true ] );
 		}
-		'@phan-var User $systemUser';
 		// Promote user to 'sysop' so it doesn't look
 		// like an unprivileged account is blocking users
 		$userGroupManager = MediaWikiServices::getInstance()->getUserGroupManager();
-		if ( !in_array( 'sysop', $userGroupManager->getUserGroups( $systemUser ) ) ) {
-			$userGroupManager->addUserToGroup( $systemUser, 'sysop' );
+		if ( !in_array( 'sysop', $userGroupManager->getUserGroups( $autoModeratorUser ) ) ) {
+			$userGroupManager->addUserToGroup( $autoModeratorUser, 'sysop' );
 		}
-		return $systemUser;
+		return $autoModeratorUser;
 	}
 }

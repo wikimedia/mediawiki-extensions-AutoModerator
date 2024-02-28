@@ -19,72 +19,97 @@
 
 namespace MediaWiki\Extension\AutoModerator;
 
+use MediaWiki\ChangeTags\ChangeTagsStore;
+use MediaWiki\Config\Config;
+use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\User\UserGroupManager;
 
 class Hooks implements
 	RevisionFromEditCompleteHook
-	{
+{
+	/** @var ChangeTagsStore */
+	private $changeTagsStore;
+
+	/** @var Config */
+	private $config;
+
+	/** @var ContentHandlerFactory */
+	private $contentHandlerFactory;
+
+	/** @var RevisionStore */
+	private $revisionStore;
+
+	/** @var UserGroupManager */
+	private $userGroupManager;
+
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RevisionFromEditComplete
-	 *
-	 * @param \WikiPage $wikiPage WikiPage edited
-	 * @param RevisionRecord $rev New revision
-	 * @param int|false $originalRevId If the edit restores or repeats an earlier revision (such as a
-	 *   rollback or a null revision), the ID of that earlier revision. False otherwise.
-	 *   (Used to be called $baseID.)
-	 * @param \MediaWiki\User\UserIdentity $user Editing user
-	 * @param string[] &$tags Tags to apply to the edit and recent change. This is empty, and
-	 *   replacement is ignored, in the case of import or page move.
-	 *
-	 * @return bool|void True or no return value to continue or false to abort
+	 * @param ChangeTagsStore $changeTagsStore
+	 * @param Config $config
+	 * @param ContentHandlerFactory $contentHandlerFactory
+	 * @param revisionStore $revisionStore
+	 * @param userGroupManager $userGroupManager
+	 */
+	public function __construct(
+		ChangeTagsStore $changeTagsStore,
+		Config $config,
+		ContentHandlerFactory $contentHandlerFactory,
+		RevisionStore $revisionStore,
+		UserGroupManager $userGroupManager
+	) {
+		$this->changeTagsStore = $changeTagsStore;
+		$this->config = $config;
+		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->revisionStore = $revisionStore;
+		$this->userGroupManager = $userGroupManager;
+	}
+
+	/**
+	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-	$config = MediaWikiServices::getInstance()->getMainConfig();
-
-		if ( $config->get( 'AutoModeratorEnable' ) ) {
-			// @todo replace 'en' with getWikiID()
-			$autoModeratorUser = Util::getUser();
-			$revisionStore = MediaWikiServices::getInstance()->getRevisionStoreFactory()->getRevisionStore();
-			$changeTagsStore = MediaWikiServices::getInstance()->getChangeTagsStore();
-			$contentHandler = MediaWikiServices::getInstance()->getContentHandlerFactory()
-				->getContentHandler( $rev->getSlot(
-						SlotRecord::MAIN,
-						RevisionRecord::RAW
-				)->getModel() );
-			$logger = LoggerFactory::getInstance( 'AutoModerator' );
-			$userGroupManager = MediaWikiServices::getInstance()->getUserGroupManager();
-			$revisionCheck = new RevisionCheck(
-				$wikiPage,
-				$rev,
-				$originalRevId,
-				$user,
-				$tags,
-				$autoModeratorUser,
-				$revisionStore,
-				$changeTagsStore,
-				$contentHandler,
-				$logger,
-				$userGroupManager
-			);
-			$revisionCheck->revertPreCheck();
-			$passedPreCheck = $revisionCheck->getPassedPreCheck();
-			$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $passedPreCheck );
-			if ( $passedPreCheck ) {
-				// Wrap in a POSTSEND deferred update to avoid blocking the HTTP response
-				DeferredUpdates::addCallableUpdate( static function () use (
-					$liftWingClient,
-					$revisionCheck,
-					$rev
-				) {
-					$score = $liftWingClient->get( $rev->getId() );
-					$revisionCheck->maybeRevert( $score );
-				} );
-			}
+		if ( !$this->config->get( 'AutoModeratorEnable' ) ) {
+			return;
 		}
+		$autoModeratorUser = Util::getAutoModeratorUser();
+		$contentHandler = $this->contentHandlerFactory->getContentHandler( $rev->getSlot(
+					SlotRecord::MAIN,
+					RevisionRecord::RAW
+			)->getModel() );
+		$logger = LoggerFactory::getInstance( 'AutoModerator' );
+		$revisionCheck = new RevisionCheck(
+			$wikiPage,
+			$rev,
+			$originalRevId,
+			$user,
+			$tags,
+			$autoModeratorUser,
+			$this->revisionStore,
+			$this->changeTagsStore,
+			$contentHandler,
+			$logger,
+			$this->userGroupManager
+		);
+		$revisionCheck->revertPreCheck();
+		$passedPreCheck = $revisionCheck->getPassedPreCheck();
+		if ( !$passedPreCheck ) {
+			return;
+		}
+		// @todo replace 'en' with getWikiID()
+		$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $passedPreCheck );
+		// Wrap in a POSTSEND deferred update to avoid blocking the HTTP response
+		DeferredUpdates::addCallableUpdate( static function () use (
+			$liftWingClient,
+			$revisionCheck,
+			$rev
+		) {
+			$score = $liftWingClient->get( $rev->getId() );
+			$revisionCheck->maybeRevert( $score );
+		} );
 	}
 }

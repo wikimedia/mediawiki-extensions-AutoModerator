@@ -6,7 +6,7 @@
 	"url": "https://www.mediawiki.org/wiki/Extension:AutoModerator",
 	"descriptionmsg": "automoderator-desc",
 	"license-name": "GPL-2.0-or-later",
-	"type": "other",
+	"type": "antispam",
 	"requires": {
 		"MediaWiki": ">= 1.41"
 	},
@@ -17,15 +17,26 @@
 		"AutoModeratorEnable": {
 			"description": "Enable AutoModerator.",
 			"value": false
+		},
+		"AutoModeratorUsername": {
+			"description": "Username for AutoModerator system account",
+			"value": "AutoModerator"
 		}
 	},
 	"HookHandlers": {
-		"AutoModeratorHooks": {
-			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks"
+		"main": {
+			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks",
+			"services": [
+				"ChangeTagsStore",
+				"MainConfig",
+				"ContentHandlerFactory",
+				"RevisionStore",
+				"UserGroupManager"
+			]
 		}
 	},
 	"Hooks": {
-		"RevisionFromEditComplete": "AutoModeratorHooks"
+		"RevisionFromEditComplete": "main"
 	},
 	"MessagesDirs": {
 		"AutoModerator": [
