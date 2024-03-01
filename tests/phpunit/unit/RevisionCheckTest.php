@@ -338,4 +338,27 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck->revertPreCheck();
 		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
 	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckBot() {
+		$this->userGroupManager->method( 'getUserGroupMemberships' )
+			->willReturn( [ 'bot' => $this->createMock( UserGroupMembership::class ) ] );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+		);
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+	}
 }

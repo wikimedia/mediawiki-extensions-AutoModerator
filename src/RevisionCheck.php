@@ -195,8 +195,9 @@ class RevisionCheck {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
 			$passedPreCheck = false;
 		}
-		// Skip sysop user edits
-		$skipGroups = [ 'sysop' ];
+		// Skip sysop and bot user edits
+		// @todo: Move bot skip to check on recent changes rc_bot field
+		$skipGroups = [ 'sysop', 'bot' ];
 		$userGroups = $this->userGroupManager->getUserGroupMemberships( $this->user );
 		foreach ( $skipGroups as $skipGroup ) {
 			if ( array_key_exists( $skipGroup, $userGroups ) ) {
