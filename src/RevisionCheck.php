@@ -17,7 +17,7 @@
  * @file
  */
 
-namespace MediaWiki\Extension\AutoModerator;
+namespace AutoModerator;
 
 use CommentStoreComment;
 use ContentHandler;
@@ -25,6 +25,7 @@ use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Storage\PageUpdater;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
@@ -65,7 +66,10 @@ class RevisionCheck {
 	private $userGroupManager;
 
 	/** @var bool */
-	private $passedPreCheck;
+	private bool $enforce;
+
+	/** @var bool */
+	public bool $passedPreCheck;
 
 	/**
 	 * @param \WikiPage $wikiPage WikiPage edited
@@ -82,7 +86,7 @@ class RevisionCheck {
 	 * @param ContentHandler $contentHandler
 	 * @param \Psr\Log\LoggerInterface $logger
 	 * @param UserGroupManager $userGroupManager
-	 * @param bool $passedPreCheck
+	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
 		\WikiPage $wikiPage,
@@ -96,7 +100,7 @@ class RevisionCheck {
 		ContentHandler $contentHandler,
 		\Psr\Log\LoggerInterface $logger,
 		UserGroupManager $userGroupManager,
-		bool $passedPreCheck = false
+		bool $enforce = false
 	) {
 		$this->wikiPage = $wikiPage;
 		$this->rev = $rev;
@@ -109,7 +113,8 @@ class RevisionCheck {
 		$this->contentHandler = $contentHandler;
 		$this->logger = $logger;
 		$this->userGroupManager = $userGroupManager;
-		$this->passedPreCheck = $passedPreCheck;
+		$this->enforce = $enforce;
+		$this->passedPreCheck = self::revertPreCheck();
 	}
 
 		/**
@@ -154,46 +159,28 @@ class RevisionCheck {
 		}
 
 	/**
-	 * Get the passedPreCheck variable
-	 * @return bool
-	 */
-	public function getPassedPreCheck() {
-		return $this->passedPreCheck;
-	}
-
-	/**
-	 * Set the passedPreCheck variable
-	 * @param bool $value
-	 * @return void
-	 */
-	public function setPassedPreCheck( $value ) {
-		$this->passedPreCheck = $value;
-	}
-
-	/**
 	 * Precheck a revision; if any of the checks don't pass,
 	 * a revision won't be scored
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function revertPreCheck() {
-		$passedPreCheck = true;
 		// Skip null edits
 		if ( $this->originalRevId ) {
-			$passedPreCheck = false;
+			return false;
 		}
 		// Skip edits with known tags; eg. reverts
 		$skipTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo' ];
 		foreach ( $skipTags as $skipTag ) {
 			if ( in_array( $skipTag, $this->tags ) ) {
 				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - reverts" );
-				$passedPreCheck = false;
+				return false;
 			}
 		}
 		// Skip AutoModerator edits
 		if ( $this->user->equals( $this->autoModeratorUser ) ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoMod edits" );
-			$passedPreCheck = false;
+			return false;
 		}
 		// Skip sysop and bot user edits
 		// @todo: Move bot skip to check on recent changes rc_bot field
@@ -202,32 +189,60 @@ class RevisionCheck {
 		foreach ( $skipGroups as $skipGroup ) {
 			if ( array_key_exists( $skipGroup, $userGroups ) ) {
 				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - sysop or bot edits" );
-				$passedPreCheck = false;
+				return false;
 			}
 		}
 		// Skip non-mainspace edit
 		if ( $this->wikiPage->getNamespace() !== NS_MAIN ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
-			$passedPreCheck = false;
+			return false;
 		}
 
 		// Skip new page creations
 		if ( $this->rev->getParentId() <= 0 ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
-			$passedPreCheck = false;
+			return false;
 		}
 
-		$this->setPassedPreCheck( $passedPreCheck );
+		return true;
+	}
+
+	/**
+	 * Perform revert
+	 * @param PageUpdater $pageUpdater
+	 * @param \Content $content
+	 * @param RevisionRecord $prevRev
+	 * @param string $undoMsg
+	 *
+	 * @return void
+	 */
+	private function doRevert( $pageUpdater, $content, $prevRev, $undoMsg ) {
+		$pageUpdater->setContent( SlotRecord::MAIN, $content );
+		$pageUpdater->setOriginalRevisionId( $prevRev->getId() );
+		$comment = CommentStoreComment::newUnsavedComment( $undoMsg );
+		// REVERT_UNDO 1
+		// REVERT_ROLLBACK 2
+		// REVERT_MANUAL 3
+		$pageUpdater->markAsRevert( 1, $this->rev->getId(), $prevRev->getId() );
+		// EDIT_NEW 1
+		// EDIT_UPDATE 2
+		// EDIT_MINOR 3
+		// EDIT_SUPPRESS_RC 4
+		// EDIT_FORCE_BOT 5
+		// EDIT_AUTOSUMMARY 6
+		// EDIT_INTERNAL 7
+		$pageUpdater->saveRevision( $comment, 2 );
 	}
 
 	/**
 	 * Check revision; revert if it meets configured critera
 	 * @param array $score
 	 *
-	 * @return bool
+	 * @return array
 	 */
 	public function maybeRevert( $score ) {
-		$reverted = false;
+		$reverted = 0;
+		$undoMsg = "Not reverted";
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		// Automoderator system user may perform updates
 		$pageUpdater = $this->wikiPage->newPageUpdater( $this->autoModeratorUser );
@@ -245,29 +260,19 @@ class RevisionCheck {
 			// https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/includes/editpage/EditPage.php#2678
 			$content = $this->getUndoContent( $prevRev, $undoMsg );
 			if ( !$content ) {
-				return $reverted;
+				return [ $reverted => $undoMsg ];
 			}
-			$pageUpdater->setContent( SlotRecord::MAIN, $content );
-			$pageUpdater->setOriginalRevisionId( $prevRev->getId() );
-			$comment = CommentStoreComment::newUnsavedComment( $undoMsg );
-			// REVERT_UNDO 1
-			// REVERT_ROLLBACK 2
-			// REVERT_MANUAL 3
-			$pageUpdater->markAsRevert( 1, $this->rev->getId(), $prevRev->getId() );
-			$this->tags[] = 'ext-automoderator-failed';
-			// EDIT_NEW 1
-			// EDIT_UPDATE 2
-			// EDIT_MINOR 3
-			// EDIT_SUPPRESS_RC 4
-			// EDIT_FORCE_BOT 5
-			// EDIT_AUTOSUMMARY 6
-			// EDIT_INTERNAL 7
-			$pageUpdater->saveRevision( $comment, 2 );
-			$reverted = true;
+			if ( $this->enforce ) {
+				$this->doRevert( $pageUpdater, $content, $prevRev, $undoMsg );
+				$this->tags[] = 'ext-automoderator-failed';
+			}
+			$reverted = 1;
 		} else {
 			$this->tags[] = 'ext-automoderator-passed';
 		}
-		$this->changeTagsStore->addTags( $this->tags, null, $this->rev->getId() );
-		return $reverted;
+		if ( $this->enforce ) {
+			$this->changeTagsStore->addTags( $this->tags, null, $this->rev->getId() );
+		}
+		return [ $reverted => $undoMsg ];
 	}
 }

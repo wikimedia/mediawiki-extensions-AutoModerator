@@ -11,7 +11,8 @@
 		"MediaWiki": ">= 1.41"
 	},
 	"AutoloadNamespaces": {
-		"MediaWiki\\Extension\\AutoModerator\\": "src/"
+		"AutoModerator\\": "src/",
+		"AutoModerator\\Maintenance\\": "maintenance/"
 	},
 	"config": {
 		"AutoModeratorEnable": {
@@ -25,7 +26,7 @@
 	},
 	"HookHandlers": {
 		"main": {
-			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks",
+			"class": "AutoModerator\\Hooks",
 			"services": [
 				"ChangeTagsStore",
 				"MainConfig",

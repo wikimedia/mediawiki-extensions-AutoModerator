@@ -17,7 +17,7 @@
  * @file
  */
 
-namespace MediaWiki\Extension\AutoModerator;
+namespace AutoModerator;
 
 use FormatJson;
 use MediaWiki\Logger\LoggerFactory;

@@ -1,12 +1,12 @@
 <?php
 
-namespace MediaWiki\Extension\AutoModerator\Tests;
+namespace AutoModerator\Tests;
 
+use AutoModerator\RevisionCheck;
 use ContentHandler;
 use DummyContentForTesting;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\CommentStore\CommentStoreComment;
-use MediaWiki\Extension\AutoModerator\RevisionCheck;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionSlots;
 use MediaWiki\Revision\RevisionStore;
@@ -24,7 +24,7 @@ use WikiPage;
 /**
  * @group AutoModerator
  * @group extensions
- * @coversDefaultClass \MediaWiki\Extension\AutoModerator\RevisionCheck
+ * @coversDefaultClass AutoModerator\RevisionCheck
  */
 class RevisionCheckTest extends MediaWikiUnitTestCase {
 	use MockHttpTrait;
@@ -107,7 +107,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 				'wiki_db' => 'enwiki',
 				'revision_id' => end( $this->fakeRevisions )->getId(),
 				'output' => [
-						'prediction' => false,
+						'prediction' => true,
 						'probabilities' => [
 								'true' => 0.806738942861557,
 								'false' => 0.193261057138443,
@@ -179,10 +179,10 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$reverted = $revisionCheck->maybeRevert(
+		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->failingScore
-		);
-		$this->assertTrue( $reverted );
+		) );
+		$this->assertSame( 1, $reverted );
 	}
 
 	/**
@@ -202,10 +202,10 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$reverted = $revisionCheck->maybeRevert(
+		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->passingScore
-		);
-		$this->assertFalse( $reverted );
+		) );
+		$this->assertSame( 0, $reverted );
 	}
 
 	/**
@@ -226,8 +226,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -249,8 +248,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -272,8 +270,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -295,8 +292,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -318,8 +314,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -342,8 +337,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -366,8 +360,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -389,8 +382,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertTrue( $revisionCheck->getPassedPreCheck() );
+		$this->assertTrue( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -412,8 +404,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 
 	/**
@@ -435,7 +426,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 		);
-		$revisionCheck->revertPreCheck();
-		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
 }

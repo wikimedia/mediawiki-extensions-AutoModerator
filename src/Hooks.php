@@ -17,7 +17,7 @@
  * @file
  */
 
-namespace MediaWiki\Extension\AutoModerator;
+namespace AutoModerator;
 
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
@@ -93,15 +93,14 @@ class Hooks implements
 			$this->changeTagsStore,
 			$contentHandler,
 			$logger,
-			$this->userGroupManager
+			$this->userGroupManager,
+			true
 		);
-		$revisionCheck->revertPreCheck();
-		$passedPreCheck = $revisionCheck->getPassedPreCheck();
-		if ( !$passedPreCheck ) {
+		if ( !$revisionCheck->passedPreCheck ) {
 			return;
 		}
 		// @todo replace 'en' with getWikiID()
-		$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $passedPreCheck );
+		$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $revisionCheck->passedPreCheck );
 		// Wrap in a POSTSEND deferred update to avoid blocking the HTTP response
 		DeferredUpdates::addCallableUpdate( static function () use (
 			$liftWingClient,
