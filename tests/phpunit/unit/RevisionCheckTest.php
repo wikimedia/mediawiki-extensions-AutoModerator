@@ -132,6 +132,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->tags = [];
 		$this->revisionStoreMock = $this->getMockRevisionStore();
 		$this->revisionStoreMock->method( 'getPreviousRevision' )->willReturn( $this->fakeRevisions[ 1 ] );
+		$this->revisionStoreMock->method( 'getFirstRevision' )->willReturn( $this->fakeRevisions[ 0 ] );
 		$this->changeTagsStore = $this->createMock( ChangeTagsStore::class );
 		$contentHandler = $this->createMock( ContentHandler::class );
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
@@ -211,6 +212,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckNullEdit() {
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,
@@ -233,6 +235,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckAutoModeratorEdit() {
 		$this->user->method( 'equals' )->willReturn( true );
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,
@@ -255,6 +258,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,
@@ -277,6 +281,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ 'mw-rollback' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,
@@ -299,6 +304,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagUndoEdit() {
 		$this->tags = [ 'mw-undo' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,
@@ -322,6 +328,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	public function testRevertPreCheckSysOp() {
 		$this->userGroupManager->method( 'getUserGroupMemberships' )
 			->willReturn( [ 'sysop' => $this->createMock( UserGroupMembership::class ) ] );
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,
@@ -345,6 +352,76 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	public function testRevertPreCheckBot() {
 		$this->userGroupManager->method( 'getUserGroupMemberships' )
 			->willReturn( [ 'bot' => $this->createMock( UserGroupMembership::class ) ] );
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+		);
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckMainSpaceEdit() {
+		$this->wikiPageMock->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+		);
+		$revisionCheck->revertPreCheck();
+		$this->assertTrue( $revisionCheck->getPassedPreCheck() );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckNonMainSpaceEdit() {
+		$this->wikiPageMock->method( 'getNamespace' )->willReturn( NS_TALK );
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+		);
+		$revisionCheck->revertPreCheck();
+		$this->assertFalse( $revisionCheck->getPassedPreCheck() );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckNewPage() {
+		// Override revisionStoreMock method
+		$this->rev->method( 'getParentId' )->willReturn( 0 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock,
 			$this->rev,

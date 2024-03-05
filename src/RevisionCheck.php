@@ -186,13 +186,13 @@ class RevisionCheck {
 		$skipTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo' ];
 		foreach ( $skipTags as $skipTag ) {
 			if ( in_array( $skipTag, $this->tags ) ) {
-				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
+				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - reverts" );
 				$passedPreCheck = false;
 			}
 		}
 		// Skip AutoModerator edits
 		if ( $this->user->equals( $this->autoModeratorUser ) ) {
-			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
+			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoMod edits" );
 			$passedPreCheck = false;
 		}
 		// Skip sysop and bot user edits
@@ -201,9 +201,20 @@ class RevisionCheck {
 		$userGroups = $this->userGroupManager->getUserGroupMemberships( $this->user );
 		foreach ( $skipGroups as $skipGroup ) {
 			if ( array_key_exists( $skipGroup, $userGroups ) ) {
-				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ );
+				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - sysop or bot edits" );
 				$passedPreCheck = false;
 			}
+		}
+		// Skip non-mainspace edit
+		if ( $this->wikiPage->getNamespace() !== NS_MAIN ) {
+			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
+			$passedPreCheck = false;
+		}
+
+		// Skip new page creations
+		if ( $this->rev->getParentId() <= 0 ) {
+			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+			$passedPreCheck = false;
 		}
 
 		$this->setPassedPreCheck( $passedPreCheck );
