@@ -251,13 +251,6 @@ class RevisionCheck {
 			$prevRev = $this->revisionStore->getPreviousRevision( $this->rev );
 			// @todo use i18n instead of hardcoded message
 			$undoMsg = 'AutoModerator Revert with probability ' . $probability . '.';
-			// @todo add conflict detection and resolution in case further edits were made after rev.
-			// for conflict detection see the appropriate section of:
-			// EditPage::internalAttemptSave
-			// https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/includes/editpage/EditPage.php#2236
-			// for conflict resolution see:
-			// EditPage::mergeChangesIntoContent
-			// https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/includes/editpage/EditPage.php#2678
 			$content = $this->getUndoContent( $prevRev, $undoMsg );
 			if ( !$content ) {
 				return [ $reverted => $undoMsg ];
