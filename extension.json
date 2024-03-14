@@ -34,10 +34,14 @@
 				"RevisionStore",
 				"UserGroupManager"
 			]
+		},
+		"schema": {
+			"class": "AutoModerator\\Hooks\\LoadExtensionSchemaUpdates"
 		}
 	},
 	"Hooks": {
-		"RevisionFromEditComplete": "main"
+		"RevisionFromEditComplete": "main",
+		"LoadExtensionSchemaUpdates": "schema"
 	},
 	"MessagesDirs": {
 		"AutoModerator": [

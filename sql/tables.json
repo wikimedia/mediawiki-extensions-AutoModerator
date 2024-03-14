@@ -1,0 +1,117 @@
+[
+	{
+		"name": "automoderator_rev_score",
+		"comment": "AutoModerator score for a given revision.",
+		"columns": [
+			{
+				"name": "amrs_id",
+				"comment": "AutoModerator revision score ID",
+				"type": "bigint",
+				"options": { "autoincrement": true, "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "amrs_timestamp",
+				"comment": "AutoModerator revision score timestamp",
+				"type": "mwtimestamp",
+				"options": { "notnull": true }
+			},
+			{
+				"name": "amrs_rev",
+				"comment": "Revision ID",
+				"type": "integer",
+				"options": { "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "amrs_model",
+				"comment": "Model name (foreign key to automoderator_model.amm_id)",
+				"type": "smallint",
+				"options": { "notnull": true }
+			},
+			{
+				"name": "amrs_bucket",
+				"comment": "Prediction caution level as defined by AutoModerator",
+				"type": "mwtinyint",
+				"options": { "notnull": true, "length": 16 }
+			},
+			{
+				"name": "amrs_prob",
+				"comment": "prediction probability returned by model",
+				"type": "decimal",
+				"options": { "notnull": true, "precision": 3, "scale": 3 }
+			},
+			{
+				"name": "amrs_pred",
+				"comment": "Prediction value returned by model",
+				"type": "mwtinyint",
+				"options": { "notnull": true, "length": 1 }
+			},
+			{
+				"name": "amrs_status",
+				"comment": "Status of revision check",
+				"type": "mwtinyint",
+				"options": { "notnull": true, "length": 16 }
+			}
+		],
+		"indexes": [
+			{
+				"name": "amrs_rev_model_bucket",
+				"columns": [ "amrs_rev", "amrs_model", "amrs_bucket" ],
+				"unique": false
+			},
+			{
+				"name": "amrs_model_bucket_prob",
+				"columns": [ "amrs_model", "amrs_bucket", "amrs_prob" ],
+				"unique": false
+			},
+			{
+				"name": "amrs_id_rev_status",
+				"columns": [ "amrs_id", "amrs_rev", "amrs_status" ],
+				"unique": true
+			}
+		],
+		"pk": [ "amrs_id" ]
+	},
+	{
+		"name": "automoderator_model",
+		"comment": "Cached model information used to detect updated versions",
+		"columns": [
+			{
+				"name": "amm_id",
+				"comment": "AutoModerator Model ID",
+				"type": "smallint",
+				"options": { "autoincrement": true, "notnull": true, "unsigned": true }
+			},
+			{
+				"name": "amm_name",
+				"comment": "Model name",
+				"type": "string",
+				"options": { "notnull": true, "length": 32 }
+			},
+			{
+				"name": "amm_version",
+				"comment": "Most recent model version seen",
+				"type": "string",
+				"options": { "notnull": true, "length": 32 }
+			},
+			{
+				"name": "amm_is_current",
+				"comment": "Is it the current version of the model?",
+				"type": "mwtinyint",
+				"options": { "notnull": true, "length": 1 }
+			}
+		],
+		"indexes": [
+			{
+				"name": "amrm_model_status",
+				"columns": [ "amm_name", "amm_is_current" ],
+				"unique": false
+			},
+			{
+				"name": "amrm_version",
+				"columns": [ "amm_name", "amm_version" ],
+				"unique": true
+			}
+		],
+		"pk": [ "amm_id" ]
+	}
+]
