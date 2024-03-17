@@ -99,7 +99,7 @@ class CheckRevision extends Maintenance {
 								'probabilities' => [
 										'true' => 0.806738942861557,
 										'false' => 0.193261057138443,
-						   ],
+								],
 						],
 				];
 				break;
@@ -114,7 +114,7 @@ class CheckRevision extends Maintenance {
 								'probabilities' => [
 										'true' => 0.193261057138443,
 										'false' => 0.806738942861557,
-						   ],
+								],
 						],
 				];
 				break;

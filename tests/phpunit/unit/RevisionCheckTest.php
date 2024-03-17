@@ -57,7 +57,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			'rev_parent_id' => ( $i == 0 ) ? null : $i - 1,
 			'rev_len' => $slots->computeSize(),
 			'rev_sha1' => $slots->computeSha1(),
-		];
+			];
 			$rev = new $mockRevisionRecord( $this->title, $this->user, $comment, (object)$row, $slots, $wikiId );
 			$rev->method( 'getId' )->willReturn( $i );
 			$rev->method( 'getContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
@@ -111,7 +111,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 						'probabilities' => [
 								'true' => 0.806738942861557,
 								'false' => 0.193261057138443,
-				   ],
+						],
 				],
 		];
 		$this->passingScore = [
@@ -124,7 +124,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 						'probabilities' => [
 								'true' => 0.193261057138443,
 								'false' => 0.806738942861557,
-				   ],
+						],
 				],
 		];
 		$this->originalRevId = false;

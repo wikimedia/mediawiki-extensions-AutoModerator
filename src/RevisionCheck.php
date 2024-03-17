@@ -117,46 +117,46 @@ class RevisionCheck {
 		$this->passedPreCheck = self::revertPreCheck();
 	}
 
-		/**
-		 * Cribbed from EditPage.php
-		 * Returns the result of a three-way merge when undoing changes.
-		 *
-		 * @param \MediaWiki\Revision\RevisionRecord $oldRev Revision that is being restored. Corresponds to
-		 *        `undoafter` URL parameter.
-		 * @param ?string &$error If false is returned, this will be set to "norev"
-		 *   if the revision failed to load, or "failure" if the content handler
-		 *   failed to merge the required changes.
-		 *
-		 * @return false|\Content
-		 */
-		private function getUndoContent(
-			\MediaWiki\Revision\RevisionRecord $oldRev,
-			&$error
-		) {
+	/**
+	 * Cribbed from EditPage.php
+	 * Returns the result of a three-way merge when undoing changes.
+	 *
+	 * @param \MediaWiki\Revision\RevisionRecord $oldRev Revision that is being restored. Corresponds to
+	 *        `undoafter` URL parameter.
+	 * @param ?string &$error If false is returned, this will be set to "norev"
+	 *   if the revision failed to load, or "failure" if the content handler
+	 *   failed to merge the required changes.
+	 *
+	 * @return false|\Content
+	 */
+	private function getUndoContent(
+		\MediaWiki\Revision\RevisionRecord $oldRev,
+		&$error
+	) {
 		$currentContent = $this->wikiPage->getRevisionRecord()
-		->getContent( SlotRecord::MAIN );
+			->getContent( SlotRecord::MAIN );
 		$undoContent = $this->rev->getContent( SlotRecord::MAIN );
 		$undoAfterContent = $oldRev->getContent( SlotRecord::MAIN );
 		$undoIsLatest = $this->wikiPage->getRevisionRecord()->getId() === $this->rev->getId();
 		if ( $currentContent === null
-		|| $undoContent === null
-		|| $undoAfterContent === null
+			|| $undoContent === null
+			|| $undoAfterContent === null
 		) {
 			$error = 'norev';
 			return false;
 		}
 
 		$content = $this->contentHandler->getUndoContent(
-		$currentContent,
-		$undoContent,
-		$undoAfterContent,
-		$undoIsLatest,
+			$currentContent,
+			$undoContent,
+			$undoAfterContent,
+			$undoIsLatest,
 		);
 		if ( $content === false ) {
 			$error = 'failure';
 		}
 		return $content;
-		}
+	}
 
 	/**
 	 * Precheck a revision; if any of the checks don't pass,
