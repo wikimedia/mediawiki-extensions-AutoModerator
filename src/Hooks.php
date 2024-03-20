@@ -76,6 +76,9 @@ class Hooks implements
 		if ( !$this->config->get( 'AutoModeratorEnable' ) ) {
 			return;
 		}
+		if ( !$wikiPage || !$rev ) {
+			return;
+		}
 		$autoModeratorUser = Util::getAutoModeratorUser();
 		$contentHandler = $this->contentHandlerFactory->getContentHandler( $rev->getSlot(
 					SlotRecord::MAIN,
