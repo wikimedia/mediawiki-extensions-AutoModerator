@@ -76,7 +76,7 @@ class Hooks implements
 		if ( !$this->config->get( 'AutoModeratorEnable' ) ) {
 			return;
 		}
-		if ( !$wikiPage || !$rev ) {
+		if ( !$wikiPage || !$rev || !$user ) {
 			return;
 		}
 		$autoModeratorUser = Util::getAutoModeratorUser();
