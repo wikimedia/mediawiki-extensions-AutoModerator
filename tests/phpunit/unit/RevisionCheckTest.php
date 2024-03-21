@@ -109,8 +109,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 				'output' => [
 						'prediction' => true,
 						'probabilities' => [
-								'true' => 0.806738942861557,
-								'false' => 0.193261057138443,
+								'true' => 1.000000000000000,
+								'false' => 0.000000000000000,
 						],
 				],
 		];
@@ -122,8 +122,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 				'output' => [
 						'prediction' => false,
 						'probabilities' => [
-								'true' => 0.193261057138443,
-								'false' => 0.806738942861557,
+								'true' => 0.000000000000000,
+								'false' => 1.000000000000000,
 						],
 				],
 		];

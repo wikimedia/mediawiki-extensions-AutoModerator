@@ -247,7 +247,7 @@ class RevisionCheck {
 		// Automoderator system user may perform updates
 		$pageUpdater = $this->wikiPage->newPageUpdater( $this->autoModeratorUser );
 		// @todo use configuration instead of hardcoding
-		if ( $probability > 0.5 ) {
+		if ( $probability > 0.99 ) {
 			$prevRev = $this->revisionStore->getPreviousRevision( $this->rev );
 			// @todo use i18n instead of hardcoded message
 			$undoMsg = 'AutoModerator Revert with probability ' . $probability . '.';
