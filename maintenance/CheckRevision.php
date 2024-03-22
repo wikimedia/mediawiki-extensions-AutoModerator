@@ -50,8 +50,8 @@ class CheckRevision extends Maintenance {
 		$dbr = $this->getReplicaDB();
 		$tags = $changeTagsStore->getTags( $dbr, null, $revId );
 		$rev = $revisionLookup->getRevisionById( $revId );
-		// Check if revision is not null
-		if ( !$rev ) {
+		// Check if revision or the revision user is not null
+		if ( !$rev || !$rev->getUser() ) {
 			return;
 		}
 		$wikiPage = $wikiPageFactory->newFromTitle( $rev->getPage() );
