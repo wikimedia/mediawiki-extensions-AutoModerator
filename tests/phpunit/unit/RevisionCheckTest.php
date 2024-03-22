@@ -21,6 +21,7 @@ use MockHttpTrait;
 use MockTitleTrait;
 use WikiPage;
 
+#[\AllowDynamicProperties]
 /**
  * @group AutoModerator
  * @group extensions
