@@ -38,11 +38,10 @@ class Util {
 				"{$username} is invalid. Please change it."
 			);
 		}
-		// Promote user to 'sysop' so it doesn't look
-		// like an unprivileged account is blocking users
+		// Assign the 'bot' group to the user so it looks like a bot
 		$userGroupManager = MediaWikiServices::getInstance()->getUserGroupManager();
-		if ( !in_array( 'sysop', $userGroupManager->getUserGroups( $autoModeratorUser ) ) ) {
-			$userGroupManager->addUserToGroup( $autoModeratorUser, 'sysop' );
+		if ( !in_array( 'bot', $userGroupManager->getUserGroups( $autoModeratorUser ) ) ) {
+			$userGroupManager->addUserToGroup( $autoModeratorUser, 'bot' );
 		}
 		return $autoModeratorUser;
 	}

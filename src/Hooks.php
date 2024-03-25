@@ -25,6 +25,7 @@ use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
@@ -48,6 +49,9 @@ class Hooks implements
 	/** @var UserGroupManager */
 	private $userGroupManager;
 
+	/** @var RestrictionStore */
+	private $restrictionStore;
+
 	/**
 	 * @param ChangeTagsStore $changeTagsStore
 	 * @param Config $config
@@ -60,13 +64,15 @@ class Hooks implements
 		Config $config,
 		ContentHandlerFactory $contentHandlerFactory,
 		RevisionStore $revisionStore,
-		UserGroupManager $userGroupManager
+		UserGroupManager $userGroupManager,
+		RestrictionStore $restrictionStore
 	) {
 		$this->changeTagsStore = $changeTagsStore;
 		$this->config = $config;
 		$this->contentHandlerFactory = $contentHandlerFactory;
 		$this->revisionStore = $revisionStore;
 		$this->userGroupManager = $userGroupManager;
+		$this->restrictionStore = $restrictionStore;
 	}
 
 	/**
@@ -97,6 +103,7 @@ class Hooks implements
 			$contentHandler,
 			$logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 			true
 		);
 		if ( !$revisionCheck->passedPreCheck ) {

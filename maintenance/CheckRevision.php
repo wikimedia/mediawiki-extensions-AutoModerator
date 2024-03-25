@@ -46,6 +46,7 @@ class CheckRevision extends Maintenance {
 		$revisionStore = $services->getRevisionStoreFactory()->getRevisionStore();
 		$userGroupManager = $services->getUserGroupManager();
 		$wikiPageFactory = $services->getWikiPageFactory();
+		$restrictionStore = $services->getRestrictionStore();
 		$autoModeratorUser = Util::getAutoModeratorUser();
 		$dbr = $this->getReplicaDB();
 		$tags = $changeTagsStore->getTags( $dbr, null, $revId );
@@ -74,7 +75,8 @@ class CheckRevision extends Maintenance {
 				$changeTagsStore,
 				$contentHandler,
 				$logger,
-				$userGroupManager
+				$userGroupManager,
+				$restrictionStore
 		);
 		if ( !$revisionCheck->passedPreCheck ) {
 			$this->output( "precheck skipped rev:\t$revId\n" );
