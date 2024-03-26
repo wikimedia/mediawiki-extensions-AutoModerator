@@ -19,6 +19,7 @@
 
 namespace AutoModerator;
 
+use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandlerFactory;
@@ -33,11 +34,16 @@ use MediaWiki\User\UserGroupManager;
 class Hooks implements
 	RevisionFromEditCompleteHook
 {
+	use AutoModeratorConfigLoaderStaticTrait;
+
 	/** @var ChangeTagsStore */
 	private $changeTagsStore;
 
 	/** @var Config */
 	private $config;
+
+	/** @var Config */
+	private $wikiConfig;
 
 	/** @var ContentHandlerFactory */
 	private $contentHandlerFactory;
@@ -51,6 +57,7 @@ class Hooks implements
 	/**
 	 * @param ChangeTagsStore $changeTagsStore
 	 * @param Config $config
+	 * @param Config $wikiConfig
 	 * @param ContentHandlerFactory $contentHandlerFactory
 	 * @param revisionStore $revisionStore
 	 * @param userGroupManager $userGroupManager
@@ -58,12 +65,14 @@ class Hooks implements
 	public function __construct(
 		ChangeTagsStore $changeTagsStore,
 		Config $config,
+		Config $wikiConfig,
 		ContentHandlerFactory $contentHandlerFactory,
 		RevisionStore $revisionStore,
 		UserGroupManager $userGroupManager
 	) {
 		$this->changeTagsStore = $changeTagsStore;
 		$this->config = $config;
+		$this->wikiConfig = $wikiConfig;
 		$this->contentHandlerFactory = $contentHandlerFactory;
 		$this->revisionStore = $revisionStore;
 		$this->userGroupManager = $userGroupManager;
@@ -73,7 +82,7 @@ class Hooks implements
 	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		if ( !$this->config->get( 'AutoModeratorEnable' ) ) {
+		if ( !$this->wikiConfig->get( 'AutoModeratorEnable' ) ) {
 			return;
 		}
 		if ( !$wikiPage || !$rev || !$user ) {

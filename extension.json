@@ -14,6 +14,12 @@
 		"AutoModerator\\": "src/",
 		"AutoModerator\\Maintenance\\": "maintenance/"
 	},
+	"ServiceWiringFiles": [
+		"src/ServiceWiring.php"
+	],
+	"ConfigRegistry": {
+		"AutoModerator": "GlobalVarConfig::newInstance"
+	},
 	"config": {
 		"AutoModeratorEnable": {
 			"description": "Enable AutoModerator.",
@@ -22,14 +28,32 @@
 		"AutoModeratorUsername": {
 			"description": "Username for AutoModerator system account",
 			"value": "AutoModerator"
+		},
+		"AutoModeratorWikiConfigPageTitle": {
+			"description": "Name of page used for on-wiki config; must be in NS_MEDIAWIKI and end with .json; only variables listed in AutoModeratorOnWikiConfigAllowList may be overriden on wiki",
+			"value": "MediaWiki:AutoModeratorConfig.json"
+		},
+		"AutoModeratorWikiConfigEnabled": {
+			"description": "If set to false, on-wiki configuration will be ignored.",
+			"value": true
 		}
 	},
 	"HookHandlers": {
+		"config": {
+			"class": "AutoModerator\\Config\\ConfigHooks",
+			"services": [
+				"AutoModeratorConfigValidatorFactory",
+				"AutoModeratorWikiPageConfigLoader",
+				"TitleFactory",
+				"MainConfig"
+			]
+		},
 		"main": {
 			"class": "AutoModerator\\Hooks",
 			"services": [
 				"ChangeTagsStore",
 				"MainConfig",
+				"AutoModeratorCommunityConfig",
 				"ContentHandlerFactory",
 				"RevisionStore",
 				"UserGroupManager"
@@ -40,8 +64,11 @@
 		}
 	},
 	"Hooks": {
-		"RevisionFromEditComplete": "main",
-		"LoadExtensionSchemaUpdates": "schema"
+		"EditFilterMergedContent": "config",
+		"JsonValidateSave": "config",
+		"LoadExtensionSchemaUpdates": "schema",
+		"PageSaveComplete": "config",
+		"RevisionFromEditComplete": "main"
 	},
 	"MessagesDirs": {
 		"AutoModerator": [

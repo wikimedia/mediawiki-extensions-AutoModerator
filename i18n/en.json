@@ -4,5 +4,8 @@
 			"Jsn.sherman"
 		]
 	},
+	"automoderator-config-validator-array-toobig": "$1 has too many items (maximum $2 allowed)",
+	"automoderator-config-validator-contentmodel-mismatch": "Content-model mismatch: config file must have JSON content model, $1 detected",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> is expected to be <code>$2</code>, but is <code>$3</code>",
 	"automoderator-desc": "Automatically reverts bad edits based on scoring from a machine learning model."
 }

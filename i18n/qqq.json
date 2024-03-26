@@ -4,5 +4,8 @@
 			"Jsn.sherman"
 		]
 	},
+	"automoderator-config-validator-array-toobig": "Error returned by validator of AutoModerator config\n\n$1 is a variable name, $2 is the number of maximum allowed items.",
+	"automoderator-config-validator-contentmodel-mismatch": "Error returned by validator of AutoModerator Config.",
+	"automoderator-config-validator-datatype-mismatch": "Error returned by validator of AutoModerator Config\n\n$1 is a variable name, $2 and $3 are data types.",
 	"automoderator-desc": "{{desc|name=AutoModerator|url=https://www.mediawiki.org/wiki/Extension:AutoModerator}}"
 }

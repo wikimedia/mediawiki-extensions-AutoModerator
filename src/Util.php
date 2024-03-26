@@ -19,8 +19,17 @@
 
 namespace AutoModerator;
 
+use FormatJson;
+use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Linker\LinkTarget;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
+use MediaWiki\Utils\UrlUtils;
+use RequestContext;
+use RuntimeException;
+use StatusValue;
 use UnexpectedValueException;
 
 class Util {
@@ -45,5 +54,67 @@ class Util {
 			$userGroupManager->addUserToGroup( $autoModeratorUser, 'sysop' );
 		}
 		return $autoModeratorUser;
+	}
+
+	/**
+	 * Fetch JSON data from a remote URL, parse it and return the results.
+	 * @param HttpRequestFactory $requestFactory
+	 * @param string $url
+	 * @param bool $isSameFarm Is the URL on the same wiki farm we are making the request from?
+	 * @return StatusValue A status object with the parsed JSON value, or any errors.
+	 *   (Warnings coming from the HTTP library will be logged and not included here.)
+	 */
+	public static function getJsonUrl(
+		HttpRequestFactory $requestFactory, $url, $isSameFarm = false
+	) {
+		$options = [
+			'method' => 'GET',
+			'userAgent' => $requestFactory->getUserAgent() . ' AutoModerator',
+		];
+		if ( $isSameFarm ) {
+			$options['originalRequest'] = RequestContext::getMain()->getRequest();
+		}
+		$request = $requestFactory->create( $url, $options, __METHOD__ );
+		$status = $request->execute();
+		if ( $status->isOK() ) {
+			$status->merge( FormatJson::parse( $request->getContent(), FormatJson::FORCE_ASSOC ), true );
+		}
+		// Log warnings here. The caller is expected to handle errors so do not double-log them.
+		[ $errorStatus, $warningStatus ] = $status->splitByErrorType();
+		if ( !$warningStatus->isGood() ) {
+			LoggerFactory::getInstance( 'AutoModerator' )->warning(
+				$warningStatus->getWikiText( false, false, 'en' ),
+				[ 'exception' => new RuntimeException ]
+			);
+		}
+		return $errorStatus;
+	}
+
+	/**
+	 * Get the action=raw URL for a (probably remote) title.
+	 * Normal title methods would return nice URLs, which are usually disallowed for action=raw.
+	 * We assume both wikis use the same URL structure.
+	 * @param LinkTarget $title
+	 * @param TitleFactory $titleFactory
+	 * @return string
+	 */
+	public static function getRawUrl(
+		LinkTarget $title,
+		TitleFactory $titleFactory,
+		UrlUtils $urlUtils
+	) {
+		// Use getFullURL to get the interwiki domain.
+		$url = $titleFactory->newFromLinkTarget( $title )->getFullURL();
+		$parts = $urlUtils->parse( (string)$urlUtils->expand( $url, PROTO_CANONICAL ) );
+		if ( !$parts ) {
+			throw new UnexpectedValueException( 'URL is expected to be valid' );
+		}
+		$baseUrl = $parts['scheme'] . $parts['delimiter'] . $parts['host'];
+		if ( isset( $parts['port'] ) && $parts['port'] ) {
+			$baseUrl .= ':' . $parts['port'];
+		}
+
+		$localPageTitle = $titleFactory->makeTitle( $title->getNamespace(), $title->getDBkey() );
+		return $baseUrl . $localPageTitle->getLocalURL( [ 'action' => 'raw' ] );
 	}
 }
