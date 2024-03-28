@@ -56,7 +56,8 @@
 				"AutoModeratorCommunityConfig",
 				"ContentHandlerFactory",
 				"RevisionStore",
-				"UserGroupManager"
+				"UserGroupManager",
+				"RestrictionStore"
 			]
 		},
 		"schema": {

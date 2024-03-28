@@ -22,6 +22,7 @@ namespace AutoModerator;
 use CommentStoreComment;
 use ContentHandler;
 use MediaWiki\ChangeTags\ChangeTagsStore;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
@@ -65,6 +66,9 @@ class RevisionCheck {
 	/** @var UserGroupManager */
 	private $userGroupManager;
 
+	/** @var RestrictionStore */
+	private $restrictionStore;
+
 	/** @var bool */
 	private bool $enforce;
 
@@ -86,6 +90,7 @@ class RevisionCheck {
 	 * @param ContentHandler $contentHandler
 	 * @param \Psr\Log\LoggerInterface $logger
 	 * @param UserGroupManager $userGroupManager
+	 * @param RestrictionStore $restrictionStore
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
@@ -100,6 +105,7 @@ class RevisionCheck {
 		ContentHandler $contentHandler,
 		\Psr\Log\LoggerInterface $logger,
 		UserGroupManager $userGroupManager,
+		RestrictionStore $restrictionStore,
 		bool $enforce = false
 	) {
 		$this->wikiPage = $wikiPage;
@@ -113,6 +119,7 @@ class RevisionCheck {
 		$this->contentHandler = $contentHandler;
 		$this->logger = $logger;
 		$this->userGroupManager = $userGroupManager;
+		$this->restrictionStore = $restrictionStore;
 		$this->enforce = $enforce;
 		$this->passedPreCheck = self::revertPreCheck();
 	}
@@ -201,6 +208,15 @@ class RevisionCheck {
 		// Skip new page creations
 		if ( $this->rev->getParentId() <= 0 ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+			return false;
+		}
+
+		// Skip protected pages that only admins can edit.
+		// Automoderator should be able to revert semi-protected pages,
+		// so we won't be skipping those on pre-check.
+		if ( $this->restrictionStore->isProtected( $this->wikiPage )
+				&& !$this->restrictionStore->isSemiProtected( $this->wikiPage ) ) {
+			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - protected page" );
 			return false;
 		}
 

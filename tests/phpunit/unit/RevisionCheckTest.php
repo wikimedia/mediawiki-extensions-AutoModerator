@@ -7,6 +7,7 @@ use ContentHandler;
 use DummyContentForTesting;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionSlots;
 use MediaWiki\Revision\RevisionStore;
@@ -140,6 +141,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->contentHandler->method( 'getUndoContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
 		$this->logger = $this->createMock( \Psr\Log\LoggerInterface::class );
 		$this->userGroupManager = $this->createMock( UserGroupManager::class );
+		$this->restrictionStore = $this->createMock( RestrictionStore::class );
 	}
 
 	protected function tearDown(): void {
@@ -159,6 +161,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		parent::tearDown();
 	}
@@ -179,6 +182,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->failingScore
@@ -202,6 +206,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->passingScore
@@ -226,6 +231,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -248,6 +254,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -270,6 +277,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -292,6 +300,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -314,6 +323,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -337,6 +347,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -360,6 +371,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -382,6 +394,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertTrue( $revisionCheck->passedPreCheck );
 	}
@@ -404,6 +417,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -426,6 +440,30 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
+			$this->restrictionStore,
+		);
+		$this->assertFalse( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckProtectedPage() {
+		// Override revisionStoreMock method
+		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
