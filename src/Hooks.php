@@ -88,7 +88,7 @@ class Hooks implements
 	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		if ( !$this->wikiConfig->get( 'AutoModeratorEnable' ) ) {
+		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
 			return;
 		}
 		if ( !$wikiPage || !$rev || !$user ) {

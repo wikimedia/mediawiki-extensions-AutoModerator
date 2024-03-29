@@ -1,7 +1,7 @@
 <?php
 
 use AutoModerator\AutoModeratorServices;
-use AutoModerator\Config\AutoModeratorCommunityConfig;
+use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\Validation\ConfigValidatorFactory;
 use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Config\WikiPageConfigLoader;
@@ -15,9 +15,9 @@ return [
 		return $services->getConfigFactory()->makeConfig( 'AutoModerator' );
 	},
 
-	'AutoModeratorCommunityConfig' => static function ( MediaWikiServices $services ): Config {
+	'AutoModeratorWikiConfigLoader' => static function ( MediaWikiServices $services ): Config {
 		$autoModeratorServices = AutoModeratorServices::wrap( $services );
-		return new AutoModeratorCommunityConfig(
+		return new AutoModeratorWikiConfigLoader(
 			$autoModeratorServices->getWikiPageConfig(),
 			GlobalVarConfig::newInstance()
 		);

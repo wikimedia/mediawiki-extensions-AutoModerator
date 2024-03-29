@@ -41,7 +41,7 @@ class AutoModeratorServices {
 	}
 
 	public function getAutoModeratorWikiConfig(): Config {
-		return $this->coreServices->get( 'AutoModeratorCommunityConfig' );
+		return $this->coreServices->get( 'AutoModeratorWikiConfigLoader' );
 	}
 
 	public function getWikiPageConfig(): WikiPageConfig {

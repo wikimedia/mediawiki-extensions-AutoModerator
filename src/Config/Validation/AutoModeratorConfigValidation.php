@@ -2,7 +2,7 @@
 
 namespace AutoModerator\Config\Validation;
 
-use AutoModerator\Config\AutoModeratorCommunityConfig;
+use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use InvalidArgumentException;
 use Message;
 use StatusValue;
@@ -21,7 +21,7 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 
 	private function getConfigDescriptors(): array {
 		return [
-			'AutoModeratorEnable' => [
+			'AutoModeratorEnableRevisionCheck' => [
 				'type' => 'bool',
 			],
 		];
@@ -86,7 +86,7 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 	 * @inheritDoc
 	 */
 	public function validateVariable( string $variable, $value ): void {
-		if ( !in_array( $variable, AutoModeratorCommunityConfig::ALLOW_LIST ) ) {
+		if ( !in_array( $variable, AutoModeratorWikiConfigLoader::ALLOW_LIST ) ) {
 			throw new InvalidArgumentException(
 				'Invalid attempt to set a variable via WikiPageConfigWriter'
 			);

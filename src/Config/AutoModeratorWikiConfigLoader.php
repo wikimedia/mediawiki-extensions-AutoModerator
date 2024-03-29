@@ -10,7 +10,7 @@ use MediaWiki\Settings\Config\MergeStrategy;
  * Config loader for wiki page config
  *
  * This class consults the allow list
- * in AutoModeratorCommunityConfig::ALLOW_LIST, and runs
+ * in AutoModeratorWikiConfigLoader::ALLOW_LIST, and runs
  * WikiPageConfig if requested config variable is there. Otherwise,
  * it throws an exception.
  *
@@ -18,13 +18,13 @@ use MediaWiki\Settings\Config\MergeStrategy;
  * works without any config page, and also to not let wikis break
  * AutoModerator setup by removing an arbitrary config variable.
  */
-class AutoModeratorCommunityConfig implements Config, ICustomReadConstants {
+class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 
 	private WikiPageConfig $wikiPageConfig;
 	private Config $globalVarConfig;
 
 	public const ALLOW_LIST = [
-		'AutoModeratorEnable'
+		'AutoModeratorEnableRevisionCheck'
 	];
 
 	/**
@@ -62,7 +62,7 @@ class AutoModeratorCommunityConfig implements Config, ICustomReadConstants {
 	 * @return bool
 	 */
 	public function isWikiConfigEnabled(): bool {
-		return (bool)$this->globalVarConfig->get( 'AutoModeratorWikiConfigEnabled' );
+		return (bool)$this->globalVarConfig->get( 'AutoModeratorEnableWikiConfig' );
 	}
 
 	/**
@@ -83,7 +83,7 @@ class AutoModeratorCommunityConfig implements Config, ICustomReadConstants {
 		}
 
 		if ( !$this->variableIsAllowed( $name ) ) {
-			throw new ConfigException( 'Config key cannot be retrieved via AutoModeratorCommunityConfig' );
+			throw new ConfigException( 'Config key cannot be retrieved via AutoModeratorWikiConfigLoader' );
 		}
 
 		if ( $this->wikiPageConfig->hasWithFlags( $name, $flags ) ) {
@@ -97,7 +97,7 @@ class AutoModeratorCommunityConfig implements Config, ICustomReadConstants {
 		} elseif ( $this->globalVarConfig->has( $name ) ) {
 			return $this->globalVarConfig->get( $name );
 		} else {
-			throw new ConfigException( 'Config key was not found in AutoModeratorCommunityConfig' );
+			throw new ConfigException( 'Config key was not found in AutoModeratorWikiConfigLoader' );
 		}
 	}
 

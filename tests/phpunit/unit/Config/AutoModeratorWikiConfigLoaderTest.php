@@ -2,7 +2,7 @@
 
 namespace AutoModerator\Tests;
 
-use AutoModerator\Config\AutoModeratorCommunityConfig;
+use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\WikiPageConfig;
 use IDBAccessObject;
 use MediaWiki\Config\ConfigException;
@@ -11,9 +11,9 @@ use MediaWiki\Config\HashConfig;
 use MediaWikiUnitTestCase;
 
 /**
- * @coversDefaultClass \AutoModerator\Config\AutoModeratorCommunityConfig
+ * @coversDefaultClass \AutoModerator\Config\AutoModeratorWikiConfigLoader
  */
-class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
+class AutoModeratorWikiConfigLoaderTest extends MediaWikiUnitTestCase {
 	private function getMockWikiPageConfig() {
 		return $this->createMock( WikiPageConfig::class );
 	}
@@ -24,9 +24,9 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	 * @param bool $shouldEnable
 	 */
 	public function testIsWikiConfigEnabled( bool $shouldEnable ) {
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$this->getMockWikiPageConfig(),
-			new HashConfig( [ 'AutoModeratorWikiConfigEnabled' => $shouldEnable ] )
+			new HashConfig( [ 'AutoModeratorEnableWikiConfig' => $shouldEnable ] )
 		);
 		$this->assertSame( $shouldEnable, $config->isWikiConfigEnabled() );
 	}
@@ -49,11 +49,11 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 		$globalVarConfig = $this->createMock( GlobalVarConfig::class );
 		$globalVarConfig->expects( $this->exactly( 2 ) )->method( 'get' )
 			->willReturnMap( [
-				[ 'AutoModeratorWikiConfigEnabled', false ],
+				[ 'AutoModeratorEnableWikiConfig', false ],
 				[ 'AutoModeratorFoo', 'global' ]
 			] );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			$globalVarConfig
 		);
@@ -66,15 +66,15 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	 */
 	public function testGetDisallowedVariable() {
 		$this->expectException( ConfigException::class );
-		$this->expectExceptionMessage( 'Config key cannot be retrieved via AutoModeratorCommunityConfig' );
+		$this->expectExceptionMessage( 'Config key cannot be retrieved via AutoModeratorWikiConfigLoader' );
 
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->never() )->method( 'hasWithFlags' );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
-			new HashConfig( [ 'AutoModeratorWikiConfigEnabled' => true ] )
+			new HashConfig( [ 'AutoModeratorEnableWikiConfig' => true ] )
 		);
 		$config->get( 'AutoModeratorFoo' );
 	}
@@ -85,18 +85,18 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	public function testGetWithFlagsFromWiki() {
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->once() )->method( 'hasWithFlags' )
-			->with( 'AutoModeratorEnable', IDBAccessObject::READ_LATEST )
+			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_LATEST )
 			->willReturn( true );
 		$wikiConfig->expects( $this->once() )->method( 'getWithFlags' )
-			->with( 'AutoModeratorEnable', IDBAccessObject::READ_LATEST )
+			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_LATEST )
 			->willReturn( false );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
-			new HashConfig( [ 'AutoModeratorWikiConfigEnabled' => true ] )
+			new HashConfig( [ 'AutoModeratorEnableWikiConfig' => true ] )
 		);
 		$this->assertFalse( $config->getWithFlags(
-			'AutoModeratorEnable',
+			'AutoModeratorEnableRevisionCheck',
 			IDBAccessObject::READ_LATEST
 		) );
 	}
@@ -108,18 +108,18 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	public function testGetFromGlobal() {
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->once() )->method( 'hasWithFlags' )
-			->with( 'AutoModeratorEnable', IDBAccessObject::READ_NORMAL )
+			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_NORMAL )
 			->willReturn( false );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			new HashConfig( [
-				'AutoModeratorWikiConfigEnabled' => true,
-				'AutoModeratorEnable' => true,
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
 			] )
 		);
-		$this->assertTrue( $config->get( 'AutoModeratorEnable' ) );
+		$this->assertTrue( $config->get( 'AutoModeratorEnableRevisionCheck' ) );
 	}
 
 	/**
@@ -128,21 +128,21 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	 */
 	public function testGetVariableNotFound() {
 		$this->expectException( ConfigException::class );
-		$this->expectExceptionMessage( 'Config key was not found in AutoModeratorCommunityConfig' );
+		$this->expectExceptionMessage( 'Config key was not found in AutoModeratorWikiConfigLoader' );
 
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->once() )->method( 'hasWithFlags' )
-			->with( 'AutoModeratorEnable', IDBAccessObject::READ_NORMAL )
+			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_NORMAL )
 			->willReturn( false );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			new HashConfig( [
-				'AutoModeratorWikiConfigEnabled' => true
+				'AutoModeratorEnableWikiConfig' => true
 			] )
 		);
-		$config->get( 'AutoModeratorEnable' );
+		$config->get( 'AutoModeratorEnableRevisionCheck' );
 	}
 
 	/**
@@ -153,9 +153,9 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->never() )->method( 'hasWithFlags' );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$this->getMockWikiPageConfig(),
-			new HashConfig( [ 'AutoModeratorWikiConfigEnabled' => true ] )
+			new HashConfig( [ 'AutoModeratorEnableWikiConfig' => true ] )
 		);
 		$this->assertFalse( $config->has( 'AutoModeratorFoo' ) );
 	}
@@ -166,15 +166,15 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	public function testHasWithFlagsWiki() {
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->once() )->method( 'hasWithFlags' )
-			->with( 'AutoModeratorEnable', IDBAccessObject::READ_LATEST )
+			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_LATEST )
 			->willReturn( true );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
-			new HashConfig( [ 'AutoModeratorWikiConfigEnabled' => true ] )
+			new HashConfig( [ 'AutoModeratorEnableWikiConfig' => true ] )
 		);
 		$this->assertTrue( $config->hasWithFlags(
-			'AutoModeratorEnable',
+			'AutoModeratorEnableRevisionCheck',
 			IDBAccessObject::READ_LATEST
 		) );
 	}
@@ -186,17 +186,17 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	public function testHasGlobal() {
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->once() )->method( 'hasWithFlags' )
-			->with( 'AutoModeratorEnable', IDBAccessObject::READ_NORMAL )
+			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_NORMAL )
 			->willReturn( false );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			new HashConfig( [
-				'AutoModeratorWikiConfigEnabled' => true,
-				'AutoModeratorEnable' => true,
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
 			] )
 		);
-		$this->assertTrue( $config->has( 'AutoModeratorEnable' ) );
+		$this->assertTrue( $config->has( 'AutoModeratorEnableRevisionCheck' ) );
 	}
 
 	/**
@@ -206,15 +206,15 @@ class AutoModeratorCommunityConfigTest extends MediaWikiUnitTestCase {
 	public function testHasNotFound() {
 		$wikiConfig = $this->getMockWikiPageConfig();
 		$wikiConfig->expects( $this->once() )->method( 'hasWithFlags' )
-			->with( 'AutoModeratorEnable', IDBAccessObject::READ_NORMAL )
+			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_NORMAL )
 			->willReturn( false );
 
-		$config = new AutoModeratorCommunityConfig(
+		$config = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			new HashConfig( [
-				'AutoModeratorWikiConfigEnabled' => true,
+				'AutoModeratorEnableWikiConfig' => true,
 			] )
 		);
-		$this->assertFalse( $config->has( 'AutoModeratorEnable' ) );
+		$this->assertFalse( $config->has( 'AutoModeratorEnableRevisionCheck' ) );
 	}
 }
