@@ -3,13 +3,14 @@
 namespace AutoModerator\Config;
 
 use AutoModerator\AutoModeratorServices;
+use MediaWiki\Config\Config;
 use MediaWiki\MediaWikiServices;
 
 trait AutoModeratorConfigLoaderStaticTrait {
 	/**
 	 * simple service wrapper
 	 *
-	 * @return \AutoModerator\Config\WikiPageConfig
+	 * @return WikiPageConfig
 	 */
 	private static function getAutoModeratorWikiConfig() {
 		return AutoModeratorServices::wrap(
@@ -20,7 +21,7 @@ trait AutoModeratorConfigLoaderStaticTrait {
 	/**
 	 * simple service wrapper
 	 *
-	 * @return \MediaWiki\Config\Config
+	 * @return Config
 	 */
 	private static function getAutoModeratorConfig() {
 		return AutoModeratorServices::wrap(

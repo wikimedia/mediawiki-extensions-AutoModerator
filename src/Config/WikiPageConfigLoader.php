@@ -106,7 +106,7 @@ class WikiPageConfigLoader implements ICustomReadConstants {
 			// This is a custom flag, but bitfield logic should work regardless.
 			DBAccessObjectUtils::hasFlags( $flags, self::READ_UNCACHED )
 		) {
-			// User does not want to used cached data, invalidate the cache.
+			// User does not want to use cached data, invalidate the cache.
 			$this->invalidate( $configPage );
 		}
 
@@ -195,26 +195,27 @@ class WikiPageConfigLoader implements ICustomReadConstants {
 		if ( $configPage->isExternal() ) {
 			$url = Util::getRawUrl( $configPage, $this->titleFactory, $this->urlUtils );
 			return Util::getJsonUrl( $this->requestFactory, $url );
-		} else {
-			$revision = $this->isTestWithStorageDisabled
-				? null
-				: $this->revisionLookup->getRevisionByTitle( $configPage, 0, $flags );
-			if ( !$revision ) {
-				// The configuration page does not exist. Pretend it does not configure anything
-				// specific (failure mode and empty-page behavior is equal, see T325236).
-				return StatusValue::newGood( $this->configValidatorFactory
-					->newConfigValidator( $configPage )
-					->getDefaultContent()
-				);
-			}
-			$content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::FOR_PUBLIC );
-			if ( !$content || !$content instanceof JsonContent ) {
-				return StatusValue::newFatal( new ApiRawMessage(
-					'The configuration title has no content or is not JSON content.',
-					'automoderator-configuration-loader-content-error'
-				) );
-			}
-			return FormatJson::parse( $content->getText(), FormatJson::FORCE_ASSOC );
 		}
+
+		$revision = $this->isTestWithStorageDisabled
+			? null
+			: $this->revisionLookup->getRevisionByTitle( $configPage, 0, $flags );
+		if ( !$revision ) {
+			// The configuration page does not exist. Pretend it does not configure anything
+			// specific (failure mode and empty-page behavior is equal, see T325236).
+			return StatusValue::newGood( $this->configValidatorFactory
+				->newConfigValidator( $configPage )
+				->getDefaultContent()
+			);
+		}
+		$content = $revision->getContent( SlotRecord::MAIN, RevisionRecord::FOR_PUBLIC );
+		if ( !$content || !$content instanceof JsonContent ) {
+			return StatusValue::newFatal( new ApiRawMessage(
+				'The configuration title has no content or is not JSON content.',
+				'automoderator-configuration-loader-content-error'
+			) );
+		}
+
+		return FormatJson::parse( $content->getText(), FormatJson::FORCE_ASSOC );
 	}
 }

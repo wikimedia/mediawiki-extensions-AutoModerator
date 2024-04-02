@@ -88,6 +88,7 @@ class LiftWingClient {
 		if ( !$this->passedPreCheck ) {
 			return [];
 		}
+		// TODO: Probably should be config
 		$url = 'https://api.wikimedia.org/service/lw/inference/v1/models/' . $this->model . ':predict';
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$logger->debug( "AutoModerator Requesting: {$url} " . __METHOD__ );

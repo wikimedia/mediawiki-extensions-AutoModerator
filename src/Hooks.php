@@ -37,34 +37,28 @@ class Hooks implements
 {
 	use AutoModeratorConfigLoaderStaticTrait;
 
-	/** @var ChangeTagsStore */
-	private $changeTagsStore;
+	private ChangeTagsStore $changeTagsStore;
 
-	/** @var Config */
-	private $config;
+	private Config $config;
 
-	/** @var Config */
-	private $wikiConfig;
+	private Config $wikiConfig;
 
-	/** @var ContentHandlerFactory */
-	private $contentHandlerFactory;
+	private ContentHandlerFactory $contentHandlerFactory;
 
-	/** @var RevisionStore */
-	private $revisionStore;
+	private RevisionStore $revisionStore;
 
-	/** @var UserGroupManager */
-	private $userGroupManager;
+	private UserGroupManager $userGroupManager;
 
-	/** @var RestrictionStore */
-	private $restrictionStore;
+	private RestrictionStore $restrictionStore;
 
 	/**
 	 * @param ChangeTagsStore $changeTagsStore
 	 * @param Config $config
 	 * @param Config $wikiConfig
 	 * @param ContentHandlerFactory $contentHandlerFactory
-	 * @param revisionStore $revisionStore
-	 * @param userGroupManager $userGroupManager
+	 * @param RevisionStore $revisionStore
+	 * @param UserGroupManager $userGroupManager
+	 * @param RestrictionStore $restrictionStore
 	 */
 	public function __construct(
 		ChangeTagsStore $changeTagsStore,
@@ -88,17 +82,14 @@ class Hooks implements
 	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
-			return;
-		}
-		if ( !$wikiPage || !$rev || !$user ) {
+		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) || !$wikiPage || !$rev || !$user ) {
 			return;
 		}
 		$autoModeratorUser = Util::getAutoModeratorUser();
 		$contentHandler = $this->contentHandlerFactory->getContentHandler( $rev->getSlot(
-					SlotRecord::MAIN,
-					RevisionRecord::RAW
-			)->getModel() );
+			SlotRecord::MAIN,
+			RevisionRecord::RAW
+		)->getModel() );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$revisionCheck = new RevisionCheck(
 			$wikiPage,

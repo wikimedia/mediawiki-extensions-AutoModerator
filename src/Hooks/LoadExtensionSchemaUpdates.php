@@ -23,19 +23,11 @@ class LoadExtensionSchemaUpdates implements LoadExtensionSchemaUpdatesHook {
 
 	/**
 	 * @param DatabaseUpdater $updater
-	 * @return void
 	 */
 	public function onLoadExtensionSchemaUpdates( $updater ) {
-		$type = $updater->getDB()->getType();
-		$extPath = dirname( __DIR__, 2 );
-		$typePath = $type === 'mysql' ? '' : $type . '/';
-		$sqlPath = $extPath . '/sql/' . $typePath;
+		$sqlPath = dirname( __DIR__, 2 ) . '/sql/' . $updater->getDB()->getType() . '/';
 		$updater->addExtensionTable(
 			'automoderator_rev_score',
-			$sqlPath . 'tables-generated.sql'
-		);
-		$updater->addExtensionTable(
-			'automoderator_model',
 			$sqlPath . 'tables-generated.sql'
 		);
 	}

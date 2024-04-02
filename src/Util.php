@@ -47,7 +47,7 @@ class Util {
 				"{$username} is invalid. Please change it."
 			);
 		}
-		// Assign the 'bot' group to the user so it looks like a bot
+		// Assign the 'bot' group to the user, so that it looks like a bot
 		$userGroupManager = MediaWikiServices::getInstance()->getUserGroupManager();
 		if ( !in_array( 'bot', $userGroupManager->getUserGroups( $autoModeratorUser ) ) ) {
 			$userGroupManager->addUserToGroup( $autoModeratorUser, 'bot' );

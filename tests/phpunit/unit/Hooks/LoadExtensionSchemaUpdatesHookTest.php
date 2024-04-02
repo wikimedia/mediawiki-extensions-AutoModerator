@@ -19,11 +19,11 @@ namespace AutoModerator\Tests\Unit\MediaWiki\Hooks;
 use AutoModerator\Hooks\LoadExtensionSchemaUpdates;
 use DatabaseUpdater;
 use MediaWikiUnitTestCase;
-use WikiMedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  *
- * @covers AutoModerator\Hooks\LoadExtensionSchemaUpdates
+ * @covers \AutoModerator\Hooks\LoadExtensionSchemaUpdates
  * @group AutoModerator
  * @group extensions
  * @group Database
@@ -34,9 +34,8 @@ class LoadExtensionSchemaUpdatesHookTest extends MediaWikiUnitTestCase {
 		$db = $this->createMock( IDatabase::class );
 		$hookHandler = new LoadExtensionSchemaUpdates();
 		$updater = $this->createMock( DatabaseUpdater::class );
-		$updater->expects( $this->any() )->method( 'getDB' )->willReturn( $db );
-		$tableCount = 2;
-		$updater->expects( $this->exactly( $tableCount ) )->method( 'addExtensionTable' );
+		$updater->method( 'getDB' )->willReturn( $db );
+		$updater->expects( $this->once() )->method( 'addExtensionTable' );
 		$hookHandler->onLoadExtensionSchemaUpdates( $updater );
 	}
 

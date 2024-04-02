@@ -63,20 +63,20 @@ class CheckRevision extends Maintenance {
 		)->getModel() );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$revisionCheck = new RevisionCheck(
-				$wikiPage,
-				$rev,
-				// @fixme: we should actually check for
-				//  $originalRevId as defined in onRevisionFromEditComplete
-				false,
-				$rev->getUser(),
-				$tags,
-				$autoModeratorUser,
-				$revisionStore,
-				$changeTagsStore,
-				$contentHandler,
-				$logger,
-				$userGroupManager,
-				$restrictionStore
+			$wikiPage,
+			$rev,
+			// @fixme: we should actually check for
+			//  $originalRevId as defined in onRevisionFromEditComplete
+			false,
+			$rev->getUser(),
+			$tags,
+			$autoModeratorUser,
+			$revisionStore,
+			$changeTagsStore,
+			$contentHandler,
+			$logger,
+			$userGroupManager,
+			$restrictionStore
 		);
 		if ( !$revisionCheck->passedPreCheck ) {
 			$this->output( "precheck skipped rev:\t$revId\n" );
@@ -96,32 +96,32 @@ class CheckRevision extends Maintenance {
 				break;
 			case 'testfail':
 				$score = [
-						'model_name' => 'revertrisk-language-agnostic',
-						'model_version' => '3',
-						'wiki_db' => 'enwiki',
-						'revision_id' => $revId,
-						'output' => [
-								'prediction' => true,
-								'probabilities' => [
-										'true' => 1.000000000000000,
-										'false' => 0.000000000000000,
-								],
+					'model_name' => 'revertrisk-language-agnostic',
+					'model_version' => '3',
+					'wiki_db' => 'enwiki',
+					'revision_id' => $revId,
+					'output' => [
+						'prediction' => true,
+						'probabilities' => [
+							'true' => 1.000000000000000,
+							'false' => 0.000000000000000,
 						],
+					],
 				];
 				break;
 			case 'testpass':
 				$score = [
-						'model_name' => 'revertrisk-language-agnostic',
-						'model_version' => '3',
-						'wiki_db' => 'enwiki',
-						'revision_id' => $revId,
-						'output' => [
-								'prediction' => false,
-								'probabilities' => [
-										'true' => 0.000000000000000,
-										'false' => 1.000000000000000,
-								],
+					'model_name' => 'revertrisk-language-agnostic',
+					'model_version' => '3',
+					'wiki_db' => 'enwiki',
+					'revision_id' => $revId,
+					'output' => [
+						'prediction' => false,
+						'probabilities' => [
+							'true' => 0.000000000000000,
+							'false' => 1.000000000000000,
 						],
+					],
 				];
 				break;
 			default:

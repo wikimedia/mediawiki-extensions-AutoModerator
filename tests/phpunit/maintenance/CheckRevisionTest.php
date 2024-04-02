@@ -8,7 +8,7 @@ use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 /**
  * @group AutoModerator
  * @group extensions
- * @covers AutoModerator\Maintenance\CheckRevision
+ * @covers \AutoModerator\Maintenance\CheckRevision
  */
 class CheckRevisionTest extends MaintenanceBaseTestCase {
 	public function getMaintenanceClass() {

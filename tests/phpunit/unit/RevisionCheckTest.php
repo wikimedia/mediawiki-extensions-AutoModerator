@@ -8,6 +8,7 @@ use DummyContentForTesting;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Permissions\RestrictionStore;
+use MediaWiki\Revision\MutableRevisionRecord;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionSlots;
 use MediaWiki\Revision\RevisionStore;
@@ -20,13 +21,14 @@ use MediaWiki\User\UserGroupMembership;
 use MediaWikiUnitTestCase;
 use MockHttpTrait;
 use MockTitleTrait;
+use PHPUnit\Framework\MockObject\MockObject;
 use WikiPage;
 
 #[\AllowDynamicProperties]
 /**
  * @group AutoModerator
  * @group extensions
- * @coversDefaultClass AutoModerator\RevisionCheck
+ * @coversDefaultClass \AutoModerator\RevisionCheck
  */
 class RevisionCheckTest extends MediaWikiUnitTestCase {
 	use MockHttpTrait;
@@ -104,30 +106,30 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->rev = current( $this->fakeRevisions );
 		$this->wikiPageMock->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
 		$this->failingScore = [
-				'model_name' => 'revertrisk-language-agnostic',
-				'model_version' => '3',
-				'wiki_db' => 'enwiki',
-				'revision_id' => end( $this->fakeRevisions )->getId(),
-				'output' => [
-						'prediction' => true,
-						'probabilities' => [
-								'true' => 1.000000000000000,
-								'false' => 0.000000000000000,
-						],
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => end( $this->fakeRevisions )->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 1.000000000000000,
+					'false' => 0.000000000000000,
 				],
+			],
 		];
 		$this->passingScore = [
-				'model_name' => 'revertrisk-language-agnostic',
-				'model_version' => '3',
-				'wiki_db' => 'enwiki',
-				'revision_id' => end( $this->fakeRevisions )->getId(),
-				'output' => [
-						'prediction' => false,
-						'probabilities' => [
-								'true' => 0.000000000000000,
-								'false' => 1.000000000000000,
-						],
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => end( $this->fakeRevisions )->getId(),
+			'output' => [
+				'prediction' => false,
+				'probabilities' => [
+					'true' => 0.000000000000000,
+					'false' => 1.000000000000000,
 				],
+			],
 		];
 		$this->originalRevId = false;
 		$this->autoModeratorUser = $this->createMock( User::class );

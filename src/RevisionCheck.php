@@ -20,6 +20,7 @@
 namespace AutoModerator;
 
 use CommentStoreComment;
+use Content;
 use ContentHandler;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Permissions\RestrictionStore;
@@ -30,10 +31,12 @@ use MediaWiki\Storage\PageUpdater;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
+use Psr\Log\LoggerInterface;
+use WikiPage;
 
 class RevisionCheck {
 
-	/** @var \WikiPage */
+	/** @var WikiPage */
 	private $wikiPage;
 
 	/** @var RevisionRecord */
@@ -60,7 +63,7 @@ class RevisionCheck {
 	/** @var ContentHandler */
 	private $contentHandler;
 
-	/** @var \Psr\Log\LoggerInterface */
+	/** @var LoggerInterface */
 	private $logger;
 
 	/** @var UserGroupManager */
@@ -76,7 +79,7 @@ class RevisionCheck {
 	public bool $passedPreCheck;
 
 	/**
-	 * @param \WikiPage $wikiPage WikiPage edited
+	 * @param WikiPage $wikiPage WikiPage edited
 	 * @param RevisionRecord $rev New revision
 	 * @param int|false $originalRevId If the edit restores or repeats an earlier revision (such as a
 	 *   rollback or a null revision), the ID of that earlier revision. False otherwise.
@@ -88,13 +91,13 @@ class RevisionCheck {
 	 * @param RevisionStore $revisionStore
 	 * @param ChangeTagsStore $changeTagsStore
 	 * @param ContentHandler $contentHandler
-	 * @param \Psr\Log\LoggerInterface $logger
+	 * @param LoggerInterface $logger
 	 * @param UserGroupManager $userGroupManager
 	 * @param RestrictionStore $restrictionStore
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
-		\WikiPage $wikiPage,
+		WikiPage $wikiPage,
 		RevisionRecord $rev,
 		$originalRevId,
 		UserIdentity $user,
@@ -103,7 +106,7 @@ class RevisionCheck {
 		RevisionStore $revisionStore,
 		ChangeTagsStore $changeTagsStore,
 		ContentHandler $contentHandler,
-		\Psr\Log\LoggerInterface $logger,
+		LoggerInterface $logger,
 		UserGroupManager $userGroupManager,
 		RestrictionStore $restrictionStore,
 		bool $enforce = false
@@ -121,23 +124,23 @@ class RevisionCheck {
 		$this->userGroupManager = $userGroupManager;
 		$this->restrictionStore = $restrictionStore;
 		$this->enforce = $enforce;
-		$this->passedPreCheck = self::revertPreCheck();
+		$this->passedPreCheck = $this->revertPreCheck();
 	}
 
 	/**
 	 * Cribbed from EditPage.php
 	 * Returns the result of a three-way merge when undoing changes.
 	 *
-	 * @param \MediaWiki\Revision\RevisionRecord $oldRev Revision that is being restored. Corresponds to
+	 * @param RevisionRecord $oldRev Revision that is being restored. Corresponds to
 	 *        `undoafter` URL parameter.
 	 * @param ?string &$error If false is returned, this will be set to "norev"
 	 *   if the revision failed to load, or "failure" if the content handler
 	 *   failed to merge the required changes.
 	 *
-	 * @return false|\Content
+	 * @return false|Content
 	 */
 	private function getUndoContent(
-		\MediaWiki\Revision\RevisionRecord $oldRev,
+		RevisionRecord $oldRev,
 		&$error
 	) {
 		$currentContent = $this->wikiPage->getRevisionRecord()
@@ -226,11 +229,9 @@ class RevisionCheck {
 	/**
 	 * Perform revert
 	 * @param PageUpdater $pageUpdater
-	 * @param \Content $content
+	 * @param Content $content
 	 * @param RevisionRecord $prevRev
 	 * @param string $undoMsg
-	 *
-	 * @return void
 	 */
 	private function doRevert( $pageUpdater, $content, $prevRev, $undoMsg ) {
 		$pageUpdater->setContent( SlotRecord::MAIN, $content );

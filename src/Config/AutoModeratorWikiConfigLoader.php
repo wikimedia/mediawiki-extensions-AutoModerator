@@ -94,11 +94,13 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 			}
 			$globalValue = $this->globalVarConfig->get( $name );
 			return MergeStrategy::newFromName( $mergeStrategy )->merge( $globalValue, $wikiValue );
-		} elseif ( $this->globalVarConfig->has( $name ) ) {
-			return $this->globalVarConfig->get( $name );
-		} else {
-			throw new ConfigException( 'Config key was not found in AutoModeratorWikiConfigLoader' );
 		}
+
+		if ( $this->globalVarConfig->has( $name ) ) {
+			return $this->globalVarConfig->get( $name );
+		}
+
+		throw new ConfigException( 'Config key was not found in AutoModeratorWikiConfigLoader' );
 	}
 
 	/**

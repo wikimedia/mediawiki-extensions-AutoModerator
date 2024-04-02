@@ -14,8 +14,7 @@ use MediaWiki\MediaWikiServices;
  */
 class AutoModeratorServices {
 
-	/** @var MediaWikiServices */
-	private $coreServices;
+	private MediaWikiServices $coreServices;
 
 	/**
 	 * @param MediaWikiServices $coreServices
