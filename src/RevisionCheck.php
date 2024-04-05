@@ -22,12 +22,18 @@ namespace AutoModerator;
 use CommentStoreComment;
 use Content;
 use ContentHandler;
+use Language;
 use MediaWiki\ChangeTags\ChangeTagsStore;
+use MediaWiki\Config\Config;
+use MediaWiki\Language\RawMessage;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\PageUpdater;
+use MediaWiki\StubObject\StubUserLang;
+use MediaWiki\User\ExternalUserNames;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
@@ -60,6 +66,15 @@ class RevisionCheck {
 	 /** @var ChangeTagsStore */
 	private $changeTagsStore;
 
+	/** @var Config */
+	private $config;
+
+	/** @var Config */
+	private $wikiConfig;
+
+	/** @var string */
+	public string $undoSummary;
+
 	/** @var ContentHandler */
 	private $contentHandler;
 
@@ -74,6 +89,9 @@ class RevisionCheck {
 
 	/** @var bool */
 	private bool $enforce;
+
+	/** @var Language|StubUserLang|string */
+	private $lang;
 
 	/** @var bool */
 	public bool $passedPreCheck;
@@ -90,10 +108,13 @@ class RevisionCheck {
 	 * @param User $autoModeratorUser reverting user
 	 * @param RevisionStore $revisionStore
 	 * @param ChangeTagsStore $changeTagsStore
+	 * @param Config $config
+	 * @param Config $wikiConfig
 	 * @param ContentHandler $contentHandler
 	 * @param LoggerInterface $logger
 	 * @param UserGroupManager $userGroupManager
 	 * @param RestrictionStore $restrictionStore
+	 * @param Language|StubUserLang|string $lang
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
@@ -105,10 +126,13 @@ class RevisionCheck {
 		User $autoModeratorUser,
 		RevisionStore $revisionStore,
 		ChangeTagsStore $changeTagsStore,
+		Config $config,
+		$wikiConfig,
 		ContentHandler $contentHandler,
 		LoggerInterface $logger,
 		UserGroupManager $userGroupManager,
 		RestrictionStore $restrictionStore,
+		$lang,
 		bool $enforce = false
 	) {
 		$this->wikiPage = $wikiPage;
@@ -119,12 +143,35 @@ class RevisionCheck {
 		$this->autoModeratorUser = $autoModeratorUser;
 		$this->revisionStore = $revisionStore;
 		$this->changeTagsStore = $changeTagsStore;
+		$this->config = $config;
+		$this->wikiConfig = $wikiConfig;
 		$this->contentHandler = $contentHandler;
 		$this->logger = $logger;
 		$this->userGroupManager = $userGroupManager;
 		$this->restrictionStore = $restrictionStore;
 		$this->enforce = $enforce;
+		$this->lang = $lang;
 		$this->passedPreCheck = $this->revertPreCheck();
+		$this->undoSummary = '';
+	}
+
+	/**
+	 * @return void
+	 */
+	public function setUndoSummary() {
+		$revId = $this->rev->getId();
+		$userIsAnon = !$this->user->isRegistered();
+		$undoMessage = ( $userIsAnon && $this->config->get( MainConfigNames::DisableAnonTalk ) ) ?
+			$this->wikiConfig->get( 'AutoModeratorUndoSummaryAnon' ) :
+			$this->wikiConfig->get( 'AutoModeratorUndoSummary' );
+		$undoSummary = new RawMessage(
+			$undoMessage
+		);
+		$undoSummary->params( [
+			$revId,
+			$this->user->getName()
+		] );
+		$this->undoSummary = $undoSummary->inLanguage( $this->lang )->plain();
 	}
 
 	/**
@@ -202,6 +249,12 @@ class RevisionCheck {
 				return false;
 			}
 		}
+		// Skip imported revisions
+		if ( ExternalUserNames::isExternal( $this->user->getName() ) ) {
+			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - imported edits" );
+			return false;
+		}
+
 		// Skip non-mainspace edit
 		if ( $this->wikiPage->getNamespace() !== NS_MAIN ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
@@ -231,12 +284,11 @@ class RevisionCheck {
 	 * @param PageUpdater $pageUpdater
 	 * @param Content $content
 	 * @param RevisionRecord $prevRev
-	 * @param string $undoMsg
 	 */
-	private function doRevert( $pageUpdater, $content, $prevRev, $undoMsg ) {
+	private function doRevert( $pageUpdater, $content, $prevRev ) {
 		$pageUpdater->setContent( SlotRecord::MAIN, $content );
 		$pageUpdater->setOriginalRevisionId( $prevRev->getId() );
-		$comment = CommentStoreComment::newUnsavedComment( $undoMsg );
+		$comment = CommentStoreComment::newUnsavedComment( $this->undoSummary );
 		// REVERT_UNDO 1
 		// REVERT_ROLLBACK 2
 		// REVERT_MANUAL 3
@@ -259,30 +311,29 @@ class RevisionCheck {
 	 */
 	public function maybeRevert( $score ) {
 		$reverted = 0;
-		$undoMsg = "Not reverted";
+		$status = 'Not reverted';
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		// Automoderator system user may perform updates
 		$pageUpdater = $this->wikiPage->newPageUpdater( $this->autoModeratorUser );
-		// @todo use configuration instead of hardcoding
-		if ( $probability > 0.99 ) {
+		if ( $probability > $this->config->get( 'AutoModeratorRevertProbability' ) ) {
 			$prevRev = $this->revisionStore->getPreviousRevision( $this->rev );
-			// @todo use i18n instead of hardcoded message
-			$undoMsg = 'AutoModerator Revert with probability ' . $probability . '.';
-			$content = $this->getUndoContent( $prevRev, $undoMsg );
+			$this->setUndoSummary();
+			$content = $this->getUndoContent( $prevRev, $this->undoSummary );
 			if ( !$content ) {
-				return [ $reverted => $undoMsg ];
+				return [ $reverted => $status ];
 			}
 			if ( $this->enforce ) {
-				$this->doRevert( $pageUpdater, $content, $prevRev, $undoMsg );
+				$this->doRevert( $pageUpdater, $content, $prevRev );
 				$this->tags[] = 'ext-automoderator-failed';
 			}
 			$reverted = 1;
+			$status = 'success';
 		} else {
 			$this->tags[] = 'ext-automoderator-passed';
 		}
 		if ( $this->enforce ) {
 			$this->changeTagsStore->addTags( $this->tags, null, $this->rev->getId() );
 		}
-		return [ $reverted => $undoMsg ];
+		return [ $reverted => $status ];
 	}
 }

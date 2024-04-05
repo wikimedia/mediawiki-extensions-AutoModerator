@@ -25,13 +25,29 @@
 			"description": "Enable AutoModerator automatic revision checks.",
 			"value": false
 		},
+		"AutoModeratorRevertProbability": {
+			"description": "Revert risk probability threshold; Edits scored above this value will be reverted",
+			"value": 0.99
+		},
 		"AutoModeratorUsername": {
 			"description": "Username for AutoModerator system account",
 			"value": "AutoModerator"
 		},
+		"AutoModeratorUndoSummary": {
+			"description": "Edit summary for AutoModerator reverts",
+			"value": "Undo revision [[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]])"
+		},
+		"AutoModeratorUndoSummaryAnon": {
+			"description": "Edit summary for AutoModerator reverts of anonymous editors",
+			"value": "Undo revision [[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]]"
+		},
 		"AutoModeratorWikiConfigPageTitle": {
 			"description": "Name of page used for on-wiki config; must be in NS_MEDIAWIKI and end with .json; only variables listed in AutoModeratorOnWikiConfigAllowList may be overridden on wiki",
 			"value": "MediaWiki:AutoModeratorConfig.json"
+		},
+		"AutoModeratorWikiId": {
+			"description": "language code of project used to target liftwing lang parameter",
+			"value": "null"
 		},
 		"AutoModeratorEnableWikiConfig": {
 			"description": "If set to false, on-wiki configuration will be ignored.",

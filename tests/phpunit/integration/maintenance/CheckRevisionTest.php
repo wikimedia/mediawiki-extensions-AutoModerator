@@ -8,6 +8,7 @@ use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 /**
  * @group AutoModerator
  * @group extensions
+ * @group Database
  * @covers \AutoModerator\Maintenance\CheckRevision
  */
 class CheckRevisionTest extends MaintenanceBaseTestCase {
@@ -20,5 +21,12 @@ class CheckRevisionTest extends MaintenanceBaseTestCase {
 		$this->maintenance->execute();
 
 		$this->expectOutputRegex( '/\'revid\' must be an integer/' );
+	}
+
+	public function testZeroRevision() {
+		$this->maintenance->loadWithArgv( [ '--revid', '0' ] );
+		$this->maintenance->execute();
+
+		$this->expectOutputRegex( '/\'revid\' must be greater than zero/' );
 	}
 }

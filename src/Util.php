@@ -20,25 +20,43 @@
 namespace AutoModerator;
 
 use FormatJson;
+use MediaWiki\Config\Config;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
+use MediaWiki\User\UserGroupManager;
 use MediaWiki\Utils\UrlUtils;
+use MediaWiki\WikiMap\WikiMap;
 use RequestContext;
 use RuntimeException;
 use StatusValue;
 use UnexpectedValueException;
 
 class Util {
+
+	/**
+	 * @param Config $config
+	 *
+	 * @return string Wiki ID used by AutoModerator.
+	 */
+	public static function getWikiID( $config ): string {
+		$autoModeratorWikiId = $config->get( 'AutoModeratorWikiId' );
+		if ( $autoModeratorWikiId ) {
+			return $autoModeratorWikiId;
+		}
+		return WikiMap::getCurrentWikiId();
+	}
+
 	/**
 	 * Get a user to perform moderation actions.
+	 * @param Config $config
+	 * @param UserGroupManager $userGroupManager
+	 *
 	 * @return User
 	 */
-	public static function getAutoModeratorUser(): User {
-		$config = MediaWikiServices::getInstance()->getMainConfig();
+	public static function getAutoModeratorUser( $config, $userGroupManager ): User {
 		$username = $config->get( 'AutoModeratorUsername' );
 		$autoModeratorUser = User::newSystemUser( $username, [ 'steal' => true ] );
 		'@phan-var User $autoModeratorUser';
@@ -48,7 +66,6 @@ class Util {
 			);
 		}
 		// Assign the 'bot' group to the user, so that it looks like a bot
-		$userGroupManager = MediaWikiServices::getInstance()->getUserGroupManager();
 		if ( !in_array( 'bot', $userGroupManager->getUserGroups( $autoModeratorUser ) ) ) {
 			$userGroupManager->addUserToGroup( $autoModeratorUser, 'bot' );
 		}
@@ -65,7 +82,7 @@ class Util {
 	 */
 	public static function getJsonUrl(
 		HttpRequestFactory $requestFactory, $url, $isSameFarm = false
-	) {
+	): StatusValue {
 		$options = [
 			'method' => 'GET',
 			'userAgent' => $requestFactory->getUserAgent() . ' AutoModerator',
@@ -101,7 +118,7 @@ class Util {
 		LinkTarget $title,
 		TitleFactory $titleFactory,
 		UrlUtils $urlUtils
-	) {
+	): string {
 		// Use getFullURL to get the interwiki domain.
 		$url = $titleFactory->newFromLinkTarget( $title )->getFullURL();
 		$parts = $urlUtils->parse( (string)$urlUtils->expand( $url, PROTO_CANONICAL ) );

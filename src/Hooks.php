@@ -85,7 +85,8 @@ class Hooks implements
 		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) || !$wikiPage || !$rev || !$user ) {
 			return;
 		}
-		$autoModeratorUser = Util::getAutoModeratorUser();
+		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
+		$wikiId = Util::getWikiID( $this->config );
 		$contentHandler = $this->contentHandlerFactory->getContentHandler( $rev->getSlot(
 			SlotRecord::MAIN,
 			RevisionRecord::RAW
@@ -100,10 +101,13 @@ class Hooks implements
 			$autoModeratorUser,
 			$this->revisionStore,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$contentHandler,
 			$logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$wikiId,
 			true
 		);
 		if ( !$revisionCheck->passedPreCheck ) {

@@ -2,6 +2,7 @@
 
 namespace AutoModerator\Maintenance;
 
+use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
 use AutoModerator\LiftWingClient;
 use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
@@ -21,6 +22,9 @@ require_once "$IP/maintenance/Maintenance.php";
  * Check a revision to see if it would be reverted
  */
 class CheckRevision extends Maintenance {
+
+	use AutoModeratorConfigLoaderStaticTrait;
+
 	public function __construct() {
 		parent::__construct();
 		$this->requireExtension( 'AutoModerator' );
@@ -32,22 +36,29 @@ class CheckRevision extends Maintenance {
 	}
 
 	public function execute() {
-		if ( !ctype_digit( $this->getOption( 'revid' ) ) ) {
+		if ( !ctype_digit( $this->getoption( 'revid' ) ) ) {
 			$this->output( "'revid' must be an integer\n" );
 			return;
 		}
 		$revId = (int)$this->getOption( 'revid' );
+		if ( $revId === 0 ) {
+			$this->output( "'revid' must be greater than zero\n" );
+			return;
+		}
 
 		// setup dependencies that we get for free when running in a hook.
 		$services = MediaWikiServices::getInstance();
 		$changeTagsStore = $services->getChangeTagsStore();
+		$config = $services->getMainConfig();
+		$wikiConfig = $this->getAutoModeratorWikiConfig();
 		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$revisionLookup = $services->getRevisionLookup();
 		$revisionStore = $services->getRevisionStoreFactory()->getRevisionStore();
 		$userGroupManager = $services->getUserGroupManager();
 		$wikiPageFactory = $services->getWikiPageFactory();
 		$restrictionStore = $services->getRestrictionStore();
-		$autoModeratorUser = Util::getAutoModeratorUser();
+		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+		$wikiId = Util::getWikiID( $config );
 		$dbr = $this->getReplicaDB();
 		$tags = $changeTagsStore->getTags( $dbr, null, $revId );
 		$rev = $revisionLookup->getRevisionById( $revId );
@@ -73,10 +84,13 @@ class CheckRevision extends Maintenance {
 			$autoModeratorUser,
 			$revisionStore,
 			$changeTagsStore,
+			$config,
+			$wikiConfig,
 			$contentHandler,
 			$logger,
 			$userGroupManager,
-			$restrictionStore
+			$restrictionStore,
+			$wikiId,
 		);
 		if ( !$revisionCheck->passedPreCheck ) {
 			$this->output( "precheck skipped rev:\t$revId\n" );

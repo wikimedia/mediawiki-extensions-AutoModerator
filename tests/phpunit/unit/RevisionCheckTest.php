@@ -5,8 +5,15 @@ namespace AutoModerator\Tests;
 use AutoModerator\RevisionCheck;
 use ContentHandler;
 use DummyContentForTesting;
+use Language;
+use LocalisationCache;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Config\Config;
+use MediaWiki\Config\HashConfig;
+use MediaWiki\Languages\LanguageConverterFactory;
+use MediaWiki\Languages\LanguageFallback;
+use MediaWiki\Languages\LanguageNameUtils;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\MutableRevisionRecord;
 use MediaWiki\Revision\RevisionRecord;
@@ -15,6 +22,8 @@ use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\RevisionStoreRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\PageUpdater;
+use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
+use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserGroupMembership;
@@ -32,9 +41,26 @@ use WikiPage;
  */
 class RevisionCheckTest extends MediaWikiUnitTestCase {
 	use MockHttpTrait;
+	use MockServiceDependenciesTrait;
 	use MockTitleTrait;
 
 	public function setService( $name, $service ) {
+	}
+
+	/**
+	 * @return Language
+	 */
+	private function createLanguage(): Language {
+		return new Language(
+			$options['code'] ?? 'en',
+			$this->createNoOpMock( NamespaceInfo::class ),
+			$this->createNoOpMock( LocalisationCache::class ),
+			$this->createNoOpMock( LanguageNameUtils::class ),
+			$this->createNoOpMock( LanguageFallback::class ),
+			$this->createNoOpMock( LanguageConverterFactory::class ),
+			$this->createHookContainer(),
+			new HashConfig( [] )
+		);
 	}
 
 	/**
@@ -80,6 +106,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$title->method( 'getText' )->willReturn( 'Foo' );
 		$title->method( 'getDBkey' )->willReturn( 'Foo' );
 		$title->method( 'getNamespace' )->willReturn( 0 );
+		$title->method( 'getPageLanguage' )->willReturn( $this->createLanguage() );
 		$ret->method( 'getTitle' )->willReturn( $title );
 		$updater = $this->createMock( PageUpdater::class );
 		$ret->method( 'newPageUpdater' )->willReturn( $updater );
@@ -100,11 +127,18 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->title = $this->makeMockTitle( 'Main_Page', [ 'id' => 1 ] );
+		$this->lang = $this->createLanguage();
 		$this->user = $this->createMock( User::class );
+		$this->user->method( 'getName' )->willReturn( 'ATestUser' );
+		$this->user->method( 'isRegistered' )->willReturn( true );
+		$this->anonUser = $this->createMock( User::class );
+		$this->anonUser->method( 'getName' )->willReturn( '127.0.0.1' );
+		$this->anonUser->method( 'isRegistered' )->willReturn( false );
 		$this->wikiPageMock = $this->getMockPage();
 		$this->fakeRevisions = $this->makeFakeRevisions( 3, 3 );
 		$this->rev = current( $this->fakeRevisions );
 		$this->wikiPageMock->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
+		$this->wikiPageMock->method( 'getTitle' )->willReturn( $this->title );
 		$this->failingScore = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',
@@ -137,6 +171,19 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->revisionStoreMock = $this->getMockRevisionStore();
 		$this->revisionStoreMock->method( 'getPreviousRevision' )->willReturn( $this->fakeRevisions[ 1 ] );
 		$this->revisionStoreMock->method( 'getFirstRevision' )->willReturn( $this->fakeRevisions[ 0 ] );
+		$this->config = $this->createMock( Config::class );
+		$this->config->method( 'get' )->willReturnMap( [
+				[ 'AutoModeratorUsername', 'AutoModerator' ],
+				[ 'DisableAnonTalk', false ]
+		] );
+		$this->wikiConfig = $this->createMock( Config::class );
+		$this->wikiConfig->method( 'get' )->willReturnMap( [
+				[
+					'AutoModeratorUndoSummary',
+					'[[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]]'
+				],
+				[ 'AutoModeratorUndoSummaryAnon', '[[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]]' ]
+		] );
 		$this->changeTagsStore = $this->createMock( ChangeTagsStore::class );
 		$contentHandler = $this->createMock( ContentHandler::class );
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
@@ -149,6 +196,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	protected function tearDown(): void {
 		unset(
 			$this->title,
+			$this->lang,
 			$this->user,
 			$this->wikiPageMock,
 			$this->fakeRevisions,
@@ -164,8 +212,101 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		parent::tearDown();
+	}
+
+	/**
+	 * @covers ::setUndoSummary
+	 */
+	public function testSetUndoSummaryUser() {
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+			true
+		);
+		$revisionCheck->setUndoSummary();
+		$this->assertSame(
+			'[[Special:Diff/3|3]] by [[Special:Contributions/ATestUser|ATestUser]] ([[User talk:ATestUser|talk]]',
+			$revisionCheck->undoSummary
+		);
+	}
+
+	/**
+	 * @covers ::setUndoSummary
+	 */
+	public function testSetUndoSummaryAnonUser() {
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->anonUser,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+			true
+		);
+		$revisionCheck->setUndoSummary();
+		$this->assertSame(
+			'[[Special:Diff/3|3]] by [[Special:Contributions/127.0.0.1|127.0.0.1]] ([[User talk:127.0.0.1|talk]]',
+			$revisionCheck->undoSummary
+		);
+	}
+
+	/**
+	 * @covers ::setUndoSummary
+	 */
+	public function testSetUndoSummaryAnonUserDisableTalk() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+				[ 'AutoModeratorUsername', 'AutoModerator' ],
+				[ 'DisableAnonTalk', true ]
+		] );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock,
+			$this->rev,
+			$this->originalRevId,
+			$this->anonUser,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+			true
+		);
+		$revisionCheck->setUndoSummary();
+		$this->assertSame(
+			'[[Special:Diff/3|3]] by [[Special:Contributions/127.0.0.1|127.0.0.1]]',
+			$revisionCheck->undoSummary
+		);
 	}
 
 	/**
@@ -181,10 +322,14 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
+			true
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->failingScore
@@ -205,10 +350,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->passingScore
@@ -230,10 +378,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -253,10 +404,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -276,10 +430,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -299,10 +456,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -322,10 +482,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -346,10 +509,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -370,10 +536,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -393,10 +562,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertTrue( $revisionCheck->passedPreCheck );
 	}
@@ -416,10 +588,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -439,10 +614,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -462,10 +640,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
 			$this->contentHandler,
 			$this->logger,
 			$this->userGroupManager,
 			$this->restrictionStore,
+			$this->lang,
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
