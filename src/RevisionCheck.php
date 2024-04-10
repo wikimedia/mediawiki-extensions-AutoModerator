@@ -27,6 +27,7 @@ use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
 use MediaWiki\Language\RawMessage;
 use MediaWiki\MainConfigNames;
+use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
@@ -42,11 +43,14 @@ use WikiPage;
 
 class RevisionCheck {
 
-	/** @var WikiPage */
-	private $wikiPage;
+	/** @var int */
+	private $wikiPageId;
 
-	/** @var RevisionRecord */
-	private $rev;
+	/** @var WikiPageFactory */
+	private $wikiPageFactory;
+
+	/** @var int */
+	private $revId;
 
 	/** @var int|false */
 	private $originalRevId;
@@ -97,8 +101,9 @@ class RevisionCheck {
 	public bool $passedPreCheck;
 
 	/**
-	 * @param WikiPage $wikiPage WikiPage edited
-	 * @param RevisionRecord $rev New revision
+	 * @param int $wikiPageId WikiPage ID of
+	 * @param WikiPageFactory $wikiPageFactory
+	 * @param int $revId New revision ID
 	 * @param int|false $originalRevId If the edit restores or repeats an earlier revision (such as a
 	 *   rollback or a null revision), the ID of that earlier revision. False otherwise.
 	 *   (Used to be called $baseID.)
@@ -118,8 +123,9 @@ class RevisionCheck {
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
-		WikiPage $wikiPage,
-		RevisionRecord $rev,
+		int $wikiPageId,
+		WikiPageFactory $wikiPageFactory,
+		int $revId,
 		$originalRevId,
 		UserIdentity $user,
 		array &$tags,
@@ -135,8 +141,9 @@ class RevisionCheck {
 		$lang,
 		bool $enforce = false
 	) {
-		$this->wikiPage = $wikiPage;
-		$this->rev = $rev;
+		$this->wikiPageId = $wikiPageId;
+		$this->wikiPageFactory = $wikiPageFactory;
+		$this->revId = $revId;
 		$this->originalRevId = $originalRevId;
 		$this->user = $user;
 		$this->tags = $tags;
@@ -159,7 +166,6 @@ class RevisionCheck {
 	 * @return void
 	 */
 	public function setUndoSummary() {
-		$revId = $this->rev->getId();
 		$userIsAnon = !$this->user->isRegistered();
 		$undoMessage = ( $userIsAnon && $this->config->get( MainConfigNames::DisableAnonTalk ) ) ?
 			$this->wikiConfig->get( 'AutoModeratorUndoSummaryAnon' ) :
@@ -168,7 +174,7 @@ class RevisionCheck {
 			$undoMessage
 		);
 		$undoSummary->params( [
-			$revId,
+			$this->revId,
 			$this->user->getName()
 		] );
 		$this->undoSummary = $undoSummary->inLanguage( $this->lang )->plain();
@@ -183,18 +189,22 @@ class RevisionCheck {
 	 * @param ?string &$error If false is returned, this will be set to "norev"
 	 *   if the revision failed to load, or "failure" if the content handler
 	 *   failed to merge the required changes.
+	 * @param WikiPage $wikiPage
+	 * @param RevisionRecord $rev
 	 *
 	 * @return false|Content
 	 */
 	private function getUndoContent(
 		RevisionRecord $oldRev,
-		&$error
+		&$error,
+		WikiPage $wikiPage,
+		RevisionRecord $rev
 	) {
-		$currentContent = $this->wikiPage->getRevisionRecord()
+		$currentContent = $wikiPage->getRevisionRecord()
 			->getContent( SlotRecord::MAIN );
-		$undoContent = $this->rev->getContent( SlotRecord::MAIN );
+		$undoContent = $rev->getContent( SlotRecord::MAIN );
 		$undoAfterContent = $oldRev->getContent( SlotRecord::MAIN );
-		$undoIsLatest = $this->wikiPage->getRevisionRecord()->getId() === $this->rev->getId();
+		$undoIsLatest = $wikiPage->getRevisionRecord()->getId() === $this->revId;
 		if ( $currentContent === null
 			|| $undoContent === null
 			|| $undoAfterContent === null
@@ -222,6 +232,8 @@ class RevisionCheck {
 	 * @return bool
 	 */
 	public function revertPreCheck() {
+		$wikiPage = $this->wikiPageFactory->newFromID( $this->wikiPageId );
+		$rev = $this->revisionStore->getRevisionById( $this->revId );
 		// Skip null edits
 		if ( $this->originalRevId ) {
 			return false;
@@ -256,13 +268,13 @@ class RevisionCheck {
 		}
 
 		// Skip non-mainspace edit
-		if ( $this->wikiPage->getNamespace() !== NS_MAIN ) {
+		if ( $wikiPage->getNamespace() !== NS_MAIN ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
 			return false;
 		}
 
 		// Skip new page creations
-		if ( $this->rev->getParentId() <= 0 ) {
+		if ( $rev->getParentId() <= 0 ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
 			return false;
 		}
@@ -270,8 +282,8 @@ class RevisionCheck {
 		// Skip protected pages that only admins can edit.
 		// Automoderator should be able to revert semi-protected pages,
 		// so we won't be skipping those on pre-check.
-		if ( $this->restrictionStore->isProtected( $this->wikiPage )
-				&& !$this->restrictionStore->isSemiProtected( $this->wikiPage ) ) {
+		if ( $this->restrictionStore->isProtected( $wikiPage )
+				&& !$this->restrictionStore->isSemiProtected( $wikiPage ) ) {
 			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - protected page" );
 			return false;
 		}
@@ -292,7 +304,7 @@ class RevisionCheck {
 		// REVERT_UNDO 1
 		// REVERT_ROLLBACK 2
 		// REVERT_MANUAL 3
-		$pageUpdater->markAsRevert( 1, $this->rev->getId(), $prevRev->getId() );
+		$pageUpdater->markAsRevert( 1, $this->revId, $prevRev->getId() );
 		// EDIT_NEW 1
 		// EDIT_UPDATE 2
 		// EDIT_MINOR 3
@@ -313,14 +325,16 @@ class RevisionCheck {
 		$reverted = 0;
 		$status = 'Not reverted';
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
+		$wikiPage = $this->wikiPageFactory->newFromID( $this->wikiPageId );
+		$rev = $this->revisionStore->getRevisionById( $this->revId );
 		// Automoderator system user may perform updates
-		$pageUpdater = $this->wikiPage->newPageUpdater( $this->autoModeratorUser );
+		$pageUpdater = $wikiPage->newPageUpdater( $this->autoModeratorUser );
 		if ( $probability > $this->config->get( 'AutoModeratorRevertProbability' ) ) {
-			$prevRev = $this->revisionStore->getPreviousRevision( $this->rev );
+			$prevRev = $this->revisionStore->getPreviousRevision( $rev );
 			$this->setUndoSummary();
-			$content = $this->getUndoContent( $prevRev, $this->undoSummary );
+			$content = $this->getUndoContent( $prevRev, $this->undoSummary, $wikiPage, $rev );
 			if ( !$content ) {
-				return [ $reverted => $status ];
+				return [ $reverted => $this->undoSummary ];
 			}
 			if ( $this->enforce ) {
 				$this->doRevert( $pageUpdater, $content, $prevRev );
@@ -332,7 +346,7 @@ class RevisionCheck {
 			$this->tags[] = 'ext-automoderator-passed';
 		}
 		if ( $this->enforce ) {
-			$this->changeTagsStore->addTags( $this->tags, null, $this->rev->getId() );
+			$this->changeTagsStore->addTags( $this->tags, null, $this->revId );
 		}
 		return [ $reverted => $status ];
 	}

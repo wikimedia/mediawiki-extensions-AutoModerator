@@ -66,7 +66,7 @@ class CheckRevision extends Maintenance {
 		if ( !$rev || !$rev->getUser() ) {
 			return;
 		}
-		$wikiPage = $wikiPageFactory->newFromTitle( $rev->getPage() );
+		$wikiPageId = $rev->getPageId();
 
 		$contentHandler = $contentHandlerFactory->getContentHandler( $rev->getSlot(
 			SlotRecord::MAIN,
@@ -74,8 +74,9 @@ class CheckRevision extends Maintenance {
 		)->getModel() );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$revisionCheck = new RevisionCheck(
-			$wikiPage,
-			$rev,
+			$wikiPageId,
+			$wikiPageFactory,
+			$rev->getId(),
 			// @fixme: we should actually check for
 			//  $originalRevId as defined in onRevisionFromEditComplete
 			false,

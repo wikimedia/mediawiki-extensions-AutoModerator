@@ -104,7 +104,7 @@ class LiftWingClient {
 		if ( !$status->isOK() ) {
 			$message = "Failed to make LiftWing request to [{$url}], " .
 				Status::wrap( $status )->getMessage()->inLanguage( 'en' )->text();
-			// Server time out, try again once
+			// Server time out, try again
 			if ( $req->getStatus() === 504 ) {
 				$req = $httpRequestFactory->create( $url, [
 					'method' => 'POST',

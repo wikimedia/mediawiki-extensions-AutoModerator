@@ -20,16 +20,9 @@
 namespace AutoModerator;
 
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
-use MediaWiki\ChangeTags\ChangeTagsStore;
+use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use MediaWiki\Config\Config;
-use MediaWiki\Content\ContentHandlerFactory;
-use MediaWiki\Deferred\DeferredUpdates;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
-use MediaWiki\Permissions\RestrictionStore;
-use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\RevisionStore;
-use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\UserGroupManager;
 
 class Hooks implements
@@ -37,92 +30,29 @@ class Hooks implements
 {
 	use AutoModeratorConfigLoaderStaticTrait;
 
-	private ChangeTagsStore $changeTagsStore;
-
-	private Config $config;
-
 	private Config $wikiConfig;
-
-	private ContentHandlerFactory $contentHandlerFactory;
-
-	private RevisionStore $revisionStore;
 
 	private UserGroupManager $userGroupManager;
 
-	private RestrictionStore $restrictionStore;
+	private Config $config;
 
 	/**
-	 * @param ChangeTagsStore $changeTagsStore
-	 * @param Config $config
 	 * @param Config $wikiConfig
-	 * @param ContentHandlerFactory $contentHandlerFactory
-	 * @param RevisionStore $revisionStore
 	 * @param UserGroupManager $userGroupManager
-	 * @param RestrictionStore $restrictionStore
+	 * @param Config $config
 	 */
-	public function __construct(
-		ChangeTagsStore $changeTagsStore,
-		Config $config,
-		Config $wikiConfig,
-		ContentHandlerFactory $contentHandlerFactory,
-		RevisionStore $revisionStore,
-		UserGroupManager $userGroupManager,
-		RestrictionStore $restrictionStore
-	) {
-		$this->changeTagsStore = $changeTagsStore;
-		$this->config = $config;
+	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config ) {
 		$this->wikiConfig = $wikiConfig;
-		$this->contentHandlerFactory = $contentHandlerFactory;
-		$this->revisionStore = $revisionStore;
 		$this->userGroupManager = $userGroupManager;
-		$this->restrictionStore = $restrictionStore;
+		$this->config = $config;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) || !$wikiPage || !$rev || !$user ) {
-			return;
-		}
-		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
-		$wikiId = Util::getWikiID( $this->config );
-		$contentHandler = $this->contentHandlerFactory->getContentHandler( $rev->getSlot(
-			SlotRecord::MAIN,
-			RevisionRecord::RAW
-		)->getModel() );
-		$logger = LoggerFactory::getInstance( 'AutoModerator' );
-		$revisionCheck = new RevisionCheck(
-			$wikiPage,
-			$rev,
-			$originalRevId,
-			$user,
-			$tags,
-			$autoModeratorUser,
-			$this->revisionStore,
-			$this->changeTagsStore,
-			$this->config,
-			$this->wikiConfig,
-			$contentHandler,
-			$logger,
-			$this->userGroupManager,
-			$this->restrictionStore,
-			$wikiId,
-			true
-		);
-		if ( !$revisionCheck->passedPreCheck ) {
-			return;
-		}
-		// @todo replace 'en' with getWikiID()
-		$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $revisionCheck->passedPreCheck );
-		// Wrap in a POSTSEND deferred update to avoid blocking the HTTP response
-		DeferredUpdates::addCallableUpdate( static function () use (
-			$liftWingClient,
-			$revisionCheck,
-			$rev
-		) {
-			$score = $liftWingClient->get( $rev->getId() );
-			$revisionCheck->maybeRevert( $score );
-		} );
+		$handler = new RevisionFromEditCompleteHookHandler( $this->wikiConfig, $this->userGroupManager, $this->config );
+
+		$handler->handle( $wikiPage, $rev, $originalRevId, $user, $tags );
 	}
 }

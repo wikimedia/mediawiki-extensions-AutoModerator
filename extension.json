@@ -1,7 +1,8 @@
 {
 	"name": "AutoModerator",
 	"author": [
-		"Jason Sherman"
+		"Jason Sherman",
+		"Susana Cardenas Molinar"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:AutoModerator",
 	"descriptionmsg": "automoderator-desc",
@@ -67,13 +68,17 @@
 		"main": {
 			"class": "AutoModerator\\Hooks",
 			"services": [
-				"ChangeTagsStore",
-				"MainConfig",
 				"AutoModeratorWikiConfigLoader",
-				"ContentHandlerFactory",
-				"RevisionStore",
 				"UserGroupManager",
-				"RestrictionStore"
+				"MainConfig"
+			]
+		},
+		"revisionfromedit": {
+			"class": "AutoModerator\\Hooks\\RevisionFromEditCompleteHookHandler",
+			"services": [
+				"AutoModeratorWikiConfigLoader",
+				"UserGroupManager",
+				"MainConfig"
 			]
 		},
 		"schema": {
@@ -86,6 +91,9 @@
 		"LoadExtensionSchemaUpdates": "schema",
 		"PageSaveComplete": "config",
 		"RevisionFromEditComplete": "main"
+	},
+	"JobClasses": {
+		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob"
 	},
 	"MessagesDirs": {
 		"AutoModerator": [
