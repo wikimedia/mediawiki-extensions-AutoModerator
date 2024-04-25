@@ -80,15 +80,11 @@
 				"UserGroupManager",
 				"MainConfig"
 			]
-		},
-		"schema": {
-			"class": "AutoModerator\\Hooks\\LoadExtensionSchemaUpdates"
 		}
 	},
 	"Hooks": {
 		"EditFilterMergedContent": "config",
 		"JsonValidateSave": "config",
-		"LoadExtensionSchemaUpdates": "schema",
 		"PageSaveComplete": "config",
 		"RevisionFromEditComplete": "main"
 	},
