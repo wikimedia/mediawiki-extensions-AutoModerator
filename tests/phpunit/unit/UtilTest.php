@@ -41,4 +41,35 @@ class UtilTest extends MediaWikiUnitTestCase {
 			$wikiId
 		);
 	}
+
+	/**
+	 * @covers ::getRevertThreshold defaults to 0.95 when set below 0.95.
+	 */
+	public function testGetRevertThreshold() {
+		$this->config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorRevertProbability', '0' ],
+		] );
+		$revertThreshold = Util::getRevertThreshold(
+			$this->config
+		);
+		$this->assertSame(
+			0.95,
+			$revertThreshold
+		);
+	}
+
+	/**
+	 * @covers ::getRevertThreshold when configured above 0.95
+	 *  respects the configuration value.
+	 */
+	public function testGetRevertThresholdNotTooLow() {
+		$this->config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorRevertProbability', '0.97' ],
+		] );
+		$revertThreshold = Util::getRevertThreshold( $this->config );
+		$this->assertSame(
+			0.97,
+			$revertThreshold
+		);
+	}
 }

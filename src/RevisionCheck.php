@@ -329,7 +329,7 @@ class RevisionCheck {
 		$rev = $this->revisionStore->getRevisionById( $this->revId );
 		// Automoderator system user may perform updates
 		$pageUpdater = $wikiPage->newPageUpdater( $this->autoModeratorUser );
-		if ( $probability > $this->config->get( 'AutoModeratorRevertProbability' ) ) {
+		if ( $probability > Util::getRevertThreshold( $this->config ) ) {
 			$prevRev = $this->revisionStore->getPreviousRevision( $rev );
 			$this->setUndoSummary();
 			$content = $this->getUndoContent( $prevRev, $this->undoSummary, $wikiPage, $rev );
