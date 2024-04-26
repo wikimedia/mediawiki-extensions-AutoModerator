@@ -115,25 +115,22 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			true
 		);
 		if ( !$revisionCheck->passedPreCheck ) {
-			$logger->info( 'Revision ' . $this->revId . ' did not pass the pre-check.' );
 			return true;
 		}
 		// @todo replace 'en' with getWikiID()
 		$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $revisionCheck->passedPreCheck );
 
-		$logger->info( 'Fetching scores for revisions checks.' );
 		try {
 			$score = $liftWingClient->get( $this->revId );
 			$reverted = $revisionCheck->maybeRevert( $score );
 		} catch ( RuntimeException $exception ) {
-			$msg = $exception->getMessage();
-			$logger->error( 'There was an error trying to obtain the score: ' . $msg );
+			$this->setLastError( $exception->getMessage() );
 			return false;
 		}
 
 		if ( array_key_exists( '0', $reverted ) ) {
 			if ( $reverted[ '0' ] === 'failure' ) {
-				throw new RuntimeException( 'Revision ' . $this->revId . ' requires a manual revert.' );
+				$this->setLastError( 'Revision ' . $this->revId . ' requires a manual revert.' );
 			}
 		}
 		return true;
