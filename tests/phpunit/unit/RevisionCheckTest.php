@@ -374,6 +374,78 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
+	 * @covers ::maybeRevert with lower than minimum threshold configured and passing score
+	 */
+	public function testMaybeRevertWithLowThresholdSuccess() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorRevertProbability', 0 ],
+			[ 'AutoModeratorUsername', 'AutoModerator' ],
+			[ 'DisableAnonTalk', false ]
+		] );
+
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+
+		$reverted = array_key_first( $revisionCheck->maybeRevert(
+			$this->passingScore
+		) );
+		$this->assertSame( 0, $reverted );
+	}
+
+	/**
+	 * @covers ::maybeRevert with lower than minimum threshold configured and failing score
+	 */
+	public function testMaybeRevertWithLowThresholdFailing() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorRevertProbability', 0 ],
+			[ 'AutoModeratorUsername', 'AutoModerator' ],
+			[ 'DisableAnonTalk', false ]
+		] );
+
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+
+		$reverted = array_key_first( $revisionCheck->maybeRevert(
+			$this->failingScore
+		) );
+		$this->assertSame( 1, $reverted );
+	}
+
+	/**
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckNullEdit() {

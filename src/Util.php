@@ -133,4 +133,20 @@ class Util {
 		$localPageTitle = $titleFactory->makeTitle( $title->getNamespace(), $title->getDBkey() );
 		return $baseUrl . $localPageTitle->getLocalURL( [ 'action' => 'raw' ] );
 	}
+
+	/**
+	 * If the AutoModeratorRevertProbability configuration
+	 * field is set below 0.95 we default to 0.95 to prevent
+	 * large numbers of false positives.
+	 * @param Config $config
+	 * @return float AutoModeratorRevertProbability threshold
+	 */
+	public static function getRevertThreshold( Config $config ): float {
+		$minimumThreshold = 0.95;
+		$revertThreshold = $config->get( 'AutoModeratorRevertProbability' );
+		if ( $revertThreshold < $minimumThreshold ) {
+			return $minimumThreshold;
+		}
+		return $revertThreshold;
+	}
 }
