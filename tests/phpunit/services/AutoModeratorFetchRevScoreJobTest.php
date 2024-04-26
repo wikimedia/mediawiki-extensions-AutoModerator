@@ -4,7 +4,6 @@ namespace AutoModerator\Tests;
 
 use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
 use MockHttpTrait;
-use RuntimeException;
 
 /**
  * @group AutoModerator
@@ -102,13 +101,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		);
 
 		$expected = 'Revision ' . $rev->getId() . ' requires a manual revert.';
-		try {
-			$job->run();
-			$this->fail( 'Exception expected but not thrown' );
-		} catch ( RunTimeException $e ) {
-			$message = $e->getMessage();
-			$this->assertEquals( $expected, $message );
-		}
+		$job->run();
+		$this->assertEquals( $expected, $job->getLastError() );
 	}
 
 }
