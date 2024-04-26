@@ -92,6 +92,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$rev = new $mockRevisionRecord( $this->title, $this->user, $comment, (object)$row, $slots, $wikiId );
 			$rev->method( 'getId' )->willReturn( $i );
 			$rev->method( 'getContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
+			$rev->method( 'getUser' )->willReturn( $this->user );
 			$revisions[] = $rev;
 		}
 		return array_slice( $revisions, $segment - 1, $limit );
@@ -448,32 +449,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	/**
 	 * @covers ::revertPreCheck
 	 */
-	public function testRevertPreCheckNullEdit() {
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			1,
-			$this->user,
-			$this->tags,
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->changeTagsStore,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
-			$this->logger,
-			$this->userGroupManager,
-			$this->restrictionStore,
-			$this->lang,
-		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
-	}
-
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckAutoModeratorEdit() {
 		$this->user->method( 'equals' )->willReturn( true );
 		$this->rev->method( 'getParentId' )->willReturn( 1 );
@@ -501,9 +476,10 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	/**
 	 * @covers ::revertPreCheck
 	 */
-	public function testRevertPreCheckTagRevertEdit() {
+	public function testSelfRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
 		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( true );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -528,9 +504,38 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	/**
 	 * @covers ::revertPreCheck
 	 */
-	public function testRevertPreCheckTagRollbackEdit() {
+	public function testOthersRevertPreCheckTagRevertEdit() {
+		$this->tags = [ 'mw-manual-revert' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( false );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+		$this->assertTrue( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testSelfRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ 'mw-rollback' ];
 		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( true );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -555,9 +560,150 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	/**
 	 * @covers ::revertPreCheck
 	 */
-	public function testRevertPreCheckTagUndoEdit() {
+	public function testOthersRevertPreCheckTagRollbackEdit() {
+		$this->tags = [ 'mw-rollback' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( false );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+		$this->assertTrue( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testSelfRevertPreCheckTagUndoEdit() {
 		$this->tags = [ 'mw-undo' ];
 		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( true );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+		$this->assertFalse( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testOthersRevertPreCheckTagUndoEdit() {
+		$this->tags = [ 'mw-undo' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( false );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+		$this->assertTrue( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckTagNewRedirect() {
+		$this->tags = [ 'mw-new-redirect' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( false );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+		$this->assertFalse( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckTagRemovedRedirect() {
+		$this->tags = [ 'mw-removed-redirect' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( false );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$this->rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->changeTagsStore,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+		);
+		$this->assertFalse( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckTagChangedRedirect() {
+		$this->tags = [ 'mw-changed-redirect-target' ];
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$this->user->method( 'equals' )->willReturn( false );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
