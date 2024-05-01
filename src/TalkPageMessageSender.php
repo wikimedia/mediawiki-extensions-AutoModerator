@@ -65,17 +65,17 @@ class TalkPageMessageSender {
 		LoggerInterface $logger ): void {
 		try {
 			if ( $revId === null ) {
-				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - revision ID is null" );
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - revision ID is null' );
 				return;
 			}
 			$rev = $this->revisionStore->getRevisionById( $revId );
 			if ( $rev === null ) {
-				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
 				return;
 			}
 			$parentRevId = $rev->getParentId();
 			if ( $parentRevId === null ) {
-				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
 				return;
 			}
 			$language = MediaWikiServices::getInstance()->getContentLanguage();

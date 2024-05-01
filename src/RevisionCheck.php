@@ -186,13 +186,13 @@ class RevisionCheck {
 		}
 		// Skip AutoModerator edits
 		if ( self::areUsersEqual( $user, $autoModeratorUser ) ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoMod edits" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - AutoMod edits' );
 			return false;
 		}
 		$parentId = $revisionStore->getRevisionById( $revId )->getParentId();
 		// Skip new page creations
 		if ( self::isNewPageCreation( $parentId ) ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
 			return false;
 		}
 		// Skip reverts made to an AutoModerator bot revert or if
@@ -202,20 +202,20 @@ class RevisionCheck {
 		foreach ( $revertTags as $revertTag ) {
 			if ( in_array( $revertTag, $tags ) ) {
 				if ( !$parentRev ) {
-					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - parent revision not found" );
+					$logger->debug( __METHOD__ . ': AutoModerator skip rev - parent revision not found' );
 					return false;
 				}
 				$parentRevUser = $parentRev->getUser();
 				if ( $parentRevUser === null ) {
-					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - parent revision user is null" );
+					$logger->debug( __METHOD__ . ': AutoModerator skip rev - parent revision user is null' );
 					return false;
 				}
 				if ( self::areUsersEqual( $parentRevUser, $autoModeratorUser ) ) {
-					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator reverts" );
+					$logger->debug( __METHOD__ . ': AutoModerator skip rev - AutoModerator reverts' );
 					return false;
 				}
 				if ( self::areUsersEqual( $parentRevUser, $user ) ) {
-					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - own reverts" );
+					$logger->debug( __METHOD__ . ': AutoModerator skip rev - own reverts' );
 					return false;
 				}
 			}
@@ -229,30 +229,30 @@ class RevisionCheck {
 		}
 		// Skip edits from editors that have certain user rights
 		if ( self::shouldSkipUser( $permissionManager, $user, $wikiConfig ) ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - trusted user rights edits" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - trusted user rights edits' );
 			return false;
 		}
 		// Skip external users
 		if ( ExternalUserNames::isExternal( $user->getName() ) ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - external user" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - external user' );
 			return false;
 		}
 		$wikiPage = $wikiPageFactory->newFromID( $wikiPageId );
 		// Skip null pages
 		if ( $wikiPage === null ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - wikiPage is null" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - wikiPage is null' );
 			return false;
 		}
 		// Skip non-mainspace edit
 		if ( $wikiPage->getNamespace() !== NS_MAIN ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - non-mainspace edits' );
 			return false;
 		}
 		// Skip protected pages that only admins can edit.
 		// Automoderator should be able to revert semi-protected pages,
 		// so we won't be skipping those on pre-check.
 		if ( self::isProtectedPage( $restrictionStore, $wikiPage ) ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - protected page" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - protected page' );
 			return false;
 		}
 		return true;
