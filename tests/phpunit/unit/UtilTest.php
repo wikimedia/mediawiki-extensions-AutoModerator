@@ -2,6 +2,7 @@
 
 namespace AutoModerator\Tests;
 
+use AutoModerator\LiftWingClient;
 use AutoModerator\Util;
 use MediaWiki\Config\Config;
 use MediaWikiUnitTestCase;
@@ -70,6 +71,93 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$this->assertSame(
 			0.97,
 			$revertThreshold
+		);
+	}
+
+	/**
+	 * @covers ::initializeLiftWingClient
+	 * when AutoModeratorLiftWingAddHostHeader false
+	 */
+	public function testInitializeLiftWingClientWithoutHostHeader() {
+		$expectedUrl = 'example.org';
+		$expectedModel = 'revertrisk-language-agnostic';
+		$expectedLang = 'en';
+		$expectedClient = new LiftWingClient(
+			$expectedModel,
+			$expectedLang,
+			$expectedUrl,
+			true,
+		);
+
+		$this->config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorLiftWingBaseUrl', $expectedUrl ],
+			[ 'AutoModeratorLiftWingAddHostHeader', false ],
+		] );
+
+		$client = Util::initializeLiftWingClient( true, $this->config );
+
+		$this->assertSame(
+			$expectedClient->getBaseUrl(),
+			$client->getBaseUrl()
+		);
+
+		$this->assertSame(
+			$expectedClient->getHostHeader(),
+			$client->getHostHeader()
+		);
+	}
+
+	/**
+	 * @covers ::initializeLiftWingClient
+	 * when AutoModeratorLiftWingAddHostHeader true
+	 */
+	public function testInitializeLiftWingClientWithHostHeader() {
+		$expectedUrl = 'example.org';
+		$model = 'revertrisk-language-agnostic';
+		$lang = 'en';
+		$expectedHostHeader = "host-header";
+		$expectedClient = new LiftWingClient(
+			$model,
+			$lang,
+			$expectedUrl,
+			true,
+			$expectedHostHeader
+		);
+
+		$this->config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorLiftWingBaseUrl', $expectedUrl ],
+			[ 'AutoModeratorLiftWingAddHostHeader', true ],
+			[ 'AutoModeratorLiftWingRevertRiskHostHeader', $expectedHostHeader ],
+		] );
+
+		$client = Util::initializeLiftWingClient( true, $this->config );
+
+		$this->assertSame(
+			$expectedClient->getBaseUrl(),
+			$client->getBaseUrl()
+		);
+
+		$this->assertSame(
+			$expectedClient->getHostHeader(),
+			$client->getHostHeader()
+		);
+	}
+
+	/**
+	 * @covers ::getLanguageConfiguration
+	 */
+	public function testGetLanguageConfiguration() {
+		$wikiId = "idwiki";
+		$expectedLang = "id";
+
+		$this->config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorWikiId', $wikiId ],
+		] );
+
+		$actual = Util::getLanguageConfiguration( $this->config );
+		$this->assertSame(
+			$expectedLang,
+			$actual
 		);
 	}
 }

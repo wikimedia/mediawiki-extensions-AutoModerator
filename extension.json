@@ -48,11 +48,23 @@
 		},
 		"AutoModeratorWikiId": {
 			"description": "language code of project used to target liftwing lang parameter",
-			"value": "null"
+			"value": null
 		},
 		"AutoModeratorEnableWikiConfig": {
 			"description": "If set to false, on-wiki configuration will be ignored.",
 			"value": true
+		},
+		"AutoModeratorLiftWingBaseUrl": {
+			"description": "The base URL of the LiftWing service. We set it by default to use the API Gateway endpoint which is publicly accessible and is modified by mediawiki deployments that run within the production WMF cluster and have access to the internal endpoint.",
+			"value": "https://api.wikimedia.org/service/lw/inference/v1/models/"
+		},
+		"AutoModeratorLiftWingAddHostHeader": {
+			"description": "Whether to add the Host header to the LiftWing request. This is required for Lift Wing requests made using the internal endpoint within the WMF infrastructure.",
+			"value": false
+		},
+		"AutoModeratorLiftWingRevertRiskHostHeader": {
+			"value": "revertrisk-language-agnostic.revertrisk.wikimedia.org",
+			"description": "Hostname to use with header for requests to RevertRisk endpoint."
 		}
 	},
 	"HookHandlers": {

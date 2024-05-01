@@ -16,7 +16,6 @@
 namespace AutoModerator\Services;
 
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
-use AutoModerator\LiftWingClient;
 use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
 use Job;
@@ -117,8 +116,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		if ( !$revisionCheck->passedPreCheck ) {
 			return true;
 		}
-		// @todo replace 'en' with getWikiID()
-		$liftWingClient = new LiftWingClient( 'revertrisk-language-agnostic', 'en', $revisionCheck->passedPreCheck );
+		$liftWingClient = Util::initializeLiftWingClient( $revisionCheck->passedPreCheck, $config );
 
 		try {
 			$score = $liftWingClient->get( $this->revId );
