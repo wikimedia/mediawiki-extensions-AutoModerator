@@ -3,7 +3,6 @@
 namespace AutoModerator\Maintenance;
 
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
-use AutoModerator\LiftWingClient;
 use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
 use Maintenance;
@@ -102,11 +101,7 @@ class CheckRevision extends Maintenance {
 		$score = [];
 		switch ( $this->getOption( 'client', 'liftwing' ) ) {
 			case 'liftwing':
-				$liftWingClient = new LiftWingClient(
-					'revertrisk-language-agnostic',
-					'en',
-					$revisionCheck->passedPreCheck
-				);
+				$liftWingClient = Util::initializeLiftWingClient( $revisionCheck->passedPreCheck, $config );
 				$score = $liftWingClient->get( $rev->getId() );
 				break;
 			case 'testfail':

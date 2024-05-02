@@ -98,6 +98,7 @@ class Util {
 		// Log warnings here. The caller is expected to handle errors so do not double-log them.
 		[ $errorStatus, $warningStatus ] = $status->splitByErrorType();
 		if ( !$warningStatus->isGood() ) {
+			// @todo replace 'en' with correct language configuration
 			LoggerFactory::getInstance( 'AutoModerator' )->warning(
 				$warningStatus->getWikiText( false, false, 'en' ),
 				[ 'exception' => new RuntimeException ]
@@ -148,5 +149,32 @@ class Util {
 			return $minimumThreshold;
 		}
 		return $revertThreshold;
+	}
+
+	/**
+	 * @param bool $passedPreCheck
+	 * @param Config $config
+	 * @return LiftWingClient
+	 */
+	public static function initializeLiftWingClient( bool $passedPreCheck, Config $config ): LiftWingClient {
+		$model = 'revertrisk-language-agnostic';
+		$lang = self::getLanguageConfiguration( $config );
+		$hostHeader = $config->get( 'AutoModeratorLiftWingAddHostHeader' ) ?
+			$config->get( 'AutoModeratorLiftWingRevertRiskHostHeader' ) : null;
+		return new LiftWingClient(
+			$model,
+			$lang,
+			$config->get( 'AutoModeratorLiftWingBaseUrl' ),
+			$passedPreCheck,
+			$hostHeader );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return false|string
+	 */
+	public static function getLanguageConfiguration( Config $config ) {
+		$wikiId = self::getWikiID( $config );
+		return substr( $wikiId, 0, strpos( $wikiId, "wiki" ) );
 	}
 }

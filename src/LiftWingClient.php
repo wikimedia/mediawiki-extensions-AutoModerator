@@ -36,14 +36,24 @@ class LiftWingClient {
 	/** @var bool */
 	private $passedPreCheck;
 
+	/** @var string */
+	private string $baseUrl;
+
+	/** @var ?string */
+	private ?string $hostHeader;
+
 	public function __construct(
 		string $model,
 		string $lang,
-		bool $passedPreCheck = false
+		string $baseUrl,
+		bool $passedPreCheck = false,
+		string $hostHeader = null
 	) {
 		$this->model = $model;
 		$this->lang = $lang;
 		$this->passedPreCheck = $passedPreCheck;
+		$this->baseUrl = $baseUrl;
+		$this->hostHeader = $hostHeader;
 	}
 
 	/**
@@ -88,22 +98,24 @@ class LiftWingClient {
 		if ( !$this->passedPreCheck ) {
 			return [];
 		}
-		// TODO: Probably should be config
-		$url = 'https://api.wikimedia.org/service/lw/inference/v1/models/' . $this->model . ':predict';
+		$url = $this->baseUrl . $this->model . ':predict';
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$logger->debug( "AutoModerator Requesting: {$url} " . __METHOD__ );
 		$httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
 		$req = $httpRequestFactory->create( $url, [
-				'method' => 'POST',
-				'postData' => json_encode( [
-					'rev_id' => (int)$revId,
-					'lang' => $this->lang,
-				] ),
-			] );
+			'method' => 'POST',
+			'postData' => json_encode( [
+				'rev_id' => (int)$revId,
+				'lang' => $this->lang,
+			] ),
+		] );
+		if ( $this->hostHeader ) {
+			$req->setHeader( 'Host', $this->hostHeader );
+		}
 		$status = $req->execute();
 		if ( !$status->isOK() ) {
 			$message = "Failed to make LiftWing request to [{$url}], " .
-				Status::wrap( $status )->getMessage()->inLanguage( 'en' )->text();
+				Status::wrap( $status )->getMessage()->inLanguage( $this->lang )->text();
 			// Server time out, try again
 			if ( $req->getStatus() === 504 ) {
 				$req = $httpRequestFactory->create( $url, [
@@ -134,5 +146,13 @@ class LiftWingClient {
 			throw new RuntimeException( "Bad response from Lift Wing endpoint [{$url}]: {$json}" );
 		}
 		return $data;
+	}
+
+	public function getBaseUrl(): string {
+		return $this->baseUrl;
+	}
+
+	public function getHostHeader(): ?string {
+		return $this->hostHeader;
 	}
 }
