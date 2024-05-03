@@ -13,6 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace AutoModerator\Services;
 
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
@@ -57,6 +58,11 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	private $tags;
 
 	/**
+	 * @var bool
+	 */
+	private bool $isRetryable = true;
+
+	/**
 	 * @param Title $title
 	 * @param array $params
 	 *    - 'wikiPageId': (int)
@@ -74,7 +80,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$this->tags = $params[ 'tags' ];
 	}
 
-	public function run() {
+	public function run(): bool {
 		$services = MediaWikiServices::getInstance();
 		$wikiPageFactory = $services->getWikiPageFactory();
 		$revisionStore = $services->getRevisionStore();
@@ -117,31 +123,42 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			return true;
 		}
 		$liftWingClient = Util::initializeLiftWingClient( $revisionCheck->passedPreCheck, $config );
-
 		try {
-			$score = $liftWingClient->get( $this->revId );
-			$reverted = $revisionCheck->maybeRevert( $score );
+			$response = $liftWingClient->get( $this->revId );
+			if ( isset( $response['errorMessage'] ) ) {
+				$this->setLastError( $response['errorMessage'] );
+				$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
+				return false;
+			} else {
+				$reverted = $revisionCheck->maybeRevert( $response );
+			}
 		} catch ( RuntimeException $exception ) {
 			$this->setLastError( $exception->getMessage() );
 			return false;
 		}
-
 		if ( array_key_exists( '0', $reverted ) ) {
-			if ( $reverted[ '0' ] === 'failure' ) {
+			if ( $reverted['0'] === 'failure' ) {
 				$this->setLastError( 'Revision ' . $this->revId . ' requires a manual revert.' );
+				$this->setAllowRetries( false );
+				return false;
+			} elseif ( $reverted['1'] === 'success' ) {
+				return true;
 			}
 		}
 		return true;
 	}
 
-	/** @inheritDoc */
-	public function allowRetries() {
-		// This is the default, but added for explicitness and clarity
-		return true;
+	private function setAllowRetries( bool $isRetryable ) {
+		$this->isRetryable = $isRetryable;
 	}
 
 	/** @inheritDoc */
-	public function ignoreDuplicates() {
+	public function allowRetries(): bool {
+		return $this->isRetryable;
+	}
+
+	/** @inheritDoc */
+	public function ignoreDuplicates(): bool {
 		return true;
 	}
 }
