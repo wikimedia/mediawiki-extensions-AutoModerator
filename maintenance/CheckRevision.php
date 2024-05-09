@@ -83,7 +83,6 @@ class CheckRevision extends Maintenance {
 			$tags,
 			$autoModeratorUser,
 			$revisionStore,
-			$changeTagsStore,
 			$config,
 			$wikiConfig,
 			$contentHandler,

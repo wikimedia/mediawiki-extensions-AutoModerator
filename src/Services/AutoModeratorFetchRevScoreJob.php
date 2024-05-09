@@ -85,7 +85,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$wikiPageFactory = $services->getWikiPageFactory();
 		$revisionStore = $services->getRevisionStore();
 		$contentHandlerFactory = $services->getContentHandlerFactory();
-		$changeTagsStore = $services->getChangeTagsStore();
 		$userGroupManager = $services->getUserGroupManager();
 		$restrictionStore = $services->getRestrictionStore();
 		$config = $services->getMainConfig();
@@ -109,7 +108,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			$this->tags,
 			$autoModeratorUser,
 			$revisionStore,
-			$changeTagsStore,
 			$config,
 			$wikiConfig,
 			$contentHandler,

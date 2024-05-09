@@ -23,7 +23,6 @@ use CommentStoreComment;
 use Content;
 use ContentHandler;
 use Language;
-use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
 use MediaWiki\Language\RawMessage;
 use MediaWiki\MainConfigNames;
@@ -67,9 +66,6 @@ class RevisionCheck {
 	/** @var RevisionStore */
 	private $revisionStore;
 
-	 /** @var ChangeTagsStore */
-	private $changeTagsStore;
-
 	/** @var Config */
 	private $config;
 
@@ -108,11 +104,9 @@ class RevisionCheck {
 	 *   rollback or a null revision), the ID of that earlier revision. False otherwise.
 	 *   (Used to be called $baseID.)
 	 * @param UserIdentity $user Editing user
-	 * @param string[] &$tags Tags to apply to the edit and recent change. This is empty, and
-	 *   replacement is ignored, in the case of import or page move.
+	 * @param string[] &$tags Tags applied to the revison.
 	 * @param User $autoModeratorUser reverting user
 	 * @param RevisionStore $revisionStore
-	 * @param ChangeTagsStore $changeTagsStore
 	 * @param Config $config
 	 * @param Config $wikiConfig
 	 * @param ContentHandler $contentHandler
@@ -131,7 +125,6 @@ class RevisionCheck {
 		array &$tags,
 		User $autoModeratorUser,
 		RevisionStore $revisionStore,
-		ChangeTagsStore $changeTagsStore,
 		Config $config,
 		$wikiConfig,
 		ContentHandler $contentHandler,
@@ -149,7 +142,6 @@ class RevisionCheck {
 		$this->tags = $tags;
 		$this->autoModeratorUser = $autoModeratorUser;
 		$this->revisionStore = $revisionStore;
-		$this->changeTagsStore = $changeTagsStore;
 		$this->config = $config;
 		$this->wikiConfig = $wikiConfig;
 		$this->contentHandler = $contentHandler;
@@ -347,15 +339,9 @@ class RevisionCheck {
 			}
 			if ( $this->enforce ) {
 				$this->doRevert( $pageUpdater, $content, $prevRev );
-				$this->tags[] = 'ext-automoderator-failed';
 			}
 			$reverted = 1;
 			$status = 'success';
-		} else {
-			$this->tags[] = 'ext-automoderator-passed';
-		}
-		if ( $this->enforce ) {
-			$this->changeTagsStore->addTags( $this->tags, null, $this->revId );
 		}
 		return [ $reverted => $status ];
 	}
