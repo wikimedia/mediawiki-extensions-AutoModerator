@@ -121,29 +121,34 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			return true;
 		}
 		$liftWingClient = Util::initializeLiftWingClient( $revisionCheck->passedPreCheck, $config );
+		$reverted = [];
 		try {
 			$response = $liftWingClient->get( $this->revId );
+			$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
 			if ( isset( $response['errorMessage'] ) ) {
 				$this->setLastError( $response['errorMessage'] );
-				$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
 				return false;
-			} else {
-				$reverted = $revisionCheck->maybeRevert( $response );
 			}
+			$reverted = $revisionCheck->maybeRevert( $response );
 		} catch ( RuntimeException $exception ) {
 			$this->setLastError( $exception->getMessage() );
 			return false;
 		}
-		if ( array_key_exists( '0', $reverted ) ) {
-			if ( $reverted['0'] === 'failure' ) {
-				$this->setLastError( 'Revision ' . $this->revId . ' requires a manual revert.' );
-				$this->setAllowRetries( false );
-				return false;
-			} elseif ( $reverted['1'] === 'success' ) {
-				return true;
-			}
+		// Revision reverted
+		if ( array_key_exists( '1', $reverted ) && $reverted['1'] === 'success' ) {
+			return true;
 		}
-		return true;
+		// Revert attempted but failed
+		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'failure' ) {
+			$this->setLastError( 'Revision ' . $this->revId . ' requires a manual revert.' );
+			$this->setAllowRetries( false );
+			return false;
+		}
+		// Revision passed check; noop.
+		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'Not reverted' ) {
+			return true;
+		}
+		return false;
 	}
 
 	private function setAllowRetries( bool $isRetryable ) {
