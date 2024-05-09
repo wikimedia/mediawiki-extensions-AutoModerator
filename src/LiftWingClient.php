@@ -20,9 +20,7 @@
 namespace AutoModerator;
 
 use FormatJson;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Status\Status;
 use RuntimeException;
 
 class LiftWingClient {
@@ -57,37 +55,6 @@ class LiftWingClient {
 	}
 
 	/**
-	 * @param string $model
-	 * @param int $revId
-	 * @return array
-	 */
-	private function createRevisionNotFoundResponse(
-		string $model,
-		int $revId
-	) {
-		$error_message = "RevisionNotFound: Could not find revision ({revision}:{$revId})";
-		$error_type = "RevisionNotFound";
-		return [
-			$this->lang => [
-				"models" => [
-					$model => [
-						// @todo: add model version
-						"version" => null,
-					],
-				],
-				"scores" => [
-					$revId => [
-						"error" => [
-							"message" => $error_message,
-							"type" => $error_type,
-						],
-					],
-				],
-			],
-		];
-	}
-
-	/**
 	 * Make a single call to LW revert risk model for one revid and return the decoded result.
 	 *
 	 * @param int $revId
@@ -99,8 +66,6 @@ class LiftWingClient {
 			return [];
 		}
 		$url = $this->baseUrl . $this->model . ':predict';
-		$logger = LoggerFactory::getInstance( 'AutoModerator' );
-		$logger->debug( "AutoModerator Requesting: {$url} " . __METHOD__ );
 		$httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
 		$req = $httpRequestFactory->create( $url, [
 			'method' => 'POST',
@@ -112,35 +77,38 @@ class LiftWingClient {
 		if ( $this->hostHeader ) {
 			$req->setHeader( 'Host', $this->hostHeader );
 		}
-		$status = $req->execute();
-		if ( !$status->isOK() ) {
-			$message = "Failed to make LiftWing request to [{$url}], " .
-				Status::wrap( $status )->getMessage()->inLanguage( $this->lang )->text();
-			// Server time out, try again
-			if ( $req->getStatus() === 504 ) {
+		$response = $req->execute();
+		if ( !$response->isOK() ) {
+			$httpStatus = $req->getStatus();
+			$data = FormatJson::decode( $req->getContent(), true );
+			if ( !$data ) {
+				$data = [];
+				$message = 'url returned status for rev rev_id lang';
+				$data['error'] = strtr( $message, [
+					'url' => $url,
+					'status' => (string)$httpStatus,
+					'rev_id' => (string)$revId,
+					'lang' => $this->lang,
+				] );
+			}
+			$errorMessage = $data['error'] ?? $data['detail'];
+			if ( ( $httpStatus >= 400 ) && ( $httpStatus <= 499 ) ) {
+				return $this->createErrorResponse( $httpStatus, $errorMessage, false );
+			} else {
 				$req = $httpRequestFactory->create( $url, [
 					'method' => 'POST',
-					'postData' => json_encode( [ 'rev_id' => (int)$revId ] ),
+					'postData' => json_encode( [
+						'rev_id' => (int)$revId,
+						'lang' => $this->lang,
+					] ),
 				] );
-				$status = $req->execute();
-				if ( !$status->isOK() ) {
-					throw new RuntimeException( $message );
+				$response = $req->execute();
+				if ( !$response->isOK() ) {
+					return $this->createErrorResponse( $httpStatus, $errorMessage, true );
 				}
-			} elseif ( $req->getStatus() === 400 ) {
-				$logger->debug( "400 Bad Request: {$message} " . __METHOD__ );
-				$data = FormatJson::decode( $req->getContent(), true );
-				if ( isset( $data['error'] ) &&
-					strpos( $data["error"], "The MW API does not have any info related to the rev-id" ) === 0 ) {
-					return $this->createRevisionNotFoundResponse( $this->model, $revId );
-				} else {
-					throw new RuntimeException( $message );
-				}
-			} else {
-				throw new RuntimeException( $message );
 			}
 		}
 		$json = $req->getContent();
-		$logger->debug( "Raw response: {$json} " . __METHOD__ );
 		$data = FormatJson::decode( $json, true );
 		if ( !$data || !empty( $data['error'] ) ) {
 			throw new RuntimeException( "Bad response from Lift Wing endpoint [{$url}]: {$json}" );
@@ -148,11 +116,35 @@ class LiftWingClient {
 		return $data;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getBaseUrl(): string {
 		return $this->baseUrl;
 	}
 
+	/**
+	 * @return ?string
+	 */
 	public function getHostHeader(): ?string {
 		return $this->hostHeader;
 	}
+
+	/**
+	 * @param int $httpStatus
+	 * @param string $errorMessage
+	 * @return array
+	 */
+	public function createErrorResponse(
+		int $httpStatus,
+		string $errorMessage,
+		bool $allowRetries
+	): array {
+		return [
+			"httpStatus" => $httpStatus,
+			"errorMessage" => $errorMessage,
+			"allowRetries" => $allowRetries
+		];
+	}
+
 }

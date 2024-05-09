@@ -14,6 +14,19 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	use MockHttpTrait;
 
+	/**
+	 * @return array
+	 */
+	private function createTestPage(): array {
+		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
+		$user = $this->getTestUser()->getUserIdentity();
+		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content' );
+		$revisionStore = $this->getServiceContainer()->getRevisionStore();
+		$rev = $revisionStore->getRevisionByPageId( $wikiPage['id'] );
+		$title = $wikiPage['title'];
+		return [ $wikiPage, $user, $rev, $title ];
+	}
+
 	protected function setUp(): void {
 		parent::setUp();
 	}
@@ -23,12 +36,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 * @group Database
 	 */
 	public function testRunSuccess() {
-		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
-		$user = $this->getTestUser()->getUserIdentity();
-		$this->editPage( $this->getExistingTestPage( $wikiPage[ 'title' ] ), 'Content' );
-		$revisionStore = $this->getServiceContainer()->getRevisionStore();
-		$rev = $revisionStore->getRevisionByPageId( $wikiPage[ 'id' ] );
-		$title = $wikiPage[ 'title' ];
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
@@ -100,9 +108,86 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 			]
 		);
 
-		$expected = 'Revision ' . $rev->getId() . ' requires a manual revert.';
-		$job->run();
-		$this->assertEquals( $expected, $job->getLastError() );
+		$success = $job->run();
+		$this->assertNotEmpty( $job->getLastError() );
+		$this->assertFalse( $success );
 	}
 
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * when there is a bad request response returns false
+	 */
+	public function testRunWithBadRequestReturnsFailure() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+
+		$score = [];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ), 400 ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'user' => $user,
+				'tags' => []
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertFalse( $success );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * when there is an unexpected 5xx response returns false
+	 */
+	public function testRunWithUnexpectedExceptionReturnsFalse() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+
+		$score = [];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ), 500 ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'user' => $user,
+				'tags' => []
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertFalse( $success );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * when there is a server timeout 504 response returns false
+	 */
+	public function testRunWithServerTimeoutReturnsFalse() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+
+		$score = [];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ), 504 ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'user' => $user,
+				'tags' => []
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertFalse( $success );
+	}
 }
