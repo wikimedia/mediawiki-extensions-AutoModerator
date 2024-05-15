@@ -26,6 +26,7 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
+use RequestContext;
 use RuntimeException;
 
 class AutoModeratorFetchRevScoreJob extends Job {
@@ -68,7 +69,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 *    - 'wikiPageId': (int)
 	 *    - 'revId': (int)
 	 *    - 'originalRevId': (int|false)
-	 *    - 'user': (UserIdentity)
+	 *    - 'user': (mixed)
 	 *    - 'tags': (string[])
 	 */
 	public function __construct( Title $title, array $params ) {
@@ -76,8 +77,16 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$this->wikiPageId = $params[ 'wikiPageId' ];
 		$this->revId = $params[ 'revId' ];
 		$this->originalRevId = $params[ 'originalRevId' ];
-		$this->user = $params[ 'user' ];
+		$this->user = $this->getUser( $params[ 'user' ] );
 		$this->tags = $params[ 'tags' ];
+	}
+
+	/** @param mixed $user */
+	public function getUser( $user ): UserIdentity {
+		if ( $user instanceof UserIdentity ) {
+			return $user;
+		}
+		return RequestContext::getMain()->getUser();
 	}
 
 	public function run(): bool {
