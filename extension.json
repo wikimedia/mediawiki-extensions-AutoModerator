@@ -42,10 +42,6 @@
 			"description": "Edit summary for AutoModerator reverts of anonymous editors",
 			"value": "Undo revision [[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]]"
 		},
-		"AutoModeratorWikiConfigPageTitle": {
-			"description": "Name of page used for on-wiki config; must be in NS_MEDIAWIKI and end with .json; only variables listed in AutoModeratorOnWikiConfigAllowList may be overridden on wiki",
-			"value": "MediaWiki:AutoModeratorConfig.json"
-		},
 		"AutoModeratorWikiId": {
 			"description": "language code of project used to target liftwing lang parameter",
 			"value": null

@@ -28,7 +28,6 @@ return [
 	): ConfigValidatorFactory {
 		$autoModeratorServices = AutoModeratorServices::wrap( $services );
 		return new ConfigValidatorFactory(
-			$services->getMainConfig(),
 			$services->getTitleFactory()
 		);
 	},
@@ -39,7 +38,6 @@ return [
 			LoggerFactory::getInstance( 'AutoModerator' ),
 			$services->getTitleFactory(),
 			$autoModeratorServices->getWikiPageConfigLoader(),
-			$services->getMainConfig()->get( 'AutoModeratorWikiConfigPageTitle' ),
 			defined( 'MW_PHPUNIT_TEST' ) && $services->isStorageDisabled()
 		);
 	},

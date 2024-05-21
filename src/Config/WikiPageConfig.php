@@ -7,6 +7,7 @@ use MediaWiki\Config\ConfigException;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use StatusValue;
 
 class WikiPageConfig implements Config {
@@ -14,7 +15,6 @@ class WikiPageConfig implements Config {
 	private LoggerInterface $logger;
 	private TitleFactory $titleFactory;
 	private ?WikiPageConfigLoader $configLoader;
-	private ?string $rawConfigTitle;
 	private ?Title $configTitle = null;
 	/**
 	 * @var bool Hack to disable DB access in non-database tests.
@@ -25,20 +25,17 @@ class WikiPageConfig implements Config {
 	 * @param LoggerInterface $logger
 	 * @param TitleFactory $titleFactory
 	 * @param WikiPageConfigLoader $configLoader
-	 * @param string $rawConfigTitle
 	 * @param bool $isTestWithStorageDisabled
 	 */
 	public function __construct(
 		LoggerInterface $logger,
 		TitleFactory $titleFactory,
 		WikiPageConfigLoader $configLoader,
-		string $rawConfigTitle,
 		bool $isTestWithStorageDisabled
 	) {
 		$this->logger = $logger;
 		$this->titleFactory = $titleFactory;
 		$this->configLoader = $configLoader;
-		$this->rawConfigTitle = $rawConfigTitle;
 		$this->isTestWithStorageDisabled = $isTestWithStorageDisabled;
 	}
 
@@ -49,18 +46,20 @@ class WikiPageConfig implements Config {
 	 * Title (which may talk to the DB) until whenever config is first fetched,
 	 * which should be much later, and probably after init sequence finished.
 	 *
-	 * @throws ConfigException
+	 * @throws RuntimeException
 	 * @return Title
 	 */
 	private function getConfigTitle(): Title {
 		if ( $this->configTitle == null ) {
-			$configTitle = $this->titleFactory->newFromText( $this->rawConfigTitle );
-
+			$configTitle = $this->titleFactory->makeTitleSafe(
+				NS_MEDIAWIKI,
+				'AutoModeratorConfig.json'
+			);
 			if (
 				$configTitle === null ||
 				!$configTitle->isSiteJsonConfigPage()
 			) {
-				throw new ConfigException( 'Invalid AutoModeratorWikiConfigPageTitle' );
+				throw new RuntimeException( 'Invalid AutoModeratorWikiConfigPageTitle' );
 			}
 
 			$this->configTitle = $configTitle;

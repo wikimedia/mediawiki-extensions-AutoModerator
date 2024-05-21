@@ -3,13 +3,11 @@
 namespace AutoModerator\Config\Validation;
 
 use InvalidArgumentException;
-use MediaWiki\Config\Config;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 
 class ConfigValidatorFactory {
-	private Config $config;
 	private TitleFactory $titleFactory;
 
 	/**
@@ -25,28 +23,12 @@ class ConfigValidatorFactory {
 	];
 
 	/**
-	 * @param Config $config
 	 * @param TitleFactory $titleFactory
 	 */
 	public function __construct(
-		Config $config,
 		TitleFactory $titleFactory
 	) {
-		$this->config = $config;
 		$this->titleFactory = $titleFactory;
-	}
-
-	/**
-	 * Code helper for comparing titles
-	 *
-	 * @param Title $configTitle
-	 * @param string $otherConfigPage
-	 * @return bool
-	 */
-	private function titleEquals( Title $configTitle, string $otherConfigPage ): bool {
-		$varTitle = $this->titleFactory
-			->newFromText( $otherConfigPage );
-		return $varTitle !== null && $configTitle->equals( $varTitle );
 	}
 
 	/**
@@ -55,16 +37,12 @@ class ConfigValidatorFactory {
 	 * @return Title[]
 	 */
 	public function getSupportedConfigPages(): array {
-		return array_filter(
-			array_map(
-				function ( string $var ) {
-					return $this->titleFactory->newFromText(
-						$this->config->get( $var )
-					);
-				},
-				array_keys( self::CONFIG_VALIDATOR_MAP )
-			)
+		// Update this when CONFIG_VALIDATOR_MAP has another entry
+		$title = $this->titleFactory->makeTitle(
+		 NS_MEDIAWIKI,
+		 'AutoModeratorConfig.js'
 		);
+		return [ $title ];
 	}
 
 	/**
@@ -91,18 +69,13 @@ class ConfigValidatorFactory {
 	 *
 	 * @param LinkTarget $configPage
 	 * @return IConfigValidator
-	 * @throws InvalidArgumentException when passed config page is not recognized; this should
+	 * @throws InvalidArgumentException when no config page is passed; this should
 	 * never happen in practice.
 	 */
 	public function newConfigValidator( LinkTarget $configPage ): IConfigValidator {
 		$title = $this->titleFactory->newFromLinkTarget( $configPage );
 
-		foreach ( self::CONFIG_VALIDATOR_MAP as $var => $validatorClass ) {
-			if ( $this->titleEquals( $title, $this->config->get( $var ) ) ) {
-				return $this->constructValidator( $validatorClass );
-			}
-		}
-
-		throw new InvalidArgumentException( 'Unsupported config page' );
+		$validatorClass = array_values( self::CONFIG_VALIDATOR_MAP )[ 0 ];
+		return $this->constructValidator( $validatorClass );
 	}
 }

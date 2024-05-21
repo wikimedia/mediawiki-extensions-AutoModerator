@@ -13,12 +13,6 @@ use StatusValue;
 class AutoModeratorConfigValidation implements IConfigValidator {
 	use DatatypeValidationTrait;
 
-	/**
-	 * Copy of TemplateCollectionFeature::MAX_TEMPLATES_IN_COLLECTION. We avoid a direct reference
-	 * to keep CirrusSearch an optional dependency.
-	 */
-	public const MAX_TEMPLATES_IN_COLLECTION = 800;
-
 	private function getConfigDescriptors(): array {
 		return [
 			'AutoModeratorEnableRevisionCheck' => [
