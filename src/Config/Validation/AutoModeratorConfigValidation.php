@@ -18,6 +18,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			'AutoModeratorEnableRevisionCheck' => [
 				'type' => 'bool',
 			],
+			'AutoModeratorFalsePositivePageTitle' => [
+				'type' => '?string',
+			],
 		];
 	}
 

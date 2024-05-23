@@ -26,7 +26,8 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 	public const ALLOW_LIST = [
 		'AutoModeratorEnableRevisionCheck',
 		'AutoModeratorUndoSummary',
-		'AutoModeratorUndoSummaryAnon'
+		'AutoModeratorUndoSummaryAnon',
+		'AutoModeratorFalsePositivePageTitle'
 
 	];
 
