@@ -33,6 +33,9 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$rev = $this->createMock( RevisionRecord::class );
 		$rev->method( 'getId' )->willReturn( 1000 );
 		$user = $this->createMock( UserIdentity::class );
+		$user->method( 'getId' )->willReturn( 1000 );
+		$user->method( 'getName' )->willReturn( 'TestUser1000' );
+
 		return [
 			[ $wikiPage, $rev, false, $user, [] ]
 		];
@@ -67,7 +70,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockUtil = $this->createMock( Util::class );
 		$mockUser = $this->createMock( User::class );
 		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
-
 		( new Hooks( $autoModWikiConfig, $userGroupManager, $config ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
@@ -77,7 +79,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'wikiPageId' => 1,
 			'revId' => 1000,
 			'originalRevId' => false,
-			'user' => $user,
+			'userId' => $user->getId(),
+			'userName' => $user->getName(),
 			'tags' => [],
 			'namespace' => NS_MAIN,
 			'title' => '',

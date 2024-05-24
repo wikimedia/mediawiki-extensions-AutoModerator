@@ -59,8 +59,12 @@ class RevisionFromEditCompleteHookHandler {
 		$wikiPage, $rev, $originalRevId, $user, &$tags
 	) {
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
-		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) || !$wikiPage || !$rev || !$user
-			|| $autoModeratorUser->getId() === $user->getId() ) {
+		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) || !$wikiPage || !$rev || !$user ) {
+			return;
+		}
+
+		$userId = $user->getId();
+		if ( $autoModeratorUser->getId() === $userId ) {
 			return;
 		}
 
@@ -73,7 +77,8 @@ class RevisionFromEditCompleteHookHandler {
 				'wikiPageId' => $wikiPageId,
 				'revId' => $revId,
 				'originalRevId' => $originalRevId,
-				'user' => $user,
+				'userId' => $userId,
+				'userName' => $user->getName(),
 				'tags' => $tags
 			]
 		);

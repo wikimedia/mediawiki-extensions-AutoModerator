@@ -59,7 +59,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'wikiPageId' => $wikiPage[ 'id' ],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
-				'user' => $user,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
 				'tags' => []
 			]
 		);
@@ -103,7 +104,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'wikiPageId' => $wikiPage[ 'id' ],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
-				'user' => $user,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
 				'tags' => []
 			]
 		);
@@ -129,7 +131,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'wikiPageId' => $wikiPage[ 'id' ],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
-				'user' => $user,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
 				'tags' => []
 			]
 		);
@@ -155,7 +158,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'wikiPageId' => $wikiPage[ 'id' ],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
-				'user' => $user,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
 				'tags' => []
 			]
 		);
@@ -181,7 +185,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'wikiPageId' => $wikiPage[ 'id' ],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
-				'user' => $user,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
 				'tags' => []
 			]
 		);
