@@ -73,6 +73,10 @@
 		"AutoModeratorUseEditFlagMinor": {
 			"description": "Enables the minor edit flag for AutoModerator to use when making its edits.",
 			"value": false
+		},
+		"AutoModeratorRevertTalkPageMessageEnabled": {
+			"value": false,
+			"description": "Enable or disable sending talk page messages informing the user that an edit has been reverted."
 		}
 	},
 	"HookHandlers": {
@@ -94,7 +98,10 @@
 				"WikiPageFactory",
 				"RevisionStore",
 				"ContentHandlerFactory",
-				"RestrictionStore"
+				"RestrictionStore",
+				"JobQueueGroup",
+				"TitleFactory",
+				"RevisionStore"
 			]
 		},
 		"revisionfromedit": {
@@ -106,7 +113,10 @@
 				"WikiPageFactory",
 				"RevisionStore",
 				"ContentHandlerFactory",
-				"RestrictionStore"
+				"RestrictionStore",
+				"JobQueueGroup",
+				"TitleFactory",
+				"RevisionStore"
 			]
 		}
 	},
@@ -117,7 +127,8 @@
 		"RevisionFromEditComplete": "main"
 	},
 	"JobClasses": {
-		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob"
+		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob",
+		"AutoModeratorSendRevertTalkPageMsgJob": "AutoModerator\\Services\\AutoModeratorSendRevertTalkPageMsgJob"
 	},
 	"MessagesDirs": {
 		"AutoModerator": [

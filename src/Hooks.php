@@ -21,12 +21,14 @@ namespace AutoModerator;
 
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
 use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
+use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionStore;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
 
 class Hooks implements
@@ -48,6 +50,10 @@ class Hooks implements
 
 	private RestrictionStore $restrictionStore;
 
+	private JobQueueGroup $jobQueueGroup;
+
+	private TitleFactory $titleFactory;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
@@ -56,17 +62,21 @@ class Hooks implements
 	 * @param RevisionStore $revisionStore
 	 * @param ContentHandlerFactory $contentHandlerFactory
 	 * @param RestrictionStore $restrictionStore
+	 * @param JobQueueGroup $jobQueueGroup
+	 * @param TitleFactory $titleFactory
 	 */
 	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config,
-			WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore,
-			ContentHandlerFactory $contentHandlerFactory, RestrictionStore $restrictionStore ) {
-		$this->wikiConfig = $wikiConfig;
-		$this->userGroupManager = $userGroupManager;
-		$this->config = $config;
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->revisionStore = $revisionStore;
-		$this->contentHandlerFactory = $contentHandlerFactory;
-		$this->restrictionStore = $restrictionStore;
+		WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore, ContentHandlerFactory $contentHandlerFactory,
+		RestrictionStore $restrictionStore, JobQueueGroup $jobQueueGroup, TitleFactory $titleFactory ) {
+			$this->wikiConfig = $wikiConfig;
+			$this->userGroupManager = $userGroupManager;
+			$this->config = $config;
+			$this->wikiPageFactory = $wikiPageFactory;
+			$this->revisionStore = $revisionStore;
+			$this->contentHandlerFactory = $contentHandlerFactory;
+			$this->restrictionStore = $restrictionStore;
+			$this->jobQueueGroup = $jobQueueGroup;
+			$this->titleFactory = $titleFactory;
 	}
 
 	/**
@@ -75,7 +85,7 @@ class Hooks implements
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
 		$handler = new RevisionFromEditCompleteHookHandler( $this->wikiConfig,
 			$this->userGroupManager, $this->config, $this->wikiPageFactory, $this->revisionStore,
-			$this->contentHandlerFactory, $this->restrictionStore );
+			$this->contentHandlerFactory, $this->restrictionStore, $this->jobQueueGroup, $this->titleFactory, );
 		$handler->handle( $wikiPage, $rev, $originalRevId, $user, $tags );
 	}
 }
