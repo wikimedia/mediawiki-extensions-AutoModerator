@@ -19,7 +19,7 @@ class ConfigValidatorFactory {
 	 * as well.
 	 */
 	private const CONFIG_VALIDATOR_MAP = [
-		'AutoModeratorWikiConfigPageTitle' => AutoModeratorConfigValidation::class
+		'AutoModeratorConfig.json' => AutoModeratorConfigValidation::class
 	];
 
 	/**
@@ -32,17 +32,35 @@ class ConfigValidatorFactory {
 	}
 
 	/**
+	 * Code helper for comparing titles
+	 *
+	 * @param Title $configTitle
+	 * @param string $otherConfigPage
+	 * @return bool
+	 */
+	private function titleEquals( Title $configTitle, string $otherConfigPage ): bool {
+		$varTitle = $this->titleFactory
+			->makeTitleSafe( NS_MEDIAWIKI, $otherConfigPage );
+		return $varTitle !== null && $configTitle->equals( $varTitle );
+	}
+
+	/**
 	 * Return list of supported config pages
 	 *
 	 * @return Title[]
 	 */
 	public function getSupportedConfigPages(): array {
-		// Update this when CONFIG_VALIDATOR_MAP has another entry
-		$title = $this->titleFactory->makeTitle(
-		 NS_MEDIAWIKI,
-		 'AutoModeratorConfig.js'
+		return array_filter(
+			array_map(
+				function ( string $var ) {
+					return $this->titleFactory->makeTitleSafe(
+						NS_MEDIAWIKI,
+						$var
+					);
+				},
+				array_keys( self::CONFIG_VALIDATOR_MAP )
+			)
 		);
-		return [ $title ];
 	}
 
 	/**
@@ -69,13 +87,18 @@ class ConfigValidatorFactory {
 	 *
 	 * @param LinkTarget $configPage
 	 * @return IConfigValidator
-	 * @throws InvalidArgumentException when no config page is passed; this should
+	 * @throws InvalidArgumentException when passed config page is not recognized; this should
 	 * never happen in practice.
 	 */
 	public function newConfigValidator( LinkTarget $configPage ): IConfigValidator {
 		$title = $this->titleFactory->newFromLinkTarget( $configPage );
 
-		$validatorClass = array_values( self::CONFIG_VALIDATOR_MAP )[ 0 ];
-		return $this->constructValidator( $validatorClass );
+		foreach ( self::CONFIG_VALIDATOR_MAP as $var => $validatorClass ) {
+			if ( $this->titleEquals( $title, $var ) ) {
+				return $this->constructValidator( $validatorClass );
+			}
+		}
+
+		throw new InvalidArgumentException( 'Unsupported config page' );
 	}
 }
