@@ -93,6 +93,15 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$wikiId = Util::getWikiID( $config );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$rev = $revisionStore->getRevisionById( $this->revId );
+		if ( $rev === null ) {
+			$message = 'rev rev_id not found';
+			$error = strtr( $message, [
+				'rev_id' => (string)$this->revId
+			] );
+			$this->setLastError( $error );
+			$this->setAllowRetries( false );
+			return false;
+		}
 		$contentHandler = $contentHandlerFactory->getContentHandler( $rev->getSlot(
 			SlotRecord::MAIN,
 			RevisionRecord::RAW

@@ -195,4 +195,43 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$this->assertFalse( $success );
 	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * when the revision lookup fails
+	 */
+	public function testRunWithBadRevisionId() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+
+		$score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => $rev->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => 9999999999,
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => []
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertFalse( $success );
+	}
 }
