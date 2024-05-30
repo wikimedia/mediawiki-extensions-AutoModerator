@@ -61,6 +61,10 @@
 		"AutoModeratorLiftWingRevertRiskHostHeader": {
 			"value": "revertrisk-language-agnostic.revertrisk.wikimedia.org",
 			"description": "Hostname to use with header for requests to RevertRisk endpoint."
+		},
+		"AutoModeratorFalsePositivePageTitle": {
+			"description": "The page title of the false positive reporting page.",
+			"value": null
 		}
 	},
 	"HookHandlers": {
