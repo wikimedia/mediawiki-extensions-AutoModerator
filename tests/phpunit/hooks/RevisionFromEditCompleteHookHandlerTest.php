@@ -28,6 +28,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 
 	public function provideOnRevisionFromEditCompleteQueued() {
 		$wikiPage = $this->createMock( WikiPage::class );
+		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
 		$wikiPage->method( 'getId' )->willReturn( 1 );
 		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
 		$rev = $this->createMock( RevisionRecord::class );
@@ -90,10 +91,21 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 	}
 
 	public function provideOnRevisionFromEditCompleteNotQueued() {
+		$wikiPageMain = $this->createMock( WikiPage::class );
+		$wikiPageMain->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$wikiPageTalk = $this->createMock( WikiPage::class );
+		$wikiPageTalk->method( 'getNamespace' )->willReturn( NS_TALK );
 		return [
 			[ null, $this->createMock( RevisionRecord::class ), false, $this->createMock( UserIdentity::class ), [] ],
-			[ $this->createMock( WikiPage::class ), null, false, $this->createMock( UserIdentity::class ), [] ],
-			[ $this->createMock( WikiPage::class ), $this->createMock( RevisionRecord::class ), false, null, [] ]
+			[ $wikiPageMain, null, false, $this->createMock( UserIdentity::class ), [] ],
+			[ $wikiPageMain, $this->createMock( RevisionRecord::class ), false, null, [] ],
+			[
+				$wikiPageTalk,
+				$this->createMock( RevisionRecord::class ),
+				false,
+				$this->createMock( UserIdentity::class ),
+				[]
+			]
 		];
 	}
 
@@ -104,9 +116,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->once() )->method( 'hasWithFlags' )
-			->with( 'AutoModeratorEnableRevisionCheck', IDBAccessObject::READ_NORMAL )
-			->willReturn( false );
+		$wikiConfig->expects( $this->never() )->method( 'hasWithFlags' );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
 
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
