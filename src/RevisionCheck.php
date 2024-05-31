@@ -306,14 +306,10 @@ class RevisionCheck {
 		// REVERT_ROLLBACK 2
 		// REVERT_MANUAL 3
 		$pageUpdater->markAsRevert( 1, $this->revId, $prevRev->getId() );
-		// EDIT_NEW 1
-		// EDIT_UPDATE 2
-		// EDIT_MINOR 3
-		// EDIT_SUPPRESS_RC 4
-		// EDIT_FORCE_BOT 5
-		// EDIT_AUTOSUMMARY 6
-		// EDIT_INTERNAL 7
-		$pageUpdater->saveRevision( $comment, 2 );
+		if ( $this->wikiConfig->get( 'AutoModeratorUseEditFlagMinor' ) ) {
+			$pageUpdater->setFlags( EDIT_MINOR );
+		}
+		$pageUpdater->saveRevision( $comment, EDIT_UPDATE );
 	}
 
 	/**

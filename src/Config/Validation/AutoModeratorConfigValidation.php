@@ -23,7 +23,10 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			],
 			'AutoModeratorSkipUserGroups' => [
 				'type' => 'array'
-			]
+			],
+			'AutoModeratorUseEditFlagMinor' => [
+				'type' => 'bool',
+			],
 		];
 	}
 

@@ -72,6 +72,90 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @group Database
+	 */
+	public function testRunSuccessWithMinorEditFlagTrue() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+		$this->overrideConfigValue( 'AutoModeratorUseEditFlagMinor', true );
+		$score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => $rev->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => []
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertTrue( $success );
+		$newPage = $this->getExistingTestPage( $wikiPage['title'] );
+		$newRevisionRecord = $newPage->getRevisionRecord();
+		$this->assertTrue( $newRevisionRecord->isMinor() );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @group Database
+	 */
+	public function testRunSuccessWithMinorEditFlagFalse() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+		$this->overrideConfigValue( 'AutoModeratorUseEditFlagMinor', false );
+		$score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => $rev->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => []
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertTrue( $success );
+		$newPage = $this->getExistingTestPage( $wikiPage['title'] );
+		$newRevisionRecord = $newPage->getRevisionRecord();
+		$this->assertFalse( $newRevisionRecord->isMinor() );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
 	 */
 	public function testRunSuccessManualRevert() {
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
