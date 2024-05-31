@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"automoderator-config-validator-array-toobig": "$1 hat zu viele Elemente (maximal $2 {{PLURAL:$2|ist erlaubt|sind erlaubt}})",
+	"automoderator-config-validator-contentmodel-mismatch": "Nichtübereinstimmung des Inhaltsmodells: Konfigurationsdatei muss ein JSON-Inhaltsmodell haben, erkannt wurde $1",
+	"automoderator-config-validator-datatype-mismatch": "Als <code>$1</code> wurde <code>$2</code> erwartet, es ist jedoch <code>$3</code>",
+	"automoderator-desc": "Macht fehlerhafte Änderungen automatisch rückgängig, basierend auf der Bewertung durch ein Modell für maschinelles Lernen."
+}
