@@ -21,6 +21,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			'AutoModeratorFalsePositivePageTitle' => [
 				'type' => '?string',
 			],
+			'AutoModeratorSkipUserGroups' => [
+				'type' => 'array'
+			]
 		];
 	}
 

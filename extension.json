@@ -65,6 +65,10 @@
 		"AutoModeratorFalsePositivePageTitle": {
 			"description": "The page title of the false positive reporting page.",
 			"value": null
+		},
+		"AutoModeratorSkipUserGroups": {
+			"description": "An array of trusted user groups whose revisions will not be checked by AutoModerator.",
+			"value": [ "bot", "sysop" ]
 		}
 	},
 	"HookHandlers": {
