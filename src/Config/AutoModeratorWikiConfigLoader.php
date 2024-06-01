@@ -27,7 +27,8 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 		'AutoModeratorEnableRevisionCheck',
 		'AutoModeratorUndoSummary',
 		'AutoModeratorUndoSummaryAnon',
-		'AutoModeratorFalsePositivePageTitle'
+		'AutoModeratorFalsePositivePageTitle',
+		'AutoModeratorSkipUserGroups'
 
 	];
 

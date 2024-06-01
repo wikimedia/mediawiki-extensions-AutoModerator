@@ -261,11 +261,11 @@ class RevisionCheck {
 		}
 		// Skip sysop and bot user edits
 		// @todo: Move bot skip to check on recent changes rc_bot field
-		$skipGroups = [ 'sysop', 'bot' ];
+		$skipGroups = $this->wikiConfig->get( 'AutoModeratorSkipUserGroups' );
 		$userGroups = $this->userGroupManager->getUserGroupMemberships( $this->user );
 		foreach ( $skipGroups as $skipGroup ) {
 			if ( array_key_exists( $skipGroup, $userGroups ) ) {
-				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - sysop or bot edits" );
+				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - trusted user group edits" );
 				return false;
 			}
 		}

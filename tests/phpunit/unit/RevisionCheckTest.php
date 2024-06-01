@@ -182,7 +182,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 					'AutoModeratorUndoSummary',
 					'[[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]]'
 				],
-				[ 'AutoModeratorUndoSummaryAnon', '[[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]]' ]
+				[ 'AutoModeratorUndoSummaryAnon', '[[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]]' ],
+				[ 'AutoModeratorSkipUserGroups', [ 'bot', 'sysop' ] ]
 		] );
 		$contentHandler = $this->createMock( ContentHandler::class );
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
