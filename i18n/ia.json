@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 ha troppo de elementos (le maximo permittite es $2){{PLURAL:$2|}}",
+	"automoderator-config-validator-contentmodel-mismatch": "Modello de contento non correspondente: le file de configuration debe haber un modello de contento JSON, ma le modello detegite es $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> deberea esser <code>$2</code>, ma es <code>$3</code>",
+	"automoderator-desc": "Reverte automaticamente modificationes mal a base de scores calculate per un modello de apprendimento machinal."
+}
