@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "חוסר־התאמה במודל התוכן: לקובץ ההגדרות צריך להיות מודל התוכן JSON, וזוהה $1",
+	"automoderator-config-validator-datatype-mismatch": "מצופה שהערך של <code>$1</code> יהיה <code>$2</code>, אבל הוא <code>$3</code>",
+	"automoderator-desc": "מחזיר באופן אוטומטי עריכות גרועות על סמך דירוג ממודל למידת מכונה."
+}

@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Несовпаѓање во содржинскиот модел: податотеката со поставки мора да биде со моделот JSON, а пронајдов $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> се очекува да биде <code>$2</code>, но е <code>$3</code>",
+	"automoderator-desc": "Автоматски отповикува лоши уредувања врз основа на бодување од модел за машинско учење."
+}

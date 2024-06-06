@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Inhoudsmodel komt niet overeen: het configuratiebestand moet van een JSON-inhoudsmodel zijn, maar gedetecteerd is $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> zou <code>$2</code> moeten zijn, maar is <code>$3</code>",
+	"automoderator-desc": "Draait slechte bewerkingen automatisch terug op basis van scores uit een machine learning-model."
+}
