@@ -6,6 +6,7 @@ use AutoModerator\Config\Validation\ConfigValidatorFactory;
 use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Config\WikiPageConfigLoader;
 use MediaWiki\Config\Config;
+use MediaWiki\Config\GlobalVarConfig;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 

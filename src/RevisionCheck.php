@@ -19,10 +19,10 @@
 
 namespace AutoModerator;
 
-use CommentStoreComment;
 use Content;
 use ContentHandler;
 use Language;
+use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
 use MediaWiki\Language\RawMessage;
 use MediaWiki\MainConfigNames;
