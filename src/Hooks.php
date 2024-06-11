@@ -22,7 +22,11 @@ namespace AutoModerator;
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
 use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use MediaWiki\Config\Config;
+use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
+use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Permissions\RestrictionStore;
+use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserGroupManager;
 
 class Hooks implements
@@ -36,23 +40,42 @@ class Hooks implements
 
 	private Config $config;
 
+	private WikiPageFactory $wikiPageFactory;
+
+	private RevisionStore $revisionStore;
+
+	private ContentHandlerFactory $contentHandlerFactory;
+
+	private RestrictionStore $restrictionStore;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
 	 * @param Config $config
+	 * @param WikiPageFactory $wikiPageFactory
+	 * @param RevisionStore $revisionStore
+	 * @param ContentHandlerFactory $contentHandlerFactory
+	 * @param RestrictionStore $restrictionStore
 	 */
-	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config ) {
+	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config,
+			WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore,
+			ContentHandlerFactory $contentHandlerFactory, RestrictionStore $restrictionStore ) {
 		$this->wikiConfig = $wikiConfig;
 		$this->userGroupManager = $userGroupManager;
 		$this->config = $config;
+		$this->wikiPageFactory = $wikiPageFactory;
+		$this->revisionStore = $revisionStore;
+		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->restrictionStore = $restrictionStore;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		$handler = new RevisionFromEditCompleteHookHandler( $this->wikiConfig, $this->userGroupManager, $this->config );
-
+		$handler = new RevisionFromEditCompleteHookHandler( $this->wikiConfig,
+			$this->userGroupManager, $this->config, $this->wikiPageFactory, $this->revisionStore,
+			$this->contentHandlerFactory, $this->restrictionStore );
 		$handler->handle( $wikiPage, $rev, $originalRevId, $user, $tags );
 	}
 }

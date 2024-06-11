@@ -85,8 +85,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$expectedClient = new LiftWingClient(
 			$expectedModel,
 			$expectedLang,
-			$expectedUrl,
-			true,
+			$expectedUrl
 		);
 
 		$this->config->method( 'get' )->willReturnMap( [
@@ -94,7 +93,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorLiftWingAddHostHeader', false ],
 		] );
 
-		$client = Util::initializeLiftWingClient( true, $this->config );
+		$client = Util::initializeLiftWingClient( $this->config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -120,7 +119,6 @@ class UtilTest extends MediaWikiUnitTestCase {
 			$model,
 			$lang,
 			$expectedUrl,
-			true,
 			$expectedHostHeader
 		);
 
@@ -130,7 +128,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorLiftWingRevertRiskHostHeader', $expectedHostHeader ],
 		] );
 
-		$client = Util::initializeLiftWingClient( true, $this->config );
+		$client = Util::initializeLiftWingClient( $this->config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),

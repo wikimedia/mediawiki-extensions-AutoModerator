@@ -150,7 +150,19 @@ class RevisionCheck {
 		$this->restrictionStore = $restrictionStore;
 		$this->enforce = $enforce;
 		$this->lang = $lang;
-		$this->passedPreCheck = $this->revertPreCheck();
+		$this->passedPreCheck = $this->revertPreCheck(
+			$user,
+			$autoModeratorUser,
+			$logger,
+			$revisionStore,
+			$tags,
+			$restrictionStore,
+			$wikiPageFactory,
+			$userGroupManager,
+			$wikiConfig,
+			$revId,
+			$wikiPageId
+		);
 		$this->undoSummary = '';
 	}
 
@@ -220,34 +232,47 @@ class RevisionCheck {
 	/**
 	 * Precheck a revision; if any of the checks don't pass,
 	 * a revision won't be scored
-	 *
+	 * @param UserIdentity $user
+	 * @param User $autoModeratorUser
+	 * @param LoggerInterface $logger
+	 * @param RevisionStore $revisionStore
+	 * @param string[] $tags
+	 * @param RestrictionStore $restrictionStore
+	 * @param WikiPageFactory $wikiPageFactory
+	 * @param UserGroupManager $userGroupManager
+	 * @param Config $wikiConfig
+	 * @param int $revId
+	 * @param int $wikiPageId
 	 * @return bool
 	 */
-	public function revertPreCheck() {
+	public static function revertPreCheck( UserIdentity $user, User $autoModeratorUser, LoggerInterface $logger,
+			RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore,
+			WikiPageFactory $wikiPageFactory, UserGroupManager $userGroupManager, Config $wikiConfig,
+			int $revId, int $wikiPageId ): bool {
 		// Skip AutoModerator edits
-		if ( $this->user->equals( $this->autoModeratorUser ) ) {
-			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoMod edits" );
+		if ( $user->equals( $autoModeratorUser ) ) {
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoMod edits" );
 			return false;
 		}
-		$rev = $this->revisionStore->getRevisionById( $this->revId );
+		$rev = $revisionStore->getRevisionById( $revId );
 		$parentId = $rev->getParentId();
 		// Skip new page creations
 		if ( $parentId === null || $parentId === 0 ) {
-			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
 			return false;
 		}
-		$parentRev = $this->revisionStore->getRevisionById( $parentId );
+		$parentRev = $revisionStore->getRevisionById( $parentId );
 		// Skip reverts made to an AutoModerator bot revert or if
 		// the user reverts their own edit
 		$revertTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo', 'mw-reverted' ];
 		foreach ( $revertTags as $revertTag ) {
-			if ( in_array( $revertTag, $this->tags ) ) {
-				if ( $parentRev->getUser()->equals( $this->autoModeratorUser ) ) {
-					$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator reverts" );
+			if ( in_array( $revertTag, $tags ) ) {
+				if ( $parentRev->getUser()->equals( $autoModeratorUser ) ) {
+					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator reverts" );
 					return false;
 				}
-				if ( $parentRev->getUser()->equals( $this->user ) ) {
-					$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - own reverts" );
+				if ( $parentRev->getUser()->equals( $user ) ) {
+					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - own reverts" );
 					return false;
 				}
 			}
@@ -255,40 +280,39 @@ class RevisionCheck {
 		// Skip page moves
 		$moveTags = [ 'mw-new-redirect', 'mw-removed-redirect', 'mw-changed-redirect-target' ];
 		foreach ( $moveTags as $moveTag ) {
-			if ( in_array( $moveTag, $this->tags ) ) {
+			if ( in_array( $moveTag, $tags ) ) {
 				return false;
 			}
 		}
 		// Skip sysop and bot user edits
 		// @todo: Move bot skip to check on recent changes rc_bot field
-		$skipGroups = $this->wikiConfig->get( 'AutoModeratorSkipUserGroups' );
-		$userGroups = $this->userGroupManager->getUserGroupMemberships( $this->user );
+		$skipGroups = $wikiConfig->get( 'AutoModeratorSkipUserGroups' );
+		$userGroups = $userGroupManager->getUserGroupMemberships( $user );
 		foreach ( $skipGroups as $skipGroup ) {
 			if ( array_key_exists( $skipGroup, $userGroups ) ) {
-				$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - trusted user group edits" );
+				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - trusted user group edits" );
 				return false;
 			}
 		}
 		// Skip imported revisions
-		if ( ExternalUserNames::isExternal( $this->user->getName() ) ) {
-			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - imported edits" );
+		if ( ExternalUserNames::isExternal( $user->getName() ) ) {
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - imported edits" );
 			return false;
 		}
-		$wikiPage = $this->wikiPageFactory->newFromID( $this->wikiPageId );
+		$wikiPage = $wikiPageFactory->newFromID( $wikiPageId );
 		// Skip non-mainspace edit
 		if ( $wikiPage->getNamespace() !== NS_MAIN ) {
-			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
 			return false;
 		}
 		// Skip protected pages that only admins can edit.
 		// Automoderator should be able to revert semi-protected pages,
 		// so we won't be skipping those on pre-check.
-		if ( $this->restrictionStore->isProtected( $wikiPage )
-				&& !$this->restrictionStore->isSemiProtected( $wikiPage ) ) {
-			$this->logger->debug( "AutoModerator skip rev" . __METHOD__ . " - protected page" );
+		if ( $restrictionStore->isProtected( $wikiPage )
+				&& !$restrictionStore->isSemiProtected( $wikiPage ) ) {
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - protected page" );
 			return false;
 		}
-
 		return true;
 	}
 

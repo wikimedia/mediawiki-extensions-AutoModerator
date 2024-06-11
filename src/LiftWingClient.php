@@ -31,9 +31,6 @@ class LiftWingClient {
 	/** @var string */
 	private $lang;
 
-	/** @var bool */
-	private $passedPreCheck;
-
 	/** @var string */
 	private string $baseUrl;
 
@@ -44,12 +41,10 @@ class LiftWingClient {
 		string $model,
 		string $lang,
 		string $baseUrl,
-		bool $passedPreCheck = false,
 		string $hostHeader = null
 	) {
 		$this->model = $model;
 		$this->lang = $lang;
-		$this->passedPreCheck = $passedPreCheck;
 		$this->baseUrl = $baseUrl;
 		$this->hostHeader = $hostHeader;
 	}
@@ -62,9 +57,6 @@ class LiftWingClient {
 	 * @return array Decoded response
 	 */
 	public function get( $revId ) {
-		if ( !$this->passedPreCheck ) {
-			return [];
-		}
 		$url = $this->baseUrl . $this->model . ':predict';
 		$httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
 		$req = $httpRequestFactory->create( $url, [

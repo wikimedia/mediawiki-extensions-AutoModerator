@@ -152,11 +152,10 @@ class Util {
 	}
 
 	/**
-	 * @param bool $passedPreCheck
 	 * @param Config $config
 	 * @return LiftWingClient
 	 */
-	public static function initializeLiftWingClient( bool $passedPreCheck, Config $config ): LiftWingClient {
+	public static function initializeLiftWingClient( Config $config ): LiftWingClient {
 		$model = 'revertrisk-language-agnostic';
 		$lang = self::getLanguageConfiguration( $config );
 		$hostHeader = $config->get( 'AutoModeratorLiftWingAddHostHeader' ) ?
@@ -165,7 +164,6 @@ class Util {
 			$model,
 			$lang,
 			$config->get( 'AutoModeratorLiftWingBaseUrl' ),
-			$passedPreCheck,
 			$hostHeader );
 	}
 

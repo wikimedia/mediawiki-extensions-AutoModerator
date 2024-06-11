@@ -100,7 +100,7 @@ class CheckRevision extends Maintenance {
 		$score = [];
 		switch ( $this->getOption( 'client', 'liftwing' ) ) {
 			case 'liftwing':
-				$liftWingClient = Util::initializeLiftWingClient( $revisionCheck->passedPreCheck, $config );
+				$liftWingClient = Util::initializeLiftWingClient( $config );
 				$score = $liftWingClient->get( $rev->getId() );
 				break;
 			case 'testfail':

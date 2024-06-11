@@ -107,28 +107,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			RevisionRecord::RAW
 		)->getModel() );
 
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageId,
-			$wikiPageFactory,
-			$this->revId,
-			$this->originalRevId,
-			$user,
-			$this->tags,
-			$autoModeratorUser,
-			$revisionStore,
-			$config,
-			$wikiConfig,
-			$contentHandler,
-			$logger,
-			$userGroupManager,
-			$restrictionStore,
-			$wikiId,
-			true
-		);
-		if ( !$revisionCheck->passedPreCheck ) {
-			return true;
-		}
-		$liftWingClient = Util::initializeLiftWingClient( $revisionCheck->passedPreCheck, $config );
+		$liftWingClient = Util::initializeLiftWingClient( $config );
 		$reverted = [];
 		try {
 			$response = $liftWingClient->get( $this->revId );
@@ -137,6 +116,24 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$this->setLastError( $response['errorMessage'] );
 				return false;
 			}
+			$revisionCheck = new RevisionCheck(
+				$this->wikiPageId,
+				$wikiPageFactory,
+				$this->revId,
+				$this->originalRevId,
+				$user,
+				$this->tags,
+				$autoModeratorUser,
+				$revisionStore,
+				$config,
+				$wikiConfig,
+				$contentHandler,
+				$logger,
+				$userGroupManager,
+				$restrictionStore,
+				$wikiId,
+				true
+			);
 			$reverted = $revisionCheck->maybeRevert( $response );
 		} catch ( RuntimeException $exception ) {
 			$this->setLastError( $exception->getMessage() );

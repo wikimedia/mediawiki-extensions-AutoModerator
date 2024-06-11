@@ -18,13 +18,18 @@
 
 namespace AutoModerator\Hooks;
 
+use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
 use AutoModerator\Util;
 use Exception;
 use MediaWiki\Config\Config;
+use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 use WikiPage;
@@ -37,15 +42,33 @@ class RevisionFromEditCompleteHookHandler {
 
 	private Config $config;
 
+	private WikiPageFactory $wikiPageFactory;
+
+	private RevisionStore $revisionStore;
+
+	private ContentHandlerFactory $contentHandlerFactory;
+
+	private RestrictionStore $restrictionStore;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
 	 * @param Config $config
+	 * @param WikiPageFactory $wikiPageFactory
+	 * @param RevisionStore $revisionStore
+	 * @param ContentHandlerFactory $contentHandlerFactory
+	 * @param RestrictionStore $restrictionStore
 	 */
-	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config ) {
+	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config,
+			WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore,
+			ContentHandlerFactory $contentHandlerFactory, RestrictionStore $restrictionStore ) {
 		$this->wikiConfig = $wikiConfig;
 		$this->userGroupManager = $userGroupManager;
 		$this->config = $config;
+		$this->wikiPageFactory = $wikiPageFactory;
+		$this->revisionStore = $revisionStore;
+		$this->contentHandlerFactory = $contentHandlerFactory;
+		$this->restrictionStore = $restrictionStore;
 	}
 
 	/**
@@ -73,14 +96,27 @@ class RevisionFromEditCompleteHookHandler {
 
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
 		$userId = $user->getId();
-		if ( $autoModeratorUser->getId() === $userId ) {
-			return;
-		}
-
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$title = $wikiPage->getTitle();
 		$wikiPageId = $wikiPage->getId();
 		$revId = $rev->getId();
+		if ( $autoModeratorUser->getId() === $userId ) {
+			return;
+		}
+		if ( !RevisionCheck::revertPreCheck(
+			$user,
+			$autoModeratorUser,
+			$logger,
+			$this->revisionStore,
+			$tags,
+			$this->restrictionStore,
+			$this->wikiPageFactory,
+			$this->userGroupManager,
+			$this->wikiConfig,
+			$revId,
+			$wikiPageId ) ) {
+			return;
+		}
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
 				'wikiPageId' => $wikiPageId,
@@ -88,7 +124,7 @@ class RevisionFromEditCompleteHookHandler {
 				'originalRevId' => $originalRevId,
 				'userId' => $userId,
 				'userName' => $user->getName(),
-				'tags' => $tags
+				'tags' => $tags,
 			]
 		);
 		try {

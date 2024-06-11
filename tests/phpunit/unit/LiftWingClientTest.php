@@ -31,7 +31,7 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 		$expectedErrorMessage = "an error message";
 		$expectedHttpStatus = 404;
 
-		$client = Util::initializeLiftWingClient( true, $this->config );
+		$client = Util::initializeLiftWingClient( $this->config );
 
 		$response = $client->createErrorResponse( $expectedHttpStatus, $expectedErrorMessage, true );
 
