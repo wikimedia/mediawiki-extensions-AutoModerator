@@ -107,29 +107,22 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$this->assertEquals( $expected, $actual );
 	}
 
-	public function provideOnRevisionFromEditCompleteNotQueued() {
-		$wikiPageMain = $this->createMock( WikiPage::class );
-		$wikiPageMain->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$wikiPageTalk = $this->createMock( WikiPage::class );
-		$wikiPageTalk->method( 'getNamespace' )->willReturn( NS_TALK );
+	public function provideOnRevisionFromEditCompleteMainNotQueued() {
+		$wikiPage = $this->createMock( WikiPage::class );
+		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
+		$rev = $this->createMock( RevisionRecord::class );
+		$user = $this->createMock( UserIdentity::class );
 		return [
-			[ null, $this->createMock( RevisionRecord::class ), false, $this->createMock( UserIdentity::class ), [] ],
-			[ $wikiPageMain, null, false, $this->createMock( UserIdentity::class ), [] ],
-			[ $wikiPageMain, $this->createMock( RevisionRecord::class ), false, null, [] ],
-			[
-				$wikiPageTalk,
-				$this->createMock( RevisionRecord::class ),
-				false,
-				$this->createMock( UserIdentity::class ),
-				[]
-			]
+			[ null, $rev, false, $user, [] ],
+			[ $wikiPage, null, false, $user, [] ],
+			[ $wikiPage, $rev, false, null, [] ],
 		];
 	}
 
 	/**
-	 * @dataProvider provideOnRevisionFromEditCompleteNotQueued
+	 * @dataProvider provideOnRevisionFromEditCompleteMainNotQueued
 	 */
-	public function testOnRevisionFromEditCompleteNotQueued( $wikiPage, $rev, $originalRevId, $user, $tags ) {
+	public function testOnRevisionFromEditCompleteMainNotQueued( $wikiPage, $rev, $originalRevId, $user, $tags ) {
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->getServiceContainer()->getWikiPageFactory();
@@ -165,6 +158,63 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			$config, $wikiPageFactory, $mockRevisionStore,
 			$contentHandlerFactory, $mockRestrictionStore ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
+
+		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
+	}
+
+	public function provideOnRevisionFromEditCompleteTalkNotQueued() {
+		$wikiPage = $this->createMock( WikiPage::class );
+		$wikiPage->method( 'getNamespace' )->willReturn( NS_TALK );
+		$rev = $this->createMock( RevisionRecord::class );
+		$user = $this->createMock( UserIdentity::class );
+		return [
+			[ $wikiPage, $rev, false, $user, [] ]
+		];
+	}
+
+	/**
+	 * @dataProvider provideOnRevisionFromEditCompleteTalkNotQueued
+	 */
+	public function testOnRevisionFromEditCompleteTalkNotQueued( $wikiPage, $rev, $originalRevId, $user, $tags ) {
+		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
+		$wikiConfig = $this->createMock( WikiPageConfig::class );
+		$wikiConfig->expects( $this->atLeastOnce() )->method( 'hasWithFlags' );
+		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
+		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+			$wikiConfig,
+			new HashConfig( [
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorSkipUserGroups' => [ 'bot', 'sysop' ],
+			] )
+		);
+		$config = new HashConfig( [
+			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorSkipUserGroups' => [ 'bot', 'sysop' ],
+		] );
+		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$mockUtil = $this->createMock( Util::class );
+		$mockUser = $this->createMock( User::class );
+		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$mockRevision = $this->createMock( RevisionRecord::class );
+		$mockRevision->method( 'getId' )->willReturn( 101 );
+		$mockRevision->method( 'getParentId' )->willReturn( 100 );
+		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
+		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
+
+		( new Hooks( $autoModWikiConfig, $userGroupManager,
+			$config, $wikiPageFactory, $mockRevisionStore,
+			$contentHandlerFactory, $mockRestrictionStore ) )
+			->onRevisionFromEditComplete( $wikiPage, $mockRevision, $originalRevId, $user, $tags );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
 	}

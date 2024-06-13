@@ -84,16 +84,9 @@ class RevisionFromEditCompleteHookHandler {
 		if ( !$wikiPage || !$rev || !$user ) {
 			return;
 		}
-
-		// This is merely an optimization: we can save a lot inserts to the job queue.
-		if ( $wikiPage->getNamespace() !== 0 ) {
-			return;
-		}
-
 		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
 			return;
 		}
-
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
 		$userId = $user->getId();
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
@@ -128,7 +121,7 @@ class RevisionFromEditCompleteHookHandler {
 			]
 		);
 		try {
-			MediaWikiServices::getInstance()->getJobQueueGroup()->push( $job );
+			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $job );
 			$logger->debug( 'Job pushed for {rev}', [
 				'rev' => $revId,
 			] );
