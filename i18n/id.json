@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"BAPerdana-WMF"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Ketidakcocokan model konten: berkas konfigurasi harus memiliki model konten JSON, $1 terdeteksi",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> seharusnya <code>$2</code>, bukanlah <code>$3</code>",
+	"automoderator-desc": "Secara otomatis mengembalikan suntingan berniat tidak baik berdasarkan model pembelajaran mesin."
+}
