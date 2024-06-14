@@ -99,7 +99,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				'rev_id' => (string)$this->revId
 			] );
 			$this->setLastError( $error );
-			$this->setAllowRetries( false );
+			$this->setAllowRetries( true );
 			return false;
 		}
 		$contentHandler = $contentHandlerFactory->getContentHandler( $rev->getSlot(
