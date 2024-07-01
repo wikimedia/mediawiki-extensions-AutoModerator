@@ -27,6 +27,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			'AutoModeratorUseEditFlagMinor' => [
 				'type' => 'bool',
 			],
+			'AutoModeratorRevertTalkPageMessageEnabled' => [
+				'type' => 'bool',
+			],
 		];
 	}
 

@@ -20,18 +20,23 @@ namespace AutoModerator\Hooks;
 
 use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
+use AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob;
 use AutoModerator\Util;
 use Exception;
+use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
+use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
+use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
+use Psr\Log\LoggerInterface;
 use WikiPage;
 
 class RevisionFromEditCompleteHookHandler {
@@ -50,6 +55,10 @@ class RevisionFromEditCompleteHookHandler {
 
 	private RestrictionStore $restrictionStore;
 
+	private JobQueueGroup $jobQueueGroup;
+
+	private TitleFactory $titleFactory;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
@@ -58,17 +67,21 @@ class RevisionFromEditCompleteHookHandler {
 	 * @param RevisionStore $revisionStore
 	 * @param ContentHandlerFactory $contentHandlerFactory
 	 * @param RestrictionStore $restrictionStore
+	 * @param JobQueueGroup $jobQueueGroup
+	 * @param TitleFactory $titleFactory
 	 */
 	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config,
-			WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore,
-			ContentHandlerFactory $contentHandlerFactory, RestrictionStore $restrictionStore ) {
-		$this->wikiConfig = $wikiConfig;
-		$this->userGroupManager = $userGroupManager;
-		$this->config = $config;
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->revisionStore = $revisionStore;
-		$this->contentHandlerFactory = $contentHandlerFactory;
-		$this->restrictionStore = $restrictionStore;
+		WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore, ContentHandlerFactory $contentHandlerFactory,
+		RestrictionStore $restrictionStore, JobQueueGroup $jobQueueGroup, TitleFactory $titleFactory ) {
+			$this->wikiConfig = $wikiConfig;
+			$this->userGroupManager = $userGroupManager;
+			$this->config = $config;
+			$this->wikiPageFactory = $wikiPageFactory;
+			$this->revisionStore = $revisionStore;
+			$this->contentHandlerFactory = $contentHandlerFactory;
+			$this->restrictionStore = $restrictionStore;
+			$this->titleFactory = $titleFactory;
+			$this->jobQueueGroup = $jobQueueGroup;
 	}
 
 	/**
@@ -93,7 +106,15 @@ class RevisionFromEditCompleteHookHandler {
 		$title = $wikiPage->getTitle();
 		$wikiPageId = $wikiPage->getId();
 		$revId = $rev->getId();
-		if ( $autoModeratorUser->getId() === $userId ) {
+		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-undo', $tags ) ) {
+			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
+				$this->insertAutoModeratorSendRevertTalkPageMsgJob(
+					$title,
+					$wikiPageId,
+					$revId,
+					$autoModeratorUser,
+					$logger );
+			}
 			return;
 		}
 		if ( !RevisionCheck::revertPreCheck(
@@ -121,7 +142,7 @@ class RevisionFromEditCompleteHookHandler {
 			]
 		);
 		try {
-			MediaWikiServices::getInstance()->getJobQueueGroup()->lazyPush( $job );
+			$this->jobQueueGroup->lazyPush( $job );
 			$logger->debug( 'Job pushed for {rev}', [
 				'rev' => $revId,
 			] );
@@ -134,4 +155,52 @@ class RevisionFromEditCompleteHookHandler {
 		}
 	}
 
+	/**
+	 * @param Title $title
+	 * @param int $wikiPageId
+	 * @param int|null $revId
+	 * @param User $autoModeratorUser
+	 * @param LoggerInterface $logger
+	 * @return void
+	 */
+	public function insertAutoModeratorSendRevertTalkPageMsgJob(
+		Title $title,
+		int $wikiPageId,
+		?int $revId,
+		User $autoModeratorUser,
+		LoggerInterface $logger ): void {
+		try {
+			$parentRevisionId = $this->revisionStore->getRevisionById( $revId )->getParentId();
+			$userTitlePage = $this->titleFactory->makeTitleSafe(
+				NS_USER_TALK,
+				$this->revisionStore->getRevisionById( $parentRevisionId )->getUser()->getName()
+			);
+			$userTalkPageJob = new AutoModeratorSendRevertTalkPageMsgJob(
+				$title,
+				[
+					'wikiPageId' => $wikiPageId,
+					'revId' => $revId,
+					'userTalkPageTitle' =>
+						$userTitlePage,
+					'autoModeratorUser' => $autoModeratorUser,
+					'talkPageMessageHeader' => wfMessage( 'automoderator-wiki-revert-message-header' )
+						->params( $autoModeratorUser->getName() ),
+					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
+						->params( $title )->plain(),
+					'falsePositiveReportPageId' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" ),
+					'wikiId' => Util::getWikiID( $this->config ),
+				]
+			);
+			$this->jobQueueGroup->push( $userTalkPageJob );
+			$logger->debug( 'AutoModeratorSendRevertTalkPageMsgJob pushed for {rev}', [
+				'rev' => $revId,
+			] );
+		} catch ( Exception $e ) {
+			$msg = $e->getMessage();
+			$logger->error( 'AutoModeratorSendRevertTalkPageMsgJob push failed for {rev}: {msg}', [
+				'rev' => $revId,
+				'msg' => $msg
+			] );
+		}
+	}
 }
