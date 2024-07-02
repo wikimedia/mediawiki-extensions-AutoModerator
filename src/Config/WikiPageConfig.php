@@ -123,7 +123,7 @@ class WikiPageConfig implements Config {
 	 * @param int $flags bit field, see IDBAccessObject::READ_XXX
 	 * @return mixed Config value
 	 */
-	public function getWithFlags( $name, int $flags = 0 ) {
+	public function getWithFlags( string $name, int $flags = 0 ) {
 		$configData = $this->getConfigData( $flags );
 		if ( !array_key_exists( $name, $configData ) ) {
 			throw new ConfigException( 'Config key was not found in WikiPageConfig' );
@@ -135,7 +135,7 @@ class WikiPageConfig implements Config {
 	/**
 	 * @inheritDoc
 	 */
-	public function has( $name ) {
+	public function has( $name ): bool {
 		return $this->hasWithFlags( $name );
 	}
 
@@ -144,7 +144,7 @@ class WikiPageConfig implements Config {
 	 * @param int $flags bit field, see IDBAccessObject::READ_XXX
 	 * @return bool
 	 */
-	public function hasWithFlags( $name, int $flags = 0 ) {
+	public function hasWithFlags( $name, int $flags = 0 ): bool {
 		return array_key_exists( $name, $this->getConfigData( $flags ) );
 	}
 }

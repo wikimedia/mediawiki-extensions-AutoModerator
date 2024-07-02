@@ -21,6 +21,27 @@
 	"ConfigRegistry": {
 		"AutoModerator": "GlobalVarConfig::newInstance"
 	},
+	"attributes": {
+		"CommunityConfiguration": {
+			"Providers": {
+				"AutoModerator": {
+					"store": {
+						"type": "wikipage",
+						"args": [
+							"MediaWiki:AutoModeratorConfig.json"
+						]
+					},
+					"validator": {
+						"type": "jsonschema",
+						"args": [
+							"AutoModerator\\Config\\Validation\\AutoModeratorConfigSchema"
+						]
+					},
+					"type": "mw-config"
+				}
+			}
+		}
+	},
 	"config": {
 		"AutoModeratorEnableRevisionCheck": {
 			"description": "Enable AutoModerator automatic revision checks.",
