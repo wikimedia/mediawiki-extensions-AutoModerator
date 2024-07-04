@@ -17,15 +17,15 @@
 namespace AutoModerator\Services;
 
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
-use CommentStoreComment;
 use Content;
 use Job;
+use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use RuntimeException;
-use User;
 
 class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 
