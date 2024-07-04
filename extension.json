@@ -116,7 +116,8 @@
 		"EditFilterMergedContent": "config",
 		"JsonValidateSave": "config",
 		"PageSaveComplete": "config",
-		"RevisionFromEditComplete": "main"
+		"RevisionFromEditComplete": "main",
+		"HistoryTools": "main"
 	},
 	"JobClasses": {
 		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob",

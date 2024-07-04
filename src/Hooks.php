@@ -24,6 +24,8 @@ use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandlerFactory;
+use MediaWiki\Hook\HistoryToolsHook;
+use MediaWiki\Html\Html;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
@@ -32,7 +34,8 @@ use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
 
 class Hooks implements
-	RevisionFromEditCompleteHook
+	RevisionFromEditCompleteHook,
+	HistoryToolsHook
 {
 	use AutoModeratorConfigLoaderStaticTrait;
 
@@ -87,5 +90,36 @@ class Hooks implements
 			$this->userGroupManager, $this->config, $this->wikiPageFactory, $this->revisionStore,
 			$this->contentHandlerFactory, $this->restrictionStore, $this->jobQueueGroup, $this->titleFactory, );
 		$handler->handle( $wikiPage, $rev, $originalRevId, $user, $tags );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function onHistoryTools( $revRecord, &$links, $prevRevRecord, $userIdentity ) {
+		$revUser = $revRecord->getUser();
+		$falsePositivePageText = $this->wikiConfig->get( 'AutoModeratorFalsePositivePageTitle' );
+		if ( $revUser === null || $falsePositivePageText === null ) {
+			// Cannot see the user or the false positive page isn't configured
+			return;
+		}
+		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
+		$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageText );
+		if ( $falsePositivePageTitle === null ) {
+			// The false positive page title has been configured, but the page has not been created
+			return;
+		}
+		$falsePositivePageUrl = $falsePositivePageTitle->getFullURL();
+		// Only add the report link if it's an AutoModerator revert
+		if ( $autoModeratorUser->getId() === $revUser->getId() ) {
+			$links[] = Html::element(
+				'a',
+				[
+					'class' => 'mw-automoderator-report-link',
+					'href' => $falsePositivePageUrl,
+					'title' => wfMessage( 'automoderator-wiki-report-false-positive' )->text(),
+				],
+				wfMessage( 'automoderator-wiki-report-false-positive' )->text()
+			);
+		}
 	}
 }

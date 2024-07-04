@@ -9,6 +9,7 @@
 	"automoderator-config-validator-contentmodel-mismatch": "Error returned by validator of AutoModerator Config.",
 	"automoderator-config-validator-datatype-mismatch": "Error returned by validator of AutoModerator Config\n\n$1 is a variable name, $2 and $3 are data types.",
 	"automoderator-desc": "{{desc|name=AutoModerator|url=https://www.mediawiki.org/wiki/Extension:AutoModerator}}",
+	"automoderator-wiki-report-false-positive": "Link that will take users to the AutoModerator false positive reporting page",
 	"automoderator-wiki-revert-message-header": "Message header used by AutoModerator on a user's talk page to notify them that their edit has been reverted. $1 is the AutoModerator username",
 	"automoderator-wiki-revert-message": "Message used by AutoModerator on a user's talk page to notify them that their edit has been reverted.\n\n* $1 is the AutoModerator username\n* $2 is the revision id\n* $3 is the page title where the revision was made\n* $4 is the false positive reporting page",
 	"automoderator-wiki-revert-edit-summary": "Edit summary used by AutoModerator on a user's talk page to notify that their edit has been reverted. $1 is the page title where the revert occurred.",
