@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"春春眠眠"
+		]
+	},
+	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|トーク]]) による版 [[Special:Diff/$1|$1]] を取り消し",
+	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]]による版 [[Special:Diff/$1|$1]] を取り消し"
+}

@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Beta16"
+		]
+	},
+	"automoderator-wiki-undo-summary": "Annullata la modifica [[Special:Diff/$1|$1]] di [[Special:Contributions/$2|$2]] ([[User talk:$2|discussione]])"
+}

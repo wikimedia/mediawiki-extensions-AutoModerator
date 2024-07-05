@@ -7,5 +7,10 @@
 	"automoderator-config-validator-array-toobig": "ל{{GRAMMAR:תחילית|$1}} יש יותר מדי פריטים (מותר {{PLURAL:$2|שיהיה אחד|שיהיו $2}} לכל היותר)",
 	"automoderator-config-validator-contentmodel-mismatch": "חוסר־התאמה במודל התוכן: לקובץ ההגדרות צריך להיות מודל התוכן JSON, וזוהה $1",
 	"automoderator-config-validator-datatype-mismatch": "מצופה שהערך של <code>$1</code> יהיה <code>$2</code>, אבל הוא <code>$3</code>",
-	"automoderator-desc": "מחזיר באופן אוטומטי עריכות גרועות על סמך דירוג ממודל למידת מכונה."
+	"automoderator-desc": "מחזיר באופן אוטומטי עריכות גרועות על סמך דירוג ממודל למידת מכונה.",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 {{GENDER:$1|שחזר|שחזרה}} את העריכה שלך ==",
+	"automoderator-wiki-revert-message": "שלום! אני [[User:$1|$1]], מערכת אוטומטית שמשתמשת במודל למידת מכונה כדי לזהות ולשחזר עריכות שעלולות להיות גרועות כדי להבטיח שוויקיפדיה תישאר מדויקת ואמינה. לרוע המזל, שחזרתי אחת מה[[Special:Diff/$2|עריכות האחרונות]] שלך לדף [[$3]].\n* מכיוון שהמודל שאני משתמשת בה אינה מושלמת, היא משחזרת לפעמים עריכות טובות. אם נראה לך שהשינוי שביצעת היה מועיל, נא [[$4|לדווח על זה כאן]].\n* [[:mw:Moderator Tools/Automoderator|מידע נוסף]] על התוכנה שלי.\n* למידע נוסף על עריכה, נא לבקר ב[[Special:Homepage|דף הבית למתחילים]].",
+	"automoderator-wiki-revert-edit-summary": "הודעה על שחזור אוטומטי בדף [[$1]]",
+	"automoderator-wiki-undo-summary": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]])",
+	"automoderator-wiki-undo-summary-anon": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]]"
 }
