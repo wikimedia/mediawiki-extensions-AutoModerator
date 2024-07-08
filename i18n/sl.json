@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"automoderator-wiki-undo-summary": "razveljavitev redakcije [[Special:Diff/$1|$1]] {{gender:$2|uporabnika|uporabnice|uporabnika_ce}} [[Special:Contributions/$2|$2]] ([[User talk:$2|pogovor]])",
+	"automoderator-wiki-undo-summary-anon": "Razveljavitev redakcije [[Special:Diff/$1|$1]] uporabnika [[Special:Contributions/$2|$2]]"
+}

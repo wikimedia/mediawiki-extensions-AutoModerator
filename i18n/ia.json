@@ -7,5 +7,10 @@
 	"automoderator-config-validator-array-toobig": "$1 ha troppo de elementos (le maximo permittite es $2){{PLURAL:$2|}}",
 	"automoderator-config-validator-contentmodel-mismatch": "Modello de contento non correspondente: le file de configuration debe haber un modello de contento JSON, ma le modello detegite es $1",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> deberea esser <code>$2</code>, ma es <code>$3</code>",
-	"automoderator-desc": "Reverte automaticamente modificationes mal a base de scores calculate per un modello de apprendimento machinal."
+	"automoderator-desc": "Reverte automaticamente modificationes mal a base de scores calculate per un modello de apprendimento machinal.",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 ha revertite tu modification ==",
+	"automoderator-wiki-revert-message": "Salute! Io es [[User:$1|$1]], un systema automatisate que identifica e disface modificationes potentialmente mal per medio de un modello de apprendimento machinal, a fin de assecurar que Wikipedia remane digne de fide. Regrettabilemente, io ha debite disfacer un de tu [[Special:Diff/$2|modificationes recente]] de [[$3]].\n* Perque le modello que io emplea non es perfecte, pote occurrer que illo reverte bon modificationes. Si tu crede que le modification que tu ha apportate es constructive, per favor [[$4|signala lo hic]].\n* [[:mw:Moderator Tools/Automoderator|Lege plus]] sur mi software.\n* Pro apprender plus sur como modificar, visita tu [[Special:Homepage|Pagina de initio pro novicios]].",
+	"automoderator-wiki-revert-edit-summary": "Notification de reversion automatic sur [[$1]]",
+	"automoderator-wiki-undo-summary": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]])",
+	"automoderator-wiki-undo-summary-anon": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]]"
 }
