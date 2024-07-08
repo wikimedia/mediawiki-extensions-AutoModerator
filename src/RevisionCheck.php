@@ -24,8 +24,6 @@ use ContentHandler;
 use Language;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
-use MediaWiki\Language\RawMessage;
-use MediaWiki\MainConfigNames;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
@@ -114,6 +112,7 @@ class RevisionCheck {
 	 * @param UserGroupManager $userGroupManager
 	 * @param RestrictionStore $restrictionStore
 	 * @param Language|StubUserLang|string $lang
+	 * @param string $undoSummary
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
@@ -132,6 +131,7 @@ class RevisionCheck {
 		UserGroupManager $userGroupManager,
 		RestrictionStore $restrictionStore,
 		$lang,
+		string $undoSummary,
 		bool $enforce = false
 	) {
 		$this->wikiPageId = $wikiPageId;
@@ -163,25 +163,7 @@ class RevisionCheck {
 			$revId,
 			$wikiPageId
 		);
-		$this->undoSummary = '';
-	}
-
-	/**
-	 * @return void
-	 */
-	public function setUndoSummary() {
-		$userIsAnon = !$this->user->isRegistered();
-		$undoMessage = ( $userIsAnon && $this->config->get( MainConfigNames::DisableAnonTalk ) ) ?
-			$this->wikiConfig->get( 'AutoModeratorUndoSummaryAnon' ) :
-			$this->wikiConfig->get( 'AutoModeratorUndoSummary' );
-		$undoSummary = new RawMessage(
-			$undoMessage
-		);
-		$undoSummary->params( [
-			$this->revId,
-			$this->user->getName()
-		] );
-		$this->undoSummary = $undoSummary->inLanguage( $this->lang )->plain();
+		$this->undoSummary = $undoSummary;
 	}
 
 	/**
@@ -352,7 +334,6 @@ class RevisionCheck {
 		$pageUpdater = $wikiPage->newPageUpdater( $this->autoModeratorUser );
 		if ( $probability > Util::getRevertThreshold( $this->config ) ) {
 			$prevRev = $this->revisionStore->getPreviousRevision( $rev );
-			$this->setUndoSummary();
 			$content = $this->getUndoContent( $prevRev, $this->undoSummary, $wikiPage, $rev );
 			if ( !$content ) {
 				return [ $reverted => $this->undoSummary ];

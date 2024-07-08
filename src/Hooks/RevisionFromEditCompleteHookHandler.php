@@ -27,6 +27,7 @@ use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
@@ -131,6 +132,8 @@ class RevisionFromEditCompleteHookHandler {
 			$wikiPageId ) ) {
 			return;
 		}
+		$undoSummaryMessageKey = ( !$user->isRegistered() && $this->config->get( MainConfigNames::DisableAnonTalk ) )
+			? 'automoderator-wiki-undo-summary-anon' : 'automoderator-wiki-undo-summary';
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
 				'wikiPageId' => $wikiPageId,
@@ -139,6 +142,7 @@ class RevisionFromEditCompleteHookHandler {
 				'userId' => $userId,
 				'userName' => $user->getName(),
 				'tags' => $tags,
+				'undoSummary' => wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $user->getName() )->plain()
 			]
 		);
 		try {

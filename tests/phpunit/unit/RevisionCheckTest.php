@@ -195,6 +195,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$this->wikiPageFactory->method( 'newFromID' )->willReturn( $this->wikiPageMock );
 		$this->revisionStoreMock->method( 'getRevisionById' )->willReturn( $this->rev );
+		$this->undoSummary = "undoSummary";
 	}
 
 	protected function tearDown(): void {
@@ -222,98 +223,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers ::setUndoSummary
-	 */
-	public function testSetUndoSummaryUser() {
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
-			$this->user,
-			$this->tags,
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
-			$this->logger,
-			$this->userGroupManager,
-			$this->restrictionStore,
-			$this->lang,
-			true
-		);
-		$revisionCheck->setUndoSummary();
-		$this->assertSame(
-			'[[Special:Diff/3|3]] by [[Special:Contributions/ATestUser|ATestUser]] ([[User talk:ATestUser|talk]]',
-			$revisionCheck->undoSummary
-		);
-	}
-
-	/**
-	 * @covers ::setUndoSummary
-	 */
-	public function testSetUndoSummaryAnonUser() {
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
-			$this->anonUser,
-			$this->tags,
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
-			$this->logger,
-			$this->userGroupManager,
-			$this->restrictionStore,
-			$this->lang,
-			true
-		);
-		$revisionCheck->setUndoSummary();
-		$this->assertSame(
-			'[[Special:Diff/3|3]] by [[Special:Contributions/127.0.0.1|127.0.0.1]] ([[User talk:127.0.0.1|talk]]',
-			$revisionCheck->undoSummary
-		);
-	}
-
-	/**
-	 * @covers ::setUndoSummary
-	 */
-	public function testSetUndoSummaryAnonUserDisableTalk() {
-		$config = $this->createMock( Config::class );
-		$config->method( 'get' )->willReturnMap( [
-				[ 'AutoModeratorUsername', 'AutoModerator' ],
-				[ 'DisableAnonTalk', true ]
-		] );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
-			$this->anonUser,
-			$this->tags,
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$config,
-			$this->wikiConfig,
-			$this->contentHandler,
-			$this->logger,
-			$this->userGroupManager,
-			$this->restrictionStore,
-			$this->lang,
-			true
-		);
-		$revisionCheck->setUndoSummary();
-		$this->assertSame(
-			'[[Special:Diff/3|3]] by [[Special:Contributions/127.0.0.1|127.0.0.1]]',
-			$revisionCheck->undoSummary
-		);
-	}
-
-	/**
 	 * @covers ::maybeRevert
 	 */
 	public function testMaybeRevertBadEdit() {
@@ -333,6 +242,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary,
 			true
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
@@ -361,6 +271,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->passingScore
@@ -395,6 +306,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
@@ -430,6 +342,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
@@ -460,6 +373,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -487,6 +401,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -514,6 +429,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertTrue( $revisionCheck->passedPreCheck );
 	}
@@ -541,6 +457,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -568,6 +485,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertTrue( $revisionCheck->passedPreCheck );
 	}
@@ -595,6 +513,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -622,6 +541,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertTrue( $revisionCheck->passedPreCheck );
 	}
@@ -649,6 +569,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -676,6 +597,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -703,6 +625,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -730,6 +653,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -757,6 +681,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -783,6 +708,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertTrue( $revisionCheck->passedPreCheck );
 	}
@@ -809,6 +735,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -835,6 +762,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}
@@ -861,6 +789,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->userGroupManager,
 			$this->restrictionStore,
 			$this->lang,
+			$this->undoSummary
 		);
 		$this->assertFalse( $revisionCheck->passedPreCheck );
 	}

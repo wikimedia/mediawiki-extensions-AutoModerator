@@ -34,14 +34,6 @@
 			"description": "Username for AutoModerator system account",
 			"value": "AutoModerator"
 		},
-		"AutoModeratorUndoSummary": {
-			"description": "Edit summary for AutoModerator reverts",
-			"value": "Undo revision [[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]])"
-		},
-		"AutoModeratorUndoSummaryAnon": {
-			"description": "Edit summary for AutoModerator reverts of anonymous editors",
-			"value": "Undo revision [[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]]"
-		},
 		"AutoModeratorWikiId": {
 			"description": "language code of project used to target liftwing lang parameter",
 			"value": null

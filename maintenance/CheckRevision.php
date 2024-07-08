@@ -7,6 +7,7 @@ use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
 use Maintenance;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
@@ -62,11 +63,13 @@ class CheckRevision extends Maintenance {
 		$tags = $changeTagsStore->getTags( $dbr, null, $revId );
 		$rev = $revisionLookup->getRevisionById( $revId );
 		// Check if revision or the revision user is not null
-		if ( !$rev || !$rev->getUser() ) {
+		$userIdentity = $rev->getUser();
+		if ( !$rev || !$userIdentity ) {
 			return;
 		}
 		$wikiPageId = $rev->getPageId();
-
+		$undoSummaryMessageKey = ( !$userIdentity->isRegistered() && $config->get( MainConfigNames::DisableAnonTalk ) )
+			? 'automoderator-wiki-undo-summary-anon' : 'automoderator-wiki-undo-summary';
 		$contentHandler = $contentHandlerFactory->getContentHandler( $rev->getSlot(
 			SlotRecord::MAIN,
 			RevisionRecord::RAW
@@ -79,7 +82,7 @@ class CheckRevision extends Maintenance {
 			// @fixme: we should actually check for
 			//  $originalRevId as defined in onRevisionFromEditComplete
 			false,
-			$rev->getUser(),
+			$userIdentity,
 			$tags,
 			$autoModeratorUser,
 			$revisionStore,
@@ -90,6 +93,7 @@ class CheckRevision extends Maintenance {
 			$userGroupManager,
 			$restrictionStore,
 			$wikiId,
+			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain()
 		);
 		if ( !$revisionCheck->passedPreCheck ) {
 			$this->output( "precheck skipped rev:\t$revId\n" );

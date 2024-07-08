@@ -57,6 +57,11 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	private bool $isRetryable = true;
 
 	/**
+	 * @var string
+	 */
+	private string $undoSummary;
+
+	/**
 	 * @param Title $title
 	 * @param array $params
 	 *    - 'wikiPageId': (int)
@@ -65,6 +70,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 *    - 'userId': (int)
 	 *    - 'userName': (string)
 	 *    - 'tags': (string[])
+	 *    - 'undoSummary': (string)
 	 */
 	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'AutoModeratorFetchRevScoreJob', $title, $params );
@@ -72,6 +78,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$this->revId = $params[ 'revId' ];
 		$this->originalRevId = $params[ 'originalRevId' ];
 		$this->tags = $params[ 'tags' ];
+		$this->undoSummary = $params[ 'undoSummary' ];
 	}
 
 	public function run(): bool {
@@ -132,6 +139,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$userGroupManager,
 				$restrictionStore,
 				$wikiId,
+				$this->undoSummary,
 				true
 			);
 			$reverted = $revisionCheck->maybeRevert( $response );

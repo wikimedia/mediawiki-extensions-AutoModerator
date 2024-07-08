@@ -61,7 +61,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
@@ -100,7 +101,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
@@ -142,7 +144,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
@@ -190,7 +193,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
@@ -217,7 +221,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
@@ -244,7 +249,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
@@ -271,7 +277,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
@@ -310,7 +317,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'originalRevId' => false,
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
-				'tags' => []
+				'tags' => [],
+				'undoSummary' => "undoSummary"
 			]
 		);
 
