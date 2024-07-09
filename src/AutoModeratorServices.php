@@ -26,6 +26,7 @@ class AutoModeratorServices {
 	/**
 	 * Static version of the constructor, for nicer syntax.
 	 * @param MediaWikiServices $coreServices
+	 * @codeCoverageIgnore
 	 * @return static
 	 */
 	public static function wrap( MediaWikiServices $coreServices ) {
@@ -35,22 +36,37 @@ class AutoModeratorServices {
 	// Service aliases
 	// phpcs:disable MediaWiki.Commenting.FunctionComment
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function getAutoModeratorConfig(): Config {
 		return $this->coreServices->get( 'AutoModeratorConfig' );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function getAutoModeratorWikiConfig(): Config {
 		return $this->coreServices->get( 'AutoModeratorWikiConfigLoader' );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function getWikiPageConfig(): WikiPageConfig {
 		return $this->coreServices->get( 'AutoModeratorWikiPageConfig' );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function getWikiPageConfigLoader(): WikiPageConfigLoader {
 		return $this->coreServices->get( 'AutoModeratorWikiPageConfigLoader' );
 	}
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	public function getWikiPageConfigValidatorFactory(): ConfigValidatorFactory {
 		return $this->coreServices->get( 'AutoModeratorConfigValidatorFactory' );
 	}

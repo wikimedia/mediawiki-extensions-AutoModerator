@@ -182,12 +182,18 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		$this->isRetryable = $isRetryable;
 	}
 
-	/** @inheritDoc */
+	/**
+	 * @inheritDoc
+	 * @codeCoverageIgnore
+	 */
 	public function allowRetries(): bool {
 		return $this->isRetryable;
 	}
 
-	/** @inheritDoc */
+	/**
+	 * @inheritDoc
+	 * @codeCoverageIgnore
+	 */
 	public function ignoreDuplicates(): bool {
 		return true;
 	}

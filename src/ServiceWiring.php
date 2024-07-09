@@ -10,6 +10,9 @@ use MediaWiki\Config\GlobalVarConfig;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 
+/**
+ * @codeCoverageIgnore
+ */
 return [
 
 	'AutoModeratorConfig' => static function ( MediaWikiServices $services ): Config {
