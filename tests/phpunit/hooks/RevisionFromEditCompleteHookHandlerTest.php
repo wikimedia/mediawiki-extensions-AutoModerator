@@ -74,6 +74,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
+		$wikiConfig->method( "get" )->willReturn( true );
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			new HashConfig( [
@@ -84,6 +85,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			] )
 		);
 		$config = new HashConfig( [
+			'DisableAnonTalk' => false,
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
@@ -93,7 +95,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockUtil = $this->createMock( Util::class );
 		$mockUser = $this->createMock( User::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 
@@ -113,6 +114,11 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
 		$actual['requestId'] = 42;
+		// Disabling line too long rule as line is too long for phpcs,
+		// but we need to check for strict equality without newline breaks
+		// phpcs:disable Generic.Files.LineLength.TooLong
+		$undoSummary = "Undo revision [[Special:Diff/1000|1000]] by [[Special:Contributions/TestUser1000|TestUser1000]] ([[User talk:TestUser1000|talk]])";
+		// phpcs:enable
 		$expected = [
 			'wikiPageId' => 1,
 			'revId' => 1000,
@@ -122,7 +128,71 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'tags' => [],
 			'namespace' => NS_MAIN,
 			'title' => '',
-			'requestId' => 42
+			'requestId' => 42,
+			'undoSummary' => $undoSummary
+		];
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * @dataProvider provideOnRevisionFromEditCompleteQueued
+	 */
+	public function testOnRevisionFromEditCompleteQueuedWhenUserAnon( $wikiPage, $rev, $originalRevId, $user, $tags ) {
+		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
+		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
+		$wikiConfig = $this->createMock( WikiPageConfig::class );
+		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
+		$wikiConfig->method( "get" )->willReturn( true );
+		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+			$wikiConfig,
+			new HashConfig( [
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorSkipUserGroups' => [],
+			] )
+		);
+		$config = new HashConfig( [
+			'DisableAnonTalk' => true,
+			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorWikiId' => 'enwiki',
+		] );
+		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$mockUtil = $this->createMock( Util::class );
+		$mockUser = $this->createMock( User::class );
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$mockRevision = $this->createMock( RevisionRecord::class );
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
+		$mockTitleFactory = $this->createMock( TitleFactory::class );
+		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$mockRevision->method( 'getParentId' )->willReturn( 100 );
+		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
+
+		( new Hooks( $autoModWikiConfig, $userGroupManager,
+			$config, $wikiPageFactory, $mockRevisionStore,
+			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup, $mockTitleFactory ) )
+			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
+
+		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
+		$actual['requestId'] = 42;
+		$expected = [
+			'wikiPageId' => 1,
+			'revId' => 1000,
+			'originalRevId' => false,
+			'userId' => $user->getId(),
+			'userName' => $user->getName(),
+			'tags' => [],
+			'namespace' => NS_MAIN,
+			'title' => '',
+			'requestId' => 42,
+			'undoSummary' =>
+				"Undo revision [[Special:Diff/1000|1000]] by [[Special:Contributions/TestUser1000|TestUser1000]]"
 		];
 		$this->assertEquals( $expected, $actual );
 	}
@@ -207,6 +277,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->atLeastOnce() )->method( 'hasWithFlags' );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
+		$wikiConfig->method( "get" )->willReturn( true );
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			new HashConfig( [
@@ -217,6 +288,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			] )
 		);
 		$config = new HashConfig( [
+			'DisableAnonTalk' => true,
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
