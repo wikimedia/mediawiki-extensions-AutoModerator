@@ -24,7 +24,6 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
-use MediaWiki\User\User;
 use RuntimeException;
 
 class AutoModeratorSendRevertTalkPageMsgJob extends Job {
@@ -57,9 +56,14 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	private ?Title $userTalkPageTitle;
 
 	/**
-	 * @var User
+	 * @var int
 	 */
-	private User $autoModeratorUser;
+	private int $autoModeratorUserId;
+
+	/**
+	 * @var string
+	 */
+	private string $autoModeratorUserName;
 
 	/**
 	 * @var string
@@ -110,8 +114,8 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 * @param array $params
 	 *    - 'wikiPageId': (int)
 	 *    - 'revId': (int)
-	 *    - 'user': (User)
-	 *    - 'autoModeratorUser': (User)
+	 *    - 'autoModeratorUserId': (int)
+	 *    - 'autoModeratorUserName': (string)
 	 *    - 'userTalkPageTitle': (Title|null)
 	 *    - 'talkPageMessageHeader': (string)
 	 *    - 'talkPageMessageEditSummary': (string)
@@ -123,7 +127,8 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		$this->pageTitle = $title;
 		$this->wikiPageId = $params['wikiPageId'];
 		$this->revId = $params['revId'];
-		$this->autoModeratorUser = $params['autoModeratorUser'];
+		$this->autoModeratorUserId = $params['autoModeratorUserId'];
+		$this->autoModeratorUserName = $params['autoModeratorUserName'];
 		$this->userTalkPageTitle = $params['userTalkPageTitle'];
 		$this->talkPageMessageHeader = $params['talkPageMessageHeader'];
 		$this->talkPageMessageEditSummary = $params['talkPageMessageEditSummary'];
@@ -140,8 +145,11 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		}
 		try {
 			$services = MediaWikiServices::getInstance();
-			$autoModeratorUserNameSafe = htmlspecialchars(
-				$this->autoModeratorUser->getName() );
+			$userFactory = $services->getUserFactory();
+			$autoModeratorUser = $userFactory->newFromAnyId(
+				$this->params['autoModeratorUserId'],
+				$this->params['autoModeratorUserName']
+			);
 			$userTalkPage = $services->getWikiPageFactory()->newFromTitle( $this->userTalkPageTitle );
 			$currentContentModel = $userTalkPage->getContentModel();
 			if ( $currentContentModel !== CONTENT_MODEL_WIKITEXT ) {
@@ -154,7 +162,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				$userTalkPage->getContent(),
 				$this->talkPageMessageHeader,
 				wfMessage( 'automoderator-wiki-revert-message' )->params(
-					$autoModeratorUserNameSafe,
+					$this->autoModeratorUserName,
 					$this->revId,
 					$this->pageTitle,
 					$this->falsePositiveReportPage )->plain(),
@@ -166,7 +174,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				return false;
 			}
 			$userTalkPage
-				->newPageUpdater( $this->autoModeratorUser )
+				->newPageUpdater( $autoModeratorUser )
 				->setContent( SlotRecord::MAIN, $updatedContent )
 				->saveRevision( CommentStoreComment::newUnsavedComment( $this->talkPageMessageEditSummary ),
 			  $userTalkPage->exists() ? EDIT_UPDATE : EDIT_NEW );

@@ -139,6 +139,9 @@ class RevisionFromEditCompleteHookHandler {
 				'wikiPageId' => $wikiPageId,
 				'revId' => $revId,
 				'originalRevId' => $originalRevId,
+				// The test/production environments do not work when you pass the entire User object.
+				// To get around this, we have split the required parameters from the User object
+				// into individual parameters so that the test/production Job constructor will accept them.
 				'userId' => $userId,
 				'userName' => $user->getName(),
 				'tags' => $tags,
@@ -186,7 +189,11 @@ class RevisionFromEditCompleteHookHandler {
 					'revId' => $revId,
 					'userTalkPageTitle' =>
 						$userTitlePage,
-					'autoModeratorUser' => $autoModeratorUser,
+					// The test/production environments do not work when you pass the entire User object.
+					// To get around this, we have split the required parameters from the User object
+					// into individual parameters so that the test/production Job constructor will accept them.
+					'autoModeratorUserId' => $autoModeratorUser->getId(),
+					'autoModeratorUserName' => $autoModeratorUser->getName(),
 					'talkPageMessageHeader' => wfMessage( 'automoderator-wiki-revert-message-header' )
 						->params( $autoModeratorUser->getName() ),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )

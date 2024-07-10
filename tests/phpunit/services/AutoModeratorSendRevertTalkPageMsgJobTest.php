@@ -60,12 +60,14 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName(), "some random text" );
 		$expectedFalsePositiveReportPage = "false-positive-page";
 		$mediaWikiServices = MediaWikiServices::getInstance();
+		$autoModeratorUser = Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
+			$mediaWikiServices->getUserGroupManager() );
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
 			[
 				'wikiPageId' => $wikiPage['id'],
 				'revId' => "",
-				'autoModeratorUser' => Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
-					$mediaWikiServices->getUserGroupManager() ),
+				'autoModeratorUserId' => $autoModeratorUser->getId(),
+				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'userTalkPageTitle' => MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
 					NS_USER_TALK,
 					$user->getName()
@@ -99,12 +101,14 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName() );
 		$mediaWikiServices = MediaWikiServices::getInstance();
 		$expectedFalsePositiveReportPage = "false-positive-page";
+		$autoModeratorUser = Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
+			$mediaWikiServices->getUserGroupManager() );
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
 			[
 				'wikiPageId' => $wikiPage['id'],
 				'revId' => "",
-				'autoModeratorUser' => Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
-					$mediaWikiServices->getUserGroupManager() ),
+				'autoModeratorUserId' => $autoModeratorUser->getId(),
+				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'userTalkPageTitle' => null,
 				'talkPageMessageHeader' => "header",
 				'talkPageMessageEditSummary' => "edit summary",
@@ -136,14 +140,16 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		[ $wikiPage, $user, $title ] = $this->createTestPage();
 		$this->createNonWikiTextUserTalkPage( $user->getName(), "{}" );
 		$mediaWikiServices = MediaWikiServices::getInstance();
+		$autoModeratorUser = Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
+			$mediaWikiServices->getUserGroupManager() );
 		$expectedFalsePositiveReportPage = "false-positive-page";
 
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
 			[
 				'wikiPageId' => $wikiPage['id'],
 				'revId' => "",
-				'autoModeratorUser' => Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
-					$mediaWikiServices->getUserGroupManager() ),
+				'autoModeratorUserId' => $autoModeratorUser->getId(),
+				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'userTalkPageTitle' => MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
 					NS_USER_TALK,
 					$user->getName()
