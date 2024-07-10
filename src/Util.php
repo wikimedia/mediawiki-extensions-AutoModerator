@@ -19,9 +19,10 @@
 
 namespace AutoModerator;
 
-use FormatJson;
 use MediaWiki\Config\Config;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Json\FormatJson;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Title\TitleFactory;
@@ -29,7 +30,6 @@ use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\Utils\UrlUtils;
 use MediaWiki\WikiMap\WikiMap;
-use RequestContext;
 use RuntimeException;
 use StatusValue;
 use UnexpectedValueException;

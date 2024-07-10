@@ -19,7 +19,7 @@
 
 namespace AutoModerator;
 
-use FormatJson;
+use MediaWiki\Json\FormatJson;
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
 
