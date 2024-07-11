@@ -4,7 +4,7 @@ namespace AutoModerator\Config\Validation;
 
 use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use InvalidArgumentException;
-use Message;
+use MediaWiki\Message\Message;
 use StatusValue;
 
 /**

@@ -4,13 +4,14 @@ namespace AutoModerator\Config;
 
 use AutoModerator\Config\Validation\ConfigValidatorFactory;
 use Content;
-use FormatJson;
-use IContextSource;
-use JsonContent;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\Hook\JsonValidateSaveHook;
+use MediaWiki\Content\JsonContent;
+use MediaWiki\Content\TextContent;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Hook\EditFilterMergedContentHook;
+use MediaWiki\Json\FormatJson;
 use MediaWiki\Page\PageIdentity;
 use MediaWiki\Status\Status;
 use MediaWiki\Storage\Hook\PageSaveCompleteHook;
@@ -18,7 +19,6 @@ use MediaWiki\Title\TitleFactory;
 use MediaWiki\Title\TitleValue;
 use MediaWiki\User\User;
 use StatusValue;
-use TextContent;
 
 class ConfigHooks implements
 	EditFilterMergedContentHook,
