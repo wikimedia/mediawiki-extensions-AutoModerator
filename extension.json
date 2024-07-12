@@ -69,6 +69,10 @@
 		"AutoModeratorRevertTalkPageMessageEnabled": {
 			"value": false,
 			"description": "Enable or disable sending talk page messages informing the user that an edit has been reverted."
+		},
+		"AutoModeratorEnableBotFlag": {
+			"description": "Enable whether AutoModerator uses the Bot flag when making its edits",
+			"value": false
 		}
 	},
 	"HookHandlers": {
