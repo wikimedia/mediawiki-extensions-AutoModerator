@@ -243,12 +243,22 @@ class RevisionCheck {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
 			return false;
 		}
-		$parentRev = $revisionStore->getRevisionById( $parentId );
+
 		// Skip reverts made to an AutoModerator bot revert or if
 		// the user reverts their own edit
 		$revertTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo', 'mw-reverted' ];
+		$parentRev = $revisionStore->getRevisionById( $parentId );
 		foreach ( $revertTags as $revertTag ) {
 			if ( in_array( $revertTag, $tags ) ) {
+				if ( !$parentRev ) {
+					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - parent revision not found" );
+					return false;
+				}
+				$parentRevUser = $parentRev->getUser();
+				if ( $parentRevUser === null ) {
+					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - parent revision user is null" );
+					return false;
+				}
 				if ( $parentRev->getUser()->equals( $autoModeratorUser ) ) {
 					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator reverts" );
 					return false;
@@ -259,6 +269,7 @@ class RevisionCheck {
 				}
 			}
 		}
+
 		// Skip page moves
 		$moveTags = [ 'mw-new-redirect', 'mw-removed-redirect', 'mw-changed-redirect-target' ];
 		foreach ( $moveTags as $moveTag ) {
