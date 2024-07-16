@@ -66,12 +66,9 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 			[
 				'wikiPageId' => $wikiPage['id'],
 				'revId' => "",
+				'parentRevId' => 2,
 				'autoModeratorUserId' => $autoModeratorUser->getId(),
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
-				'userTalkPageTitle' => MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
-					NS_USER_TALK,
-					$user->getName()
-				),
 				'talkPageMessageHeader' => "header",
 				'talkPageMessageEditSummary' => "edit summary",
 				'falsePositiveReportPage' => $expectedFalsePositiveReportPage,
@@ -96,20 +93,20 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 	 * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob::run
 	 * @group Database
 	 */
-	public function testRunFailureWhenNoUserTalkPageTitleProvided() {
+	public function testRunFailureWhenNoParentRevision() {
 		[ $wikiPage, $user, $title ] = $this->createTestPage();
-		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName() );
 		$mediaWikiServices = MediaWikiServices::getInstance();
 		$expectedFalsePositiveReportPage = "false-positive-page";
 		$autoModeratorUser = Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
 			$mediaWikiServices->getUserGroupManager() );
+
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
 			[
 				'wikiPageId' => $wikiPage['id'],
 				'revId' => "",
+				'parentRevId' => 1000,
 				'autoModeratorUserId' => $autoModeratorUser->getId(),
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
-				'userTalkPageTitle' => null,
 				'talkPageMessageHeader' => "header",
 				'talkPageMessageEditSummary' => "edit summary",
 				'falsePositiveReportPage' => $expectedFalsePositiveReportPage,
@@ -119,17 +116,8 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$this->overrideConfigValue( 'AutoModeratorRevertTalkPageMessageEnabled', true );
 		$success = $job->run();
 		$this->assertFalse( $success );
-		$this->assertEquals( "Failed to retrieve user talk page title
-			for sending AutoModerator revert talk page message.", $job->getLastError() );
-
-		$currentTalkPageContent = $this->getExistingTestPage( $wikiTalkPageCreated['title'] )
-			->getContent()
-			->getWikitextForTransclusion();
-		$expectedTalkPageHeaderMessageContent = "Hello! I am [[User:AutoModerator|AutoModerator]]";
-
-		$this->assertStringNotContainsString( $expectedTalkPageHeaderMessageContent, $currentTalkPageContent );
-		$this->assertStringNotContainsString( $title, $currentTalkPageContent );
-		$this->assertStringNotContainsString( $expectedFalsePositiveReportPage, $currentTalkPageContent );
+		$this->assertEquals( "Failed to retrieve reverted revision from revision store.",
+			$job->getLastError() );
 	}
 
 	/**
@@ -148,12 +136,9 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 			[
 				'wikiPageId' => $wikiPage['id'],
 				'revId' => "",
+				'parentRevId' => 2,
 				'autoModeratorUserId' => $autoModeratorUser->getId(),
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
-				'userTalkPageTitle' => MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
-					NS_USER_TALK,
-					$user->getName()
-				),
 				'talkPageMessageHeader' => "header",
 				'talkPageMessageEditSummary' => "edit summary",
 				'falsePositiveReportPage' => $expectedFalsePositiveReportPage,

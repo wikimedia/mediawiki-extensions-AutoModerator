@@ -57,6 +57,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$rev = $this->createMock( RevisionRecord::class );
 		$rev->method( 'getUser' )->willReturn( $user = $this->createMock( User::class ) );
 		$rev->method( 'getId' )->willReturn( 1000 );
+		$rev->method( 'getParentId' )->willReturn( 999 );
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'getId' )->willReturn( 1000 );
 		$user->method( 'getName' )->willReturn( 'TestUser1000' );
@@ -320,6 +321,95 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob
 	 */
+	public function testOnRevisionFromEditCompleteTalkNotQueuedWhenMissingParentRev( $wikiPage,
+			$rev, $originalRevId, $user, $tags ) {
+			$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+			$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
+			$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+			$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+			$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
+			$wikiConfig = $this->createMock( WikiPageConfig::class );
+			$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+				$wikiConfig,
+				new HashConfig( [
+					'AutoModeratorEnableWikiConfig' => true,
+					'AutoModeratorEnableRevisionCheck' => true,
+					'AutoModeratorUsername' => 'AutoModerator',
+					'AutoModeratorRevertTalkPageMessageEnabled' => true,
+					'AutoModeratorFalsePositivePageTitle' => "",
+				] )
+			);
+			$config = new HashConfig( [
+				'DisableAnonTalk' => true,
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorWikiId' => "en"
+			] );
+			$userGroupManager = $this->createMock( UserGroupManager::class );
+			$mockTitleFactory = $this->createMock( TitleFactory::class );
+			$mockRevisionStore = $this->createMock( RevisionStore::class );
+			$mockRestrictionStore = $this->createMock( RestrictionStore::class );
+			$mockRevisionStore->method( 'getRevisionById' )->willReturn( null );
+
+			( new Hooks( $autoModWikiConfig, $userGroupManager,
+				$config, $wikiPageFactory, $mockRevisionStore,
+				$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+				$mockTitleFactory ) )
+				->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
+					Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
+			$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
+	}
+
+	/**
+	 * @dataProvider provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob
+	 */
+	public function testOnRevisionFromEditCompleteTalkNotQueuedWhenMissingParentRevId( $wikiPage,
+			$rev, $originalRevId, $user, $tags ) {
+		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
+		$wikiConfig = $this->createMock( WikiPageConfig::class );
+		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+			$wikiConfig,
+			new HashConfig( [
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorRevertTalkPageMessageEnabled' => true,
+				'AutoModeratorFalsePositivePageTitle' => "",
+			] )
+		);
+		$config = new HashConfig( [
+			'DisableAnonTalk' => true,
+			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorWikiId' => "en"
+		] );
+		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$mockTitleFactory = $this->createMock( TitleFactory::class );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
+
+		$mockRevision = $this->createMock( RevisionRecord::class );
+		$mockRevision->method( 'getParentId' )->willReturn( null );
+		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+
+		( new Hooks( $autoModWikiConfig, $userGroupManager,
+			$config, $wikiPageFactory, $mockRevisionStore,
+			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+			$mockTitleFactory ) )
+			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
+				Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
+		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
+	}
+
+	/**
+	 * @dataProvider provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob
+	 */
 	public function testOnRevisionFromEditCompleteAutoModeratorSendRevertTalkPageMsgJobQueued(
 		$wikiPage, $rev, $originalRevId, $user, $tags ) {
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
@@ -335,13 +425,11 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => true,
-				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
-				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
 				'AutoModeratorFalsePositivePageTitle' => "",
-
 			] )
 		);
 		$config = new HashConfig( [
+			'DisableAnonTalk' => true,
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
@@ -432,17 +520,17 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
 			new HashConfig( [
+				'DisableAnonTalk' => true,
 				'AutoModeratorEnableWikiConfig' => true,
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => true,
-				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
-				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
+				'AutoModeratorSkipUserGroups' => [],
 				'AutoModeratorFalsePositivePageTitle' => "",
-
 			] )
 		);
 		$config = new HashConfig( [
+			'DisableAnonTalk' => true,
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',

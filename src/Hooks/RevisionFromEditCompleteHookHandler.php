@@ -177,18 +177,22 @@ class RevisionFromEditCompleteHookHandler {
 		User $autoModeratorUser,
 		LoggerInterface $logger ): void {
 		try {
-			$parentRevisionId = $this->revisionStore->getRevisionById( $revId )->getParentId();
-			$userTitlePage = $this->titleFactory->makeTitleSafe(
-				NS_USER_TALK,
-				$this->revisionStore->getRevisionById( $parentRevisionId )->getUser()->getName()
-			);
+			$rev = $this->revisionStore->getRevisionById( $revId );
+			if ( $rev === null ) {
+				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+				return;
+			}
+			$parentRevId = $rev->getParentId();
+			if ( $parentRevId === null ) {
+				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
+				return;
+			}
 			$userTalkPageJob = new AutoModeratorSendRevertTalkPageMsgJob(
 				$title,
 				[
 					'wikiPageId' => $wikiPageId,
 					'revId' => $revId,
-					'userTalkPageTitle' =>
-						$userTitlePage,
+					'parentRevId' => $parentRevId,
 					// The test/production environments do not work when you pass the entire User object.
 					// To get around this, we have split the required parameters from the User object
 					// into individual parameters so that the test/production Job constructor will accept them.
