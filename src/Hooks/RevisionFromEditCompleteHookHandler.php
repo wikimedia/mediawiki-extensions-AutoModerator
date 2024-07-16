@@ -86,16 +86,16 @@ class RevisionFromEditCompleteHookHandler {
 	}
 
 	/**
-	 * @param WikiPage $wikiPage
-	 * @param RevisionRecord $rev
+	 * @param WikiPage|null $wikiPage
+	 * @param RevisionRecord|null $rev
 	 * @param int|false $originalRevId
-	 * @param UserIdentity $user
+	 * @param UserIdentity|null $user
 	 * @param string[] &$tags
 	 */
 	public function handle(
 		$wikiPage, $rev, $originalRevId, $user, &$tags
 	) {
-		if ( !$wikiPage || !$rev || !$user ) {
+		if ( !$wikiPage || $rev === null || $user === null ) {
 			return;
 		}
 		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
