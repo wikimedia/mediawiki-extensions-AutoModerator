@@ -17,15 +17,20 @@
 namespace AutoModerator\Services;
 
 use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
+use AutoModerator\OresScoreFetcher;
 use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
 use Job;
+use MediaWiki\Config\Config;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 class AutoModeratorFetchRevScoreJob extends Job {
 
@@ -62,6 +67,11 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	private string $undoSummary;
 
 	/**
+	 * @var ?array
+	 */
+	private $scores;
+
+	/**
 	 * @param Title $title
 	 * @param array $params
 	 *    - 'wikiPageId': (int)
@@ -71,6 +81,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 *    - 'userName': (string)
 	 *    - 'tags': (string[])
 	 *    - 'undoSummary': (string)
+	 *    - 'scores': (?array)
 	 */
 	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'AutoModeratorFetchRevScoreJob', $title, $params );
@@ -79,6 +90,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$this->originalRevId = $params[ 'originalRevId' ];
 		$this->tags = $params[ 'tags' ];
 		$this->undoSummary = $params[ 'undoSummary' ];
+		$this->scores = $params[ 'scores' ];
 	}
 
 	public function run(): bool {
@@ -90,16 +102,18 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$restrictionStore = $services->getRestrictionStore();
 		$config = $services->getMainConfig();
 		$wikiConfig = $this->getAutoModeratorWikiConfig();
+		$connectionProvider = $services->getConnectionProvider();
+
 		$userFactory = $services->getUserFactory();
 		$permissionManager = $services->getPermissionManager();
 		$user = $userFactory->newFromAnyId(
 			$this->params['userId'],
 			$this->params['userName']
 		);
-
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
 		$wikiId = Util::getWikiID( $config );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
+
 		$rev = $revisionStore->getRevisionById( $this->revId );
 		if ( $rev === null ) {
 			$message = 'rev rev_id not found';
@@ -115,13 +129,26 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			RevisionRecord::RAW
 		)->getModel() );
 
-		$liftWingClient = Util::initializeLiftWingClient( $config );
-		$reverted = [];
 		try {
-			$response = $liftWingClient->get( $this->revId );
-			$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
-			if ( isset( $response['errorMessage'] ) ) {
-				$this->setLastError( $response['errorMessage'] );
+			$oresModels = $config->get( 'OresModels' );
+			$response = false;
+			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) &&
+				array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
+				$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ] ) {
+				// ORES is loaded and the model is enabled, fetching the score from there
+				$response = $this->getOresRevScore( $connectionProvider, $config, $wikiId, $logger );
+			}
+			if ( !$response ) {
+				// ORES is not loaded, or a score couldn't be retrieved from the extension
+				$response = $this->getLiftWingRevScore( $config );
+			}
+			if ( !$response ) {
+				$message = 'score could not be retrieved for rev_id';
+				$error = strtr( $message, [
+					'rev_id' => (string)$this->revId
+				] );
+				$this->setLastError( $error );
+				$this->setAllowRetries( true );
 				return false;
 			}
 			$revisionCheck = new RevisionCheck(
@@ -144,6 +171,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				true
 			);
 			$reverted = $revisionCheck->maybeRevert( $response );
+
 		} catch ( RuntimeException $exception ) {
 			$this->setLastError( $exception->getMessage() );
 			return false;
@@ -162,7 +190,70 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'Not reverted' ) {
 			return true;
 		}
+
 		return false;
+	}
+
+	/**
+	 * Obtains a score from LiftWing API
+	 * @param Config $config
+	 * @return array|false
+	 */
+	private function getLiftWingRevScore( Config $config ) {
+		$liftWingClient = Util::initializeLiftWingClient( $config );
+		$response = $liftWingClient->get( $this->revId );
+		$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
+		if ( isset( $response['errorMessage'] ) ) {
+			$this->setLastError( $response['errorMessage'] );
+			return false;
+		}
+		return $response;
+	}
+
+	/**
+	 * Obtains a score from ORES classification table
+	 * @param IConnectionProvider $connectionProvider
+	 * @param Config $config
+	 * @param string $wikiId
+	 * @param LoggerInterface $logger
+	 * @return array|false
+	 */
+	private function getOresRevScore( IConnectionProvider $connectionProvider, Config $config, string $wikiId,
+		LoggerInterface $logger ) {
+		if ( $this->scores ) {
+			foreach ( $this->scores as $rev_id => $score ) {
+				if ( $rev_id === $this->revId && array_key_exists( 'revertrisklanguageagnostic', $score ) ) {
+					return [
+						'output' => [
+							'probabilities' => [
+								'true' => $score[ 'revertrisklanguageagnostic' ][ 'score' ][ 'probability' ][ 'true' ]
+							]
+						]
+					];
+				}
+			}
+		}
+		// If there where no score returns, we should try to fetch the score from the database
+		$oresScoreFetcher = new OresScoreFetcher( $connectionProvider );
+		$logger->debug( 'Score was not found in scores hook array; getting it from ORES DB' );
+		$oresDbRow = $oresScoreFetcher->getOresScore( $this->revId );
+		if ( !$oresDbRow ) {
+			// Database query did not find revision score, returning false
+			return false;
+		}
+		// Creating a response that is similar to the one LiftWing API returns
+		// Omitting some unused information
+		return [
+			'model_name' => $oresDbRow->oresm_name,
+			'model_version' => $oresDbRow->oresm_version,
+			'wiki_db' => $wikiId,
+			'revision_id' => $this->revId,
+			'output' => [
+				'probabilities' => [
+					'true' => $oresDbRow->oresc_probability
+				],
+			],
+		];
 	}
 
 	private function setAllowRetries( bool $isRetryable ) {

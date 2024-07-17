@@ -8,18 +8,20 @@ use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
 use Exception;
 use JobQueueGroup;
+use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
-use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
-use MediaWiki\Registration\ExtensionRegistry;
+use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserGroupManager;
+use ORES\Hooks\ORESRecentChangeScoreSavedHook;
+use Wikimedia\Rdbms\IConnectionProvider;
 
-class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHook {
+class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSavedHook {
 
 	private Config $wikiConfig;
 
@@ -35,7 +37,11 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 
 	private JobQueueGroup $jobQueueGroup;
 
+	private ChangeTagsStore $changeTagsStore;
+
 	private PermissionManager $permissionManager;
+
+	private IConnectionProvider $connectionProvider;
 
 	/**
 	 * @param Config $wikiConfig
@@ -45,7 +51,9 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 	 * @param RevisionStore $revisionStore
 	 * @param RestrictionStore $restrictionStore
 	 * @param JobQueueGroup $jobQueueGroup
+	 * @param ChangeTagsStore $changeTagsStore
 	 * @param PermissionManager $permissionManager
+	 * @param IConnectionProvider $connectionProvider
 	 */
 	public function __construct(
 		Config $wikiConfig,
@@ -55,43 +63,53 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		RevisionStore $revisionStore,
 		RestrictionStore $restrictionStore,
 		JobQueueGroup $jobQueueGroup,
-		PermissionManager $permissionManager
+		ChangeTagsStore $changeTagsStore,
+		PermissionManager $permissionManager,
+		IConnectionProvider $connectionProvider
 	) {
-		$this->wikiConfig = $wikiConfig;
-		$this->userGroupManager = $userGroupManager;
-		$this->config = $config;
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->revisionStore = $revisionStore;
-		$this->restrictionStore = $restrictionStore;
-		$this->jobQueueGroup = $jobQueueGroup;
-		$this->permissionManager = $permissionManager;
+			$this->wikiConfig = $wikiConfig;
+			$this->userGroupManager = $userGroupManager;
+			$this->config = $config;
+			$this->wikiPageFactory = $wikiPageFactory;
+			$this->revisionStore = $revisionStore;
+			$this->restrictionStore = $restrictionStore;
+			$this->jobQueueGroup = $jobQueueGroup;
+			$this->changeTagsStore = $changeTagsStore;
+			$this->permissionManager = $permissionManager;
+			$this->connectionProvider = $connectionProvider;
 	}
 
 	/**
-	 * @inheritDoc
+	 * @param RevisionRecord|null $revision
+	 * @param array $scores
 	 */
-	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		$oresModels = $this->config->get( 'OresModels' );
-
-		if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) &&
-			array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
-			$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ] ) {
-			// ORES is loaded and model is enabled; not calling the job from this hook handler
-			return;
-		}
-
-		if ( !$wikiPage || !$rev || !$user ) {
+	public function onORESRecentChangeScoreSavedHook( $revision, $scores ) {
+		if ( !$revision || !$scores ) {
 			return;
 		}
 		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
 			return;
 		}
+		$user = $revision->getUser();
+		if ( !$user ) {
+			return;
+		}
+		$wikiPageId = $revision->getPageId();
+		if ( !$wikiPageId ) {
+			return;
+		}
+		$wikiPage = $this->wikiPageFactory->newFromID( $wikiPageId );
+		if ( !$wikiPage ) {
+			return;
+		}
+
+		$title = $wikiPage->getTitle();
+		$revId = $revision->getId();
+		$dbr = $this->connectionProvider->getReplicaDatabase();
+		$tags = $this->changeTagsStore->getTags( $dbr, null, $revId, null );
+		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
 		$userId = $user->getId();
-		$logger = LoggerFactory::getInstance( 'AutoModerator' );
-		$title = $wikiPage->getTitle();
-		$wikiPageId = $wikiPage->getId();
-		$revId = $rev->getId();
 		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-undo', $tags ) ) {
 			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
 				$talkPageMessageSender = new TalkPageMessageSender( $this->revisionStore, $this->config,
@@ -117,11 +135,12 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		}
 		$undoSummaryMessageKey = ( !$user->isRegistered() && $this->config->get( MainConfigNames::DisableAnonTalk ) )
 			? 'automoderator-wiki-undo-summary-anon' : 'automoderator-wiki-undo-summary';
+
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
 				'wikiPageId' => $wikiPageId,
 				'revId' => $revId,
-				'originalRevId' => $originalRevId,
+				'originalRevId' => false,
 				// The test/production environments do not work when you pass the entire User object.
 				// To get around this, we have split the required parameters from the User object
 				// into individual parameters so that the test/production Job constructor will accept them.
@@ -129,7 +148,8 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 				'userName' => $user->getName(),
 				'tags' => $tags,
 				'undoSummary' => wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $user->getName() )->plain(),
-				'scores' => null
+				// The score will be evaluated in the job to see whether the revision should be reverted or not
+				'scores' => $scores
 			]
 		);
 		try {

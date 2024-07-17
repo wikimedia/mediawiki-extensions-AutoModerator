@@ -130,6 +130,21 @@
 				"JobQueueGroup",
 				"PermissionManager"
 			]
+		},
+		"ores": {
+			"class": "AutoModerator\\Hooks\\ORESRecentChangeScoreSavedHookHandler",
+			"services": [
+				"AutoModeratorWikiConfigLoader",
+				"UserGroupManager",
+				"MainConfig",
+				"WikiPageFactory",
+				"RevisionStore",
+				"RestrictionStore",
+				"JobQueueGroup",
+				"ChangeTagsStore",
+				"PermissionManager",
+				"ConnectionProvider"
+			]
 		}
 	},
 	"Hooks": {
@@ -137,7 +152,8 @@
 		"JsonValidateSave": "config",
 		"PageSaveComplete": "config",
 		"RevisionFromEditComplete": "revisionfromedit",
-		"HistoryTools": "main"
+		"HistoryTools": "main",
+		"ORESRecentChangeScoreSavedHook": "ores"
 	},
 	"JobClasses": {
 		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob",

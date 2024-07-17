@@ -90,6 +90,9 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUtil = $this->createMock( Util::class );
@@ -127,7 +130,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'namespace' => NS_MAIN,
 			'title' => '',
 			'requestId' => 42,
-			'undoSummary' => $undoSummary
+			'undoSummary' => $undoSummary,
+			'scores' => null
 		];
 		$this->assertEquals( $expected, $actual );
 	}
@@ -156,6 +160,9 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUtil = $this->createMock( Util::class );
@@ -189,7 +196,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'title' => '',
 			'requestId' => 42,
 			'undoSummary' =>
-				"Undo revision [[Special:Diff/1000|1000]] by [[Special:Contributions/TestUser1000|TestUser1000]]"
+				"Undo revision [[Special:Diff/1000|1000]] by [[Special:Contributions/TestUser1000|TestUser1000]]",
+			'scores' => null
 		];
 		$this->assertEquals( $expected, $actual );
 	}
@@ -228,6 +236,9 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUtil = $this->createMock( Util::class );
@@ -286,6 +297,9 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUtil = $this->createMock( Util::class );
@@ -334,7 +348,10 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableWikiConfig' => true,
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorWikiId' => "en"
+				'AutoModeratorWikiId' => "en",
+				'OresModels' => [
+					'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+				]
 			] );
 			$userGroupManager = $this->createMock( UserGroupManager::class );
 			$mockRevisionStore = $this->createMock( RevisionStore::class );
@@ -375,12 +392,14 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => "en"
+			'AutoModeratorWikiId' => "en",
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRevision->method( 'getParentId' )->willReturn( null );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
@@ -419,12 +438,14 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => "en"
+			'AutoModeratorWikiId' => "en",
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
@@ -464,12 +485,14 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => "en"
+			'AutoModeratorWikiId' => "en",
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 		$tags = [];
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
@@ -510,7 +533,10 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => "en"
+			'AutoModeratorWikiId' => "en",
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUser = $this->createMock( User::class );
@@ -522,6 +548,60 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockPermissionManager ) )
+			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
+				$mockUser, $tags );
+		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
+	}
+
+	/**
+	 * @dataProvider provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob
+	 * @throws \JobQueueError
+	 */
+	public function testOnRevisionFromEditCompleteNotQueuedORESEnabled(
+		$wikiPage, $rev, $originalRevId, $user, $tags ) {
+		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
+
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
+		] );
+		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$wikiConfig = $this->createMock( WikiPageConfig::class );
+		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+			$wikiConfig,
+			new HashConfig( [
+				'DisableAnonTalk' => true,
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorRevertTalkPageMessageEnabled' => true,
+				'AutoModeratorSkipUserRights' => [],
+				'AutoModeratorFalsePositivePageTitle' => "",
+			] )
+		);
+		$config = new HashConfig( [
+			'DisableAnonTalk' => true,
+			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorWikiId' => "en",
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			]
+		] );
+		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$mockUser = $this->createMock( User::class );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
+
+		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
+
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
+			$config, $wikiPageFactory, $mockRevisionStore,
+			$mockRestrictionStore, $jobQueueGroup, $mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				$mockUser, $tags );
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );

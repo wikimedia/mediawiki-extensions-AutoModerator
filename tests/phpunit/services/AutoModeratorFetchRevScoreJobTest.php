@@ -37,6 +37,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testRunSuccess() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
@@ -62,7 +65,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 
@@ -78,6 +82,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	public function testRunSuccessWithMinorEditFlagTrue() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideConfigValue( 'AutoModeratorUseEditFlagMinor', true );
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',
@@ -102,7 +109,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 
@@ -121,6 +129,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	public function testRunSuccessWithMinorEditFlagFalse() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideConfigValue( 'AutoModeratorUseEditFlagMinor', false );
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',
@@ -145,7 +156,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 
@@ -164,6 +176,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	public function testRunSuccessWithBotFlagTrue() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideConfigValue( 'AutoModeratorEnableBotFlag', true );
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',
@@ -188,7 +203,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 		$success = $job->run();
@@ -207,6 +223,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 * @group Database
 	 */
 	public function testRunSuccessWithBotFlagFalse() {
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideConfigValue( 'AutoModeratorEnableBotFlag', false );
 		$score = [
@@ -233,7 +252,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 		$success = $job->run();
@@ -251,6 +271,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
 	 */
 	public function testRunSuccessManualRevert() {
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
 		$user = $this->getTestUser()->getUserIdentity();
 		$this->editPage( $this->getExistingTestPage( $wikiPage[ 'title' ] ), 'Content' );
@@ -284,7 +307,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 
@@ -298,6 +322,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 * when there is a bad request response returns false
 	 */
 	public function testRunWithBadRequestReturnsFailure() {
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
 		$score = [];
@@ -312,7 +339,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 
@@ -326,6 +354,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 * when there is an unexpected 5xx response returns false
 	 */
 	public function testRunWithUnexpectedExceptionReturnsFalse() {
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
 		$score = [];
@@ -340,7 +371,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 
@@ -354,6 +386,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 * when there is a server timeout 504 response returns false
 	 */
 	public function testRunWithServerTimeoutReturnsFalse() {
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
 		$score = [];
@@ -368,7 +403,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null,
 			]
 		);
 
@@ -382,6 +418,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 * when the revision lookup fails
 	 */
 	public function testRunWithBadRevisionId() {
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
 		$score = [
@@ -408,12 +447,201 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary"
+				'undoSummary' => "undoSummary",
+				'scores' => null
 			]
 		);
 
 		$success = $job->run();
 
 		$this->assertFalse( $success );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getOresRevScore
+	 * Tests fetching the score from ORES extension. Will get scores from the parameters
+	 */
+	public function testRunWithORESExtensionWithScoresSuccess() {
+		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
+
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
+		] );
+
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+
+		$score = [];
+		$score[ $rev->getId() ] = [
+				'revertrisklanguageagnostic' => [
+					'score' => [
+						'prediction' => true,
+						'probability' => [
+							'true' => 0.9987422,
+							'false' => 0.00012578,
+						]
+					]
+				]
+			];
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'undoSummary' => "undoSummary",
+				'scores' => $score
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertTrue( $success );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getOresRevScore
+	 * @covers AutoModerator\OresScoreFetcher::getOresScore
+	 * Tests fetching the score from ORES extension. Will get scores from a DB query
+	 */
+	public function testRunWithORESExtensionWithNoScoresSuccess() {
+		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
+
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
+		] );
+
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+
+		$this->getDb()->newInsertQueryBuilder()
+				->insertInto( 'ores_classification' )
+				->row( [
+					'oresc_model' => $this->ensureOresModel( 'revertrisklanguageagnostic' ),
+					'oresc_class' => 1,
+					'oresc_probability' => 0.945,
+					'oresc_is_predicted' => 1,
+					'oresc_rev' => $rev->getId(),
+				] )
+				->caller( __METHOD__ )
+				->execute();
+
+		$count = $this->getDb()->newSelectQueryBuilder()
+			->select( [ '*' ] )
+			->from( 'ores_classification' )
+			->join( 'ores_model', null, [ 'oresm_id = oresc_model' ] )
+			->where( [ 'oresc_rev' => $rev->getId(), 'oresm_name' => 'revertrisklanguageagnostic' ] )
+			->caller( __METHOD__ )
+			->fetchRowCount();
+
+		$this->assertSame( 1, $count );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'undoSummary' => "undoSummary",
+				'scores' => null
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertTrue( $success );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getOresRevScore
+	 * @covers AutoModerator\OresScoreFetcher::getOresScore
+	 * Tests fetching the score from ORES extension. There are no scores in the job params
+	 * or in the database. Resorting to Liftwing API query
+	 */
+	public function testRunWithORESExtensionNoORESDataSuccess() {
+		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
+		$this->overrideConfigValue( 'OresModels', [
+			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+		] );
+
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+
+		// Inserting a row that does not link to the revision we just created
+		// This will force the job to run the LiftWing command
+		$this->getDb()->newInsertQueryBuilder()
+				->insertInto( 'ores_classification' )
+				->row( [
+					'oresc_model' => $this->ensureOresModel( 'revertrisklanguageagnostic' ),
+					'oresc_class' => 1,
+					'oresc_probability' => 0.998,
+					'oresc_is_predicted' => 1,
+					'oresc_rev' => 9012,
+				] )
+				->caller( __METHOD__ )
+				->execute();
+
+		$score = [
+			'model_name' => 'revertrisklanguageagnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => 24601,
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'undoSummary' => "undoSummary",
+				'scores' => [ $score ]
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertTrue( $success );
+	}
+
+	private function ensureOresModel( $name ) {
+		$modelInfo = [
+			'oresm_name' => $name,
+			'oresm_version' => '0.0.1',
+			'oresm_is_current' => 1
+		];
+		$model = $this->getDb()->newSelectQueryBuilder()
+			->select( 'oresm_id' )
+			->from( 'ores_model' )
+			->where( $modelInfo )
+			->fetchField();
+		if ( $model ) {
+			return $model;
+		}
+
+		$this->getDb()->newInsertQueryBuilder()
+			->insertInto( 'ores_model' )
+			->row( $modelInfo )
+			->caller( __METHOD__ )
+			->execute();
+
+		return $this->getDb()->insertId();
 	}
 }
