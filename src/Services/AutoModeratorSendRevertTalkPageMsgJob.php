@@ -85,34 +85,19 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 */
 	private string $wikiId;
 
-	/**
-	 * @var string
-	 */
-	private string $NOT_WIKI_TEXT_ERROR_MESSAGE = 'Failed to send AutoModerator revert talk page message
-	due to content model not being wikitext the current content model is: ';
+	private const NOT_WIKI_TEXT_ERROR_MESSAGE = 'Failed to send AutoModerator revert talk page message '
+		. 'due to content model not being wikitext the current content model is: ';
 
-	/**
-	 * @var string
-	 */
-	private string $NO_USER_TALK_PAGE_ERROR_MESSAGE = "Failed to retrieve user talk page title
-			for sending AutoModerator revert talk page message.";
+	private const NO_USER_TALK_PAGE_ERROR_MESSAGE = 'Failed to retrieve user talk page title '
+		. 'for sending AutoModerator revert talk page message.';
 
-	/**
-	 * @var string
-	 */
-	private string $NO_PARENT_REVISION_FOUND = "Failed to retrieve reverted revision from revision store.";
+	private const NO_PARENT_REVISION_FOUND = 'Failed to retrieve reverted revision from revision store.';
 
-	/**
-	 * @var string
-	 */
-	private string $NO_CONTENT_TALK_PAGE_ERROR_MESSAGE = "Failed to create AutoModerator revert message
-	content for talk page.";
+	private const NO_CONTENT_TALK_PAGE_ERROR_MESSAGE = 'Failed to create AutoModerator revert message '
+		. 'content for talk page';
 
-	/**
-	 * @var string
-	 */
-	private string $CREATE_TALK_PAGE_ERROR_MESSAGE = "Failed to create message for sending AutoModerator revert
-	 talk page message.";
+	private const CREATE_TALK_PAGE_ERROR_MESSAGE = 'Failed to create message for sending AutoModerator revert '
+		. 'talk page message.';
 
 	/**
 	 * @param Title $title
@@ -149,7 +134,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 			$revisionStore = $services->getRevisionStore();
 			$parentRevision = $revisionStore->getRevisionById( $this->parentRevId );
 			if ( !$parentRevision ) {
-				$this->setLastError( $this->NO_PARENT_REVISION_FOUND );
+				$this->setLastError( self::NO_PARENT_REVISION_FOUND );
 				$this->setAllowRetries( false );
 				return false;
 			}
@@ -158,7 +143,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				$parentRevision->getUser()->getName()
 			);
 			if ( !$userTalkPageTitle ) {
-				$this->setLastError( $this->NO_USER_TALK_PAGE_ERROR_MESSAGE );
+				$this->setLastError( self::NO_USER_TALK_PAGE_ERROR_MESSAGE );
 				$this->setAllowRetries( false );
 				return false;
 			}
@@ -169,8 +154,8 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 			$userTalkPage = $services->getWikiPageFactory()->newFromTitle( $userTalkPageTitle );
 			$currentContentModel = $userTalkPage->getContentModel();
 			if ( $currentContentModel !== CONTENT_MODEL_WIKITEXT ) {
-				$logger->error( $this->NOT_WIKI_TEXT_ERROR_MESSAGE . $currentContentModel );
-				$this->setLastError( $this->NOT_WIKI_TEXT_ERROR_MESSAGE . $currentContentModel );
+				$logger->error( self::NOT_WIKI_TEXT_ERROR_MESSAGE . $currentContentModel );
+				$this->setLastError( self::NOT_WIKI_TEXT_ERROR_MESSAGE . $currentContentModel );
 				$this->setAllowRetries( false );
 				return false;
 			}
@@ -185,8 +170,8 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				$userTalkPageTitle,
 				$currentContentModel );
 			if ( !$updatedContent ) {
-				$logger->error( $this->NO_CONTENT_TALK_PAGE_ERROR_MESSAGE );
-				$this->setLastError( $this->NO_CONTENT_TALK_PAGE_ERROR_MESSAGE );
+				$logger->error( self::NO_CONTENT_TALK_PAGE_ERROR_MESSAGE );
+				$this->setLastError( self::NO_CONTENT_TALK_PAGE_ERROR_MESSAGE );
 				return false;
 			}
 			$userTalkPage
@@ -195,8 +180,8 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				->saveRevision( CommentStoreComment::newUnsavedComment( $this->talkPageMessageEditSummary ),
 			  $userTalkPage->exists() ? EDIT_UPDATE : EDIT_NEW );
 		} catch ( RuntimeException $e ) {
-			$this->setLastError( $this->CREATE_TALK_PAGE_ERROR_MESSAGE );
-			$logger->error( $this->CREATE_TALK_PAGE_ERROR_MESSAGE );
+			$this->setLastError( self::CREATE_TALK_PAGE_ERROR_MESSAGE );
+			$logger->error( self::CREATE_TALK_PAGE_ERROR_MESSAGE );
 			return false;
 		}
 		return true;
@@ -227,13 +212,16 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 * @param string $headerRawMessage
 	 * @param string $messageContent
 	 * @param Title $userTalkPageTitle
+	 * @param string $contentModel
 	 * @return Content|null
 	 */
-	private function createTalkPageMessageContent( ?Content $currentContent,
-												   string $headerRawMessage,
-												   string $messageContent,
-												   Title $userTalkPageTitle,
-												   string $contentModel ): ?Content {
+	private function createTalkPageMessageContent(
+		?Content $currentContent,
+		string $headerRawMessage,
+		string $messageContent,
+		Title $userTalkPageTitle,
+		string $contentModel
+	): ?Content {
 		if ( $currentContent ) {
 			$newLine = "\n";
 			return $currentContent->getContentHandler()->makeContent(

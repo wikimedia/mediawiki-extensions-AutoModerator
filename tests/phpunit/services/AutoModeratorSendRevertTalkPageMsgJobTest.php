@@ -149,8 +149,10 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$this->overrideConfigValue( 'AutoModeratorRevertTalkPageMessageEnabled', true );
 		$success = $job->run();
 		$this->assertFalse( $success );
-		$this->assertEquals( "Failed to send AutoModerator revert talk page message
-	due to content model not being wikitext the current content model is: $expectedContentModel",
-			$job->getLastError() );
+		$this->assertEquals(
+			"Failed to send AutoModerator revert talk page message due to content model not being wikitext "
+			. "the current content model is: $expectedContentModel",
+			$job->getLastError()
+		);
 	}
 }
