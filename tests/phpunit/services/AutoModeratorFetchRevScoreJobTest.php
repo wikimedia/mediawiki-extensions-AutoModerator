@@ -159,6 +159,96 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @group Database
+	 */
+	public function testRunSuccessWithBotFlagTrue() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+		$this->overrideConfigValue( 'AutoModeratorEnableBotFlag', true );
+		$score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => $rev->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'undoSummary' => "undoSummary"
+			]
+		);
+		$success = $job->run();
+
+		$newPage = $this->getExistingTestPage( $wikiPage['title'] );
+		$newRevisionRecord = $newPage->getRevisionRecord();
+		$isBotChange = $this->db->newSelectQueryBuilder()->select( 'rc_bot' )
+			->from( 'recentchanges' )
+			->where( $this->db->expr( 'rc_this_oldid', '=', $newRevisionRecord->getId() ) )->fetchRow();
+		$this->assertTrue( $success );
+		$this->assertSame( '1', $isBotChange->rc_bot );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @group Database
+	 */
+	public function testRunSuccessWithBotFlagFalse() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+		$this->overrideConfigValue( 'AutoModeratorEnableBotFlag', false );
+		$score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => $rev->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage[ 'id' ],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'undoSummary' => "undoSummary"
+			]
+		);
+		$success = $job->run();
+
+		$newPage = $this->getExistingTestPage( $wikiPage['title'] );
+		$newRevisionRecord = $newPage->getRevisionRecord();
+		$isBotChange = $this->db->newSelectQueryBuilder()->select( 'rc_bot' )
+			->from( 'recentchanges' )
+			->where( $this->db->expr( 'rc_this_oldid', '=', $newRevisionRecord->getId() ) )->fetchRow();
+		$this->assertTrue( $success );
+		$this->assertSame( '0', $isBotChange->rc_bot );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
 	 */
 	public function testRunSuccessManualRevert() {
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );

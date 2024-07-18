@@ -30,6 +30,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			'AutoModeratorRevertTalkPageMessageEnabled' => [
 				'type' => 'bool',
 			],
+			'AutoModeratorEnableBotFlag' => [
+				'type' => 'bool',
+			]
 		];
 	}
 

@@ -315,6 +315,9 @@ class RevisionCheck {
 		if ( $this->wikiConfig->get( 'AutoModeratorUseEditFlagMinor' ) ) {
 			$pageUpdater->setFlags( EDIT_MINOR );
 		}
+		if ( $this->wikiConfig->get( 'AutoModeratorEnableBotFlag' ) ) {
+			$pageUpdater->setFlags( EDIT_FORCE_BOT );
+		}
 		$pageUpdater->saveRevision( $comment, EDIT_UPDATE );
 	}
 
