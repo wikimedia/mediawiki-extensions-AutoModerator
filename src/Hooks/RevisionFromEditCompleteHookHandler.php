@@ -95,7 +95,7 @@ class RevisionFromEditCompleteHookHandler {
 	public function handle(
 		$wikiPage, $rev, $originalRevId, $user, &$tags
 	) {
-		if ( !$wikiPage || $rev === null || $user === null ) {
+		if ( !$wikiPage || !$rev || !$user ) {
 			return;
 		}
 		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
