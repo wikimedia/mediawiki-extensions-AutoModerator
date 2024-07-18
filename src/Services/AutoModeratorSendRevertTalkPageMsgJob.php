@@ -46,14 +46,14 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	private $revId;
 
 	/**
+	 * @var int
+	 */
+	private int $parentRevId;
+
+	/**
 	 * @var ?string
 	 */
 	private ?string $pageTitle;
-
-	/**
-	 * @var ?Title
-	 */
-	private ?Title $userTalkPageTitle;
 
 	/**
 	 * @var int
@@ -100,6 +100,11 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	/**
 	 * @var string
 	 */
+	private string $NO_PARENT_REVISION_FOUND = "Failed to retrieve reverted revision from revision store.";
+
+	/**
+	 * @var string
+	 */
 	private string $NO_CONTENT_TALK_PAGE_ERROR_MESSAGE = "Failed to create AutoModerator revert message
 	content for talk page.";
 
@@ -114,9 +119,9 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 * @param array $params
 	 *    - 'wikiPageId': (int)
 	 *    - 'revId': (int)
+	 *    - 'parentRevId': (int)
 	 *    - 'autoModeratorUserId': (int)
 	 *    - 'autoModeratorUserName': (string)
-	 *    - 'userTalkPageTitle': (Title|null)
 	 *    - 'talkPageMessageHeader': (string)
 	 *    - 'talkPageMessageEditSummary': (string)
 	 *    - 'falsePositiveReportPage': (string)
@@ -127,9 +132,9 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		$this->pageTitle = $title;
 		$this->wikiPageId = $params['wikiPageId'];
 		$this->revId = $params['revId'];
+		$this->parentRevId = $params['parentRevId'];
 		$this->autoModeratorUserId = $params['autoModeratorUserId'];
 		$this->autoModeratorUserName = $params['autoModeratorUserName'];
-		$this->userTalkPageTitle = $params['userTalkPageTitle'];
 		$this->talkPageMessageHeader = $params['talkPageMessageHeader'];
 		$this->talkPageMessageEditSummary = $params['talkPageMessageEditSummary'];
 		$this->falsePositiveReportPage = $params['falsePositiveReportPage'] ?? "";
@@ -138,19 +143,30 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 
 	public function run(): bool {
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
-		if ( !$this->userTalkPageTitle ) {
-			$this->setLastError( $this->NO_USER_TALK_PAGE_ERROR_MESSAGE );
-			$this->setAllowRetries( false );
-			return false;
-		}
 		try {
 			$services = MediaWikiServices::getInstance();
 			$userFactory = $services->getUserFactory();
+			$revisionStore = $services->getRevisionStore();
+			$parentRevision = $revisionStore->getRevisionById( $this->parentRevId );
+			if ( !$parentRevision ) {
+				$this->setLastError( $this->NO_PARENT_REVISION_FOUND );
+				$this->setAllowRetries( false );
+				return false;
+			}
+			$userTalkPageTitle = $services->getTitleFactory()->makeTitleSafe(
+				NS_USER_TALK,
+				$parentRevision->getUser()->getName()
+			);
+			if ( !$userTalkPageTitle ) {
+				$this->setLastError( $this->NO_USER_TALK_PAGE_ERROR_MESSAGE );
+				$this->setAllowRetries( false );
+				return false;
+			}
 			$autoModeratorUser = $userFactory->newFromAnyId(
 				$this->params['autoModeratorUserId'],
 				$this->params['autoModeratorUserName']
 			);
-			$userTalkPage = $services->getWikiPageFactory()->newFromTitle( $this->userTalkPageTitle );
+			$userTalkPage = $services->getWikiPageFactory()->newFromTitle( $userTalkPageTitle );
 			$currentContentModel = $userTalkPage->getContentModel();
 			if ( $currentContentModel !== CONTENT_MODEL_WIKITEXT ) {
 				$logger->error( $this->NOT_WIKI_TEXT_ERROR_MESSAGE . $currentContentModel );
@@ -166,7 +182,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 					$this->revId,
 					$this->pageTitle,
 					$this->falsePositiveReportPage )->plain(),
-				$this->userTalkPageTitle,
+				$userTalkPageTitle,
 				$currentContentModel );
 			if ( !$updatedContent ) {
 				$logger->error( $this->NO_CONTENT_TALK_PAGE_ERROR_MESSAGE );
