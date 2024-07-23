@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Умар"
+		]
+	},
+	"automoderator-wiki-undo-summary": "Йухадаьккхина [[Special:Diff/$1|$1]] [[Special:Contributions/$2|$2]] ([[User talk:$2|дийцар]]) \nдекъашхочун нисдар",
+	"automoderator-wiki-undo-summary-anon": "Верси [[Special:Diff/$1|$1]] дӀайаккхар [[Special:Contributions/$2|$2]]"
+}
