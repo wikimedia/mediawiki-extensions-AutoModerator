@@ -199,7 +199,7 @@ class RevisionFromEditCompleteHookHandler {
 					'autoModeratorUserId' => $autoModeratorUser->getId(),
 					'autoModeratorUserName' => $autoModeratorUser->getName(),
 					'talkPageMessageHeader' => wfMessage( 'automoderator-wiki-revert-message-header' )
-						->params( $autoModeratorUser->getName() ),
+						->params( $autoModeratorUser->getName() )->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
 						->params( $title )->plain(),
 					'falsePositiveReportPageId' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" ),
