@@ -39,4 +39,18 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 		$this->assertSame( $expectedErrorMessage, $response[ 'errorMessage' ] );
 		$this->assertTrue( $response[ 'allowRetries' ] );
 	}
+
+	/**
+	 * @covers \AutoModerator\LiftWingClient::getUserAgent
+	 */
+	public function testGetUserAgentHeader() {
+		$this->config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorLiftWingBaseUrl', "example.org" ],
+			[ 'AutoModeratorWikiId', "idwiki" ]
+		] );
+
+		$client = Util::initializeLiftWingClient( $this->config );
+
+		$this->assertEquals( 'mediawiki.ext.AutoModerator.id', $client->getUserAgent() );
+	}
 }

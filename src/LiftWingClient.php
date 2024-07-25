@@ -37,6 +37,9 @@ class LiftWingClient {
 	/** @var ?string */
 	private ?string $hostHeader;
 
+	/** @var string */
+	private string $userAgent;
+
 	public function __construct(
 		string $model,
 		string $lang,
@@ -47,6 +50,7 @@ class LiftWingClient {
 		$this->lang = $lang;
 		$this->baseUrl = $baseUrl;
 		$this->hostHeader = $hostHeader;
+		$this->userAgent = 'mediawiki.ext.AutoModerator.' . $this->lang;
 	}
 
 	/**
@@ -69,6 +73,7 @@ class LiftWingClient {
 		if ( $this->hostHeader ) {
 			$req->setHeader( 'Host', $this->hostHeader );
 		}
+		$req->setHeader( 'User-Agent', $this->userAgent );
 		$response = $req->execute();
 		if ( !$response->isOK() ) {
 			$httpStatus = $req->getStatus();
@@ -120,6 +125,13 @@ class LiftWingClient {
 	 */
 	public function getHostHeader(): ?string {
 		return $this->hostHeader;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getUserAgent(): string {
+		return $this->userAgent;
 	}
 
 	/**
