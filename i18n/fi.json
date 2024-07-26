@@ -1,0 +1,9 @@
+{
+	"@metadata": {
+		"authors": [
+			"Samoasambia"
+		]
+	},
+	"automoderator-wiki-report-false-positive": "ilmoita väärästä positiivisesta",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 kumosi muokkauksesi =="
+}
