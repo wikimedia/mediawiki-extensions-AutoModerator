@@ -44,9 +44,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	use MockServiceDependenciesTrait;
 	use MockTitleTrait;
 
-	public function setService( $name, $service ) {
-	}
-
 	/**
 	 * @return Language
 	 */
