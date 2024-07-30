@@ -60,6 +60,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName(), "some random text" );
 		$expectedFalsePositiveReportPage = "false-positive-page";
 		$mediaWikiServices = MediaWikiServices::getInstance();
+		$this->overrideConfigValue( 'AutoModeratorUsername', 'AutoModerator' );
 		$autoModeratorUser = Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
 			$mediaWikiServices->getUserGroupManager() );
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
@@ -75,7 +76,6 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 				'wikiId' => "enwiki",
 			]
 		);
-		$this->overrideConfigValue( 'AutoModeratorRevertTalkPageMessageEnabled', true );
 		$success = $job->run();
 		$this->assertTrue( $success );
 
@@ -113,7 +113,6 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 				'wikiId' => "enwiki",
 			]
 		);
-		$this->overrideConfigValue( 'AutoModeratorRevertTalkPageMessageEnabled', true );
 		$success = $job->run();
 		$this->assertFalse( $success );
 		$this->assertEquals( "Failed to retrieve reverted revision from revision store.",
@@ -146,7 +145,6 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 			]
 		);
 		$expectedContentModel = CONTENT_MODEL_JSON;
-		$this->overrideConfigValue( 'AutoModeratorRevertTalkPageMessageEnabled', true );
 		$success = $job->run();
 		$this->assertFalse( $success );
 		$this->assertEquals(
