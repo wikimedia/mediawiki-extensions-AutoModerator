@@ -94,8 +94,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		return array_slice( $revisions, $segment - 1, $limit );
 	}
 
-	private function getMockPage(): WikiPage {
+	/**
+	 * @param int $ns
+	 * @return WikiPage|MockObject
+	 */
+	private function getMockPage( int $ns ): WikiPage {
 		$ret = $this->createMock( WikiPage::class );
+		$ret->method( 'getNamespace' )->willReturn( $ns );
 		$ret->method( 'canExist' )->willReturn( true );
 		$ret->method( 'exists' )->willReturn( true );
 		$ret->method( 'getId' )->willReturn( 1 );
@@ -103,7 +108,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$title->method( 'getPrefixedText' )->willReturn( 'Foo' );
 		$title->method( 'getText' )->willReturn( 'Foo' );
 		$title->method( 'getDBkey' )->willReturn( 'Foo' );
-		$title->method( 'getNamespace' )->willReturn( 0 );
 		$title->method( 'getPageLanguage' )->willReturn( $this->createLanguage() );
 		$ret->method( 'getTitle' )->willReturn( $title );
 		$updater = $this->createMock( PageUpdater::class );
@@ -112,13 +116,16 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
+	 * @param MutableRevisionRecord[] $fakeRevisions
+	 * @param RevisionStoreRecord $rev
 	 * @return RevisionStore|MockObject
 	 */
-	private function getMockRevisionStore(): RevisionStore {
+	private function getMockRevisionStore( $fakeRevisions, $rev ): RevisionStore {
 		$ret = $this->createMock( RevisionStore::class );
-		end( $this->fakeRevisions );
-		prev( $this->fakeRevisions );
-		$ret->method( 'getPreviousRevision' )->willReturn( $this->rev );
+		end( $fakeRevisions );
+		prev( $fakeRevisions );
+		$ret->method( 'getPreviousRevision' )->willReturn( $rev );
+		$ret->method( 'getRevisionById' )->willReturn( $rev );
 		return $ret;
 	}
 
@@ -129,12 +136,18 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->user = $this->createMock( User::class );
 		$this->user->method( 'getName' )->willReturn( 'ATestUser' );
 		$this->user->method( 'isRegistered' )->willReturn( true );
+		$this->user->method( 'equals' )->willReturn( false );
+		$this->selfUser = $this->createMock( User::class );
+		$this->selfUser->method( 'getName' )->willReturn( 'ATestUserSelf' );
+		$this->selfUser->method( 'isRegistered' )->willReturn( true );
+		$this->selfUser->method( 'equals' )->willReturn( true );
 		$this->anonUser = $this->createMock( User::class );
 		$this->anonUser->method( 'getName' )->willReturn( '127.0.0.1' );
 		$this->anonUser->method( 'isRegistered' )->willReturn( false );
-		$this->wikiPageMock = $this->getMockPage();
+		$this->wikiPageMock = $this->getMockPage( NS_MAIN );
 		$this->fakeRevisions = $this->makeFakeRevisions( 3, 3 );
 		$this->rev = current( $this->fakeRevisions );
+		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$this->wikiPageMock->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
 		$this->failingScore = [
 			'model_name' => 'revertrisk-language-agnostic',
@@ -165,7 +178,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->originalRevId = false;
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->tags = [];
-		$this->revisionStoreMock = $this->getMockRevisionStore();
+		$this->revisionStoreMock = $this->getMockRevisionStore( $this->fakeRevisions, $this->rev );
 		$this->revisionStoreMock->method( 'getPreviousRevision' )->willReturn( $this->fakeRevisions[ 1 ] );
 		$this->revisionStoreMock->method( 'getFirstRevision' )->willReturn( $this->fakeRevisions[ 0 ] );
 		$this->config = $this->createMock( Config::class );
@@ -191,7 +204,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->restrictionStore = $this->createMock( RestrictionStore::class );
 		$this->wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$this->wikiPageFactory->method( 'newFromID' )->willReturn( $this->wikiPageMock );
-		$this->revisionStoreMock->method( 'getRevisionById' )->willReturn( $this->rev );
 		$this->undoSummary = "undoSummary";
 	}
 
@@ -352,14 +364,12 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckAutoModeratorEdit() {
-		$this->user->method( 'equals' )->willReturn( true );
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
 			$this->originalRevId,
-			$this->user,
+			$this->selfUser,
 			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
@@ -380,14 +390,12 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testSelfRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( true );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
 			$this->originalRevId,
-			$this->user,
+			$this->selfUser,
 			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
@@ -408,8 +416,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testOthersRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( false );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -436,14 +442,12 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testSelfRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ 'mw-rollback' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( true );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
 			$this->originalRevId,
-			$this->user,
+			$this->selfUser,
 			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
@@ -464,8 +468,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testOthersRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ 'mw-rollback' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( false );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -492,14 +494,12 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testSelfRevertPreCheckTagUndoEdit() {
 		$this->tags = [ 'mw-undo' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( true );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
 			$this->originalRevId,
-			$this->user,
+			$this->selfUser,
 			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
@@ -520,8 +520,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testOthersRevertPreCheckTagUndoEdit() {
 		$this->tags = [ 'mw-undo' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( false );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -548,8 +546,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagNewRedirect() {
 		$this->tags = [ 'mw-new-redirect' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( false );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -576,8 +572,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagRemovedRedirect() {
 		$this->tags = [ 'mw-removed-redirect' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( false );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -604,8 +598,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagChangedRedirect() {
 		$this->tags = [ 'mw-changed-redirect-target' ];
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
-		$this->user->method( 'equals' )->willReturn( false );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -633,7 +625,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	public function testRevertPreCheckSysOp() {
 		$this->userGroupManager->method( 'getUserGroupMemberships' )
 			->willReturn( [ 'sysop' => $this->createMock( UserGroupMembership::class ) ] );
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -661,7 +652,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	public function testRevertPreCheckBot() {
 		$this->userGroupManager->method( 'getUserGroupMemberships' )
 			->willReturn( [ 'bot' => $this->createMock( UserGroupMembership::class ) ] );
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -687,8 +677,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckMainSpaceEdit() {
-		$this->wikiPageMock->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -714,11 +702,12 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckNonMainSpaceEdit() {
-		$this->wikiPageMock->method( 'getNamespace' )->willReturn( NS_TALK );
-		$this->rev->method( 'getParentId' )->willReturn( 1 );
+		$wikiPageMock = $this->getMockPage( NS_TALK );
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPageMock );
 		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
+			$wikiPageMock->getId(),
+			$wikiPageFactory,
 			$this->rev->getId(),
 			$this->originalRevId,
 			$this->user,
@@ -742,7 +731,36 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckNewPage() {
 		// Override revisionStoreMock method
-		$this->rev->method( 'getParentId' )->willReturn( 0 );
+		$fakeRevisions = $this->makeFakeRevisions( 3, 3 );
+		$rev = current( $fakeRevisions );
+		$revisionStoreMock = $this->getMockRevisionStore( $fakeRevisions, $rev );
+		$revisionCheck = new RevisionCheck(
+			$this->wikiPageMock->getId(),
+			$this->wikiPageFactory,
+			$rev->getId(),
+			$this->originalRevId,
+			$this->user,
+			$this->tags,
+			$this->autoModeratorUser,
+			$revisionStoreMock,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->logger,
+			$this->userGroupManager,
+			$this->restrictionStore,
+			$this->lang,
+			$this->undoSummary
+		);
+		$this->assertFalse( $revisionCheck->passedPreCheck );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckProtectedPage() {
+		// Override revisionStoreMock method
+		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
@@ -767,12 +785,12 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	/**
 	 * @covers ::revertPreCheck
 	 */
-	public function testRevertPreCheckProtectedPage() {
-		// Override revisionStoreMock method
-		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
+	public function testRevertPreCheckNullPage() {
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( null );
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
+			$wikiPageFactory,
 			$this->rev->getId(),
 			$this->originalRevId,
 			$this->user,

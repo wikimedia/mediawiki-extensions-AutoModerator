@@ -287,12 +287,17 @@ class RevisionCheck {
 				return false;
 			}
 		}
-		// Skip imported revisions
+		// Skip external users
 		if ( ExternalUserNames::isExternal( $user->getName() ) ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - imported edits" );
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - external user" );
 			return false;
 		}
 		$wikiPage = $wikiPageFactory->newFromID( $wikiPageId );
+		// Skip null pages
+		if ( $wikiPage === null ) {
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - wikiPage is null" );
+			return false;
+		}
 		// Skip non-mainspace edit
 		if ( $wikiPage->getNamespace() !== NS_MAIN ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - non-mainspace edits" );
