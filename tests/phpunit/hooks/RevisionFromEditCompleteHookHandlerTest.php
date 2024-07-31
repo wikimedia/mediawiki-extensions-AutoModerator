@@ -71,7 +71,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 	 */
 	public function testOnRevisionFromEditCompleteQueued( $wikiPage, $rev, $originalRevId, $user, $tags ) {
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -108,9 +107,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore,
+			$jobQueueGroup, $mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
@@ -140,7 +138,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 	 */
 	public function testOnRevisionFromEditCompleteQueuedWhenUserAnon( $wikiPage, $rev, $originalRevId, $user, $tags ) {
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -176,8 +173,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup, $mockTitleFactory ) )
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
+			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
@@ -217,7 +214,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->getServiceContainer()->getWikiPageFactory();
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'hasWithFlags' );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -248,8 +244,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
@@ -274,7 +269,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->atLeastOnce() )->method( 'hasWithFlags' );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -310,8 +304,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $mockRevision, $originalRevId, $user, $tags );
 
@@ -327,7 +320,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 			$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 			$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-			$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 			$wikiConfig = $this->createMock( WikiPageConfig::class );
 			$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 				$wikiConfig,
@@ -353,8 +345,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			$mockRevisionStore->method( 'getRevisionById' )->willReturn( null );
 
 			( new Hooks( $autoModWikiConfig, $userGroupManager,
-				$config, $wikiPageFactory, $mockRevisionStore,
-				$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+				$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 				$mockTitleFactory ) )
 				->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 					Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
@@ -370,7 +361,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
@@ -399,8 +389,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
@@ -416,7 +405,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
@@ -446,8 +434,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
@@ -464,7 +451,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
@@ -497,8 +483,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$tags = [];
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
@@ -515,7 +500,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$contentHandlerFactory = $this->getServiceContainer()->getContentHandlerFactory();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
 			$wikiConfig,
@@ -547,8 +531,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 
 		( new Hooks( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
+			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				$mockUser, $tags );
