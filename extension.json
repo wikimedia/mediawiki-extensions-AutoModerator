@@ -93,11 +93,9 @@
 				"MainConfig",
 				"WikiPageFactory",
 				"RevisionStore",
-				"ContentHandlerFactory",
 				"RestrictionStore",
 				"JobQueueGroup",
-				"TitleFactory",
-				"RevisionStore"
+				"TitleFactory"
 			]
 		},
 		"revisionfromedit": {
@@ -108,11 +106,8 @@
 				"MainConfig",
 				"WikiPageFactory",
 				"RevisionStore",
-				"ContentHandlerFactory",
 				"RestrictionStore",
-				"JobQueueGroup",
-				"TitleFactory",
-				"RevisionStore"
+				"JobQueueGroup"
 			]
 		}
 	},

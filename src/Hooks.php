@@ -23,7 +23,6 @@ use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
 use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use JobQueueGroup;
 use MediaWiki\Config\Config;
-use MediaWiki\Content\ContentHandlerFactory;
 use MediaWiki\Hook\HistoryToolsHook;
 use MediaWiki\Html\Html;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
@@ -49,8 +48,6 @@ class Hooks implements
 
 	private RevisionStore $revisionStore;
 
-	private ContentHandlerFactory $contentHandlerFactory;
-
 	private RestrictionStore $restrictionStore;
 
 	private JobQueueGroup $jobQueueGroup;
@@ -63,20 +60,18 @@ class Hooks implements
 	 * @param Config $config
 	 * @param WikiPageFactory $wikiPageFactory
 	 * @param RevisionStore $revisionStore
-	 * @param ContentHandlerFactory $contentHandlerFactory
 	 * @param RestrictionStore $restrictionStore
 	 * @param JobQueueGroup $jobQueueGroup
 	 * @param TitleFactory $titleFactory
 	 */
 	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config,
-		WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore, ContentHandlerFactory $contentHandlerFactory,
-		RestrictionStore $restrictionStore, JobQueueGroup $jobQueueGroup, TitleFactory $titleFactory ) {
+		WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore, RestrictionStore $restrictionStore,
+		JobQueueGroup $jobQueueGroup, TitleFactory $titleFactory ) {
 			$this->wikiConfig = $wikiConfig;
 			$this->userGroupManager = $userGroupManager;
 			$this->config = $config;
 			$this->wikiPageFactory = $wikiPageFactory;
 			$this->revisionStore = $revisionStore;
-			$this->contentHandlerFactory = $contentHandlerFactory;
 			$this->restrictionStore = $restrictionStore;
 			$this->jobQueueGroup = $jobQueueGroup;
 			$this->titleFactory = $titleFactory;
@@ -88,7 +83,7 @@ class Hooks implements
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
 		$handler = new RevisionFromEditCompleteHookHandler( $this->wikiConfig,
 			$this->userGroupManager, $this->config, $this->wikiPageFactory, $this->revisionStore,
-			$this->contentHandlerFactory, $this->restrictionStore, $this->jobQueueGroup, $this->titleFactory, );
+			$this->restrictionStore, $this->jobQueueGroup );
 		$handler->handle( $wikiPage, $rev, $originalRevId, $user, $tags );
 	}
 

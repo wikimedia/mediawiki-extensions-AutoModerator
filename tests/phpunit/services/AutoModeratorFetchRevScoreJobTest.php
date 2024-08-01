@@ -195,9 +195,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$newPage = $this->getExistingTestPage( $wikiPage['title'] );
 		$newRevisionRecord = $newPage->getRevisionRecord();
-		$isBotChange = $this->db->newSelectQueryBuilder()->select( 'rc_bot' )
+		$isBotChange = $this->getDb()->newSelectQueryBuilder()->select( 'rc_bot' )
 			->from( 'recentchanges' )
-			->where( $this->db->expr( 'rc_this_oldid', '=', $newRevisionRecord->getId() ) )->fetchRow();
+			->where( $this->getDb()->expr( 'rc_this_oldid', '=', $newRevisionRecord->getId() ) )->fetchRow();
 		$this->assertTrue( $success );
 		$this->assertSame( '1', $isBotChange->rc_bot );
 	}
@@ -240,9 +240,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$newPage = $this->getExistingTestPage( $wikiPage['title'] );
 		$newRevisionRecord = $newPage->getRevisionRecord();
-		$isBotChange = $this->db->newSelectQueryBuilder()->select( 'rc_bot' )
+		$isBotChange = $this->getDb()->newSelectQueryBuilder()->select( 'rc_bot' )
 			->from( 'recentchanges' )
-			->where( $this->db->expr( 'rc_this_oldid', '=', $newRevisionRecord->getId() ) )->fetchRow();
+			->where( $this->getDb()->expr( 'rc_this_oldid', '=', $newRevisionRecord->getId() ) )->fetchRow();
 		$this->assertTrue( $success );
 		$this->assertSame( '0', $isBotChange->rc_bot );
 	}

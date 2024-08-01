@@ -30,7 +30,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 	public function testOnHistoryToolsShows() {
 		$services = $this->getServiceContainer();
 		$jobQueueGroup = $services->getJobQueueGroup();
-		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -74,10 +73,8 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->setUserLang( "qqx" );
 		$links = [];
 		( new Hooks(
-			$autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory
+			$autoModWikiConfig, $userGroupManager, $config, $wikiPageFactory, $mockRevisionStore,
+			$mockRestrictionStore, $jobQueueGroup, $mockTitleFactory
 			)
 		)->onHistoryTools(
 			$revRecord,
@@ -95,7 +92,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 	public function testOnHistoryToolsNoShow() {
 		$services = $this->getServiceContainer();
 		$jobQueueGroup = $services->getJobQueueGroup();
-		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -136,10 +132,8 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->setUserLang( "qqx" );
 		$links = [];
 		( new Hooks(
-			$autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore,
-			$contentHandlerFactory, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory
+			$autoModWikiConfig, $userGroupManager, $config, $wikiPageFactory, $mockRevisionStore,
+			$mockRestrictionStore, $jobQueueGroup, $mockTitleFactory
 			)
 		)->onHistoryTools(
 			$revRecord,
