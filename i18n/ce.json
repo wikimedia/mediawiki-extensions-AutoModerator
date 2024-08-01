@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Умар"
+		]
+	},
+	"automoderator-config-validator-datatype-mismatch": "Хьоьжу, <code>$1</code> хӀокхуьнга <code>$2</code>, иза ду <code>$3</code>"
+}
