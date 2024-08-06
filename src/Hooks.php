@@ -19,24 +19,15 @@
 
 namespace AutoModerator;
 
-use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
-use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
-use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Hook\HistoryToolsHook;
 use MediaWiki\Html\Html;
-use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
-use MediaWiki\Page\WikiPageFactory;
-use MediaWiki\Permissions\RestrictionStore;
-use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
 
 class Hooks implements
-	RevisionFromEditCompleteHook,
 	HistoryToolsHook
 {
-	use AutoModeratorConfigLoaderStaticTrait;
 
 	private Config $wikiConfig;
 
@@ -44,47 +35,24 @@ class Hooks implements
 
 	private Config $config;
 
-	private WikiPageFactory $wikiPageFactory;
-
-	private RevisionStore $revisionStore;
-
-	private RestrictionStore $restrictionStore;
-
-	private JobQueueGroup $jobQueueGroup;
-
 	private TitleFactory $titleFactory;
 
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
 	 * @param Config $config
-	 * @param WikiPageFactory $wikiPageFactory
-	 * @param RevisionStore $revisionStore
-	 * @param RestrictionStore $restrictionStore
-	 * @param JobQueueGroup $jobQueueGroup
 	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config,
-		WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore, RestrictionStore $restrictionStore,
-		JobQueueGroup $jobQueueGroup, TitleFactory $titleFactory ) {
-			$this->wikiConfig = $wikiConfig;
-			$this->userGroupManager = $userGroupManager;
-			$this->config = $config;
-			$this->wikiPageFactory = $wikiPageFactory;
-			$this->revisionStore = $revisionStore;
-			$this->restrictionStore = $restrictionStore;
-			$this->jobQueueGroup = $jobQueueGroup;
-			$this->titleFactory = $titleFactory;
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		$handler = new RevisionFromEditCompleteHookHandler( $this->wikiConfig,
-			$this->userGroupManager, $this->config, $this->wikiPageFactory, $this->revisionStore,
-			$this->restrictionStore, $this->jobQueueGroup );
-		$handler->handle( $wikiPage, $rev, $originalRevId, $user, $tags );
+	public function __construct(
+		Config $wikiConfig,
+		UserGroupManager $userGroupManager,
+		Config $config,
+		TitleFactory $titleFactory
+	) {
+		$this->wikiConfig = $wikiConfig;
+		$this->userGroupManager = $userGroupManager;
+		$this->config = $config;
+		$this->titleFactory = $titleFactory;
 	}
 
 	/**

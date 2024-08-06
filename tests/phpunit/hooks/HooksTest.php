@@ -7,10 +7,7 @@ use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
-use MediaWiki\Page\WikiPageFactory;
-use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
@@ -51,30 +48,25 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 			'AutoModeratorFalsePositivePageTitle' => 'Test False Positive',
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$revRecord = $this->createMock( RevisionRecord::class );
 		$user = $this->createMock( User::class );
-		$revRecord->method( 'getUser' )->willReturn( $user );
-		$revRecord->method( 'getId' )->willReturn( 1000 );
 		// Make it match AutoMod user ID
 		$user->method( 'getId' )->willReturn( 1 );
+		$revRecord = $this->createMock( RevisionRecord::class );
+		$revRecord->method( 'getUser' )->willReturn( $user );
+		$revRecord->method( 'getId' )->willReturn( 1000 );
+		$mockUtil = $this->createMock( Util::class );
 		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $user );
 		$mockUserIdentity = $this->createMock( UserIdentity::class );
 		$mockTitle = $this->createMock( Title::class );
-		$mockTitleFactory->method( 'newFromText' )->willReturn( $mockTitle );
 		$mockTitle->method( 'getFullURL' )->willReturn( 'test.url.com' );
+		$mockTitleFactory = $this->createMock( TitleFactory::class );
+		$mockTitleFactory->method( 'newFromText' )->willReturn( $mockTitle );
 
 		$this->setUserLang( "qqx" );
 		$links = [];
 		( new Hooks(
-			$autoModWikiConfig, $userGroupManager, $config, $wikiPageFactory, $mockRevisionStore,
-			$mockRestrictionStore, $jobQueueGroup, $mockTitleFactory
+			$autoModWikiConfig, $userGroupManager, $config, $mockTitleFactory
 			)
 		)->onHistoryTools(
 			$revRecord,
@@ -113,27 +105,21 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 			'AutoModeratorFalsePositivePageTitle' => null,
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$revRecord = $this->createMock( RevisionRecord::class );
 		$user = $this->createMock( User::class );
+		$revRecord = $this->createMock( RevisionRecord::class );
 		$revRecord->method( 'getUser' )->willReturn( $user );
 		$revRecord->method( 'getId' )->willReturn( 1000 );
-		$user->method( 'getId' )->willReturn( 1000 );
+		$mockUtil = $this->createMock( Util::class );
 		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $this->createMock( User::class ) );
 		$mockUserIdentity = $this->createMock( UserIdentity::class );
+		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockTitleFactory->method( 'newFromText' )->willReturn( null );
 
 		$this->setUserLang( "qqx" );
 		$links = [];
 		( new Hooks(
-			$autoModWikiConfig, $userGroupManager, $config, $wikiPageFactory, $mockRevisionStore,
-			$mockRestrictionStore, $jobQueueGroup, $mockTitleFactory
+			$autoModWikiConfig, $userGroupManager, $config, $mockTitleFactory
 			)
 		)->onHistoryTools(
 			$revRecord,

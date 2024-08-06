@@ -27,15 +27,13 @@ use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
+use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
-use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserGroupManager;
-use MediaWiki\User\UserIdentity;
-use WikiPage;
 
-class RevisionFromEditCompleteHookHandler {
+class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHook {
 
 	private Config $wikiConfig;
 
@@ -60,28 +58,28 @@ class RevisionFromEditCompleteHookHandler {
 	 * @param RestrictionStore $restrictionStore
 	 * @param JobQueueGroup $jobQueueGroup
 	 */
-	public function __construct( Config $wikiConfig, UserGroupManager $userGroupManager, Config $config,
-		WikiPageFactory $wikiPageFactory, RevisionStore $revisionStore, RestrictionStore $restrictionStore,
-		JobQueueGroup $jobQueueGroup ) {
-			$this->wikiConfig = $wikiConfig;
-			$this->userGroupManager = $userGroupManager;
-			$this->config = $config;
-			$this->wikiPageFactory = $wikiPageFactory;
-			$this->revisionStore = $revisionStore;
-			$this->restrictionStore = $restrictionStore;
-			$this->jobQueueGroup = $jobQueueGroup;
+	public function __construct(
+		Config $wikiConfig,
+		UserGroupManager $userGroupManager,
+		Config $config,
+		WikiPageFactory $wikiPageFactory,
+		RevisionStore $revisionStore,
+		RestrictionStore $restrictionStore,
+		JobQueueGroup $jobQueueGroup
+	) {
+		$this->wikiConfig = $wikiConfig;
+		$this->userGroupManager = $userGroupManager;
+		$this->config = $config;
+		$this->wikiPageFactory = $wikiPageFactory;
+		$this->revisionStore = $revisionStore;
+		$this->restrictionStore = $restrictionStore;
+		$this->jobQueueGroup = $jobQueueGroup;
 	}
 
 	/**
-	 * @param WikiPage|null $wikiPage
-	 * @param RevisionRecord|null $rev
-	 * @param int|false $originalRevId
-	 * @param UserIdentity|null $user
-	 * @param string[] &$tags
+	 * @inheritDoc
 	 */
-	public function handle(
-		$wikiPage, $rev, $originalRevId, $user, &$tags
-	) {
+	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
 		if ( !$wikiPage || !$rev || !$user ) {
 			return;
 		}

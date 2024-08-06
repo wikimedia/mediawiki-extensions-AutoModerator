@@ -91,10 +91,6 @@
 				"AutoModeratorWikiConfigLoader",
 				"UserGroupManager",
 				"MainConfig",
-				"WikiPageFactory",
-				"RevisionStore",
-				"RestrictionStore",
-				"JobQueueGroup",
 				"TitleFactory"
 			]
 		},
@@ -115,7 +111,7 @@
 		"EditFilterMergedContent": "config",
 		"JsonValidateSave": "config",
 		"PageSaveComplete": "config",
-		"RevisionFromEditComplete": "main",
+		"RevisionFromEditComplete": "revisionfromedit",
 		"HistoryTools": "main"
 	},
 	"JobClasses": {
