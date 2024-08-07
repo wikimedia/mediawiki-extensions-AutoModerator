@@ -7,5 +7,7 @@
 	"automoderator-config-validator-array-toobig": "$1 memiliki terlalu banyak item (maksimal $2 yang {{PLURAL:$2| diperbolehkan|diizinkan}})",
 	"automoderator-config-validator-contentmodel-mismatch": "Ketidakcocokan model konten: berkas konfigurasi harus memiliki model konten JSON, $1 terdeteksi",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> seharusnya <code>$2</code>, bukanlah <code>$3</code>",
-	"automoderator-desc": "Secara otomatis mengembalikan suntingan berniat tidak baik berdasarkan model pembelajaran mesin."
+	"automoderator-desc": "Secara otomatis mengembalikan suntingan berniat tidak baik berdasarkan model pembelajaran mesin.",
+	"automoderator-wiki-report-false-positive": "laporkan kesalahan pemeriksaan",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 membalikkan suntingan Anda =="
 }
