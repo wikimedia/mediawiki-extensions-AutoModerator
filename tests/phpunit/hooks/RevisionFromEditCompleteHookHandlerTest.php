@@ -4,7 +4,7 @@ namespace AutoModerator\Tests\Hooks;
 
 use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\WikiPageConfig;
-use AutoModerator\Hooks;
+use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Page\WikiPageFactory;
@@ -106,7 +106,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore,
 			$jobQueueGroup, $mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
@@ -172,7 +172,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
@@ -243,7 +243,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
@@ -303,7 +303,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $mockRevision, $originalRevId, $user, $tags );
@@ -344,7 +344,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 			$mockRevisionStore->method( 'getRevisionById' )->willReturn( null );
 
-			( new Hooks( $autoModWikiConfig, $userGroupManager,
+			( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 				$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 				$mockTitleFactory ) )
 				->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
@@ -388,7 +388,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevision->method( 'getParentId' )->willReturn( null );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
@@ -433,7 +433,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			$mockTitleFactory->makeTitleSafe( NS_USER_TALK, $mockUser->getName() ) );
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
@@ -482,7 +482,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 		$tags = [];
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
@@ -530,7 +530,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			$mockTitleFactory->makeTitleSafe( NS_USER_TALK, $mockUser->getName() ) );
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 
-		( new Hooks( $autoModWikiConfig, $userGroupManager,
+		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockTitleFactory ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
