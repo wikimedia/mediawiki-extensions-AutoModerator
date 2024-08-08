@@ -6,5 +6,5 @@
 	},
 	"automoderator-config-validator-contentmodel-mismatch": "內容模型不匹配：設定檔必須是 JSON 內容模型，但偵測到是$1",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code>應該是<code>$2</code>，但實際是<code>$3</code>",
-	"automoderator-desc": "根據機器學習模型的評分做出自動撤銷有問題的編輯。"
+	"automoderator-desc": "根據機器學習模型的評分，自動撤銷掉有問題的編輯。"
 }
