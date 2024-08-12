@@ -7,7 +7,6 @@ use AutoModerator\Util;
 use MediaWiki\Config\Config;
 use MediaWikiUnitTestCase;
 
-#[\AllowDynamicProperties]
 /**
  * @group AutoModerator
  * @group extensions
@@ -15,27 +14,16 @@ use MediaWikiUnitTestCase;
  */
 class UtilTest extends MediaWikiUnitTestCase {
 
-	protected function setUp(): void {
-		parent::setUp();
-		$this->config = $this->createMock( Config::class );
-	}
-
-	protected function tearDown(): void {
-		unset(
-			$this->config
-		);
-		parent::tearDown();
-	}
-
 	/**
 	 * @covers ::getWikiID
 	 */
 	public function testGetWikiIDFromConfig() {
-		$this->config->method( 'get' )->willReturnMap( [
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
 				[ 'AutoModeratorWikiId', 'testwiki' ],
 		] );
 		$wikiId = Util::getWikiID(
-			$this->config
+			$config
 		);
 		$this->assertSame(
 			'testwiki',
@@ -47,12 +35,11 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::getRevertThreshold defaults to 0.95 when set below 0.95.
 	 */
 	public function testGetRevertThreshold() {
-		$this->config->method( 'get' )->willReturnMap( [
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorRevertProbability', '0' ],
 		] );
-		$revertThreshold = Util::getRevertThreshold(
-			$this->config
-		);
+		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
 			0.95,
 			$revertThreshold
@@ -64,10 +51,11 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 *  respects the configuration value.
 	 */
 	public function testGetRevertThresholdNotTooLow() {
-		$this->config->method( 'get' )->willReturnMap( [
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorRevertProbability', '0.97' ],
 		] );
-		$revertThreshold = Util::getRevertThreshold( $this->config );
+		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
 			0.97,
 			$revertThreshold
@@ -88,12 +76,13 @@ class UtilTest extends MediaWikiUnitTestCase {
 			$expectedUrl
 		);
 
-		$this->config->method( 'get' )->willReturnMap( [
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorLiftWingBaseUrl', $expectedUrl ],
 			[ 'AutoModeratorLiftWingAddHostHeader', false ],
 		] );
 
-		$client = Util::initializeLiftWingClient( $this->config );
+		$client = Util::initializeLiftWingClient( $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -122,13 +111,14 @@ class UtilTest extends MediaWikiUnitTestCase {
 			$expectedHostHeader
 		);
 
-		$this->config->method( 'get' )->willReturnMap( [
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorLiftWingBaseUrl', $expectedUrl ],
 			[ 'AutoModeratorLiftWingAddHostHeader', true ],
 			[ 'AutoModeratorLiftWingRevertRiskHostHeader', $expectedHostHeader ],
 		] );
 
-		$client = Util::initializeLiftWingClient( $this->config );
+		$client = Util::initializeLiftWingClient( $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -148,11 +138,12 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$wikiId = "idwiki";
 		$expectedLang = "id";
 
-		$this->config->method( 'get' )->willReturnMap( [
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorWikiId', $wikiId ],
 		] );
 
-		$actual = Util::getLanguageConfiguration( $this->config );
+		$actual = Util::getLanguageConfiguration( $config );
 		$this->assertSame(
 			$expectedLang,
 			$actual
