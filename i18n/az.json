@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nemoralis"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 həddindən çox element var (maksimum $2 {{PLURAL:$2|icazə verilir}})",
+	"automoderator-config-validator-contentmodel-mismatch": "Məzmun-model uyğunsuzluğu: konfiqurasiya faylında JSON məzmun modeli olmalıdır, $1 aşkarlanıb",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> <code>$2</code> olacağı gözlənilir, lakin <code>$3</code> olub.",
+	"automoderator-desc": "Maşın öyrənmə modelindən əldə edilən xal əsasında zərərli redaktələri avtomatik olaraq geri qaytarır.",
+	"automoderator-wiki-report-false-positive": "yalan pozitiv bildirin",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 redaktənizi geri qaytardı ==",
+	"automoderator-wiki-revert-message": "Salam! Mənim adım [[User:$1|$1]]-dir, Vikipediyanın etibarlı qalmasını təmin etmək üçün potensial pis redaktələri müəyyən etmək və geri qaytarmaq üçün maşın öyrənmə modelindən istifadə edən avtomatlaşdırılmış sisteməm. Təəssüf ki, mən sizin [[$3]] səhifəsindəki [[Special:Diff/$2|son redaktələrinizdən]] birini geri qaytardım.\n* İstifadə etdiyim model mükəmməl olmadığı üçün bəzən yaxşı redaktələri də geri qaytarır. Etdiyiniz dəyişikliyin konstruktiv olduğuna inanırsınızsa, lütfən, [[$4|burada bildirin]].\n* Proqram təminatım haqqında [[:mw:Moderator Tools/Automoderator|buradan ətraflı məlumat əldə edə bilərsiniz]].\n* Redaktə etmək barədə ətraflı öyrənmək üçün [[Special:Homepage|öz ana səhifənizə]] daxil olun.",
+	"automoderator-wiki-revert-edit-summary": "[[$1]] səhifəsindəki avtomatik geri qaytarma bildirişi",
+	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|müzakirə]]) tərəfindən edilmiş [[Special:Diff/$1|$1]] nömrəli redaktə geri qaytarılır",
+	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]] tərəfindən edilmiş [[Special:Diff/$1|$1]] redaktəsi geri qaytarılır"
+}

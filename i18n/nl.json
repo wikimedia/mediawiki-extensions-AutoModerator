@@ -1,11 +1,18 @@
 {
 	"@metadata": {
 		"authors": [
-			"McDutchie"
+			"McDutchie",
+			"Siebrand"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 bevat te veel items (er {{PLURAL:$2|is|zijn}} maximaal $2 toegestaan)",
 	"automoderator-config-validator-contentmodel-mismatch": "Inhoudsmodel komt niet overeen: het configuratiebestand moet van een JSON-inhoudsmodel zijn, maar gedetecteerd is $1",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> zou <code>$2</code> moeten zijn, maar is <code>$3</code>",
-	"automoderator-desc": "Draait slechte bewerkingen automatisch terug op basis van scores uit een machine learning-model."
+	"automoderator-desc": "Draait slechte bewerkingen automatisch terug op basis van scores uit een machine learning-model.",
+	"automoderator-wiki-report-false-positive": "vals positief melden",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 heeft uw bewerking teruggedraaid ==",
+	"automoderator-wiki-revert-message": "Hallo! Ik ben [[User:$1|$1]], een geautomatiseerd systeem dat een machine learning-model gebruikt om mogelijk slechte bewerkingen te identificeren en terug te draaien om ervoor te zorgen dat Wikipedia betrouwbaar en geloofwaardig blijft. Helaas heb ik een van uw [[Special:Diff/$2|recente bewerkingen]] teruggedraaid op de pagina [[$3]].\n* Omdat het model dat dat wordt gebruikt niet perfect is, draait het soms goede bewerkingen terug. Als u denkt dat de wijziging die u hebt aangebracht constructief was, [[$4|meld het dan hier]].\n* [[:mw:Moderator Tools/Automoderator|Lees meer]] over de software.\n* Ga naar de [[Special:Homepage|Homepage voor nieuwkomers]] voor meer informatie over bewerken.",
+	"automoderator-wiki-revert-edit-summary": "Kennisgeving van automatisch terugdraaien op [[$1]]",
+	"automoderator-wiki-undo-summary": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ([[User talk:$2|overleg]]) ongedaan gemaakt",
+	"automoderator-wiki-undo-summary-anon": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ongedaan gemaakt"
 }
