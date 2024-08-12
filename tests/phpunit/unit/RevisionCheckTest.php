@@ -6,13 +6,8 @@ use AutoModerator\RevisionCheck;
 use ContentHandler;
 use DummyContentForTesting;
 use Language;
-use LocalisationCache;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
-use MediaWiki\Config\HashConfig;
-use MediaWiki\Languages\LanguageConverterFactory;
-use MediaWiki\Languages\LanguageFallback;
-use MediaWiki\Languages\LanguageNameUtils;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\MutableRevisionRecord;
@@ -23,7 +18,6 @@ use MediaWiki\Revision\RevisionStoreRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\PageUpdater;
 use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
-use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserGroupMembership;
@@ -43,22 +37,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	use MockHttpTrait;
 	use MockServiceDependenciesTrait;
 	use MockTitleTrait;
-
-	/**
-	 * @return Language
-	 */
-	private function createLanguage(): Language {
-		return new Language(
-			$options['code'] ?? 'en',
-			$this->createNoOpMock( NamespaceInfo::class ),
-			$this->createNoOpMock( LocalisationCache::class ),
-			$this->createNoOpMock( LanguageNameUtils::class ),
-			$this->createNoOpMock( LanguageFallback::class ),
-			$this->createNoOpMock( LanguageConverterFactory::class ),
-			$this->createHookContainer(),
-			new HashConfig( [] )
-		);
-	}
 
 	/**
 	 * cribbed from MediaWiki\Tests\Rest\Handler\UserContributionsHandlerTest
@@ -108,7 +86,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$title->method( 'getPrefixedText' )->willReturn( 'Foo' );
 		$title->method( 'getText' )->willReturn( 'Foo' );
 		$title->method( 'getDBkey' )->willReturn( 'Foo' );
-		$title->method( 'getPageLanguage' )->willReturn( $this->createLanguage() );
+		$title->method( 'getPageLanguage' )->willReturn( $this->createMock( Language::class ) );
 		$ret->method( 'getTitle' )->willReturn( $title );
 		$updater = $this->createMock( PageUpdater::class );
 		$ret->method( 'newPageUpdater' )->willReturn( $updater );
@@ -132,7 +110,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->title = $this->makeMockTitle( 'Main_Page', [ 'id' => 1 ] );
-		$this->lang = $this->createLanguage();
+		$this->lang = $this->createMock( Language::class );
 		$this->user = $this->createMock( User::class );
 		$this->user->method( 'getName' )->willReturn( 'ATestUser' );
 		$this->user->method( 'isRegistered' )->willReturn( true );
