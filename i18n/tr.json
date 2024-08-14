@@ -7,5 +7,7 @@
 	"automoderator-config-validator-array-toobig": "$1 çok fazla öğe içeriyor (en fazla $2 {{{{PLURAL:$2|}}|izin veriliyor|izin veriliyor}})",
 	"automoderator-config-validator-contentmodel-mismatch": "İçerik modeli uyuşmazlığı: yapılandırma dosyasının JSON içerik modeline sahip olması gerekiyor, $1 tespit edildi",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code>, <code>$2</code> olması bekleniyor, ancak <code>$3</code> olarak bulundu",
-	"automoderator-desc": "Makine öğrenme modelinden gelen puanlamaya dayanarak kötü niyetli düzenlemeleri otomatik olarak geri döndürür."
+	"automoderator-desc": "Makine öğrenme modelinden gelen puanlamaya dayanarak kötü niyetli düzenlemeleri otomatik olarak geri döndürür.",
+	"automoderator-wiki-report-false-positive": "hatalı pozitif bildir",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 değişikliğinizi geri aldı =="
 }
