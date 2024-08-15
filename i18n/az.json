@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Nemoralis"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Məzmun-model uyğunsuzluğu: konfiqurasiya faylında JSON məzmun modeli olmalıdır, $1 aşkarlanıb",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> <code>$2</code> olacağı gözlənilir, lakin <code>$3</code> olub.",
+	"automoderator-desc": "Maşın öyrənmə modelindən əldə edilən xal əsasında zərərli redaktələri avtomatik olaraq geri qaytarır."
+}

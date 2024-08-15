@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Huñvreüs"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Ne glot ket ar patromoù-endalc’hː restr kefluniañ a rank kaout patrom endalc’h JSON, $1 dinoet",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> a zlefe bezañ <code>$2</code>, met a zo <code>$3</code>",
+	"automoderator-desc": "Nullañ a ra ent emgefreek kemmoù fall hervez skor eus ur patrom deskiñ mekanik"
+}
