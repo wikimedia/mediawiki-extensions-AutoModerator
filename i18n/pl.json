@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Msz2001"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 ma za dużo elementów ({{PLURAL:$1|dopuszczalny jest|dopuszczalne są|dopuszczalnych jest}} maksymalnie $2)",
+	"automoderator-config-validator-contentmodel-mismatch": "Niewłaściwy model zawartości: plik konfiguracyjny musi mieć model JSON, a napotkano $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> powinno być typu <code>$2</code>, a jest <code>$3</code>",
+	"automoderator-desc": "Automatycznie wycofuje złe edycje na podstawie wyniku z modelu uczelnia maszynowego.",
+	"automoderator-wiki-report-false-positive": "zgłoś wynik fałszywie pozytywny",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 wycofał Twoją edycję =="
+}
