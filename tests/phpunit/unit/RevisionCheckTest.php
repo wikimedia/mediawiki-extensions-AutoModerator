@@ -18,6 +18,7 @@ use MediaWiki\Revision\RevisionStoreRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\PageUpdater;
 use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
+use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserGroupMembership;
@@ -27,7 +28,6 @@ use MockTitleTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use WikiPage;
 
-#[\AllowDynamicProperties]
 /**
  * @group AutoModerator
  * @group extensions
@@ -37,6 +37,29 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	use MockHttpTrait;
 	use MockServiceDependenciesTrait;
 	use MockTitleTrait;
+
+	private Title $title;
+	private Language $lang;
+	private User $user;
+	private User $selfUser;
+	private User $anonUser;
+	private WikiPage $wikiPageMock;
+	private array $fakeRevisions;
+	private RevisionRecord $rev;
+	private array $failingScore;
+	private array $passingScore;
+	private bool $originalRevId;
+	private User $autoModeratorUser;
+	private array $tags;
+	private ContentHandler $contentHandler;
+	private \Psr\Log\LoggerInterface $logger;
+	private UserGroupManager $userGroupManager;
+	private RestrictionStore $restrictionStore;
+	private WikiPageFactory $wikiPageFactory;
+	private RevisionStore $revisionStoreMock;
+	private Config $config;
+	private Config $wikiConfig;
+	private string $undoSummary;
 
 	/**
 	 * cribbed from MediaWiki\Tests\Rest\Handler\UserContributionsHandlerTest
@@ -183,30 +206,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$this->wikiPageFactory->method( 'newFromID' )->willReturn( $this->wikiPageMock );
 		$this->undoSummary = "undoSummary";
-	}
-
-	protected function tearDown(): void {
-		unset(
-			$this->title,
-			$this->lang,
-			$this->user,
-			$this->wikiPageMock,
-			$this->fakeRevisions,
-			$this->rev,
-			$this->failingScore,
-			$this->passingScore,
-			$this->originalRevId,
-			$this->autoModeratorUser,
-			$this->tags,
-			$this->revisionsStoreMock,
-			$this->contentHandler,
-			$this->logger,
-			$this->userGroupManager,
-			$this->restrictionStore,
-			$this->lang,
-			$this->wikiPageFactory
-		);
-		parent::tearDown();
 	}
 
 	/**
