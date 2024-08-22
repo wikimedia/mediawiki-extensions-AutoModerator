@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Samoasambia"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Sisältömallin ristiriita: määritystiedostossa on oltava JSON-sisältömalli, $1 havaittu",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> odotetaan olevan <code>$2</code>, mutta se on <code>$3</code>",
+	"automoderator-desc": "Kumoaa huonolaatuiset muokkaukset koneoppimismallilla tehdyn pisteytyksen mukaan."
+}
