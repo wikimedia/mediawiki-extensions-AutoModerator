@@ -9,7 +9,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "antispam",
 	"requires": {
-		"MediaWiki": ">= 1.41"
+		"MediaWiki": ">= 1.43"
 	},
 	"AutoloadNamespaces": {
 		"AutoModerator\\": "src/",
@@ -60,7 +60,10 @@
 		},
 		"AutoModeratorSkipUserGroups": {
 			"description": "An array of trusted user groups whose revisions will not be checked by AutoModerator.",
-			"value": [ "bot", "sysop" ]
+			"value": [
+				"bot",
+				"sysop"
+			]
 		},
 		"AutoModeratorUseEditFlagMinor": {
 			"description": "Enables the minor edit flag for AutoModerator to use when making its edits.",
