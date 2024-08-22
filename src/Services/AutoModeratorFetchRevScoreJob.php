@@ -23,6 +23,7 @@ use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
 use Job;
 use MediaWiki\Config\Config;
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -108,6 +109,11 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
 		$wikiId = Util::getWikiID( $config );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
+		$userFactory = $services->getUserFactory();
+		$user = $userFactory->newFromAnyId(
+			$this->params['userId'],
+			$this->params['userName']
+		);
 
 		$rev = $revisionStore->getRevisionById( $this->revId );
 		if ( $rev === null ) {
@@ -167,15 +173,27 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$this->revId,
 				$autoModeratorUser,
 				$revisionStore,
-				$config,
 				$wikiConfig,
 				$contentHandler,
-				$wikiId,
 				$this->undoSummary,
+				new AutoModeratorRollback(
+					new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),
+					$services->getDBLoadBalancerFactory(),
+					$revisionStore,
+					$services->getTitleFormatter(),
+					$services->getHookContainer(),
+					$wikiPageFactory,
+					$services->getActorMigration(),
+					$services->getActorNormalization(),
+					$wikiPageFactory->newFromID( $this->wikiPageId ),
+					$autoModeratorUser->getUser(),
+					$user->getUser(),
+					$config,
+					$wikiConfig
+				),
 				true
 			);
-			$reverted = $revisionCheck->maybeRevert( $response );
-
+			$reverted = $revisionCheck->maybeRollback( $response );
 		} catch ( RuntimeException $exception ) {
 			$this->setLastError( $exception->getMessage() );
 			return false;

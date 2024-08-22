@@ -4,10 +4,12 @@ namespace AutoModerator\Maintenance;
 
 use AutoModerator\AutoModeratorServices;
 use AutoModerator\RevisionCheck;
+use AutoModerator\Services\AutoModeratorRollback;
 use AutoModerator\Util;
+use Maintenance;
+use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
-use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
@@ -99,11 +101,24 @@ class CheckRevision extends Maintenance {
 			$rev->getId(),
 			$autoModeratorUser,
 			$revisionStore,
-			$config,
 			$wikiConfig,
 			$contentHandler,
-			$wikiId,
-			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain()
+			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain(),
+			new AutoModeratorRollback(
+				new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),
+				$services->getDBLoadBalancerFactory(),
+				$revisionStore,
+				$services->getTitleFormatter(),
+				$services->getHookContainer(),
+				$wikiPageFactory,
+				$services->getActorMigration(),
+				$services->getActorNormalization(),
+				$wikiPageFactory->newFromID( $wikiPageId ),
+				$autoModeratorUser->getUser(),
+				$rev->getUser(),
+				$config,
+				$wikiConfig
+			)
 		);
 
 		// Get a real score or optionally set a fake score
@@ -146,7 +161,9 @@ class CheckRevision extends Maintenance {
 			default:
 				break;
 		}
-		$reverted = json_encode( $revisionCheck->maybeRevert( $score ), JSON_FORCE_OBJECT, JSON_PRETTY_PRINT );
+		$reverted = json_encode( $revisionCheck->maybeRollback( $score ),
+			JSON_FORCE_OBJECT,
+			JSON_PRETTY_PRINT );
 		$scoreStr = json_encode( $score, JSON_PRETTY_PRINT );
 		$this->output( "Revision ID:\t$revId\nWould revert?\t$reverted\nScore:\t$scoreStr\n" );
 	}

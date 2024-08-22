@@ -19,61 +19,54 @@
 
 namespace AutoModerator;
 
-use MediaWiki\CommentStore\CommentStoreComment;
+use AutoModerator\Services\AutoModeratorRollback;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\Content;
 use MediaWiki\Content\ContentHandler;
-use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
-use MediaWiki\Storage\EditResult;
-use MediaWiki\Storage\PageUpdater;
-use MediaWiki\Storage\PageUpdateStatus;
-use MediaWiki\StubObject\StubUserLang;
 use MediaWiki\User\ExternalUserNames;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
+use StatusValue;
 use WikiPage;
 
 class RevisionCheck {
 
 	/** @var int */
-	private $wikiPageId;
+	private int $wikiPageId;
 
 	/** @var WikiPageFactory */
-	private $wikiPageFactory;
+	private WikiPageFactory $wikiPageFactory;
 
 	/** @var int */
-	private $revId;
+	private int $revId;
 
 	/** @var User */
-	private $autoModeratorUser;
+	private User $autoModeratorUser;
 
 	/** @var RevisionStore */
-	private $revisionStore;
+	private RevisionStore $revisionStore;
 
 	/** @var Config */
-	private $config;
-
-	/** @var Config */
-	private $wikiConfig;
+	private Config $wikiConfig;
 
 	/** @var string */
 	public string $undoSummary;
 
 	/** @var ContentHandler */
-	private $contentHandler;
+	private ContentHandler $contentHandler;
 
 	/** @var bool */
 	private bool $enforce;
 
-	/** @var Language|StubUserLang|string */
-	private $lang;
+	/** @var AutoModeratorRollback */
+	private AutoModeratorRollback $rollbackPage;
 
 	/**
 	 * @param int $wikiPageId WikiPage ID of
@@ -81,11 +74,10 @@ class RevisionCheck {
 	 * @param int $revId New revision ID
 	 * @param User $autoModeratorUser reverting user
 	 * @param RevisionStore $revisionStore
-	 * @param Config $config
 	 * @param Config $wikiConfig
 	 * @param ContentHandler $contentHandler
-	 * @param Language|StubUserLang|string $lang
 	 * @param string $undoSummary
+	 * @param AutoModeratorRollback $rollbackPage
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
@@ -94,11 +86,10 @@ class RevisionCheck {
 		int $revId,
 		User $autoModeratorUser,
 		RevisionStore $revisionStore,
-		Config $config,
-		$wikiConfig,
+		Config $wikiConfig,
 		ContentHandler $contentHandler,
-		$lang,
 		string $undoSummary,
+		AutoModeratorRollback $rollbackPage,
 		bool $enforce = false
 	) {
 		$this->wikiPageId = $wikiPageId;
@@ -106,12 +97,11 @@ class RevisionCheck {
 		$this->revId = $revId;
 		$this->autoModeratorUser = $autoModeratorUser;
 		$this->revisionStore = $revisionStore;
-		$this->config = $config;
 		$this->wikiConfig = $wikiConfig;
 		$this->contentHandler = $contentHandler;
 		$this->enforce = $enforce;
-		$this->lang = $lang;
 		$this->undoSummary = $undoSummary;
+		$this->rollbackPage = $rollbackPage;
 	}
 
 	/**
@@ -130,7 +120,7 @@ class RevisionCheck {
 	 */
 	private function getUndoContent(
 		RevisionRecord $oldRev,
-		&$error,
+		?string &$error,
 		WikiPage $wikiPage,
 		RevisionRecord $rev
 	) {
@@ -160,6 +150,15 @@ class RevisionCheck {
 	}
 
 	/**
+	 * Perform rollback
+	 */
+	private function doRollback(): StatusValue {
+		return $this->rollbackPage
+			->setSummary( $this->undoSummary )
+			->rollback();
+	}
+
+	/**
 	 * Precheck a revision; if any of the checks don't pass,
 	 * a revision won't be scored
 	 * @param UserIdentity $user
@@ -175,9 +174,8 @@ class RevisionCheck {
 	 * @return bool
 	 */
 	public static function revertPreCheck( UserIdentity $user, User $autoModeratorUser, LoggerInterface $logger,
-			RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore,
-			WikiPageFactory $wikiPageFactory, Config $wikiConfig, int $revId, int $wikiPageId,
-			PermissionManager $permissionManager ): bool {
+		RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore, WikiPageFactory $wikiPageFactory,
+		Config $wikiConfig, int $revId, int $wikiPageId, PermissionManager $permissionManager ): bool {
 		// Skips reverts if AutoModerator is blocked
 		$autoModeratorBlock = $autoModeratorUser->getBlock();
 		if ( $autoModeratorBlock && $autoModeratorBlock->appliesToPage( $wikiPageId ) ) {
@@ -259,40 +257,18 @@ class RevisionCheck {
 	}
 
 	/**
-	 * Perform revert
-	 * @param PageUpdater $pageUpdater
-	 * @param Content $content
-	 * @param RevisionRecord $prevRev
-	 */
-	private function doRevert( $pageUpdater, $content, $prevRev ): PageUpdateStatus {
-		$pageUpdater->setContent( SlotRecord::MAIN, $content );
-		$pageUpdater->setOriginalRevisionId( $prevRev->getId() );
-		$comment = CommentStoreComment::newUnsavedComment( $this->undoSummary );
-		$pageUpdater->markAsRevert( EditResult::REVERT_UNDO, $this->revId, $prevRev->getId() );
-		if ( $this->wikiConfig->get( 'AutoModeratorUseEditFlagMinor' ) ) {
-			$pageUpdater->setFlags( EDIT_MINOR );
-		}
-		if ( $this->wikiConfig->get( 'AutoModeratorEnableBotFlag' ) ) {
-			$pageUpdater->setFlags( EDIT_FORCE_BOT );
-		}
-		$pageUpdater->saveRevision( $comment, EDIT_UPDATE );
-		return $pageUpdater->getStatus();
-	}
-
-	/**
 	 * Check revision; revert if it meets configured critera
 	 * @param array $score
 	 *
 	 * @return array
 	 */
-	public function maybeRevert( $score ) {
+	public function maybeRollback( array $score ): array {
 		$reverted = 0;
 		$status = 'Not reverted';
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		$wikiPage = $this->wikiPageFactory->newFromID( $this->wikiPageId );
 		$rev = $this->revisionStore->getRevisionById( $this->revId );
 		// Automoderator system user may perform updates
-		$pageUpdater = $wikiPage->newPageUpdater( $this->autoModeratorUser );
 		if ( $probability > Util::getRevertThreshold( $this->wikiConfig ) ) {
 			$prevRev = $this->revisionStore->getPreviousRevision( $rev );
 			$content = $this->getUndoContent( $prevRev, $this->undoSummary, $wikiPage, $rev );
@@ -300,9 +276,9 @@ class RevisionCheck {
 				return [ $reverted => $this->undoSummary ];
 			}
 			if ( $this->enforce ) {
-				$pageUpdateStatus = $this->doRevert( $pageUpdater, $content, $prevRev );
-				if ( !$pageUpdateStatus->isOK() ) {
-					$errorMessages = $pageUpdateStatus->getMessages( 'error' );
+				$pageRollbackStatus = $this->doRollback();
+				if ( !$pageRollbackStatus->isOK() ) {
+					$errorMessages = $pageRollbackStatus->getMessages( 'error' );
 					return [ $reverted => $errorMessages ? wfMessage( $errorMessages[0] )->inLanguage( "en" )->plain()
 						: "Failed to save revision" ];
 				}
