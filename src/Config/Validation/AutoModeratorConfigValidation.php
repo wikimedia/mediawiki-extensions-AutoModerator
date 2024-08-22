@@ -21,9 +21,6 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			'AutoModeratorFalsePositivePageTitle' => [
 				'type' => '?string',
 			],
-			'AutoModeratorSkipUserGroups' => [
-				'type' => 'array'
-			],
 			'AutoModeratorUseEditFlagMinor' => [
 				'type' => 'bool',
 			],
@@ -32,6 +29,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			],
 			'AutoModeratorEnableBotFlag' => [
 				'type' => 'bool',
+			],
+			'AutoModeratorSkipUserRights' => [
+				'type' => 'array'
 			]
 		];
 	}

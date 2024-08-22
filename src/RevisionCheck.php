@@ -19,12 +19,13 @@
 
 namespace AutoModerator;
 
-use Content;
-use ContentHandler;
-use Language;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
+use MediaWiki\Content\Content;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
@@ -33,7 +34,6 @@ use MediaWiki\Storage\PageUpdater;
 use MediaWiki\StubObject\StubUserLang;
 use MediaWiki\User\ExternalUserNames;
 use MediaWiki\User\User;
-use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
 use WikiPage;
@@ -79,9 +79,6 @@ class RevisionCheck {
 	/** @var LoggerInterface */
 	private $logger;
 
-	/** @var UserGroupManager */
-	private $userGroupManager;
-
 	/** @var RestrictionStore */
 	private $restrictionStore;
 
@@ -90,6 +87,9 @@ class RevisionCheck {
 
 	/** @var Language|StubUserLang|string */
 	private $lang;
+
+	/** @var PermissionManager */
+	private PermissionManager $permissionManager;
 
 	/** @var bool */
 	public bool $passedPreCheck;
@@ -109,10 +109,10 @@ class RevisionCheck {
 	 * @param Config $wikiConfig
 	 * @param ContentHandler $contentHandler
 	 * @param LoggerInterface $logger
-	 * @param UserGroupManager $userGroupManager
 	 * @param RestrictionStore $restrictionStore
 	 * @param Language|StubUserLang|string $lang
 	 * @param string $undoSummary
+	 * @param PermissionManager $permissionManager
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
@@ -128,10 +128,10 @@ class RevisionCheck {
 		$wikiConfig,
 		ContentHandler $contentHandler,
 		LoggerInterface $logger,
-		UserGroupManager $userGroupManager,
 		RestrictionStore $restrictionStore,
 		$lang,
 		string $undoSummary,
+		PermissionManager $permissionManager,
 		bool $enforce = false
 	) {
 		$this->wikiPageId = $wikiPageId;
@@ -146,10 +146,10 @@ class RevisionCheck {
 		$this->wikiConfig = $wikiConfig;
 		$this->contentHandler = $contentHandler;
 		$this->logger = $logger;
-		$this->userGroupManager = $userGroupManager;
 		$this->restrictionStore = $restrictionStore;
 		$this->enforce = $enforce;
 		$this->lang = $lang;
+		$this->permissionManager = $permissionManager;
 		$this->passedPreCheck = $this->revertPreCheck(
 			$user,
 			$autoModeratorUser,
@@ -158,10 +158,10 @@ class RevisionCheck {
 			$tags,
 			$restrictionStore,
 			$wikiPageFactory,
-			$userGroupManager,
 			$wikiConfig,
 			$revId,
-			$wikiPageId
+			$wikiPageId,
+			$permissionManager
 		);
 		$this->undoSummary = $undoSummary;
 	}
@@ -221,7 +221,6 @@ class RevisionCheck {
 	 * @param string[] $tags
 	 * @param RestrictionStore $restrictionStore
 	 * @param WikiPageFactory $wikiPageFactory
-	 * @param UserGroupManager $userGroupManager
 	 * @param Config $wikiConfig
 	 * @param int $revId
 	 * @param int $wikiPageId
@@ -229,8 +228,8 @@ class RevisionCheck {
 	 */
 	public static function revertPreCheck( UserIdentity $user, User $autoModeratorUser, LoggerInterface $logger,
 			RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore,
-			WikiPageFactory $wikiPageFactory, UserGroupManager $userGroupManager, Config $wikiConfig,
-			int $revId, int $wikiPageId ): bool {
+			WikiPageFactory $wikiPageFactory, Config $wikiConfig, int $revId, int $wikiPageId,
+			PermissionManager $permissionManager ): bool {
 		// Skip AutoModerator edits
 		if ( $user->equals( $autoModeratorUser ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoMod edits" );
@@ -277,16 +276,14 @@ class RevisionCheck {
 				return false;
 			}
 		}
-		// Skip sysop and bot user edits
-		// @todo: Move bot skip to check on recent changes rc_bot field
-		$skipGroups = $wikiConfig->get( 'AutoModeratorSkipUserGroups' );
-		$userGroups = $userGroupManager->getUserGroupMemberships( $user );
-		foreach ( $skipGroups as $skipGroup ) {
-			if ( array_key_exists( $skipGroup, $userGroups ) ) {
-				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - trusted user group edits" );
-				return false;
-			}
+
+		// Skip edits from editors that have certain user rights
+		$skipRights = $wikiConfig->get( 'AutoModeratorSkipUserRights' );
+		if ( $permissionManager->userHasAnyRight( $user, ...(array)$skipRights ) ) {
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - trusted user rights edits" );
+			return false;
 		}
+
 		// Skip external users
 		if ( ExternalUserNames::isExternal( $user->getName() ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - external user" );

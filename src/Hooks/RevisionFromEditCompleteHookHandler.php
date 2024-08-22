@@ -29,6 +29,7 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserGroupManager;
@@ -49,6 +50,8 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 
 	private JobQueueGroup $jobQueueGroup;
 
+	private PermissionManager $permissionManager;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
@@ -57,6 +60,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 	 * @param RevisionStore $revisionStore
 	 * @param RestrictionStore $restrictionStore
 	 * @param JobQueueGroup $jobQueueGroup
+	 * @param PermissionManager $permissionManager
 	 */
 	public function __construct(
 		Config $wikiConfig,
@@ -65,7 +69,8 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		WikiPageFactory $wikiPageFactory,
 		RevisionStore $revisionStore,
 		RestrictionStore $restrictionStore,
-		JobQueueGroup $jobQueueGroup
+		JobQueueGroup $jobQueueGroup,
+		PermissionManager $permissionManager
 	) {
 		$this->wikiConfig = $wikiConfig;
 		$this->userGroupManager = $userGroupManager;
@@ -74,6 +79,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		$this->revisionStore = $revisionStore;
 		$this->restrictionStore = $restrictionStore;
 		$this->jobQueueGroup = $jobQueueGroup;
+		$this->permissionManager = $permissionManager;
 	}
 
 	/**
@@ -109,10 +115,10 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 			$tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
-			$this->userGroupManager,
 			$this->wikiConfig,
 			$revId,
-			$wikiPageId ) ) {
+			$wikiPageId,
+			$this->permissionManager ) ) {
 			return;
 		}
 		$undoSummaryMessageKey = ( !$user->isRegistered() && $this->config->get( MainConfigNames::DisableAnonTalk ) )

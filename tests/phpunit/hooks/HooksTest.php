@@ -36,7 +36,7 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 				'AutoModeratorEnableWikiConfig' => true,
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserGroups' => [],
+				'AutoModeratorSkipUserRights' => [],
 				'AutoModeratorFalsePositivePageTitle' => 'Test False Positive',
 			] )
 		);
@@ -93,7 +93,7 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 				'AutoModeratorEnableWikiConfig' => true,
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserGroups' => [],
+				'AutoModeratorSkipUserRights' => [],
 				'AutoModeratorFalsePositivePageTitle' => null,
 			] )
 		);

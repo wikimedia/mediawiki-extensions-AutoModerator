@@ -57,6 +57,7 @@ class CheckRevision extends Maintenance {
 		$userGroupManager = $services->getUserGroupManager();
 		$wikiPageFactory = $services->getWikiPageFactory();
 		$restrictionStore = $services->getRestrictionStore();
+		$permissionManager = $services->getPermissionManager();
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
 		$wikiId = Util::getWikiID( $config );
 		$dbr = $this->getReplicaDB();
@@ -90,10 +91,10 @@ class CheckRevision extends Maintenance {
 			$wikiConfig,
 			$contentHandler,
 			$logger,
-			$userGroupManager,
 			$restrictionStore,
 			$wikiId,
-			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain()
+			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain(),
+			$permissionManager
 		);
 		if ( !$revisionCheck->passedPreCheck ) {
 			$this->output( "precheck skipped rev:\t$revId\n" );

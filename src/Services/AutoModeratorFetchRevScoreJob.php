@@ -91,6 +91,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$config = $services->getMainConfig();
 		$wikiConfig = $this->getAutoModeratorWikiConfig();
 		$userFactory = $services->getUserFactory();
+		$permissionManager = $services->getPermissionManager();
 		$user = $userFactory->newFromAnyId(
 			$this->params['userId'],
 			$this->params['userName']
@@ -136,10 +137,10 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$wikiConfig,
 				$contentHandler,
 				$logger,
-				$userGroupManager,
 				$restrictionStore,
 				$wikiId,
 				$this->undoSummary,
+				$permissionManager,
 				true
 			);
 			$reverted = $revisionCheck->maybeRevert( $response );

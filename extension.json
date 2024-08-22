@@ -58,13 +58,6 @@
 			"description": "The page title of the false positive reporting page.",
 			"value": null
 		},
-		"AutoModeratorSkipUserGroups": {
-			"description": "An array of trusted user groups whose revisions will not be checked by AutoModerator.",
-			"value": [
-				"bot",
-				"sysop"
-			]
-		},
 		"AutoModeratorUseEditFlagMinor": {
 			"description": "Enables the minor edit flag for AutoModerator to use when making its edits.",
 			"value": false
@@ -76,6 +69,13 @@
 		"AutoModeratorEnableBotFlag": {
 			"description": "Enable whether AutoModerator uses the Bot flag when making its edits",
 			"value": false
+		},
+		"AutoModeratorSkipUserRights": {
+			"description": "Edits made by accounts with one or more of these rights will not be checked by AutoModerator.",
+			"value": [
+				"bot",
+				"autopatrol"
+			]
 		}
 	},
 	"HookHandlers": {
@@ -106,7 +106,8 @@
 				"WikiPageFactory",
 				"RevisionStore",
 				"RestrictionStore",
-				"JobQueueGroup"
+				"JobQueueGroup",
+				"PermissionManager"
 			]
 		}
 	},

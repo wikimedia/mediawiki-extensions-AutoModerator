@@ -8,12 +8,12 @@ use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
-use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
@@ -81,7 +81,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableWikiConfig' => true,
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserGroups' => [],
+				'AutoModeratorSkipUserRights' => [],
 			] )
 		);
 		$config = new HashConfig( [
@@ -97,18 +97,17 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
 		$mockRevision->method( 'getParentId' )->willReturn( 100 );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore,
-			$jobQueueGroup, $mockTitleFactory ) )
+			$jobQueueGroup, $mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
@@ -148,7 +147,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableWikiConfig' => true,
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserGroups' => [],
+				'AutoModeratorSkipUserRights' => [],
 			] )
 		);
 		$config = new HashConfig( [
@@ -165,16 +164,16 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
 		$mockRevision->method( 'getParentId' )->willReturn( 100 );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
@@ -233,8 +232,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUtil = $this->createMock( Util::class );
 		$mockUser = $this->createMock( User::class );
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
-
 		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
@@ -242,10 +239,11 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
@@ -279,7 +277,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableWikiConfig' => true,
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserGroups' => [ 'bot', 'sysop' ],
+				'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
 			] )
 		);
 		$config = new HashConfig( [
@@ -287,12 +285,11 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorSkipUserGroups' => [ 'bot', 'sysop' ],
+			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUtil = $this->createMock( Util::class );
 		$mockUser = $this->createMock( User::class );
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
@@ -302,10 +299,11 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevision->method( 'getParentId' )->willReturn( 100 );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $mockRevision, $originalRevId, $user, $tags );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
@@ -339,14 +337,14 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorWikiId' => "en"
 			] );
 			$userGroupManager = $this->createMock( UserGroupManager::class );
-			$mockTitleFactory = $this->createMock( TitleFactory::class );
 			$mockRevisionStore = $this->createMock( RevisionStore::class );
 			$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 			$mockRevisionStore->method( 'getRevisionById' )->willReturn( null );
+			$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 			( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 				$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-				$mockTitleFactory ) )
+				$mockPermissionManager ) )
 				->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 					Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
 			$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
@@ -380,17 +378,17 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorWikiId' => "en"
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRevision->method( 'getParentId' )->willReturn( null );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
@@ -424,18 +422,15 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorWikiId' => "en"
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUser = $this->createMock( User::class );
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 
-		$mockTitleFactory->method( "makeTitleSafe" )->willReturn(
-			$mockTitleFactory->makeTitleSafe( NS_USER_TALK, $mockUser->getName() ) );
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
 		$this->assertNotFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
@@ -472,19 +467,16 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorWikiId' => "en"
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUser = $this->createMock( User::class );
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 
-		$mockTitleFactory->method( "makeTitleSafe" )->willReturn(
-			$mockTitleFactory->makeTitleSafe( NS_USER_TALK, $mockUser->getName() ) );
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
 		$tags = [];
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				Util::getAutoModeratorUser( $config, $userGroupManager ), $tags );
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
@@ -509,7 +501,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => true,
-				'AutoModeratorSkipUserGroups' => [],
+				'AutoModeratorSkipUserRights' => [],
 				'AutoModeratorFalsePositivePageTitle' => "",
 			] )
 		);
@@ -522,17 +514,14 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockUser = $this->createMock( User::class );
-		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-
-		$mockTitleFactory->method( "makeTitleSafe" )->willReturn(
-			$mockTitleFactory->makeTitleSafe( NS_USER_TALK, $mockUser->getName() ) );
 		$mockRevisionStore->method( "getRevisionById" )->willReturn( $rev );
+		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockTitleFactory ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId,
 				$mockUser, $tags );
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );

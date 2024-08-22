@@ -26,10 +26,10 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 	public const ALLOW_LIST = [
 		'AutoModeratorEnableRevisionCheck',
 		'AutoModeratorFalsePositivePageTitle',
-		'AutoModeratorSkipUserGroups',
 		'AutoModeratorUseEditFlagMinor',
 		'AutoModeratorRevertTalkPageMessageEnabled',
-		'AutoModeratorEnableBotFlag'
+		'AutoModeratorEnableBotFlag',
+		'AutoModeratorSkipUserRights'
 	];
 
 	/**
