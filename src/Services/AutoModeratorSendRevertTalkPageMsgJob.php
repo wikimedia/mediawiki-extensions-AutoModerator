@@ -223,7 +223,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		string $contentModel
 	): ?Content {
 		$newLine = "\n";
-		$signature = "-- ~~~~";
+		$signature = " -- ~~~~";
 		if ( $currentContent ) {
 			return $currentContent->getContentHandler()->makeContent(
 				$currentContent->getWikitextForTransclusion() . $newLine . $headerRawMessage . $newLine . $newLine
