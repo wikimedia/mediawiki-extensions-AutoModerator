@@ -7,10 +7,12 @@ return (object) array(
    'AutoModeratorUseEditFlagMinor' => false,
    'AutoModeratorEnableBotFlag' => false,
    'AutoModeratorRevertTalkPageMessageEnabled' => false,
-   'AutoModeratorSkipUserRights' => 
+   'AutoModeratorSkipUserRights' =>
   array (
     0 => 'bot',
     1 => 'autopatrol',
   ),
    'AutoModeratorFalsePositivePageTitle' => '',
+   'AutoModeratorEnableUserRevertsPerPage' => false,
+   'AutoModeratorUserRevertsPerPage' => null,
 );
