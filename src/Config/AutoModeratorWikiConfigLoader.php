@@ -82,7 +82,7 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 	 * @param int $flags bit field, see IDBAccessObject::READ_XXX
 	 * @return mixed Config value
 	 */
-	public function getWithFlags( $name, int $flags = 0 ) {
+	public function getWithFlags( string $name, int $flags = 0 ) {
 		if ( !$this->isWikiConfigEnabled() ) {
 			return $this->globalVarConfig->get( $name );
 		}
@@ -111,7 +111,7 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 	/**
 	 * @inheritDoc
 	 */
-	public function has( $name ) {
+	public function has( $name ): bool {
 		return $this->hasWithFlags( $name );
 	}
 
@@ -120,7 +120,7 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 	 * @param int $flags
 	 * @return bool
 	 */
-	public function hasWithFlags( $name, int $flags = 0 ) {
+	public function hasWithFlags( string $name, int $flags = 0 ): bool {
 		if ( !$this->isWikiConfigEnabled() ) {
 			return $this->globalVarConfig->has( $name );
 		}

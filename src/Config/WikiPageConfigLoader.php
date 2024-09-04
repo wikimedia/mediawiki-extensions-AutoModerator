@@ -79,7 +79,7 @@ class WikiPageConfigLoader implements ICustomReadConstants {
 	 * @param LinkTarget $configPage
 	 * @return string
 	 */
-	private function makeCacheKey( LinkTarget $configPage ) {
+	private function makeCacheKey( LinkTarget $configPage ): string {
 		return $this->cache->makeKey( 'AutoModerator',
 			'config', $configPage->getNamespace(), $configPage->getDBkey() );
 	}
