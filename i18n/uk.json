@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Renvoy"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Не співпадають моделі вмісту: файл конфігурації повинен мати модель JSON, а виявлено $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> має бути <code>$2</code>, а є <code>$3</code>",
+	"automoderator-desc": "Автоматично відкочує шкідливі редагування на основі оцінки моделі машинного навчання."
+}
