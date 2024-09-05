@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"Alien333",
 			"SleaY"
 		]
 	},
 	"automoderator-wiki-report-false-positive": "signaler un faux positif",
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}} : $1 a annulé votre modification =="
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}} : $1 a annulé votre modification ==",
+	"communityconfiguration-editor-form-submit-button-text": "Enregistrer les modifications"
 }

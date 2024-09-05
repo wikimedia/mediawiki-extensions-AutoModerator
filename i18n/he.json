@@ -13,5 +13,6 @@
 	"automoderator-wiki-revert-message": "שלום! אני [[User:$1|$1]], מערכת אוטומטית שמשתמשת במודל למידת מכונה כדי לזהות ולשחזר עריכות שעלולות להיות גרועות כדי להבטיח שוויקיפדיה תישאר מדויקת ואמינה. לרוע המזל, שחזרתי אחת מה[[Special:Diff/$2|עריכות האחרונות]] שלך לדף [[$3]].\n* מכיוון שהמודל שאני משתמשת בה אינה מושלמת, היא משחזרת לפעמים עריכות טובות. אם נראה לך שהשינוי שביצעת היה מועיל, נא [[$4|לדווח על זה כאן]].\n* [[:mw:Moderator Tools/Automoderator|מידע נוסף]] על התוכנה שלי.\n* למידע נוסף על עריכה, נא לבקר ב[[Special:Homepage|דף הבית למתחילים]].",
 	"automoderator-wiki-revert-edit-summary": "הודעה על שחזור אוטומטי בדף [[$1]]",
 	"automoderator-wiki-undo-summary": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]])",
-	"automoderator-wiki-undo-summary-anon": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]]"
+	"automoderator-wiki-undo-summary-anon": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]]",
+	"communityconfiguration-editor-form-submit-button-text": "שמירת השינויים"
 }

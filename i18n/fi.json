@@ -13,5 +13,6 @@
 	"automoderator-wiki-revert-message": "Hei! Olen [[User:$1|$1]], automaattinen järjestelmä, joka käyttää koneoppimismallia mahdollisesti huonolaatuisten muokkausten tunnistamiseen ja kumoamiseen varmistaakseni, että Wikipedia pysyisi luotettavana.\nIkävä kyllä, kumosin yhden [[Special:Diff/$2|tuoreista muokkauksistasi]] sivulla [[$3]].\n* Koska käyttämäni malli ei ole täydellinen, se kumoaa välillä myös hyvälaatuisia muokkauksia. Jos uskot tekemäsi muutoksen olleen hyödyllinen, [[$4|ilmoita siitä täällä]].\n* [[:mw:Moderator Tools/Automoderator|Lisätietoja]] ohjelmastani.\n* Oppiaksesi lisää muokkaamisesta käy [[Special:Homepage|tulokkaan aloitussivulla]].",
 	"automoderator-wiki-revert-edit-summary": "Ilmoitus automaattisesta kumoamisesta sivulla [[$1]]",
 	"automoderator-wiki-undo-summary": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]])",
-	"automoderator-wiki-undo-summary-anon": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]]"
+	"automoderator-wiki-undo-summary-anon": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]]",
+	"communityconfiguration-editor-form-submit-button-text": "Tallenna muutokset"
 }
