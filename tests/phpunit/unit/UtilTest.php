@@ -32,32 +32,61 @@ class UtilTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers ::getRevertThreshold defaults to 0.95 when set below 0.95.
+	 * @covers ::getRevertThreshold cautious
 	 */
-	public function testGetRevertThreshold() {
+	public function testGetRevertThresholdCautious() {
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorRevertProbability', '0' ],
+			[ 'AutoModeratorCautionLevel', 'cautious' ],
 		] );
 		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
-			0.95,
+			0.985,
 			$revertThreshold
 		);
 	}
 
 	/**
-	 * @covers ::getRevertThreshold when configured above 0.95
-	 *  respects the configuration value.
+	 * @covers ::getRevertThreshold very-cautious
 	 */
-	public function testGetRevertThresholdNotTooLow() {
+	public function testGetRevertThresholdVeryCautious() {
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorRevertProbability', '0.97' ],
+			[ 'AutoModeratorCautionLevel', 'very-cautious' ],
 		] );
 		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
-			0.97,
+			0.990,
+			$revertThreshold
+		);
+	}
+
+	/**
+	 * @covers ::getRevertThreshold somewhat-cautious
+	 */
+	public function testGetRevertThresholdSomewhatCautious() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorCautionLevel', 'somewhat-cautious' ],
+		] );
+		$revertThreshold = Util::getRevertThreshold( $config );
+		$this->assertSame(
+			0.980,
+			$revertThreshold
+		);
+	}
+
+	/**
+	 * @covers ::getRevertThreshold less-cautious
+	 */
+	public function testGetRevertThresholdLessCautious() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorCautionLevel', 'less-cautious' ],
+		] );
+		$revertThreshold = Util::getRevertThreshold( $config );
+		$this->assertSame(
+			0.975,
 			$revertThreshold
 		);
 	}

@@ -136,19 +136,28 @@ class Util {
 	}
 
 	/**
-	 * If the AutoModeratorRevertProbability configuration
-	 * field is set below 0.95 we default to 0.95 to prevent
-	 * large numbers of false positives.
 	 * @param Config $config
 	 * @return float AutoModeratorRevertProbability threshold
 	 */
 	public static function getRevertThreshold( Config $config ): float {
-		$minimumThreshold = 0.95;
-		$revertThreshold = $config->get( 'AutoModeratorRevertProbability' );
-		if ( $revertThreshold < $minimumThreshold ) {
-			return $minimumThreshold;
+		$threshold = 0.990;
+		switch ( $config->get( 'AutoModeratorCautionLevel' ) ) {
+			case "very-cautious":
+				$threshold = 0.990;
+				break;
+			case "cautious":
+				$threshold = 0.985;
+				break;
+			case "somewhat-cautious":
+				$threshold = 0.980;
+				break;
+			case "less-cautious":
+				$threshold = 0.975;
+				break;
+			default:
+				break;
 		}
-		return $revertThreshold;
+		return $threshold;
 	}
 
 	/**

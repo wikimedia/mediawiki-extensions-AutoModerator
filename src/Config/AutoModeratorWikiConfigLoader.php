@@ -29,7 +29,8 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 		'AutoModeratorUseEditFlagMinor',
 		'AutoModeratorRevertTalkPageMessageEnabled',
 		'AutoModeratorEnableBotFlag',
-		'AutoModeratorSkipUserRights'
+		'AutoModeratorSkipUserRights',
+		'AutoModeratorCautionLevel'
 	];
 
 	/**

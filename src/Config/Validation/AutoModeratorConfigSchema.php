@@ -12,6 +12,13 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		self::DEFAULT => false,
 	];
 
+	public const AutoModeratorCautionLevel = [
+		self::TYPE => self::TYPE_STRING,
+		self::REQUIRED => false,
+		self::DEFAULT => "very-cautious",
+		self::ENUM => [ 'very-cautious', 'cautious', 'somewhat-cautious', 'less-cautious' ]
+	];
+
 	public const AutoModeratorUseEditFlagMinor = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false
@@ -41,5 +48,4 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		self::REF => [ 'class' => MediaWikiDefinitions::class, 'field' => 'PageTitle' ],
 		self::DEFAULT => "",
 	];
-
 }

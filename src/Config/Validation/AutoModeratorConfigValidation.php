@@ -32,7 +32,10 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			],
 			'AutoModeratorSkipUserRights' => [
 				'type' => 'array'
-			]
+			],
+			'AutoModeratorCautionLevel' => [
+				'type' => 'string',
+			],
 		];
 	}
 

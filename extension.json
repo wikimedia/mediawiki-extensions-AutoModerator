@@ -47,10 +47,6 @@
 			"description": "Enable AutoModerator automatic revision checks.",
 			"value": false
 		},
-		"AutoModeratorRevertProbability": {
-			"description": "Revert risk probability threshold; Edits scored above this value will be reverted",
-			"value": 0.99
-		},
 		"AutoModeratorUsername": {
 			"description": "Username for AutoModerator system account",
 			"value": "AutoModerator"
@@ -97,6 +93,10 @@
 				"bot",
 				"autopatrol"
 			]
+		},
+		"AutoModeratorCautionLevel": {
+			"description": "Controls the caution level that AutoModerator uses when scoring edits.",
+			"value": "cautious"
 		}
 	},
 	"HookHandlers": {
