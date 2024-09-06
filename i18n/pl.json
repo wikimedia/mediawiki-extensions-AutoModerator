@@ -9,6 +9,5 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> powinno być typu <code>$2</code>, a jest <code>$3</code>",
 	"automoderator-desc": "Automatycznie wycofuje złe edycje na podstawie wyniku z modelu uczelnia maszynowego.",
 	"automoderator-wiki-report-false-positive": "zgłoś wynik fałszywie pozytywny",
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 wycofał Twoją edycję ==",
-	"communityconfiguration-editor-form-submit-button-text": "Zapisz zmiany"
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 wycofał Twoją edycję =="
 }

@@ -12,6 +12,5 @@
 	"automoderator-wiki-revert-message": "Salute! Io es [[User:$1|$1]], un systema automatisate que identifica e disface modificationes potentialmente mal per medio de un modello de apprendimento machinal, a fin de assecurar que Wikipedia remane digne de fide. Regrettabilemente, io ha debite disfacer un de tu [[Special:Diff/$2|modificationes recente]] de [[$3]].\n* Perque le modello que io emplea non es perfecte, pote occurrer que illo reverte bon modificationes. Si tu crede que le modification que tu ha apportate es constructive, per favor [[$4|signala lo hic]].\n* [[:mw:Moderator Tools/Automoderator|Lege plus]] sur mi software.\n* Pro apprender plus sur como modificar, visita tu [[Special:Homepage|Pagina de initio pro novicios]].",
 	"automoderator-wiki-revert-edit-summary": "Notification de reversion automatic sur [[$1]]",
 	"automoderator-wiki-undo-summary": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]])",
-	"automoderator-wiki-undo-summary-anon": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]]",
-	"communityconfiguration-editor-form-submit-button-text": "Salveguardar modificationes"
+	"automoderator-wiki-undo-summary-anon": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]]"
 }

@@ -5,6 +5,5 @@
 			"Ceirios"
 		]
 	},
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 wedi gwrthdroi eich golygiad ==",
-	"communityconfiguration-editor-form-submit-button-text": "Cadw newidiadau"
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 wedi gwrthdroi eich golygiad =="
 }
