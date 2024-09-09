@@ -2,9 +2,17 @@
 	"@metadata": {
 		"authors": [
 			"Alien333",
+			"Goombiis",
 			"SleaY"
 		]
 	},
 	"automoderator-wiki-report-false-positive": "signaler un faux positif",
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}} : $1 a annulé votre modification =="
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}} : $1 a annulé votre modification ==",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "L'automodérateur est activé.",
+	"communityconfiguration-automoderator-title": "Automodérateur",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configurer le seuil",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automodérateur",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Modifications mineures",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Modification par robot",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-option-bot-label": "robot"
 }

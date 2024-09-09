@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Amire80"
+			"Amire80",
+			"YaronSh"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "ל{{GRAMMAR:תחילית|$1}} יש יותר מדי פריטים (מותר {{PLURAL:$2|שיהיה אחד|שיהיו $2}} לכל היותר)",
@@ -36,5 +37,6 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "אחרי שהמפקח האוטומטי משחזר עריכה, ניתן לשלוח לעורך הודעת דף שיחה אוטומטית שמסבירה מה קרה ומספקת קישורים מועילים.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-option-bot-label": "בוט",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-option-autopatrol-label": "בדוק עריכות אוטומטית",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[[עזרה:עריכה_משנית|עזרה:עריכה_משנית]]",
 	"communityconfiguration-automoderator-description": "הגדרת התצורה של מפקח אוטומטי (Automoderator), כך שהמודל יוכל לזהות ולשחזור בוויקיפדיה עריכות שעלולות להיות גרועות."
 }

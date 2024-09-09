@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"আফতাবুজ্জামান"
+		]
+	},
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "অনুল্লেখ্য সম্পাদনা",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "বট সম্পাদনা",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-option-bot-label": "বট"
+}

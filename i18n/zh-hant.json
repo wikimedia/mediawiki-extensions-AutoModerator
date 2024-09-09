@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Cookai1205",
-			"Kly"
+			"Kly",
+			"人间百态"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1的項目過多（最多{{PLURAL:$2|允許}} $2 個）",
@@ -14,5 +15,8 @@
 	"automoderator-wiki-revert-message": "您好！我是 [[User:$1|$1]]，是一個自動化系統，可使用機器學習模型來判斷並撤銷掉內容有潛在問題的編輯，來確保維基百科內容可靠可信。在這裡很遺憾地告知您，我撤銷了您近期對[[$3]]做出的[[Special:Diff/$2|編輯]]。\n* 因為我使用的模型還不夠完美，有時會撤銷掉內容沒問題的編輯。如果您認為做出的更改是有建設性的，請在[[$4|此處]]回報。\n* 要了解關於 Automoderator 這份軟體，請參訪[[:mw:Moderator Tools/Automoderator|此處]]。\n* 要了解更多關於編輯上的事項，請參訪您的[[Special:Homepage|新手首頁]]。",
 	"automoderator-wiki-revert-edit-summary": "在[[$1]]的自動撤銷通知",
 	"automoderator-wiki-undo-summary": "取消[[Special:Contributions/$2|$2]]（[[User talk:$2|留言]]）作出的修訂[[Special:Diff/$1|$1]]",
-	"automoderator-wiki-undo-summary-anon": "取消[[Special:Contributions/$2|$2]]作出的修訂[[Special:Diff/$1|$1]]"
+	"automoderator-wiki-undo-summary-anon": "取消[[Special:Contributions/$2|$2]]作出的修訂[[Special:Diff/$1|$1]]",
+	"communityconfiguration-automoderator-automoderatorskipusergroups-label": "使用者群組",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "討論頁面訊息",
+	"communityconfiguration-automoderator-title": "Automoderator"
 }

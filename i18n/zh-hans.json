@@ -4,11 +4,14 @@
 			"Anterdc99",
 			"Googology",
 			"Lakejason0",
+			"人间百态",
 			"沈澄心"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1包含的项目太多（最多{{PLURAL:$2|允许}}$2个）",
 	"automoderator-config-validator-contentmodel-mismatch": "内容模型不匹配：配置文件必须是JSON内容模型，但检测到$1",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code>应为<code>$2</code>，但实际为<code>$3</code>",
-	"automoderator-desc": "根据机器学习模型的评分自动撤销错误的编辑。"
+	"automoderator-desc": "根据机器学习模型的评分自动撤销错误的编辑。",
+	"automoderator-wiki-report-false-positive": "汇报误报",
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1撤销了您的编辑 =="
 }
