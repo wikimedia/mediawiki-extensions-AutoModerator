@@ -4,6 +4,7 @@ namespace AutoModerator\Config\Validation;
 
 use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use InvalidArgumentException;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Message\Message;
 use StatusValue;
 
@@ -73,7 +74,17 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 				Message::numParam( $descriptor['maxSize'] )
 			);
 		}
-
+		if ( $fieldName == "AutoModeratorSkipUserRights" ) {
+			$allPermissions = MediaWikiServices::getInstance()->getPermissionManager()->getAllPermissions();
+			foreach ( $value as $userRight ) {
+				if ( !in_array( $userRight, $allPermissions ) ) {
+					return StatusValue::newFatal(
+						'automoderator-config-validator-userrights-not-allowed',
+						$userRight
+					);
+				}
+			}
+		}
 		return StatusValue::newGood();
 	}
 

@@ -39,7 +39,6 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		self::REQUIRED => false,
 		self::DEFAULT => [ 'bot', 'autopatrol' ],
 		self::ITEMS => [
-			self::ENUM => [ 'bot', 'autopatrol' ],
 			self::TYPE => self::TYPE_STRING
 		],
 	];
