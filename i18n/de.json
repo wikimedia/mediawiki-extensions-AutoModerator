@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Brettchenweber"
+		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 hat zu viele Elemente (maximal $2 {{PLURAL:$2|ist erlaubt|sind erlaubt}})",
 	"automoderator-config-validator-contentmodel-mismatch": "Nichtübereinstimmung des Inhaltsmodells: Konfigurationsdatei muss ein JSON-Inhaltsmodell haben, erkannt wurde $1",
@@ -30,7 +32,7 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Rückgängigmachungen durch den Automoderator werden als Bot-Bearbeitungen betrachtet.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot-Änderung",
 	"communityconfiguration-automoderator-info-text": "Achtung! Wenn Änderungen vorgenommen werden, wirken sich diese sofort auf alle Benutzer in deiner Community aus. Es ist wichtig, vorsichtig und überlegt vorzugehen. Bespreche die Änderungen und treffe eine gemeinsame Entscheidung, bevor du Konfigurationsänderungen vornimmst.",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Diese Erweiterung nutzt die neuen Rückgängigmachungs-Risikomodelle, die für jede Version einen Wert berechnen können, der die Wahrscheinlichkeit angibt, dass die Bearbeitung rückgängig gemacht werden sollte. Die Modelle unterstützen nur Wikipedia-Projekte und wurden auf dem Haupt-Namensraum (Artikel) trainiert. Lege einen Schwellenwert fest, über dem Bearbeitungen automatisch rückgängig gemacht werden. Niedrigere Schwellenwerte würden bedeuten, dass mehr Bearbeitungen rückgängig gemacht werden, aber die Rate der falsch positiven Ergebnisse ist höher, während ein hoher Schwellenwert eine geringere Anzahl von Bearbeitungen, aber mit höherer Sicherheit rückgängig machen würde. [Schwellenwerte visualisieren]",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Diese Erweiterung nutzt die neuen Rückgängigmachungs-Risikomodelle, die für jede Version einen Wert berechnen können, der die Wahrscheinlichkeit angibt, dass die Bearbeitung rückgängig gemacht werden sollte. Die Modelle unterstützen nur Wikipedia-Projekte und wurden auf dem Haupt-Namensraum (Artikel) trainiert. Lege einen Schwellenwert fest, über dem Bearbeitungen automatisch rückgängig gemacht werden. Niedrigere Schwellenwerte würden bedeuten, dass mehr Bearbeitungen rückgängig gemacht werden, aber die Rate der falsch positiven Ergebnisse ist höher, während ein hoher Schwellenwert eine geringere Anzahl von Bearbeitungen, aber mit höherer Treffsicherheit rückgängig machen würde.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Nachdem der Automoderator eine Bearbeitung rückgängig gemacht hat, kann automatisch eine Diskussionsseitennachricht an den Benutzer gesendet werden, die erklärt, was passiert ist, und hilfreiche Links bereitstellt.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-option-bot-label": "Bot",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-option-autopatrol-label": "automatische Kontrolle",
