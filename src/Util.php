@@ -177,6 +177,13 @@ class Util {
 	}
 
 	/**
+	 * @return ApiClient
+	 */
+	public static function initializeApiClient(): ApiClient {
+		return new ApiClient();
+	}
+
+	/**
 	 * @param Config $config
 	 * @return false|string
 	 */

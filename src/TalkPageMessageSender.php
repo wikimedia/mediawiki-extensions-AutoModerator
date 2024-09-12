@@ -25,6 +25,7 @@ use JobQueueGroup;
 use MediaWiki\Config\Config;
 use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
@@ -51,7 +52,6 @@ class TalkPageMessageSender {
 
 	/**
 	 * @param Title $title
-	 * @param int $wikiPageId
 	 * @param int|null $revId
 	 * @param User $autoModeratorUser
 	 * @param LoggerInterface $logger
@@ -59,10 +59,13 @@ class TalkPageMessageSender {
 	 */
 	public function insertAutoModeratorSendRevertTalkPageMsgJob(
 		Title $title,
-		int $wikiPageId,
 		?int $revId,
 		User $autoModeratorUser,
 		LoggerInterface $logger ): void {
+		if ( !ExtensionRegistry::getInstance()->isLoaded( 'DiscussionTools' ) ) {
+			// Discussion Tools is not loaded, we will not push a new job to the queue
+			return;
+		}
 		try {
 			if ( $revId === null ) {
 				$logger->debug( __METHOD__ . ': AutoModerator skip rev - revision ID is null' );
@@ -89,7 +92,6 @@ class TalkPageMessageSender {
 			$userTalkPageJob = new AutoModeratorSendRevertTalkPageMsgJob(
 				$title,
 				[
-					'wikiPageId' => $wikiPageId,
 					'revId' => $revId,
 					'parentRevId' => $parentRevId,
 					// The test/production environments do not work when you pass the entire User object.
@@ -104,8 +106,7 @@ class TalkPageMessageSender {
 							$autoModeratorUser->getName() )->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
 						->params( $title )->plain(),
-					'falsePositiveReportPageTitle' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" ),
-					'wikiId' => Util::getWikiID( $this->config ),
+					'falsePositiveReportPageTitle' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" )
 				]
 			);
 			$this->jobQueueGroup->push( $userTalkPageJob );

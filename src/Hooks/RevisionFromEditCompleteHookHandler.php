@@ -98,7 +98,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
 				$talkPageMessageSender = new TalkPageMessageSender( $this->revisionStore, $this->config,
 					$this->wikiConfig, $this->jobQueueGroup );
-				$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $wikiPageId, $revId,
+				$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 					$autoModeratorUser, $logger );
 			}
 			return;

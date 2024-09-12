@@ -16,12 +16,10 @@
 
 namespace AutoModerator\Services;
 
+use AutoModerator\Util;
 use Job;
-use MediaWiki\CommentStore\CommentStoreComment;
-use MediaWiki\Content\Content;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
 use RuntimeException;
 
@@ -31,11 +29,6 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 * @var bool
 	 */
 	private bool $isRetryable = true;
-
-	/**
-	 * @var int
-	 */
-	private $wikiPageId;
 
 	/**
 	 * @var int
@@ -77,29 +70,14 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 */
 	private string $falsePositiveReportPageTitle;
 
-	/**
-	 * @var string
-	 */
-	private string $wikiId;
-
-	private const NOT_WIKI_TEXT_ERROR_MESSAGE = 'Failed to send AutoModerator revert talk page message '
-		. 'due to content model not being wikitext the current content model is: ';
-
 	private const NO_USER_TALK_PAGE_ERROR_MESSAGE = 'Failed to retrieve user talk page title '
 		. 'for sending AutoModerator revert talk page message.';
 
 	private const NO_PARENT_REVISION_FOUND = 'Failed to retrieve reverted revision from revision store.';
 
-	private const NO_CONTENT_TALK_PAGE_ERROR_MESSAGE = 'Failed to create AutoModerator revert message '
-		. 'content for talk page';
-
-	private const CREATE_TALK_PAGE_ERROR_MESSAGE = 'Failed to create message for sending AutoModerator revert '
-		. 'talk page message.';
-
 	/**
 	 * @param Title $title
 	 * @param array $params
-	 *    - 'wikiPageId': (int)
 	 *    - 'revId': (int)
 	 *    - 'parentRevId': (int)
 	 *    - 'autoModeratorUserId': (int)
@@ -107,12 +85,10 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 *    - 'talkPageMessageHeader': (string)
 	 *    - 'talkPageMessageEditSummary': (string)
 	 *    - 'falsePositiveReportPageTitle': (string)
-	 *    - 'wikiId': (string)
 	 */
 	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'AutoModeratorSendRevertTalkPageMsgJob', $title, $params );
 		$this->pageTitle = $title;
-		$this->wikiPageId = $params['wikiPageId'];
 		$this->revId = $params['revId'];
 		$this->parentRevId = $params['parentRevId'];
 		$this->autoModeratorUserId = $params['autoModeratorUserId'];
@@ -120,7 +96,6 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		$this->talkPageMessageHeader = $params['talkPageMessageHeader'];
 		$this->talkPageMessageEditSummary = $params['talkPageMessageEditSummary'];
 		$this->falsePositiveReportPageTitle = $params['falsePositiveReportPageTitle'];
-		$this->wikiId = $params['wikiId'];
 	}
 
 	public function run(): bool {
@@ -144,41 +119,57 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				$this->setAllowRetries( false );
 				return false;
 			}
-			$autoModeratorUser = $userFactory->newFromAnyId(
-				$this->params['autoModeratorUserId'],
-				$this->params['autoModeratorUserName']
-			);
+
 			$userTalkPage = $services->getWikiPageFactory()->newFromTitle( $userTalkPageTitle );
-			$currentContentModel = $userTalkPage->getContentModel();
-			if ( $currentContentModel !== CONTENT_MODEL_WIKITEXT ) {
-				$logger->error( self::NOT_WIKI_TEXT_ERROR_MESSAGE . $currentContentModel );
-				$this->setLastError( self::NOT_WIKI_TEXT_ERROR_MESSAGE . $currentContentModel );
-				$this->setAllowRetries( false );
-				return false;
+
+			$autoModeratorUser = $userFactory->newFromAnyId(
+				$this->autoModeratorUserId,
+				$this->autoModeratorUserName
+			);
+
+			$apiClient = Util::initializeApiClient();
+			// Find if the User Talk page exists before we search for it
+			$findApiResponse = [];
+			if ( $userTalkPage->exists() ) {
+				$findApiResponse = $apiClient->findComment( $this->talkPageMessageHeader, $userTalkPageTitle );
 			}
-			$updatedContent = $this->createTalkPageMessageContent(
-				$userTalkPage->getContent(),
-				$this->talkPageMessageHeader,
-				wfMessage( 'automoderator-wiki-revert-message' )->params(
+
+			if ( array_key_exists( "discussiontoolsfindcomment", $findApiResponse ) &&
+				$findApiResponse[ "discussiontoolsfindcomment" ][ 0 ]["couldredirect"] ) {
+				// AutoModerator has already posted on this User Talk page this month
+				// and the topic has not been deleted, adding a follow-up comment instead
+				$pageInfoResponse = $apiClient->getUserTalkPageInfo( $userTalkPageTitle );
+				// Getting the pageInformation to get the comment's id
+				$headerId = $findApiResponse[ "discussiontoolsfindcomment" ][ 0 ][ "id" ];
+				$threadItems = $pageInfoResponse["discussiontoolspageinfo"]["threaditemshtml"];
+				foreach ( $threadItems as $threadItem ) {
+					if ( $threadItem["id"] === $headerId ) {
+						// Getting the first reply id from this thread item
+						$commentId = $threadItem["replies"][0]["id"];
+						$followUpComment = wfMessage( 'automoderator-wiki-revert-message-follow-up' )->params(
+							$this->revId,
+							$this->pageTitle
+						)->plain();
+						$apiClient->addFollowUpComment( $commentId, $userTalkPageTitle, $followUpComment,
+							$autoModeratorUser );
+						break;
+					}
+				}
+			} else {
+				// AutoModerator hasn't added a User Talk page message this month or it has been deleted,
+				// adding a new topic message
+				$talkPageMessage = wfMessage( 'automoderator-wiki-revert-message' )->params(
 					$this->autoModeratorUserName,
 					$this->revId,
 					$this->pageTitle,
-					$this->falsePositiveReportPageTitle )->plain(),
-				$userTalkPageTitle,
-				$currentContentModel );
-			if ( !$updatedContent ) {
-				$logger->error( self::NO_CONTENT_TALK_PAGE_ERROR_MESSAGE );
-				$this->setLastError( self::NO_CONTENT_TALK_PAGE_ERROR_MESSAGE );
-				return false;
+					$this->falsePositiveReportPageTitle )->plain();
+				$apiClient->addTopic( $this->talkPageMessageHeader, $userTalkPageTitle, $talkPageMessage,
+					$this->talkPageMessageEditSummary, $autoModeratorUser );
 			}
-			$userTalkPage
-				->newPageUpdater( $autoModeratorUser )
-				->setContent( SlotRecord::MAIN, $updatedContent )
-				->saveRevision( CommentStoreComment::newUnsavedComment( $this->talkPageMessageEditSummary ),
-			  $userTalkPage->exists() ? EDIT_UPDATE : EDIT_NEW );
+
 		} catch ( RuntimeException $e ) {
-			$this->setLastError( self::CREATE_TALK_PAGE_ERROR_MESSAGE );
-			$logger->error( self::CREATE_TALK_PAGE_ERROR_MESSAGE );
+			$this->setLastError( $e );
+			$logger->error( $e->getMessage() );
 			return false;
 		}
 		return true;
@@ -202,41 +193,5 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 */
 	public function ignoreDuplicates(): bool {
 		return true;
-	}
-
-	/**
-	 * @param ?Content $currentContent
-	 * @param string $headerRawMessage
-	 * @param string $messageContent
-	 * @param Title $userTalkPageTitle
-	 * @param string $contentModel
-	 * @return Content|null
-	 */
-	private function createTalkPageMessageContent(
-		?Content $currentContent,
-		string $headerRawMessage,
-		string $messageContent,
-		Title $userTalkPageTitle,
-		string $contentModel
-	): ?Content {
-		$newLine = "\n";
-		$signature = " -- ~~~~";
-		if ( $currentContent ) {
-			return $currentContent->getContentHandler()->makeContent(
-				$currentContent->getWikitextForTransclusion() . $newLine . $headerRawMessage . $newLine . $newLine
-				. $messageContent . $signature,
-				$userTalkPageTitle,
-				$contentModel
-			);
-		} else {
-			$contentHandler = MediaWikiServices::getInstance()
-				->getContentHandlerFactory()
-				->getContentHandler( $contentModel );
-			return $contentHandler->makeContent(
-				$headerRawMessage . $newLine . $newLine . $messageContent . $signature,
-				$userTalkPageTitle,
-				$contentModel
-			);
-		}
 	}
 }

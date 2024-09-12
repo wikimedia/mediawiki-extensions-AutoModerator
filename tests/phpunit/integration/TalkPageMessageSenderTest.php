@@ -7,6 +7,7 @@ use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
@@ -30,7 +31,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testTalkPageMessageSenderNotQueuedRevIdNull() {
 		$title = $this->createMock( Title::class );
-		$wikiPageId = 42;
 		$revId = null;
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
@@ -62,7 +62,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
 			$autoModWikiConfig, $jobQueueGroup );
-		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $wikiPageId, $revId,
+		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 			$autoModeratorUser, $logger );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
@@ -73,7 +73,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testTalkPageMessageSenderNotQueuedRevNull() {
 		$title = $this->createMock( Title::class );
-		$wikiPageId = 42;
 		$revId = 1;
 		$mockRevStore = $this->createMock( RevisionStore::class );
 		$mockRevStore->method( 'getRevisionById' )->willReturn( null );
@@ -107,7 +106,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
 			$autoModWikiConfig, $jobQueueGroup );
-		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $wikiPageId, $revId,
+		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 			$autoModeratorUser, $logger );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
@@ -118,7 +117,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testTalkPageMessageSenderNotQueuedParentRevIdNull() {
 		$title = $this->createMock( Title::class );
-		$wikiPageId = 42;
 		$revId = 1;
 		$mockRevStore = $this->createMock( RevisionStore::class );
 		$mockRevStore->method( 'getRevisionById' )->willReturn( $revId );
@@ -154,7 +152,55 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
 			$autoModWikiConfig, $jobQueueGroup );
-		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $wikiPageId, $revId,
+		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
+			$autoModeratorUser, $logger );
+
+		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
+	}
+
+	/**
+	 * @covers AutoModerator\TalkPageMessageSender::insertAutoModeratorSendRevertTalkPageMsgJob
+	 */
+	public function testTalkPageMessageSenderNotQueuedDiscussionToolsNotInstalled() {
+		$mockExtensionRegistry = $this->createMock( ExtensionRegistry::class );
+		$mockExtensionRegistry->method( 'isLoaded' )->willReturn( false );
+		$title = $this->createMock( Title::class );
+		$revId = 1;
+		$mockRevStore = $this->createMock( RevisionStore::class );
+		$mockRevStore->method( 'getRevisionById' )->willReturn( $revId );
+		$mockRevRecord = $this->createMock( RevisionRecord::class );
+		$mockRevRecord->method( 'getParentId' )->willReturn( 989 );
+		$wikiConfig = $this->createMock( WikiPageConfig::class );
+		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
+		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+			$wikiConfig,
+			new HashConfig( [
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorRevertTalkPageMessageEnabled' => true,
+				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
+				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
+				'AutoModeratorFalsePositivePageTitle' => "",
+
+			] )
+		);
+		$config = new HashConfig( [
+			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorWikiId' => "en"
+		] );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$logger = $this->createMock( LoggerInterface::class );
+
+		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+
+		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
+			$autoModWikiConfig, $jobQueueGroup );
+		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 			$autoModeratorUser, $logger );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
@@ -165,7 +211,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testTalkPageMessageSenderQueued() {
 		$title = $this->createMock( Title::class );
-		$wikiPageId = 42;
 		$revId = 94;
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevRecord = $this->createMock( RevisionRecord::class );
@@ -201,7 +246,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
 			$autoModWikiConfig, $jobQueueGroup );
-		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $wikiPageId, $revId,
+		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 			$autoModeratorUser, $logger );
 
 		$language = $this->getServiceContainer()->getContentLanguage();
@@ -212,7 +257,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 		$actual = $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop()->getParams();
 		$actual['requestId'] = 99;
 		$expected = [
-			'wikiPageId' => 42,
 			'revId' => 94,
 			'parentRevId' => 93,
 			'autoModeratorUserId' => 1,
@@ -220,7 +264,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'talkPageMessageHeader' => $month . ' ' . $year . ': AutoModerator reverted your edit',
 			'talkPageMessageEditSummary' => 'Notice of automated revert on [[]]',
 			'falsePositiveReportPageTitle' => '',
-			'wikiId' => 'en',
 			'namespace' => 0,
 			'title' => '',
 			'requestId' => 99
