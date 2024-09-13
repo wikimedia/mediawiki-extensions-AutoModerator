@@ -16,9 +16,7 @@
 	"automoderator-wiki-revert-edit-summary": "在[[$1]]的自動撤銷通知",
 	"automoderator-wiki-undo-summary": "取消[[Special:Contributions/$2|$2]]（[[User talk:$2|留言]]）作出的修訂[[Special:Diff/$1|$1]]",
 	"automoderator-wiki-undo-summary-anon": "取消[[Special:Contributions/$2|$2]]作出的修訂[[Special:Diff/$1|$1]]",
-	"communityconfiguration-automoderator-automoderatorskipusergroups-label": "使用者群組",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "討論頁面訊息",
 	"communityconfiguration-automoderator-title": "Automoderator",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "機器人編輯",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-option-bot-label": "機器人"
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "機器人編輯"
 }

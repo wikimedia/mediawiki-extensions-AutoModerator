@@ -15,7 +15,6 @@
 	"automoderator-wiki-revert-edit-summary": "הודעה על שחזור אוטומטי בדף [[$1]]",
 	"automoderator-wiki-undo-summary": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]])",
 	"automoderator-wiki-undo-summary-anon": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]]",
-	"communityconfiguration-automoderator-automoderatorskipusergroups-label": "קבוצות משתמשים",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "המפקח האוטומטי מופעל",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "שחזורים על־ידי מפקח אוטומטי ייחשבו לעריכות משניות.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "הודעה בדף שיחה",
@@ -29,14 +28,11 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "הגדרת סף",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "מפקח אוטומטי",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "עריכות משניות",
-	"communityconfiguration-automoderator-automoderatorskipusergroups-description": "נא לציין קבוצות משתמשים שמפקח אוטומטי לעולם לא ישחזר.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "שחזורים על־ידי מפקח אוטומטי ייחשבו לעריכות בוט.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "עריכת בוט",
 	"communityconfiguration-automoderator-info-text": "אזהרה! כאשר נעשים שינויים, הם ישפיעו מייד על כל המשתמשים בקהילה שלך. חשוב להיות זהירים ומחושבים. יש לדון ולהגיע להחלטה קבוצתית לפני עשיית שינויים בתצורה.",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "ההרחבה הזאת ממנפת את המודלים החדשים של סיכון שחזור שיכולים לחשב דירוג עבור כל גרסה המציינת את הסבירות שיש לשחזר את העריכה. המודלים תומכים רק במיזמי ויקיפדיה ומאומנים במרחב השמות הראשי (ערכים). יש להגדיר סף שעריכות שעוברות אותו ישוחזרו אוטומטית. אם הסף נמוך יותר, יותר עריכות ישוחזרו, אך שיעור דיווחי השווא גבוה יותר, בעוד שסף גבוה ישחזר מספר קטן יותר של עריכות, אך עם ביטחון גבוה יותר. [הצגה חזותית של הספים]",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "ההרחבה הזאת ממנפת את המודלים החדשים של סיכון שחזור שיכולים לחשב דירוג עבור כל גרסה המציינת את הסבירות שיש לשחזר את העריכה. המודלים תומכים רק במיזמי ויקיפדיה ומאומנים במרחב השמות הראשי (ערכים). יש להגדיר סף שעריכות שעוברות אותו ישוחזרו אוטומטית. אם הסף נמוך יותר, יותר עריכות ישוחזרו, אך שיעור דיווחי השווא גבוה יותר, בעוד שסף גבוה ישחזר מספר קטן יותר של עריכות, אך עם ביטחון גבוה יותר.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "אחרי שהמפקח האוטומטי משחזר עריכה, ניתן לשלוח לעורך הודעת דף שיחה אוטומטית שמסבירה מה קרה ומספקת קישורים מועילים.",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-option-bot-label": "בוט",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-option-autopatrol-label": "בדוק עריכות אוטומטית",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[[עזרה:עריכה_משנית|עזרה:עריכה_משנית]]",
 	"communityconfiguration-automoderator-description": "הגדרת התצורה של מפקח אוטומטי (Automoderator), כך שהמודל יוכל לזהות ולשחזור בוויקיפדיה עריכות שעלולות להיות גרועות."
 }
