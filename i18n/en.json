@@ -29,7 +29,7 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configure threshold",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Minor edits",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Specify user rights that Automoderator should never revert.",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Specify user rights whose holders Automoderator should never revert.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Reverts by Automoderator will be considered bot edits.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot edit",
 	"communityconfiguration-automoderator-info-text": "Warning! When changes are made, it will immediately affect all users in your community. It's important to be careful and deliberate. Discuss and reach a collective decision before making configuration changes.",
@@ -40,5 +40,5 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:Minor edit]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
 	"communityconfiguration-automoderator-description": "Configure Automoderator settings, so the model can identify and revert potentially bad edits on Wikipedia.",
-	"automoderator-config-validator-userrights-not-allowed": "User right $1 does not exist please try another."
+	"automoderator-config-validator-userrights-not-allowed": "User right $1 does not exist. Please try another."
 }
