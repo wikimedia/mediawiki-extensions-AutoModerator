@@ -2,7 +2,8 @@
 	"name": "AutoModerator",
 	"author": [
 		"Jason Sherman",
-		"Susana Cardenas Molinar"
+		"Susana Cardenas Molinar",
+		"Katherine Graessle"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:AutoModerator",
 	"descriptionmsg": "automoderator-desc",
