@@ -49,15 +49,6 @@ class RevisionCheck {
 	/** @var int */
 	private $revId;
 
-	/** @var int|false */
-	private $originalRevId;
-
-	/** @var UserIdentity */
-	private $user;
-
-	/** @var string[] */
-	private $tags;
-
 	/** @var User */
 	private $autoModeratorUser;
 
@@ -76,93 +67,48 @@ class RevisionCheck {
 	/** @var ContentHandler */
 	private $contentHandler;
 
-	/** @var LoggerInterface */
-	private $logger;
-
-	/** @var RestrictionStore */
-	private $restrictionStore;
-
 	/** @var bool */
 	private bool $enforce;
 
 	/** @var Language|StubUserLang|string */
 	private $lang;
 
-	/** @var PermissionManager */
-	private PermissionManager $permissionManager;
-
-	/** @var bool */
-	public bool $passedPreCheck;
-
 	/**
 	 * @param int $wikiPageId WikiPage ID of
 	 * @param WikiPageFactory $wikiPageFactory
 	 * @param int $revId New revision ID
-	 * @param int|false $originalRevId If the edit restores or repeats an earlier revision (such as a
-	 *   rollback or a null revision), the ID of that earlier revision. False otherwise.
-	 *   (Used to be called $baseID.)
-	 * @param UserIdentity $user Editing user
-	 * @param string[] &$tags Tags applied to the revison.
 	 * @param User $autoModeratorUser reverting user
 	 * @param RevisionStore $revisionStore
 	 * @param Config $config
 	 * @param Config $wikiConfig
 	 * @param ContentHandler $contentHandler
-	 * @param LoggerInterface $logger
-	 * @param RestrictionStore $restrictionStore
 	 * @param Language|StubUserLang|string $lang
 	 * @param string $undoSummary
-	 * @param PermissionManager $permissionManager
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
 		int $wikiPageId,
 		WikiPageFactory $wikiPageFactory,
 		int $revId,
-		$originalRevId,
-		UserIdentity $user,
-		array &$tags,
 		User $autoModeratorUser,
 		RevisionStore $revisionStore,
 		Config $config,
 		$wikiConfig,
 		ContentHandler $contentHandler,
-		LoggerInterface $logger,
-		RestrictionStore $restrictionStore,
 		$lang,
 		string $undoSummary,
-		PermissionManager $permissionManager,
 		bool $enforce = false
 	) {
 		$this->wikiPageId = $wikiPageId;
 		$this->wikiPageFactory = $wikiPageFactory;
 		$this->revId = $revId;
-		$this->originalRevId = $originalRevId;
-		$this->user = $user;
-		$this->tags = $tags;
 		$this->autoModeratorUser = $autoModeratorUser;
 		$this->revisionStore = $revisionStore;
 		$this->config = $config;
 		$this->wikiConfig = $wikiConfig;
 		$this->contentHandler = $contentHandler;
-		$this->logger = $logger;
-		$this->restrictionStore = $restrictionStore;
 		$this->enforce = $enforce;
 		$this->lang = $lang;
-		$this->permissionManager = $permissionManager;
-		$this->passedPreCheck = $this->revertPreCheck(
-			$user,
-			$autoModeratorUser,
-			$logger,
-			$revisionStore,
-			$tags,
-			$restrictionStore,
-			$wikiPageFactory,
-			$wikiConfig,
-			$revId,
-			$wikiPageId,
-			$permissionManager
-		);
 		$this->undoSummary = $undoSummary;
 	}
 

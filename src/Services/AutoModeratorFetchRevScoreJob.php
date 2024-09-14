@@ -48,6 +48,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 	/**
 	 * @var int|false
+	 * @fixme This is unused.
 	 */
 	private $originalRevId;
 
@@ -99,17 +100,10 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$revisionStore = $services->getRevisionStore();
 		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$userGroupManager = $services->getUserGroupManager();
-		$restrictionStore = $services->getRestrictionStore();
 		$config = $services->getMainConfig();
 		$wikiConfig = $this->getAutoModeratorWikiConfig();
 		$connectionProvider = $services->getConnectionProvider();
 
-		$userFactory = $services->getUserFactory();
-		$permissionManager = $services->getPermissionManager();
-		$user = $userFactory->newFromAnyId(
-			$this->params['userId'],
-			$this->params['userName']
-		);
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
 		$wikiId = Util::getWikiID( $config );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
@@ -155,19 +149,13 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$this->wikiPageId,
 				$wikiPageFactory,
 				$this->revId,
-				$this->originalRevId,
-				$user,
-				$this->tags,
 				$autoModeratorUser,
 				$revisionStore,
 				$config,
 				$wikiConfig,
 				$contentHandler,
-				$logger,
-				$restrictionStore,
 				$wikiId,
 				$this->undoSummary,
-				$permissionManager,
 				true
 			);
 			$reverted = $revisionCheck->maybeRevert( $response );
