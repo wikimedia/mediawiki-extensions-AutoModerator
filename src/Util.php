@@ -136,12 +136,12 @@ class Util {
 	}
 
 	/**
-	 * @param Config $config
+	 * @param Config $wikiConfig
 	 * @return float AutoModeratorRevertProbability threshold
 	 */
-	public static function getRevertThreshold( Config $config ): float {
+	public static function getRevertThreshold( Config $wikiConfig ): float {
 		$threshold = 0.990;
-		switch ( $config->get( 'AutoModeratorCautionLevel' ) ) {
+		switch ( $wikiConfig->get( 'AutoModeratorCautionLevel' ) ) {
 			case "very-cautious":
 				$threshold = 0.990;
 				break;
