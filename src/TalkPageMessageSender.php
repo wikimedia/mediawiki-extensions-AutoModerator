@@ -90,7 +90,7 @@ class TalkPageMessageSender {
 						->params( $autoModeratorUser->getName() )->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
 						->params( $title )->plain(),
-					'falsePositiveReportPageId' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" ),
+					'falsePositiveReportPageTitle' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" ),
 					'wikiId' => Util::getWikiID( $this->config ),
 				]
 			);

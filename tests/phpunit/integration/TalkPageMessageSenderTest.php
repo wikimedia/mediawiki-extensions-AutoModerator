@@ -212,7 +212,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'autoModeratorUserName' => 'AutoModerator',
 			'talkPageMessageHeader' => '== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: AutoModerator reverted your edit ==',
 			'talkPageMessageEditSummary' => 'Notice of automated revert on [[]]',
-			'falsePositiveReportPageId' => '',
+			'falsePositiveReportPageTitle' => '',
 			'wikiId' => 'en',
 			'namespace' => 0,
 			'title' => '',
