@@ -14,6 +14,7 @@
 	"automoderator-wiki-revert-edit-summary": "[[$1]] səhifəsindəki avtomatik geri qaytarma bildirişi",
 	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|müzakirə]]) tərəfindən edilmiş [[Special:Diff/$1|$1]] nömrəli redaktə geri qaytarılır",
 	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]] tərəfindən edilmiş [[Special:Diff/$1|$1]] redaktəsi geri qaytarılır",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "İstifadəçi hüquqları",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Avtomoderator aktivləşdirilib.",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "AutoModerator tərəfindən edilən geri qaytarmalar kiçik redaktə hesab ediləcək.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Müzakirə səhifəsi mesajı",
@@ -27,6 +28,7 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Həddi konfiqurasiya et",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Avtomoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kiçik redaktələr",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Avtomoderatorun heç vaxt geri qaytarmamalı olduğu istifadəçi hüquqlarını qeyd edin.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "AutoModerator tərəfindən edilən geri qaytarmalar bot redaktəsi hesab ediləcək.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot redaktəsi",
 	"communityconfiguration-automoderator-info-text": "Xəbərdarlıq! Dəyişikliklər edildikdə, bu, icmanızdakı bütün istifadəçilərə dərhal təsir edəcək. Diqqətli olmaq vacibdir. Konfiqurasiya dəyişiklikləri etməzdən əvvəl müzakirə edin və kollektiv qərara gəlin.",
@@ -34,7 +36,8 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Avtomoderator redaktəni geri qaytardıqdan sonra nə baş verdiyini izah edən və faydalı bağlantılar təqdim edən müzakirə səhifəsi mesajı avtomatik olaraq redaktora göndərilə bilər.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b> Fəaliyyətlər </b> <ul><li> Zəhmət olmasa, tərcümələri [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki] vasitəsilə əlavə edin. </li> <li> Müzakirə səhifəsi mesajını dəyişdirmək üçün defolt mesajı [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 sistem mesajlarında] dəyişdirin. </li></ul>",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Redaktə izahı</b> <p> Avtomoderatorun redaktə izahı Translatewikidə dəyişdirilə bilər və lokal versiya ilə əvəz edilə bilər.</p>  <b> Fəaliyyətlər </b> <ul><li> Zəhmət olmasa, tərcümələri [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki] vasitəsilə əlavə edin. </li> <li> Müzakirə səhifəsi mesajını dəyişdirmək üçün defolt mesajı [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 sistem mesajlarında] dəyişdirin. </li></ul>",
-	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[[Help:Minor_edit|Kömək:Kiçik redaktə]]",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[[Manual:Bots#The_\"bot\"_flag|Manual:Botlar]]",
-	"communityconfiguration-automoderator-description": "Modelin Vikipediyada potensial pis redaktələri müəyyən edib geri qaytara bilməsi üçün Avtomoderator parametrlərini konfiqurasiya edin"
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Kömək:Kiçik redaktə]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Botlar]",
+	"communityconfiguration-automoderator-description": "Modelin Vikipediyada potensial pis redaktələri müəyyən edib geri qaytara bilməsi üçün Avtomoderator parametrlərini konfiqurasiya edin",
+	"automoderator-config-validator-userrights-not-allowed": "$1 istifadəçi hüququ mövcud deyil, başqasını yoxlayın."
 }

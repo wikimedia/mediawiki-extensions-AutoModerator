@@ -9,6 +9,7 @@
 	},
 	"automoderator-wiki-report-false-positive": "signaler un faux positif",
 	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}} : $1 a annulé votre modification ==",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Droits de l’utilisateur",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "L'automodérateur est activé.",
 	"communityconfiguration-automoderator-title": "Automodérateur",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configurer le seuil",

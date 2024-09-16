@@ -14,6 +14,7 @@
 	"automoderator-wiki-revert-edit-summary": "Напомена за автоматско отповикување на [[$1]]",
 	"automoderator-wiki-undo-summary": "Отповикана преработката [[Special:Diff/$1|$1]] на [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]])",
 	"automoderator-wiki-undo-summary-anon": "Отповикана преработката [[Special:Diff/$1|$1]] на [[Special:Contributions/$2|$2]]",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Кориснички права",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Автомодераторот е вклучен",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Отповикувањата од Автомодераторот ќе се сметаат за ситни промени.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Порака на разговорна страница",
@@ -27,14 +28,16 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Постави праг",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Автомодератор",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Ситни уредувања",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Укажете кои кориснички права Автомодераторот никогаш да не ги отповикува.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Отповикувањата од Автомодераторот ќе се сметаат за ботовски уредувања.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Ботовско уредување",
 	"communityconfiguration-automoderator-info-text": "Предупредување! Кога се прават промени, тие веднаш ќе ги засегнат сите корисници во вашата заедница. Важно е да бидете внимателни и промислени. Дискуирајте и донесете заедничка одлука пред да правите промени во поставките.",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Овој додаток го користи новите модели за ризик при отповикување кој парви пресметка за секоја преработка и дава оценка за тоа колку е веројатно дека таа треба да се отповика. Моделите ги поддржуваат само википедиите и се обучени според главниот (статиски) именски простор. Задајте го прагот над кој статиите ќе бидат автоматски отповикани. Пониските прагови значат повеќе отповикани статии, но повеќе погрешни погодоци; повисокиот праг отповикува помалку уредувања, но со поголема сигурност. [Нагледно прикажи прагови]",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Овој додаток го користи новите модели за ризик при отповикување кој парви пресметка за секоја преработка и дава оценка за тоа колку е веројатно дека таа треба да се отповика. Моделите ги поддржуваат само википедиите и се обучени според главниот (статиски) именски простор. Задајте го прагот над кој статиите ќе бидат автоматски отповикани. Пониските прагови значат повеќе отповикани статии, но повеќе погрешни погодоци; повисокиот праг отповикува помалку уредувања, но со поголема сигурност.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Откако Автомодераторот ќе отповика уредување, автоматски ќе биде испратена порака на разговорната страница на уредникот во која се образложува што се случило и се дава корисни врски.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b> Дејства </b> <ul><li> Ставајте преводи преку [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki.] </li> <li> За да наметнете своја порака за разговорната страница, презапишете врз текстот во [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 системските пораки]. </li></ul>",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Опис на уредувањето</b> <p> Описот на уредувањето на Автомодераторот можат да се преведе на Translatewiki, или пак да се стави свој на месното вики.</p>  <b> Дејства </b> <ul><li>Ставајте преводи преку [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>За да наметнете своја порака за разговорната страница, презапишете врз текстот во [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 системските пораки].</li></ul>",
-	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[[Help:Minor_edit|Помош:Ситно уредување]]",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[[Manual:Bots#The_\"bot\"_flag|Прирачник:Ботови]]",
-	"communityconfiguration-automoderator-description": "Наместете ги поставките на Автомодератор, така што моделот ќе може да пронаоѓа и отповикува потенцијално лоши уредувања на Википедија."
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Помош:Ситно уредување]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Прирачник:Ботови]",
+	"communityconfiguration-automoderator-description": "Наместете ги поставките на Автомодератор, така што моделот ќе може да пронаоѓа и отповикува потенцијално лоши уредувања на Википедија.",
+	"automoderator-config-validator-userrights-not-allowed": "Корисничкото право $1 не постои. Обидете се со друго."
 }

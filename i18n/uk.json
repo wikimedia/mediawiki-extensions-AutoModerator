@@ -13,6 +13,6 @@
 	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 скасував вашу правку ==",
 	"automoderator-wiki-revert-message": "Привіт! Я [[Користувач:$1|$1]], автоматизована система, яка використовує модель машинного навчання для виявлення та скасування потенційно шкідливих редагувань, щоб Вікіпедія залишалася надійною та авторитетною. На жаль, я відкотила одне з Ваших [[Special:Diff/$2|нещодавніх редагувань]] до [[$3]].\n* Оскільки модель, яку я використовую, не є досконалою, вона іноді скасовує хороші правки. Якщо Ви вважаєте, що зроблені Вами зміни були конструктивними, [[$4|повідомте про це тут]].\n* [[:mw:Moderator Tools/Automoderator|Докладніше]] про моє програмне забезпечення.\n* Щоб дізнатися більше про редагування відвідайте свою [[Special:Homepage|Домашню сторінку для новачків]].",
 	"automoderator-wiki-revert-edit-summary": "Повідомлення про автоматичне скасування [[$1]]",
-	"automoderator-wiki-undo-summary": "Скасування редагування №[[Special:Diff/$1|$1]] {{GENDER:$2|користувача|користувачки}} [[Special:Contributions/$2|$2]] ([[User talk:$2|обговорення]])",
+	"automoderator-wiki-undo-summary": "Скасування редагування №[[Special:Diff/$1|$1]] зробленого [[Special:Contributions/$2|$2]] ([[User talk:$2|обговорення]])",
 	"automoderator-wiki-undo-summary-anon": "Скасування версії [[Special:Diff/$1|$1]] від [[Special:Contributions/$2|$2]]"
 }

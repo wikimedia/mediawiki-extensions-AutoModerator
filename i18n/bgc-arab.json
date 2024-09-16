@@ -1,9 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Saraiki"
+			"امین اکبر"
 		]
 	},
-	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "معمولی تبدیلیاں",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]"
 }

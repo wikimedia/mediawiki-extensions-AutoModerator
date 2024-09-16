@@ -14,6 +14,7 @@
 	"automoderator-wiki-revert-edit-summary": "Hinweis zur automatischen Rückgängigmachung von [[$1]]",
 	"automoderator-wiki-undo-summary": "Änderung [[Special:Diff/$1|$1]] von [[Special:Contributions/$2|$2]] ([[User talk:$2|Diskussion]]) rückgängig gemacht.",
 	"automoderator-wiki-undo-summary-anon": "Änderung [[Special:Diff/$1|$1]] von [[Special:Contributions/$2|$2]] rückgängig gemacht",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Benutzerrechte",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator ist eingeschaltet",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Rückgängigmachungen durch AutoModerator werden als geringfügige Änderungen betrachtet.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Nachricht auf Diskussionsseite",
@@ -27,6 +28,7 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Schwellenwert konfigurieren",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleine Änderungen",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Gib die Benutzerrechte an, deren Inhaber Automoderator niemals zurückkehren sollte.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Rückgängigmachungen durch den Automoderator werden als Bot-Bearbeitungen betrachtet.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot-Änderung",
 	"communityconfiguration-automoderator-info-text": "Achtung! Wenn Änderungen vorgenommen werden, wirken sich diese sofort auf alle Benutzer in deiner Community aus. Es ist wichtig, vorsichtig und überlegt vorzugehen. Bespreche die Änderungen und treffe eine gemeinsame Entscheidung, bevor du Konfigurationsänderungen vornimmst.",
@@ -34,7 +36,8 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Nachdem der Automoderator eine Bearbeitung rückgängig gemacht hat, kann automatisch eine Diskussionsseitennachricht an den Benutzer gesendet werden, die erklärt, was passiert ist, und hilfreiche Links bereitstellt.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b>Aktionen</b><ul><li> Bitte füge Übersetzungen über [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= Translatewiki hinzu.]</li><li> Für eine benutzerdefinierte Diskussionsseitennachricht überschreibe den Text in den [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 Systemnachrichten].</li></ul>",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Zusammenfassung bearbeiten</b><p> Die Bearbeitungszusammenfassung des Automoderators kann bei Translatewiki übersetzt und lokal überschrieben werden.</p> <b>Aktionen</b><ul><li> Bitte füge Übersetzungen über [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki] hinzu.</li><li> Für eine benutzerdefinierte Diskussionsseitennachricht überschreibe den Text in den [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 Systemnachrichten].</li></ul>",
-	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[[Help:Minor_edit|Hilfe:Kleine Bearbeitung]]",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[[Manual:Bots#The_\"bot\"_flag|Manual:Bots]]",
-	"communityconfiguration-automoderator-description": "Konfiguriere die Automoderator-Einstellungen, damit das Modell potenziell fehlerhafte Änderungen auf Wikipedia erkennen und rückgängig machen kann."
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Hilfe:Kleine Bearbeitung]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
+	"communityconfiguration-automoderator-description": "Konfiguriere die Automoderator-Einstellungen, damit das Modell potenziell fehlerhafte Änderungen auf Wikipedia erkennen und rückgängig machen kann.",
+	"automoderator-config-validator-userrights-not-allowed": "Das Benutzerrecht $1 existiert nicht. Bitte versuche es mit einem anderen."
 }
