@@ -78,7 +78,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	/**
 	 * @var string
 	 */
-	private string $falsePositiveReportPage;
+	private string $falsePositiveReportPageTitle;
 
 	/**
 	 * @var string
@@ -109,7 +109,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 *    - 'autoModeratorUserName': (string)
 	 *    - 'talkPageMessageHeader': (string)
 	 *    - 'talkPageMessageEditSummary': (string)
-	 *    - 'falsePositiveReportPage': (string)
+	 *    - 'falsePositiveReportPageTitle': (string)
 	 *    - 'wikiId': (string)
 	 */
 	public function __construct( Title $title, array $params ) {
@@ -122,7 +122,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		$this->autoModeratorUserName = $params['autoModeratorUserName'];
 		$this->talkPageMessageHeader = $params['talkPageMessageHeader'];
 		$this->talkPageMessageEditSummary = $params['talkPageMessageEditSummary'];
-		$this->falsePositiveReportPage = $params['falsePositiveReportPage'] ?? "";
+		$this->falsePositiveReportPageTitle = $params['falsePositiveReportPageTitle'];
 		$this->wikiId = $params['wikiId'];
 	}
 
@@ -166,7 +166,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 					$this->autoModeratorUserName,
 					$this->revId,
 					$this->pageTitle,
-					$this->falsePositiveReportPage )->plain(),
+					$this->falsePositiveReportPageTitle )->plain(),
 				$userTalkPageTitle,
 				$currentContentModel );
 			if ( !$updatedContent ) {

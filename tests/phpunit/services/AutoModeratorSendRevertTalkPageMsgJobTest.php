@@ -72,7 +72,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'talkPageMessageHeader' => "header",
 				'talkPageMessageEditSummary' => "edit summary",
-				'falsePositiveReportPage' => $expectedFalsePositiveReportPage,
+				'falsePositiveReportPageTitle' => $expectedFalsePositiveReportPage,
 				'wikiId' => "enwiki",
 			]
 		);
@@ -109,7 +109,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'talkPageMessageHeader' => "header",
 				'talkPageMessageEditSummary' => "edit summary",
-				'falsePositiveReportPage' => $expectedFalsePositiveReportPage,
+				'falsePositiveReportPageTitle' => $expectedFalsePositiveReportPage,
 				'wikiId' => "enwiki",
 			]
 		);
@@ -140,7 +140,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'talkPageMessageHeader' => "header",
 				'talkPageMessageEditSummary' => "edit summary",
-				'falsePositiveReportPage' => $expectedFalsePositiveReportPage,
+				'falsePositiveReportPageTitle' => $expectedFalsePositiveReportPage,
 				'wikiId' => "enwiki",
 			]
 		);
