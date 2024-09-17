@@ -19,6 +19,7 @@ use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\RevisionStoreRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\PageUpdater;
+use MediaWiki\Storage\PageUpdateStatus;
 use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
@@ -99,7 +100,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @param int $ns
 	 * @return WikiPage|MockObject
 	 */
-	private function getMockPage( int $ns ): WikiPage {
+	private function getMockPage( int $ns, bool $isOk = true, array $errorMessages = [] ): WikiPage {
 		$ret = $this->createMock( WikiPage::class );
 		$ret->method( 'getNamespace' )->willReturn( $ns );
 		$ret->method( 'canExist' )->willReturn( true );
@@ -112,6 +113,10 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$title->method( 'getPageLanguage' )->willReturn( $this->createMock( Language::class ) );
 		$ret->method( 'getTitle' )->willReturn( $title );
 		$updater = $this->createMock( PageUpdater::class );
+		$mockStatus = $this->createMock( PageUpdateStatus::class );
+		$mockStatus->method( 'isOK' )->willReturn( $isOk );
+		$mockStatus->method( 'getMessages' )->willReturn( $errorMessages );
+		$updater->method( "getStatus" )->willReturn( $mockStatus );
 		$ret->method( 'newPageUpdater' )->willReturn( $updater );
 		return $ret;
 	}
@@ -233,6 +238,64 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	/**
 	 * @covers ::maybeRevert
 	 */
+	public function testMaybeRevertBadSaveStatus() {
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiPage  = $this->getMockPage( NS_MAIN,
+			false,
+			[ $this->getMockMessage( "Generic Error Message" ) ] );
+		$wikiPage->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$revisionCheck = new RevisionCheck(
+			$wikiPage->getId(),
+			$wikiPageFactory,
+			$this->rev->getId(),
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->lang,
+			$this->undoSummary,
+			true
+		);
+		$reverted = $revisionCheck->maybeRevert(
+			$this->failingScore
+		);
+		$this->assertSame( 0, array_key_first( $reverted ) );
+		$this->assertSame( "Generic Error Message", $reverted[0] );
+	}
+
+	/**
+	 * @covers ::maybeRevert
+	 */
+	public function testMaybeRevertBadSaveStatusNoMessage() {
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiPage  = $this->getMockPage( NS_MAIN, false );
+		$wikiPage->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$revisionCheck = new RevisionCheck(
+			$wikiPage->getId(),
+			$wikiPageFactory,
+			$this->rev->getId(),
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->config,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->lang,
+			$this->undoSummary,
+			true
+		);
+		$reverted = $revisionCheck->maybeRevert(
+			$this->failingScore
+		);
+		$this->assertSame( 0, array_key_first( $reverted ) );
+		$this->assertSame( "Failed to save revision", $reverted[0] );
+	}
+
+	/**
+	 * @covers ::maybeRevert
+	 */
 	public function testMaybeRevertGoodEdit() {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiPageMock->getId(),
@@ -246,10 +309,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->lang,
 			$this->undoSummary
 		);
-		$reverted = array_key_first( $revisionCheck->maybeRevert(
+		$reverted = $revisionCheck->maybeRevert(
 			$this->passingScore
-		) );
-		$this->assertSame( 0, $reverted );
+		);
+		$this->assertSame( 0, array_key_first( $reverted ) );
+		$this->assertSame( 'Not reverted', $reverted[0] );
 	}
 
 	/**
