@@ -28,7 +28,7 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Schwellenwert konfigurieren",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleine Änderungen",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Gib die Benutzerrechte an, deren Inhaber Automoderator niemals zurückkehren sollte.",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Gib die Benutzerrechte an, deren Inhaber Automoderator niemals zurücksetzen sollte.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Rückgängigmachungen durch den Automoderator werden als Bot-Bearbeitungen betrachtet.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot-Änderung",
 	"communityconfiguration-automoderator-info-text": "Achtung! Wenn Änderungen vorgenommen werden, wirken sich diese sofort auf alle Benutzer in deiner Community aus. Es ist wichtig, vorsichtig und überlegt vorzugehen. Bespreche die Änderungen und treffe eine gemeinsame Entscheidung, bevor du Konfigurationsänderungen vornimmst.",

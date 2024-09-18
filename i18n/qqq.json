@@ -37,7 +37,7 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Description for the caution levels field on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Description for enabling sending the talk page message field on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "Description for enabling sending the talk page message field on the community configuration form for AutoModerator",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "Helper text for the caution levels field on the community configuration form for AutoModerator",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "Helper text for the caution levels field on the community configuration form for AutoModerator.\n\nThis repeats a lot of {{msg-mw|Communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text}}",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "Helper text for the minor edit flag field on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "Helper text for the enable bot flag field on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-description": "Description of configuration for Special:CommunityConfiguration page",
