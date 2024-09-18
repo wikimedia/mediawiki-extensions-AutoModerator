@@ -97,7 +97,7 @@
 		},
 		"AutoModeratorCautionLevel": {
 			"description": "Controls the caution level that AutoModerator uses when scoring edits.",
-			"value": "cautious"
+			"value": "very-cautious"
 		}
 	},
 	"HookHandlers": {
