@@ -69,7 +69,7 @@ class LiftWingClient {
 				'rev_id' => (int)$revId,
 				'lang' => $this->lang,
 			] ),
-		] );
+		], __METHOD__ );
 		if ( $this->hostHeader ) {
 			$req->setHeader( 'Host', $this->hostHeader );
 		}
@@ -98,7 +98,7 @@ class LiftWingClient {
 						'rev_id' => (int)$revId,
 						'lang' => $this->lang,
 					] ),
-				] );
+				], __METHOD__ );
 				$response = $req->execute();
 				if ( !$response->isOK() ) {
 					return $this->createErrorResponse( $httpStatus, $errorMessage, true );
