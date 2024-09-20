@@ -441,7 +441,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			'AutoModeratorWikiId' => "en",
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
-			]
+			],
+			'TranslateNumerals' => false
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );

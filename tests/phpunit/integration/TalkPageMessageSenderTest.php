@@ -12,6 +12,7 @@ use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserGroupManager;
 use Psr\Log\LoggerInterface;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 /**
  * @group AutoModerator
@@ -190,7 +191,8 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => "en"
+			'AutoModeratorWikiId' => "en",
+			'TranslateNumerals' => false
 		] );
 		$logger = $this->createMock( LoggerInterface::class );
 
@@ -202,6 +204,11 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $wikiPageId, $revId,
 			$autoModeratorUser, $logger );
 
+		$language = $this->getServiceContainer()->getContentLanguage();
+		$timestamp = new ConvertibleTimestamp();
+		$year = $timestamp->format( 'Y' );
+		$month = $language->getMonthName( (int)$timestamp->format( 'n' ) );
+
 		$actual = $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop()->getParams();
 		$actual['requestId'] = 99;
 		$expected = [
@@ -210,7 +217,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'parentRevId' => 93,
 			'autoModeratorUserId' => 1,
 			'autoModeratorUserName' => 'AutoModerator',
-			'talkPageMessageHeader' => '== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: AutoModerator reverted your edit ==',
+			'talkPageMessageHeader' => '== ' . $month . ' ' . $year . ': AutoModerator reverted your edit ==',
 			'talkPageMessageEditSummary' => 'Notice of automated revert on [[]]',
 			'falsePositiveReportPageTitle' => '',
 			'wikiId' => 'en',
