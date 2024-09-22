@@ -16,7 +16,6 @@
 
 namespace AutoModerator\Services;
 
-use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
 use Content;
 use Job;
 use MediaWiki\CommentStore\CommentStoreComment;
@@ -27,8 +26,6 @@ use MediaWiki\Title\Title;
 use RuntimeException;
 
 class AutoModeratorSendRevertTalkPageMsgJob extends Job {
-
-	use AutoModeratorConfigLoaderStaticTrait;
 
 	/**
 	 * @var bool

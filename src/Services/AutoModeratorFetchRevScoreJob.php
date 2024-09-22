@@ -16,7 +16,7 @@
 
 namespace AutoModerator\Services;
 
-use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
+use AutoModerator\AutoModeratorServices;
 use AutoModerator\OresScoreFetcher;
 use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
@@ -33,8 +33,6 @@ use RuntimeException;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 class AutoModeratorFetchRevScoreJob extends Job {
-
-	use AutoModeratorConfigLoaderStaticTrait;
 
 	/**
 	 * @var int
@@ -95,13 +93,15 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 	public function run(): bool {
 		$services = MediaWikiServices::getInstance();
+		$autoModeratorServices = AutoModeratorServices::wrap( $services );
+
 		$wikiPageFactory = $services->getWikiPageFactory();
 		$revisionStore = $services->getRevisionStore();
 		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$userGroupManager = $services->getUserGroupManager();
 		$restrictionStore = $services->getRestrictionStore();
 		$config = $services->getMainConfig();
-		$wikiConfig = $this->getAutoModeratorWikiConfig();
+		$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
 		$connectionProvider = $services->getConnectionProvider();
 
 		$userFactory = $services->getUserFactory();
