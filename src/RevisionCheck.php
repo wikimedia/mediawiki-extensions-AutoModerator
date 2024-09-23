@@ -177,19 +177,22 @@ class RevisionCheck {
 			RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore,
 			WikiPageFactory $wikiPageFactory, Config $wikiConfig, int $revId, int $wikiPageId,
 			PermissionManager $permissionManager ): bool {
+		// Skips reverts if AutoModerator is blocked
+		if ( $autoModeratorUser->getBlock() ) {
+			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator is blocked" );
+			return false;
+		}
 		// Skip AutoModerator edits
-		if ( $user->equals( $autoModeratorUser ) ) {
+		if ( self::areUsersEqual( $user, $autoModeratorUser ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoMod edits" );
 			return false;
 		}
-		$rev = $revisionStore->getRevisionById( $revId );
-		$parentId = $rev->getParentId();
+		$parentId = $revisionStore->getRevisionById( $revId )->getParentId();
 		// Skip new page creations
-		if ( $parentId === null || $parentId === 0 ) {
+		if ( self::isNewPageCreation( $parentId ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
 			return false;
 		}
-
 		// Skip reverts made to an AutoModerator bot revert or if
 		// the user reverts their own edit
 		$revertTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo', 'mw-reverted' ];
@@ -205,17 +208,16 @@ class RevisionCheck {
 					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - parent revision user is null" );
 					return false;
 				}
-				if ( $parentRev->getUser()->equals( $autoModeratorUser ) ) {
+				if ( self::areUsersEqual( $parentRevUser, $autoModeratorUser ) ) {
 					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator reverts" );
 					return false;
 				}
-				if ( $parentRev->getUser()->equals( $user ) ) {
+				if ( self::areUsersEqual( $parentRevUser, $user ) ) {
 					$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - own reverts" );
 					return false;
 				}
 			}
 		}
-
 		// Skip page moves
 		$moveTags = [ 'mw-new-redirect', 'mw-removed-redirect', 'mw-changed-redirect-target' ];
 		foreach ( $moveTags as $moveTag ) {
@@ -223,14 +225,11 @@ class RevisionCheck {
 				return false;
 			}
 		}
-
 		// Skip edits from editors that have certain user rights
-		$skipRights = $wikiConfig->get( 'AutoModeratorSkipUserRights' );
-		if ( $permissionManager->userHasAnyRight( $user, ...(array)$skipRights ) ) {
+		if ( self::shouldSkipUser( $permissionManager, $user, $wikiConfig ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - trusted user rights edits" );
 			return false;
 		}
-
 		// Skip external users
 		if ( ExternalUserNames::isExternal( $user->getName() ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - external user" );
@@ -250,8 +249,7 @@ class RevisionCheck {
 		// Skip protected pages that only admins can edit.
 		// Automoderator should be able to revert semi-protected pages,
 		// so we won't be skipping those on pre-check.
-		if ( $restrictionStore->isProtected( $wikiPage )
-				&& !$restrictionStore->isSemiProtected( $wikiPage ) ) {
+		if ( self::isProtectedPage( $restrictionStore, $wikiPage ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - protected page" );
 			return false;
 		}
@@ -305,5 +303,45 @@ class RevisionCheck {
 			$status = 'success';
 		}
 		return [ $reverted => $status ];
+	}
+
+	/**
+	 * @param PermissionManager $permissionManager
+	 * @param UserIdentity $user
+	 * @param Config $wikiConfig
+	 * @return bool
+	 */
+	public static function shouldSkipUser( PermissionManager $permissionManager,
+		UserIdentity $user, Config $wikiConfig ): bool {
+			return $permissionManager->userHasAnyRight(
+				$user, ...(array)$wikiConfig->get( 'AutoModeratorSkipUserRights' )
+			);
+	}
+
+	/**
+	 * @param UserIdentity $user
+	 * @param UserIdentity $autoModeratorUser
+	 * @return bool
+	 */
+	public static function areUsersEqual( UserIdentity $user, UserIdentity $autoModeratorUser ): bool {
+		return $user->equals( $autoModeratorUser );
+	}
+
+	/**
+	 * @param RestrictionStore $restrictionStore
+	 * @param WikiPage $wikiPage
+	 * @return bool
+	 */
+	public static function isProtectedPage( RestrictionStore $restrictionStore, WikiPage $wikiPage ): bool {
+		return $restrictionStore->isProtected( $wikiPage )
+			&& !$restrictionStore->isSemiProtected( $wikiPage );
+	}
+
+	/**
+	 * @param int|null $parentId
+	 * @return bool
+	 */
+	public static function isNewPageCreation( ?int $parentId ): bool {
+		return $parentId === null || $parentId === 0;
 	}
 }

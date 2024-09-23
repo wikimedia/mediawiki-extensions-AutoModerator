@@ -4,6 +4,7 @@ namespace AutoModerator\Tests;
 
 use AutoModerator\RevisionCheck;
 use DummyContentForTesting;
+use MediaWiki\Block\AbstractBlock;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandler;
@@ -355,6 +356,47 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	/**
 	 * @covers ::revertPreCheck
 	 */
+	public function testRevertPreCheckAutoModeratorBlocked() {
+		$block = $this->createMock( AbstractBlock::class );
+		$this->autoModeratorUser->method( 'getBlock' )->willReturn( $block );
+		$this->assertFalse( RevisionCheck::revertPreCheck(
+			$this->user,
+			$this->autoModeratorUser,
+			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
+			$this->restrictionStore,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
+			$this->permissionManager
+		) );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckAutoModeratorNotBlocked() {
+		$this->autoModeratorUser->method( 'getBlock' )->willReturn( null );
+		$this->assertTrue( RevisionCheck::revertPreCheck(
+			$this->user,
+			$this->autoModeratorUser,
+			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
+			$this->restrictionStore,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
+			$this->permissionManager
+		) );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
 	public function testOthersRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -671,5 +713,93 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
+	}
+
+	/**
+	 * @covers ::shouldSkipUser
+	 */
+	public function testShouldSkipUserTrue() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorSkipUserRights', [ 'bot' ] ],
+		] );
+		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
+		$this->assertTrue(
+			RevisionCheck::shouldSkipUser( $this->permissionManager, $this->autoModeratorUser, $config )
+		);
+	}
+
+	/**
+	 * @covers ::shouldSkipUser
+	 */
+	public function testShouldSkipUserFalse() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorSkipUserRights', [ 'bot' ] ],
+		] );
+		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( false );
+		$this->assertFalse( RevisionCheck::shouldSkipUser( $this->permissionManager, $this->user, $config ) );
+	}
+
+	/**
+	 * @covers ::areUsersEqual
+	 */
+	public function testAreUsersEqual() {
+		$this->autoModeratorUser->method( "equals" )->willReturn( true );
+		$this->assertTrue( RevisionCheck::areUsersEqual( $this->autoModeratorUser, $this->autoModeratorUser ) );
+	}
+
+	/**
+	 * @covers ::areUsersEqual
+	 */
+	public function testAreUsersEqualNotEqual() {
+		$this->assertFalse( RevisionCheck::areUsersEqual( $this->user, $this->autoModeratorUser ) );
+	}
+
+	/**
+	 * @covers ::isProtectedPage
+	 */
+	public function testIsProtectedPageTrue() {
+		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
+		$this->restrictionStore->method( 'isSemiProtected' )->willReturn( false );
+		$this->assertTrue( RevisionCheck::isProtectedPage( $this->restrictionStore, $this->wikiPageMock ) );
+	}
+
+	/**
+	 * @covers ::isProtectedPage
+	 */
+	public function testIsProtectedPageFalse() {
+		$this->restrictionStore->method( 'isProtected' )->willReturn( false );
+		$this->assertFalse( RevisionCheck::isProtectedPage( $this->restrictionStore, $this->wikiPageMock ) );
+	}
+
+	/**
+	 * @covers ::isProtectedPage
+	 */
+	public function testIsProtectedPageFalseWhenSemiProtected() {
+		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
+		$this->restrictionStore->method( 'isSemiProtected' )->willReturn( true );
+		$this->assertFalse( RevisionCheck::isProtectedPage( $this->restrictionStore, $this->wikiPageMock ) );
+	}
+
+	/**
+	 * @covers ::isNewPageCreation
+	 */
+	public function testIsNewPageCreationTrueWhenParentIdIsNull() {
+		$this->assertTrue( RevisionCheck::isNewPageCreation( null ) );
+	}
+
+	/**
+	 * @covers ::isNewPageCreation
+	 */
+	public function testIsNewPageCreationTrueWhenParentIdIsZero() {
+		$this->assertTrue( RevisionCheck::isNewPageCreation( 0 ) );
+	}
+
+	/**
+	 * @covers ::isNewPageCreation
+	 */
+	public function testIsNewPageCreationFalseWhenSet() {
+		$this->assertFalse( RevisionCheck::isNewPageCreation( 2 ) );
 	}
 }
