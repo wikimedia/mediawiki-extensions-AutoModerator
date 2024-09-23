@@ -30,6 +30,7 @@ use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Storage\EditResult;
 use MediaWiki\Storage\PageUpdater;
 use MediaWiki\StubObject\StubUserLang;
 use MediaWiki\User\ExternalUserNames;
@@ -321,10 +322,7 @@ class RevisionCheck {
 		$pageUpdater->setContent( SlotRecord::MAIN, $content );
 		$pageUpdater->setOriginalRevisionId( $prevRev->getId() );
 		$comment = CommentStoreComment::newUnsavedComment( $this->undoSummary );
-		// REVERT_UNDO 1
-		// REVERT_ROLLBACK 2
-		// REVERT_MANUAL 3
-		$pageUpdater->markAsRevert( 1, $this->revId, $prevRev->getId() );
+		$pageUpdater->markAsRevert( EditResult::REVERT_UNDO, $this->revId, $prevRev->getId() );
 		if ( $this->wikiConfig->get( 'AutoModeratorUseEditFlagMinor' ) ) {
 			$pageUpdater->setFlags( EDIT_MINOR );
 		}
