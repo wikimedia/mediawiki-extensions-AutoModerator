@@ -2,7 +2,7 @@
 
 namespace AutoModerator\Maintenance;
 
-use AutoModerator\Config\AutoModeratorConfigLoaderStaticTrait;
+use AutoModerator\AutoModeratorServices;
 use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
 use Maintenance;
@@ -22,8 +22,6 @@ require_once "$IP/maintenance/Maintenance.php";
  * Check a revision to see if it would be reverted
  */
 class CheckRevision extends Maintenance {
-
-	use AutoModeratorConfigLoaderStaticTrait;
 
 	public function __construct() {
 		parent::__construct();
@@ -48,9 +46,11 @@ class CheckRevision extends Maintenance {
 
 		// setup dependencies that we get for free when running in a hook.
 		$services = MediaWikiServices::getInstance();
+		$autoModeratorServices = AutoModeratorServices::wrap( $services );
+
 		$changeTagsStore = $services->getChangeTagsStore();
 		$config = $services->getMainConfig();
-		$wikiConfig = $this->getAutoModeratorWikiConfig();
+		$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
 		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$revisionLookup = $services->getRevisionLookup();
 		$revisionStore = $services->getRevisionStoreFactory()->getRevisionStore();
