@@ -21,7 +21,6 @@ use MediaWiki\Storage\PageUpdater;
 use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 use MediaWikiUnitTestCase;
 use MockHttpTrait;
@@ -49,12 +48,10 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	private RevisionRecord $rev;
 	private array $failingScore;
 	private array $passingScore;
-	private bool $originalRevId;
 	private User $autoModeratorUser;
 	private array $tags;
 	private ContentHandler $contentHandler;
 	private \Psr\Log\LoggerInterface $logger;
-	private UserGroupManager $userGroupManager;
 	private RestrictionStore $restrictionStore;
 	private WikiPageFactory $wikiPageFactory;
 	private RevisionStore $revisionStoreMock;
@@ -178,7 +175,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 				],
 			],
 		];
-		$this->originalRevId = false;
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->tags = [];
 		$this->revisionStoreMock = $this->getMockRevisionStore( $this->fakeRevisions, $this->rev );
@@ -203,7 +199,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
 		$this->contentHandler->method( 'getUndoContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
 		$this->logger = $this->createMock( \Psr\Log\LoggerInterface::class );
-		$this->userGroupManager = $this->createMock( UserGroupManager::class );
 		$this->restrictionStore = $this->createMock( RestrictionStore::class );
 		$this->wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$this->wikiPageFactory->method( 'newFromID' )->willReturn( $this->wikiPageMock );
@@ -219,19 +214,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
-			$this->originalRevId,
-			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->config,
 			$this->wikiConfig,
 			$this->contentHandler,
-			$this->logger,
-			$this->restrictionStore,
 			$this->lang,
 			$this->undoSummary,
-			$this->permissionManager,
 			true
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
@@ -248,19 +237,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
-			$this->originalRevId,
-			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->config,
 			$this->wikiConfig,
 			$this->contentHandler,
-			$this->logger,
-			$this->restrictionStore,
 			$this->lang,
-			$this->undoSummary,
-			$this->permissionManager
+			$this->undoSummary
 		);
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
 			$this->passingScore
@@ -283,19 +266,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
-			$this->originalRevId,
-			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->config,
 			$this->wikiConfig,
 			$this->contentHandler,
-			$this->logger,
-			$this->restrictionStore,
 			$this->lang,
-			$this->undoSummary,
-			$this->permissionManager
+			$this->undoSummary
 		);
 
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
@@ -319,19 +296,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->wikiPageMock->getId(),
 			$this->wikiPageFactory,
 			$this->rev->getId(),
-			$this->originalRevId,
-			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
 			$this->revisionStoreMock,
 			$this->config,
 			$this->wikiConfig,
 			$this->contentHandler,
-			$this->logger,
-			$this->restrictionStore,
 			$this->lang,
-			$this->undoSummary,
-			$this->permissionManager
+			$this->undoSummary
 		);
 
 		$reverted = array_key_first( $revisionCheck->maybeRevert(
@@ -344,25 +315,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckAutoModeratorEdit() {
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -370,25 +336,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testSelfRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -396,25 +357,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testOthersRevertPreCheckTagRevertEdit() {
 		$this->tags = [ 'mw-manual-revert' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertTrue( $revisionCheck->passedPreCheck );
+		$this->assertTrue( $passedPreCheck );
 	}
 
 	/**
@@ -422,25 +378,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testSelfRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ 'mw-rollback' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -448,25 +399,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testOthersRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ 'mw-rollback' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertTrue( $revisionCheck->passedPreCheck );
+		$this->assertTrue( $passedPreCheck );
 	}
 
 	/**
@@ -474,25 +420,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testSelfRevertPreCheckTagUndoEdit() {
 		$this->tags = [ 'mw-undo' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -500,25 +441,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testOthersRevertPreCheckTagUndoEdit() {
 		$this->tags = [ 'mw-undo' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertTrue( $revisionCheck->passedPreCheck );
+		$this->assertTrue( $passedPreCheck );
 	}
 
 	/**
@@ -526,25 +462,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagNewRedirect() {
 		$this->tags = [ 'mw-new-redirect' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -552,25 +483,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagRemovedRedirect() {
 		$this->tags = [ 'mw-removed-redirect' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -578,25 +504,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckTagChangedRedirect() {
 		$this->tags = [ 'mw-changed-redirect-target' ];
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -604,25 +525,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckSysOp() {
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -630,50 +546,40 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckBot() {
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckMainSpaceEdit() {
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertTrue( $revisionCheck->passedPreCheck );
+		$this->assertTrue( $passedPreCheck );
 	}
 
 	/**
@@ -683,25 +589,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$wikiPageMock = $this->getMockPage( NS_TALK );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPageMock );
-		$revisionCheck = new RevisionCheck(
-			$wikiPageMock->getId(),
-			$wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -712,25 +613,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$fakeRevisions = $this->makeFakeRevisions( 3, 3 );
 		$rev = current( $fakeRevisions );
 		$revisionStoreMock = $this->getMockRevisionStore( $fakeRevisions, $rev );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -739,25 +635,20 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	public function testRevertPreCheckProtectedPage() {
 		// Override revisionStoreMock method
 		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 
 	/**
@@ -766,24 +657,19 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	public function testRevertPreCheckNullPage() {
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( null );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$wikiPageFactory,
-			$this->rev->getId(),
-			$this->originalRevId,
+		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
-			$this->tags,
 			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->config,
-			$this->wikiConfig,
-			$this->contentHandler,
 			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
 			$this->restrictionStore,
-			$this->lang,
-			$this->undoSummary,
+			$wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
 			$this->permissionManager
 		);
-		$this->assertFalse( $revisionCheck->passedPreCheck );
+		$this->assertFalse( $passedPreCheck );
 	}
 }

@@ -76,30 +76,35 @@ class CheckRevision extends Maintenance {
 			RevisionRecord::RAW
 		)->getModel() );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
+		if ( !RevisionCheck::revertPreCheck(
+			$userIdentity,
+			$autoModeratorUser,
+			$logger,
+			$revisionStore,
+			$tags,
+			$restrictionStore,
+			$wikiPageFactory,
+			$wikiConfig,
+			$revId,
+			$wikiPageId,
+			$permissionManager
+		) ) {
+			$this->output( "precheck skipped rev:\t$revId\n" );
+			return;
+		}
+
 		$revisionCheck = new RevisionCheck(
 			$wikiPageId,
 			$wikiPageFactory,
 			$rev->getId(),
-			// @fixme: we should actually check for
-			//  $originalRevId as defined in onRevisionFromEditComplete
-			false,
-			$userIdentity,
-			$tags,
 			$autoModeratorUser,
 			$revisionStore,
 			$config,
 			$wikiConfig,
 			$contentHandler,
-			$logger,
-			$restrictionStore,
 			$wikiId,
-			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain(),
-			$permissionManager
+			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain()
 		);
-		if ( !$revisionCheck->passedPreCheck ) {
-			$this->output( "precheck skipped rev:\t$revId\n" );
-			return;
-		}
 
 		// Get a real score or optionally set a fake score
 		$score = [];
