@@ -23,10 +23,13 @@ use AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob;
 use Exception;
 use JobQueueGroup;
 use MediaWiki\Config\Config;
+use MediaWiki\MainConfigNames;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use Psr\Log\LoggerInterface;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class TalkPageMessageSender {
 
@@ -75,6 +78,14 @@ class TalkPageMessageSender {
 				$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - new page creation" );
 				return;
 			}
+			$language = MediaWikiServices::getInstance()->getContentLanguage();
+			$timestamp = new ConvertibleTimestamp();
+			if ( $this->config->get( MainConfigNames::TranslateNumerals ) ) {
+				$year = $language->formatNumNoSeparators( $timestamp->format( 'Y' ) );
+			} else {
+				$year = $timestamp->format( 'Y' );
+			}
+
 			$userTalkPageJob = new AutoModeratorSendRevertTalkPageMsgJob(
 				$title,
 				[
@@ -87,7 +98,10 @@ class TalkPageMessageSender {
 					'autoModeratorUserId' => $autoModeratorUser->getId(),
 					'autoModeratorUserName' => $autoModeratorUser->getName(),
 					'talkPageMessageHeader' => wfMessage( 'automoderator-wiki-revert-message-header' )
-						->params( $autoModeratorUser->getName() )->plain(),
+						->params(
+							$language->getMonthName( (int)$timestamp->format( 'n' ) ),
+							$year,
+							$autoModeratorUser->getName() )->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
 						->params( $title )->plain(),
 					'falsePositiveReportPageTitle' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" ),

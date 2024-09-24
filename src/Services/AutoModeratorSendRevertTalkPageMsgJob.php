@@ -16,9 +16,9 @@
 
 namespace AutoModerator\Services;
 
-use Content;
 use Job;
 use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Content\Content;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;

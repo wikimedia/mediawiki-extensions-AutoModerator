@@ -9,7 +9,7 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> is expected to be <code>$2</code>, but is <code>$3</code>",
 	"automoderator-desc": "Automatically reverts bad edits based on scoring from a machine learning model.",
 	"automoderator-wiki-report-false-positive": "report false positive",
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 reverted your edit ==",
+	"automoderator-wiki-revert-message-header": "== $1 $2: $3 reverted your edit ==",
 	"automoderator-wiki-revert-message": "Hello! I am [[User:$1|$1]], an automated system which uses a machine learning model to identify and revert potentially bad edits to ensure Wikipedia remains reliable and trustworthy. Unfortunately, I reverted one of your [[Special:Diff/$2|recent edits]] to [[$3]].\n* Because the model I use is not perfect, it sometimes reverts good edits. If you believe the change you made was constructive, please [[$4|report it here]].\n* [[:mw:Moderator Tools/Automoderator|Learn more]] about my software.\n* To learn more about editing visit your [[Special:Homepage|Newcomer Homepage]].",
 	"automoderator-wiki-revert-edit-summary": "Notice of automated revert on [[$1]]",
 	"automoderator-wiki-undo-summary": "Undo revision [[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]])",
