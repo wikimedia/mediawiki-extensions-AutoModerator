@@ -124,14 +124,18 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		)->getModel() );
 
 		try {
-			$oresModels = $config->get( 'OresModels' );
 			$response = false;
-			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) &&
-				array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
-				$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ] ) {
-				// ORES is loaded and the model is enabled, fetching the score from there
-				$response = $this->getOresRevScore( $connectionProvider, $config, $wikiId, $logger );
+			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
+				$oresModels = $config->get( 'OresModels' );
+
+				if ( array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
+					$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ]
+				) {
+					// ORES is loaded and the model is enabled, fetching the score from there
+					$response = $this->getOresRevScore( $connectionProvider, $config, $wikiId, $logger );
+				}
 			}
+
 			if ( !$response ) {
 				// ORES is not loaded, or a score couldn't be retrieved from the extension
 				$response = $this->getLiftWingRevScore( $config );

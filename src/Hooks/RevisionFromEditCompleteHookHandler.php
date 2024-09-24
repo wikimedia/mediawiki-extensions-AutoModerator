@@ -71,13 +71,15 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		$oresModels = $this->config->get( 'OresModels' );
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
+			$oresModels = $this->config->get( 'OresModels' );
 
-		if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) &&
-			array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
-			$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ] ) {
-			// ORES is loaded and model is enabled; not calling the job from this hook handler
-			return;
+			if ( array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
+				$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ]
+			) {
+				// ORES is loaded and model is enabled; not calling the job from this hook handler
+				return;
+			}
 		}
 
 		if ( !$wikiPage || !$rev || !$user ) {
