@@ -78,16 +78,12 @@ class LiftWingClient {
 		if ( !$response->isOK() ) {
 			$httpStatus = $req->getStatus();
 			$data = FormatJson::decode( $req->getContent(), true );
+
 			if ( !$data ) {
 				$data = [];
-				$message = 'url returned status for rev rev_id lang';
-				$data['error'] = strtr( $message, [
-					'url' => $url,
-					'status' => (string)$httpStatus,
-					'rev_id' => (string)$revId,
-					'lang' => $this->lang,
-				] );
+				$data['error'] = "$url returned $httpStatus for rev $revId {$this->lang}";
 			}
+
 			$errorMessage = $data['error'] ?? $data['detail'];
 			if ( ( $httpStatus >= 400 ) && ( $httpStatus <= 499 ) ) {
 				return $this->createErrorResponse( $httpStatus, $errorMessage, false );

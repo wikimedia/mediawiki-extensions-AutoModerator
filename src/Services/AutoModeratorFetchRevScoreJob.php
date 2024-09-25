@@ -110,10 +110,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 		$rev = $revisionStore->getRevisionById( $this->revId );
 		if ( $rev === null ) {
-			$message = 'rev rev_id not found';
-			$error = strtr( $message, [
-				'rev_id' => (string)$this->revId
-			] );
+			$error = "rev {$this->revId} not found";
 			$this->setLastError( $error );
 			$this->setAllowRetries( true );
 			return false;
@@ -141,10 +138,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$response = $this->getLiftWingRevScore( $config );
 			}
 			if ( !$response ) {
-				$message = 'score could not be retrieved for rev_id';
-				$error = strtr( $message, [
-					'rev_id' => (string)$this->revId
-				] );
+				$error = "score could not be retrieved for {$this->revId}";
 				$this->setLastError( $error );
 				$this->setAllowRetries( true );
 				return false;
