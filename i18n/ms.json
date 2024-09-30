@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tofeiku"
+		]
+	},
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Hak pengguna",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Pesanan laman perbincangan",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Suntingan kecil",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Suntingan bot"
+}

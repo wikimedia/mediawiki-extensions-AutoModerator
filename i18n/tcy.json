@@ -1,9 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pragathi. BH"
+			"Pragathi. BH",
+			"Vinoda mamatharai"
 		]
 	},
 	"automoderator-wiki-revert-message-header": "== $1 $2 : $3 ನಿಕ್ಲೆನ ಸಂಪಾದನೆನ್ ಪಿರ ಕೊರ್ತುಂಡು ==",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "ಈ ವಿಸ್ತರಣೆ ಪೊಸ ರಿವರ್ಟ್ ಅಪಾಯದ ಮಾದರಿಲೆನ್ ಬಳಕೆ ಮಲ್ಪುಂಡು, ಉಂದು ಪ್ರತಿಯೊಂಜಿ ಪರಿಷ್ಕರಣೆಗ್ ಒಂಜಿ ಅಂಕೊನು ಲೆಕ್ಕ ಮಲ್ಪುಂಡು, ಉಂದು ಸಂಪಾದನೆನ್ ರಿವರ್ಟ್ ಮಲ್ಪೊಡು ಪನ್ಪಿನ ಸಾಧ್ಯತೆನ್ ಸೂಚಿಸವುಂಡು. ಮಾದರಿಲು ವಿಕಿಪೀಡಿಯ ಯೋಜನೆಲೆನ್ ಮಾತ್ರ ಬೆಂಬಲಿಸವುಂಡು ಬೊಕ್ಕ ಮುಖ್ಯ (ಲೇಖನ) ನೇಮ್ಸ್ಪೇಸ್ ಡ್ ತರಬೇತಿ ಪಡೆಯಿನವು. ಒಂಜಿ ಮಿತಿನ್ ನಿಗದಿ ಮಲ್ಪುಲೆ, ಅಯಿಡ್ದ್ ಮಿತ್ತ್ ಸಂಪಾದನೆಲು ಸ್ವಯಂಚಾಲಿತವಾದ್ ಪಿರ ಬರ್ಪುಂಡು. ಕಡಿಮೆ ಮಿತಿಲು ಪಂಡ ಜಾಸ್ತಿ ಸಂಪಾದನೆಲು ಪಿರ ಬರ್ಪುಂಡು, ಆಂಡ ನಿಖರತೆ ಕಮ್ಮಿ ಆಪುಂಡು, ಆಂಡ ಎಚ್ಚಿನ ಮಿತಿಲು ಕಮ್ಮಿ ಸಂಪಾದನೆಲೆನ್ ಪಿರ ತೂಪುಂಡು, ಆಂಡ ಎಡ್ಡೆ ನಿಖರತೆಡ್ ಉಪ್ಪುಂಡು."
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "ಸದಸ್ಯೆರೆ ಹಕ್ಕುಲು",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "ಆಟೋಮೋಡರೇಟರ್ ಏಪಲಾ ಪಿರ ಬರೊಡಾಪುಜಿ ಪನ್ಪಿನ ಬಳಕೆದಾರ ಹಕ್ಕುಲೆನ್ ಸೂಚಿಸಲೆ.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "ಈ ವಿಸ್ತರಣೆ ಪೊಸ ರಿವರ್ಟ್ ಅಪಾಯದ ಮಾದರಿಲೆನ್ ಬಳಕೆ ಮಲ್ಪುಂಡು, ಉಂದು ಪ್ರತಿಯೊಂಜಿ ಪರಿಷ್ಕರಣೆಗ್ ಒಂಜಿ ಅಂಕೊನು ಲೆಕ್ಕ ಮಲ್ಪುಂಡು, ಉಂದು ಸಂಪಾದನೆನ್ ರಿವರ್ಟ್ ಮಲ್ಪೊಡು ಪನ್ಪಿನ ಸಾಧ್ಯತೆನ್ ಸೂಚಿಸವುಂಡು. ಮಾದರಿಲು ವಿಕಿಪೀಡಿಯ ಯೋಜನೆಲೆನ್ ಮಾತ್ರ ಬೆಂಬಲಿಸವುಂಡು ಬೊಕ್ಕ ಮುಖ್ಯ (ಲೇಖನ) ನೇಮ್ಸ್ಪೇಸ್ ಡ್ ತರಬೇತಿ ಪಡೆಯಿನವು. ಒಂಜಿ ಮಿತಿನ್ ನಿಗದಿ ಮಲ್ಪುಲೆ, ಅಯಿಡ್ದ್ ಮಿತ್ತ್ ಸಂಪಾದನೆಲು ಸ್ವಯಂಚಾಲಿತವಾದ್ ಪಿರ ಬರ್ಪುಂಡು. ಕಡಿಮೆ ಮಿತಿಲು ಪಂಡ ಜಾಸ್ತಿ ಸಂಪಾದನೆಲು ಪಿರ ಬರ್ಪುಂಡು, ಆಂಡ ನಿಖರತೆ ಕಮ್ಮಿ ಆಪುಂಡು, ಆಂಡ ಎಚ್ಚಿನ ಮಿತಿಲು ಕಮ್ಮಿ ಸಂಪಾದನೆಲೆನ್ ಪಿರ ತೂಪುಂಡು, ಆಂಡ ಎಡ್ಡೆ ನಿಖರತೆಡ್ ಉಪ್ಪುಂಡು.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b>ಕ್ರಿಯೆಲು</b><ul><li> [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki] ಮೂಲಕ ಅನುವಾದೊಲೆನ್ ಸೇರಾವೊಡು.</li><li> ಒಂಜಿ ಕಸ್ಟಮ್ ಟಾಕ್ ಪೇಜ್ ಸಂದೇಶೊಗು [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 ಸಿಸ್ಟಮ್ ಸಂದೇಶೊಲು] ಡ್ ಉಪ್ಪುನ ಪಠ್ಯೊನು ಅತಿಕ್ರಮಿಸೊಡು.</li></ul>",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>ಕ್ರಿಯೆಲು</b><ul><li> [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki] ಮೂಲಕ ಅನುವಾದೊಲೆನ್ ಸೇರಾವೊಡು.</li><li> ಒಂಜಿ ಕಸ್ಟಮ್ ಟಾಕ್ ಪೇಜ್ ಸಂದೇಶೊಗು [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 ಸಿಸ್ಟಮ್ ಸಂದೇಶೊಲು] ಡ್ ಉಪ್ಪುನ ಪಠ್ಯೊನು ಅತಿಕ್ರಮಿಸೊಡು.</li></ul>",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit ಸಹಾಯ:ಮೈನರ್ ಎಡಿಟ್]",
+	"automoderator-config-validator-userrights-not-allowed": "ಬಳಕೆದಾರನ ಹಕ್ಕ್ $1 ಇಜ್ಜಿ. ದಯಮಲ್ತ್ ಬೇತೆ ಒಂಜಿ ಪ್ರಯತ್ನ ಮಲ್ಪುಲೆ."
 }

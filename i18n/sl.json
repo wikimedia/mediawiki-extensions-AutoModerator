@@ -5,5 +5,6 @@
 		]
 	},
 	"automoderator-wiki-undo-summary": "razveljavitev redakcije [[Special:Diff/$1|$1]] {{gender:$2|uporabnika|uporabnice|uporabnika_ce}} [[Special:Contributions/$2|$2]] ([[User talk:$2|pogovor]])",
-	"automoderator-wiki-undo-summary-anon": "Razveljavitev redakcije [[Special:Diff/$1|$1]] uporabnika [[Special:Contributions/$2|$2]]"
+	"automoderator-wiki-undo-summary-anon": "Razveljavitev redakcije [[Special:Diff/$1|$1]] uporabnika [[Special:Contributions/$2|$2]]",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Ta razširitev uporablja nove modele tveganja za vrnitev, ki lahko za vsako redakcijo izračunajo oceno verjetnosti, da bo treba urejanje vrniti. Modeli podpirajo samo projekte Wikipedije in so izurjeni za osnovni imenski prostor (članki). Nastavite prag, nad katerim bodo urejanja samodejno vrnjena. Nižji pragi pomenijo, da bo vrnjenih več urejanj, vendar bo natančnost manjša, višji pragi pa pomenijo manj vrnjenih urejanj, vendar z večjo natančnostjo."
 }
