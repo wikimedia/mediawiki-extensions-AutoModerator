@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Cabal"
+		]
+	},
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "ਵਰਤੋਂਕਾਰ ਹੱਕ",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "ਗੱਲਬਾਤ ਵਰਕੇ ਦੇ ਸੁਨੇਹੇ",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "ਛੋਟੀਆਂ ਸੋਧਾਂ"
+}

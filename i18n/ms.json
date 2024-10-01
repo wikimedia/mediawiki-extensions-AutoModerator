@@ -1,11 +1,44 @@
 {
 	"@metadata": {
 		"authors": [
+			"Hakimi97",
 			"Tofeiku"
 		]
 	},
+	"automoderator-config-validator-array-toobig": "$1 mempunyai terlalu banyak item (maksimum $2 {{PLURAL:$2|dibenarkan}})",
+	"automoderator-config-validator-contentmodel-mismatch": "Ketidakpadanan model kandungan: fail konfigurasi mesti mempunyai model kandungan JSON, $1 dikesan",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> dijangka sebagai <code>$2</code>, tetapi menjadi <code>$3</code>",
+	"automoderator-desc": "Membalikkan suntingan buruk secara automatik berdasarkan pemarkahan daripada model pembelajaran mesin.",
+	"automoderator-wiki-report-false-positive": "laporkan hasil positif palsu",
+	"automoderator-wiki-revert-message-header": "== $1 $2: $3 membalikkan suntingan anda ==",
+	"automoderator-wiki-revert-message": "Salam sejahtera! Saya [[User:$1|$1]], yakni sebuah sistem automatik yang menggunakan model pembelajaran mesin untuk mengenal pasti serta membalikkan suntingan yang mempunyai potensi buruk, supaya dengan ini dapat memastikan Wikipedia kekal berwibawa dan boleh dipercayai. Malangnya, saya telah mengembalikan salah satu daripada [[Special:Diff/$2|suntingan terbaharu]] anda kepada [[$3]].\n* Disebabkan oleh model yang saya gunakan tidak sempurna, kadangkala ia membalikkan suntingan yang baik. Jika anda percaya perubahan yang anda buat adalah membina, sila [[$4|laporkan di sini]].\n* [[:mw:Moderator Tools/Automoderator|Ketahui lebih lanjut]] tentang perisian berkaitan.\n* Untuk mengetahui lebih lanjut tentang penyuntingan, sila lawati [[Special:Homepage|halaman utama pengguna baharu]].",
+	"automoderator-wiki-revert-edit-summary": "Notis pembalikan suntingan automatik pada [[$1]]",
+	"automoderator-wiki-undo-summary": "Membatalkan semakan [[Special:Diff/$1|$1]] oleh [[Special:Contributions/$2|$2]] ([[User talk:$2|perbincangan]])",
+	"automoderator-wiki-undo-summary-anon": "Membatalkan semakan [[Special:Diff/$1|$1]] oleh [[Special:Contributions/$2|$2]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Hak pengguna",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator dihidupkan",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Pembalikan oleh AutoModerator akan dianggap sebagai suntingan kecil.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Pesanan laman perbincangan",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Mesej laman perbualan dihidupkan",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Laman Laporan Positif Palsu",
+	"communityconfiguration-automoderator-title": "Automoderator",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Paling berhati-hati (lalai): Suntingan paling sedikit akan dibalikkan, tetapi ketepatannya adalah yang paling tinggi.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Berhati-hati: Secara relatif sedikit suntingan akan dibalikkan, tetapi ketepatannya adalah sederhana.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Agak berhati-hati: Secara relatif lebih banyak suntingan akan dibalikkan, tetapi ketepatannya akan menjadi rendah.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Paling kurang berhati-hati: Bilangan suntingan terbanyak akan dibalikkan, tetapi ketepatan akan menjadi yang paling rendah.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Konfigurasikan ambang",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Suntingan kecil",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Suntingan bot"
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Tentukan hak pengguna yang pemegang Automoderatornya tidak boleh membalikkan suntingan.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Pembalikan oleh Automoderator akan dianggap sebagai suntingan bot.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Suntingan bot",
+	"communityconfiguration-automoderator-info-text": "Amaran! Apabila perubahan dibuat, ia akan menjejaskan semua pengguna dalam komuniti anda dengan serta-merta. Apa yang penting dalam hal ini adalah kekal berhati-hati dan berwaspada. Bincang dan tentukan keputusan kolektif sebelum membuat perubahan konfigurasi.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Sambungan ini memanfaatkan model risiko pembalikan baharu yang boleh mengira markah untuk setiap semakan yang menunjukkan kemungkinan suntingan perlu dibalikkan. Model tersebut hanya menyokong projek Wikipedia dan dilatih pada ruang nama (rencana) utama. Tetapkan suatu ambang dengan suntingan yang berada di atas ambang tersebut akan dibalikkan secara automatik. Penetapan ambang yang lebih rendah bermakna lebih banyak suntingan akan dibalikkan, tetapi ketepatannya akan menjadi lebih rendah, manakala penetapan ambang yang lebih tinggi menyebabkan kurang suntingan dibalikkan, tetapi dengan ketepatan yang lebih baik.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Selepas Automoderator membalikkan suntingan, mesej laman perbincangan boleh dihantar secara automatik kepada penyunting berkenaan, menerangkan perkara yang berlaku dan menyediakan pautan yang berguna.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b>Tindakan</b><ul><li> Sila tambah terjemahan melalui [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>Untuk mesej laman perbincangan tersuai maka atasi teks tersebut pada [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 mesej sistem].</li></ul>",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Ringkasan Suntingan</b><p> Ringkasan suntingan Automoderator boleh diterjemahkan di translatewiki, dan digantikan secara tempatan.</p> <b>Tindakan</b><ul><li> Sila tambah terjemahan melalui [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li> Untuk mesej laman perbincangan tersuai sila atasi teks tersebut pada [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 mesej sistem].</li></ul>",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Bantuan:Suntingan kecil]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_ %22bot% 22_flag Manual:Bot]",
+	"communityconfiguration-automoderator-description": "Konfigurasikan tetapan Automoderator, supaya model boleh mengenal pasti dan membalikkan suntingan yang mempunyai potensi buruk pada Wikipedia.",
+	"automoderator-config-validator-userrights-not-allowed": "Hak pengguna $1 tidak wujud. Sila cuba yang lain."
 }
