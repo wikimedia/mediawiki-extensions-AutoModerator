@@ -176,6 +176,12 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'Not reverted' ) {
 			return true;
 		}
+		// Revert attempted but failed to save revision record
+		if ( array_key_exists( '0', $reverted ) ) {
+			$this->setLastError( $reverted['0'] );
+			$this->setAllowRetries( true );
+			return false;
+		}
 
 		return false;
 	}

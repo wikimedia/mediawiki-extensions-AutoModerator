@@ -32,6 +32,7 @@ use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\EditResult;
 use MediaWiki\Storage\PageUpdater;
+use MediaWiki\Storage\PageUpdateStatus;
 use MediaWiki\StubObject\StubUserLang;
 use MediaWiki\User\ExternalUserNames;
 use MediaWiki\User\User;
@@ -262,7 +263,7 @@ class RevisionCheck {
 	 * @param Content $content
 	 * @param RevisionRecord $prevRev
 	 */
-	private function doRevert( $pageUpdater, $content, $prevRev ) {
+	private function doRevert( $pageUpdater, $content, $prevRev ): PageUpdateStatus {
 		$pageUpdater->setContent( SlotRecord::MAIN, $content );
 		$pageUpdater->setOriginalRevisionId( $prevRev->getId() );
 		$comment = CommentStoreComment::newUnsavedComment( $this->undoSummary );
@@ -274,6 +275,7 @@ class RevisionCheck {
 			$pageUpdater->setFlags( EDIT_FORCE_BOT );
 		}
 		$pageUpdater->saveRevision( $comment, EDIT_UPDATE );
+		return $pageUpdater->getStatus();
 	}
 
 	/**
@@ -297,7 +299,12 @@ class RevisionCheck {
 				return [ $reverted => $this->undoSummary ];
 			}
 			if ( $this->enforce ) {
-				$this->doRevert( $pageUpdater, $content, $prevRev );
+				$pageUpdateStatus = $this->doRevert( $pageUpdater, $content, $prevRev );
+				if ( !$pageUpdateStatus->isOK() ) {
+					$errorMessages = $pageUpdateStatus->getMessages( 'error' );
+					return [ $reverted => $errorMessages ? wfMessage( $errorMessages[0] )->plain()
+						: "Failed to save revision" ];
+				}
 			}
 			$reverted = 1;
 			$status = 'success';
