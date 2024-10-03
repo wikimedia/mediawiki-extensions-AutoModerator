@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hakimi97",
+			"Tofeiku"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Ketidakpadanan model kandungan: fail konfigurasi mesti mempunyai model kandungan JSON, $1 dikesan",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> dijangka sebagai <code>$2</code>, tetapi menjadi <code>$3</code>",
+	"automoderator-desc": "Membalikkan suntingan buruk secara automatik berdasarkan pemarkahan daripada model pembelajaran mesin."
+}
