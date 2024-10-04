@@ -422,8 +422,31 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testRevertPreCheckAutoModeratorBlocked() {
 		$block = $this->createMock( AbstractBlock::class );
+		$block->method( 'appliesToPage' )->willReturn( true );
 		$this->autoModeratorUser->method( 'getBlock' )->willReturn( $block );
 		$this->assertFalse( RevisionCheck::revertPreCheck(
+			$this->user,
+			$this->autoModeratorUser,
+			$this->logger,
+			$this->revisionStoreMock,
+			$this->tags,
+			$this->restrictionStore,
+			$this->wikiPageFactory,
+			$this->wikiConfig,
+			$this->rev->getId(),
+			$this->wikiPageMock->getId(),
+			$this->permissionManager
+		) );
+	}
+
+	/**
+	 * @covers ::revertPreCheck
+	 */
+	public function testRevertPreCheckAutoModeratorBlockedButNotOnPage() {
+		$block = $this->createMock( AbstractBlock::class );
+		$block->method( 'appliesToPage' )->willReturn( false );
+		$this->autoModeratorUser->method( 'getBlock' )->willReturn( $block );
+		$this->assertTrue( RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
 			$this->logger,

@@ -179,7 +179,8 @@ class RevisionCheck {
 			WikiPageFactory $wikiPageFactory, Config $wikiConfig, int $revId, int $wikiPageId,
 			PermissionManager $permissionManager ): bool {
 		// Skips reverts if AutoModerator is blocked
-		if ( $autoModeratorUser->getBlock() ) {
+		$autoModeratorBlock = $autoModeratorUser->getBlock();
+		if ( $autoModeratorBlock && $autoModeratorBlock->appliesToPage( $wikiPageId ) ) {
 			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator is blocked" );
 			return false;
 		}
