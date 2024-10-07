@@ -12,6 +12,7 @@
 	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}} : $1 a annulé votre modification ==",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Droits de l’utilisateur",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "L'automodérateur est activé.",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Page de signalement de faux positif",
 	"communityconfiguration-automoderator-title": "Automodérateur",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Le plus prudent (par défaut) : moins de modifications seront annulées, mais la précision sera la plus élevée.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Attention : relativement peu de modifications seront annulées, mais la précision sera moyenne.",

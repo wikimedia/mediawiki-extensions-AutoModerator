@@ -4,6 +4,8 @@
 			"Saraiki"
 		]
 	},
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "حقوق صارف",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "معمولی تبدیلیاں",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit مدد:معمولی تبدیلی]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]"
 }
