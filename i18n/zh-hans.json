@@ -3,6 +3,7 @@
 		"authors": [
 			"Anterdc99",
 			"Googology",
+			"Hehua",
 			"Lakejason0",
 			"人间百态",
 			"沈澄心"
@@ -13,5 +14,6 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code>应为<code>$2</code>，但实际为<code>$3</code>",
 	"automoderator-desc": "根据机器学习模型的评分自动撤销错误的编辑。",
 	"automoderator-wiki-report-false-positive": "汇报误报",
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1撤销了您的编辑 =="
+	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1撤销了您的编辑 ==",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "小编辑"
 }
