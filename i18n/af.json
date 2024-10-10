@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"Rooiratel"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 het te veel items (maksimum $2 {{PLURAL:$2|word toegelaat}})",
+	"automoderator-config-validator-contentmodel-mismatch": "Inhoud-model wanverhouding: instelling lêer moet JSON-inhoud-model hê, $1 opgespoor",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> word verwag om <code>$2</code> te wees, maar is <code>$3</code>",
+	"automoderator-desc": "Keer slegte wysigings outomaties terug gebaseer op heuristiek van 'n masjienleer model.",
+	"automoderator-wiki-report-false-positive": "rapporteer 'n vals positief",
+	"automoderator-wiki-revert-message-header": "== $1 $2 : $3 het jou wysiging teruggerol ==",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gebruikersregte",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Outomatiese moderator is aangeskakel",
+	"communityconfiguration-automoderator-title": "Outomatiese moderator",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Outomatiese moderator",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Klein wysigings",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot wysiging"
+}

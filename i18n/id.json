@@ -10,7 +10,7 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> seharusnya <code>$2</code>, bukanlah <code>$3</code>",
 	"automoderator-desc": "Secara otomatis mengembalikan suntingan berniat tidak baik berdasarkan model pembelajaran mesin.",
 	"automoderator-wiki-report-false-positive": "laporkan kesalahan pemeriksaan",
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: $1 membalikkan suntingan Anda ==",
+	"automoderator-wiki-revert-message-header": "== $1 $2: $3 mengembalikan suntingan Anda ==",
 	"automoderator-wiki-revert-message": "Halo! Saya adalah [[User:$1|$1]] dan saya bertugas untuk membantu memberantas vandalisme di Wikipedia bahasa Indonesia secara otomatis menggunakan model pembelajaran mesin.\n\nSaya ingin memberitahukan kepada Anda bahwa saya telah mengembalikan [[Special:Diff/$2|suntingan terkini]] Anda ke [[$3]].\n* Dikarenakan model yang dipergunakan belum sepenuhnya sempurna, maka saya bisa saja melakukan kesalahan dalam mengembalikan suntingan yang sebenarnya berniat baik.\n* Apabila Anda merasa suntingan Anda konstruktif dan/atau berniat baik, silakan laporkan kekeliruan yang saya lakukan [[$4|melalui halaman ini]].\n* Pelajari [[:mw:Moderator Tools/Automoderator|lebih lanjut]] perangkat lunak yang saya gunakan.\n* Jika Anda adalah pengguna baru yang ingin berkontribusi di Wikipedia, silakan kunjungi [[Special:Homepage|halaman ini]].\n\nSalam.",
 	"automoderator-wiki-revert-edit-summary": "Memberitahukan suntingan yang dikembalikan secara otomatis di [[$1]]",
 	"automoderator-wiki-undo-summary": "Mengembalikan suntingan [[Special:Diff/$1|$1]] oleh [[Special:Contributions/$2|$2]] ([[User talk:$2|bicara]])",
