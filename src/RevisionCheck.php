@@ -303,7 +303,7 @@ class RevisionCheck {
 				$pageUpdateStatus = $this->doRevert( $pageUpdater, $content, $prevRev );
 				if ( !$pageUpdateStatus->isOK() ) {
 					$errorMessages = $pageUpdateStatus->getMessages( 'error' );
-					return [ $reverted => $errorMessages ? wfMessage( $errorMessages[0] )->plain()
+					return [ $reverted => $errorMessages ? wfMessage( $errorMessages[0] )->inLanguage( "en" )->plain()
 						: "Failed to save revision" ];
 				}
 			}
