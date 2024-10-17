@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Rooiratel"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Inhoud-model wanverhouding: instelling lêer moet JSON-inhoud-model hê, $1 opgespoor",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> word verwag om <code>$2</code> te wees, maar is <code>$3</code>",
+	"automoderator-desc": "Keer slegte wysigings outomaties terug gebaseer op heuristiek van 'n masjienleer model."
+}
