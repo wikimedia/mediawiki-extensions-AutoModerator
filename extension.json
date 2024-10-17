@@ -16,6 +16,9 @@
 		"AutoModerator\\": "src/",
 		"AutoModerator\\Maintenance\\": "maintenance/"
 	},
+	"TestAutoloadClasses": {
+		"MediaWiki\\Extension\\CommunityConfiguration\\Tests\\SchemaProviderTestCase": "../CommunityConfiguration/tests/phpunit/integration/SchemaProviderTestCase.php"
+	},
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php"
 	],
