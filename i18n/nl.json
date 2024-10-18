@@ -15,6 +15,7 @@
 	"automoderator-wiki-revert-edit-summary": "Kennisgeving van automatisch terugdraaien op [[$1]]",
 	"automoderator-wiki-undo-summary": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ([[User talk:$2|overleg]]) ongedaan gemaakt",
 	"automoderator-wiki-undo-summary-anon": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ongedaan gemaakt",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gebruikersrechten",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator is ingeschakeld",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Terugdraaiingen door AutoModerator worden als kleine bewerkingen beschouwd.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Bericht op overlegpagina",
@@ -28,6 +29,7 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Drempelwaarde configureren",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleine bewerkingen",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Als hier gebruikersrechten worden opgegeven, draait Automoderator geen wijzigingen terug die zijn aangebracht door gebruikers met deze rechten.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Terugdraaiingen door AutoModerator worden als robotbewerkingen beschouwd.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Robotbewerking",
 	"communityconfiguration-automoderator-info-text": "Let op! Wanneer er wijzigingen worden aangebracht, heeft dit direct invloed op alle gebruikers in uw gemeenschap. Het is belangrijk voorzichtig en weloverwogen te werk te gaan. Voer alleen in goed overleg en na een gezamenlijk besluit configuratiewijzigingen door.",
@@ -37,5 +39,6 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Bewerkingssamenvatting</b><p>De bewerkingssamenvatting van Automoderator kan op Translatewiki worden vertaald. Ook kan deze lokaal worden aangepast.</p><b>Handelingen</b><ul><li>Voeg vertalingen toe via [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>Voor een eigen overlegpaginabericht past u de tekst aan in de [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 systeemberichten].</li></ul>",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Hulp:Kleine bewerking]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Handleiding:Robots]",
-	"communityconfiguration-automoderator-description": "Automoderator zo instellen dat het model mogelijk slechte bewerkingen op Wikipedia kan identificeren en ongedaan kan maken."
+	"communityconfiguration-automoderator-description": "Automoderator zo instellen dat het model mogelijk slechte bewerkingen op Wikipedia kan identificeren en ongedaan kan maken.",
+	"automoderator-config-validator-userrights-not-allowed": "Het gebruikersrecht $1 bestaat niet. Probeer een ander."
 }
