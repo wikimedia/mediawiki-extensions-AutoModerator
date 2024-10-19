@@ -4,11 +4,11 @@ namespace AutoModerator\Tests;
 
 use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\WikiPageConfig;
-use IDBAccessObject;
 use MediaWiki\Config\ConfigException;
 use MediaWiki\Config\GlobalVarConfig;
 use MediaWiki\Config\HashConfig;
 use MediaWikiUnitTestCase;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * @coversDefaultClass \AutoModerator\Config\AutoModeratorWikiConfigLoader

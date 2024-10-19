@@ -2,14 +2,14 @@
 
 namespace AutoModerator\Tests;
 
-use ApiRawMessage;
 use AutoModerator\Config\Validation\AutoModeratorConfigValidation;
 use AutoModerator\Config\Validation\ConfigValidatorFactory;
 use AutoModerator\Config\Validation\NoValidationValidator;
 use AutoModerator\Config\WikiPageConfigLoader;
-use Content;
-use HashBagOStuff;
-use JsonContent;
+use MediaWiki\Api\ApiRawMessage;
+use MediaWiki\Content\Content;
+use MediaWiki\Content\JsonContent;
+use MediaWiki\Content\WikitextContent;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\Revision\RevisionLookup;
@@ -20,12 +20,12 @@ use MediaWiki\Title\TitleFactory;
 use MediaWiki\Title\TitleValue;
 use MediaWiki\Utils\UrlUtils;
 use MediaWikiUnitTestCase;
-use MessageSpecifier;
 use MWHttpRequest;
 use PHPUnit\Framework\MockObject\MockObject;
 use StatusValue;
-use WANObjectCache;
-use WikitextContent;
+use Wikimedia\Message\MessageSpecifier;
+use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * @covers \AutoModerator\Config\WikiPageConfigLoader

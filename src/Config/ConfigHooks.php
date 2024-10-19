@@ -3,8 +3,8 @@
 namespace AutoModerator\Config;
 
 use AutoModerator\Config\Validation\ConfigValidatorFactory;
-use Content;
 use MediaWiki\Config\Config;
+use MediaWiki\Content\Content;
 use MediaWiki\Content\Hook\JsonValidateSaveHook;
 use MediaWiki\Content\JsonContent;
 use MediaWiki\Content\TextContent;
