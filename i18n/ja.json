@@ -2,9 +2,38 @@
 	"@metadata": {
 		"authors": [
 			"Apple TD",
+			"Kokage si",
 			"春春眠眠"
 		]
 	},
+	"automoderator-config-validator-contentmodel-mismatch": "コンテンツモデルの不一致: 設定ファイルは JSON コンテンツモデルでなければなりませんが、 $1 が検出されました",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code>は<code>$2</code>であることが期待されますが、<code>$3</code>になっています",
+	"automoderator-desc": "機械学習モデルによるスコアリングに基づいて不適切な編集を自動的に差し戻します。",
+	"automoderator-wiki-report-false-positive": "誤検知を報告する",
+	"automoderator-wiki-revert-message-header": "== $2年$1: $3 があなたの編集を差し戻しました ==",
+	"automoderator-wiki-revert-message": "[[User:$1|$1]]さん、こんにちは。こちらは機械学習モデルを利用して、不適切な可能性のある編集の識別と差し戻しを行い、ウィキペディアの信頼性を維持するための自動化システムです。残念ながら、[[$3]]へのあなたの[[Special:Diff/$2|最近の編集]]のひとつを差し戻しました。\n* 利用しているモデルが完璧ではないため、適切な編集を差し戻してしまうことがあります。建設的な編集であったと思われる場合には、[[$4|こちらでご報告ください]]。\n* ソフトウェアについては[[:mw:Moderator Tools/Automoderator|詳細]]をご覧ください。\n* 編集についてもっと知りたい方は[[Special:Homepage|新規参加者ホームページ]]をご覧ください。",
+	"automoderator-wiki-revert-edit-summary": "[[$1]]における自動差し戻しの通知",
 	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|トーク]]) による版 [[Special:Diff/$1|$1]] を取り消し",
-	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]]による版 [[Special:Diff/$1|$1]] を取り消し"
+	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]]による版 [[Special:Diff/$1|$1]] を取り消し",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "利用者権限",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "オートモデレーターはオンになっています",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "オートモデレーターによる差し戻しは細部の編集とみなされます。",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "会話ページのメッセージ",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "会話ページのメッセージはオンになっています",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "誤検知報告ページ",
+	"communityconfiguration-automoderator-title": "オートモデレーター",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "最も慎重（既定）: 差し戻される編集は最も少ないですが、精度は最も高くなります。",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "慎重: 差し戻される編集は比較的少ないですが、精度は中程度になります。",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "やや慎重: 差し戻される編集は比較的多いですが、精度は低くなります。",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "慎重ではない: 差し戻される編集の数は最も多くなりますが、精度は最も低くなります。",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "しきい値を設定する",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "オートモデレーター",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "細部の編集",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "オートモデレーターが差し戻すべきではない利用者権限保持者を指定します。",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "オートモデレーターによる差し戻しはボット編集とみなされます。",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "ボット編集",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "この拡張機能は新しい差し戻しリスクモデルを活用しており、それぞれの版についてスコアを計算し編集を差し戻すべき公算を示すことができます。モデルはウィキペディアプロジェクトのみをサポートし、メイン（記事）名前空間で訓練されています。しきい値を設定すると、しきい値を超える編集は自動的に差し戻されます。しきい値が低いほど、より多くの編集を差し戻すものの、精度はより低くなり、一方しきい値が高いほど、差し戻される編集は少なくものの、精度はより良くなるということです。",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "オートモデレーターが編集を差し戻した後、編集者の会話ページに自動的にメッセージを送り、何が起きたのか説明し、有用なリンクを提供することができます。",
+	"communityconfiguration-automoderator-description": "ウィキペディア上の不適切な可能性のある編集をモデルが識別し差し戻せるように、オートモデレーターの設定をします。",
+	"automoderator-config-validator-userrights-not-allowed": "利用者権限 $1 は存在しません。別のものを試してください。"
 }

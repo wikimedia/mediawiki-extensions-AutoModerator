@@ -5,7 +5,7 @@
 			"আফতাবুজ্জামান"
 		]
 	},
-	"automoderator-wiki-revert-message-header": "== $1 $2 : $3 আপনার সম্পাদনা ফিরিয়ে দিয়েছে ==",
+	"automoderator-wiki-revert-message-header": "== $1 $2: $3 আপনার সম্পাদনা বাতিল করেছে ==",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "ব্যবহারকারী অধিকার",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "অনুল্লেখ্য সম্পাদনা",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "ব্যবহারকারীর অধিকার নির্দিষ্ট করুন যার অধিকারকারীর সম্পাদনা অটোমডারেটর কখনই প্রত্যাবর্তন করবেন না।",
