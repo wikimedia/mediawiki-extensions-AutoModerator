@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Apple TD",
+			"Kokage si",
+			"春春眠眠"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "コンテンツモデルの不一致: 設定ファイルは JSON コンテンツモデルでなければなりませんが、 $1 が検出されました",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code>は<code>$2</code>であることが期待されますが、<code>$3</code>になっています",
+	"automoderator-desc": "機械学習モデルによるスコアリングに基づいて不適切な編集を自動的に差し戻します。"
+}
