@@ -7,6 +7,8 @@ use MediaWiki\Extension\CommunityConfiguration\Schemas\MediaWiki\MediaWikiDefini
 
 // phpcs:disable Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 class AutoModeratorConfigSchema extends JsonSchema {
+	public const VERSION = '1.0.0';
+
 	public const AutoModeratorEnableRevisionCheck = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false,
