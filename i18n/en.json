@@ -43,5 +43,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:Minor edit]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
 	"communityconfiguration-automoderator-description": "Configure Automoderator settings, so the model can identify and revert potentially bad edits on Wikipedia.",
-	"automoderator-config-validator-userrights-not-allowed": "User right $1 does not exist. Please try another."
+	"automoderator-config-validator-userrights-not-allowed": "User right $1 does not exist. Please try another.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "User reverts per page",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Specify how many times Automoderator can revert the same user on a given page within a 24 hour period. If user revert per page restrictions are enabled and this is not set Automoderator will revert the same user an unlimited amount of times.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Enable user reverts per page",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Enables the feature to specify how many times Automoderator can revert the same user on a given page within a 24 hour period.",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "The value entered for User reverts per page is not a number, please try another."
 }

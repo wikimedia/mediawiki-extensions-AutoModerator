@@ -44,5 +44,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "Helper text for the minor edit flag field on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "Helper text for the enable bot flag field on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-description": "Description of configuration for Special:CommunityConfiguration page",
-	"automoderator-config-validator-userrights-not-allowed": "Error returned by validator of AutoModerator for invalid user right config\n\n$1 is the user right name."
+	"automoderator-config-validator-userrights-not-allowed": "Error returned by validator of AutoModerator for invalid user right config\n\n$1 is the user right name.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Label for the user reverts per page field on the community configuration form for AutoModerator",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Description for the user reverts per page field on the community configuration form for AutoModerator",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Label for the enable user reverts per page field on the community configuration form for AutoModerator",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Label for the enable user reverts per page field on the community configuration form for AutoModerator",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Error returned by validator of AutoModerator config when a user saves a value that is not a number"
 }
