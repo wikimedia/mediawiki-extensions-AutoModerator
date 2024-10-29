@@ -44,7 +44,7 @@ class LiftWingClient {
 		string $model,
 		string $lang,
 		string $baseUrl,
-		string $hostHeader = null
+		?string $hostHeader = null
 	) {
 		$this->model = $model;
 		$this->lang = $lang;
