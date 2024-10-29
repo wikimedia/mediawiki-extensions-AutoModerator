@@ -12,6 +12,7 @@
 	"automoderator-wiki-report-false-positive": "Link that will take users to the AutoModerator false positive reporting page",
 	"automoderator-wiki-revert-message-header": "Message header used by AutoModerator on a user's talk page to notify them that their edit has been reverted.\n\n* $1 is the current month\n*$2 is the current year\n*$3 is AutoModerator username",
 	"automoderator-wiki-revert-message": "Message used by AutoModerator on a user's talk page to notify them that their edit has been reverted.\n\n* $1 is the AutoModerator username\n* $2 is the revision id\n* $3 is the page title where the revision was made\n* $4 is the false positive reporting page",
+	"automoderator-wiki-revert-message-follow-up": "Message used by AutoModerator on a user's talk page to notify them that another edit they made on the same month has been reverted.\n\n* $1 is the revision id\n* $2 is the page title where the revision was made",
 	"automoderator-wiki-revert-edit-summary": "Edit summary used by AutoModerator on a user's talk page to notify that their edit has been reverted. $1 is the page title where the revert occurred.",
 	"automoderator-wiki-undo-summary": "Edit summary for AutoModerator reverts $1 is the revision id and $2 is the user's name",
 	"automoderator-wiki-undo-summary-anon": "Edit summary for AutoModerator reverts of anonymous editors $1 is the revision id and $2 is the user's name",

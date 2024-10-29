@@ -217,7 +217,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'parentRevId' => 93,
 			'autoModeratorUserId' => 1,
 			'autoModeratorUserName' => 'AutoModerator',
-			'talkPageMessageHeader' => '== ' . $month . ' ' . $year . ': AutoModerator reverted your edit ==',
+			'talkPageMessageHeader' => $month . ' ' . $year . ': AutoModerator reverted your edit',
 			'talkPageMessageEditSummary' => 'Notice of automated revert on [[]]',
 			'falsePositiveReportPageTitle' => '',
 			'wikiId' => 'en',
