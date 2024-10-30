@@ -14,6 +14,9 @@
 	"automoderator-wiki-revert-edit-summary": "Hinweis zur automatischen Rückgängigmachung von [[$1]]",
 	"automoderator-wiki-undo-summary": "Änderung [[Special:Diff/$1|$1]] von [[Special:Contributions/$2|$2]] ([[User talk:$2|Diskussion]]) rückgängig gemacht.",
 	"automoderator-wiki-undo-summary-anon": "Änderung [[Special:Diff/$1|$1]] von [[Special:Contributions/$2|$2]] rückgängig gemacht",
+	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Änderung|Änderungen}} von einem versteckten Benutzer rückgängig gemacht und letzte Version von {{GENDER:$1|[[User:$1|$1]]}} wiederhergestellt",
+	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Änderung|Änderungen}} von [[Special:Contributions/$2|$2]] {{PLURAL:$7|wurde|wurden}} auf die letzte Version von [[User:$1|$1]] zurückgesetzt",
+	"automoderator-wiki-revertpage": "{{PLURAL:$7|Änderung|Änderungen}} von [[Special:Contributions/$2|$2]] ([[User talk:$2|Diskussion]]) {{PLURAL:$7|wurde|wurden}} auf die letzte Version von [[User:$1|$1]] zurückgesetzt",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Benutzerrechte",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator ist eingeschaltet",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Rückgängigmachungen durch AutoModerator werden als geringfügige Änderungen betrachtet.",
@@ -39,5 +42,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Hilfe:Kleine Bearbeitung]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
 	"communityconfiguration-automoderator-description": "Konfiguriere die Automoderator-Einstellungen, damit das Modell potenziell fehlerhafte Änderungen auf Wikipedia erkennen und rückgängig machen kann.",
-	"automoderator-config-validator-userrights-not-allowed": "Das Benutzerrecht $1 existiert nicht. Bitte versuche es mit einem anderen."
+	"automoderator-config-validator-userrights-not-allowed": "Das Benutzerrecht $1 existiert nicht. Bitte versuche es mit einem anderen.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Zurücksetzungen pro Benutzer pro Seite",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Legt fest, wie oft Automoderator denselben Benutzer auf einer bestimmten Seite innerhalb von 24 Stunden zurücksetzen kann. Wenn die Beschränkungen für die Zurücksetzungen pro Benutzer pro Seite aktiviert sind und diese Einstellung nicht vorgenommen wird, setzt Automoderator denselben Benutzer unbegrenzt oft zurück.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Zurücksetzungen pro Benutzer pro Seite aktivieren",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Aktiviert die Funktion, um anzugeben, wie oft Automoderator denselben Benutzer auf einer bestimmten Seite innerhalb eines Zeitraums von 24 Stunden zurücksetzen kann.",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Der eingegebene Wert für Zurücksetzungen pro Benutzer pro Seite ist keine Zahl, bitte versuche einen anderen."
 }

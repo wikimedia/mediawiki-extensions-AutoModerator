@@ -15,6 +15,9 @@
 	"automoderator-wiki-revert-edit-summary": "הודעה על שחזור אוטומטי בדף [[$1]]",
 	"automoderator-wiki-undo-summary": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]])",
 	"automoderator-wiki-undo-summary-anon": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]]",
+	"automoderator-wiki-revertpage-nouser": "שוחזר {{PLURAL:$7|מעריכה|מעריכות}} של משתמש מוסתר לעריכה האחרונה של {{GENDER:$1|[[User:$1|$1]]}}",
+	"automoderator-wiki-revertpage-anon": "שוחזר {{PLURAL:$7|מעריכה|מעריכות}} של [[Special:Contributions/$2|$2]] לעריכה האחרונה של [[User:$1|$1]]",
+	"automoderator-wiki-revertpage": "שוחזר {{PLURAL:$7|מעריכה|מעריכות}} של [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]]) לעריכה האחרונה של [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "הרשאות משתמש",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "המפקח האוטומטי מופעל",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "שחזורים על־ידי מפקח אוטומטי ייחשבו לעריכות משניות.",
@@ -40,5 +43,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://he.wikipedia.org/wiki/עזרה:עריכה_משנית עזרה:עריכה משנית]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://he.wikipedia.org/wiki/ויקיפדיה:בוט ויקיפדיה:בוט]",
 	"communityconfiguration-automoderator-description": "הגדרת התצורה של מפקח אוטומטי (Automoderator), כך שהמודל יוכל לזהות ולשחזור בוויקיפדיה עריכות שעלולות להיות גרועות.",
-	"automoderator-config-validator-userrights-not-allowed": "הרשאת המשתמש $1 אינה קיימת. נא לנסות משהו אחר."
+	"automoderator-config-validator-userrights-not-allowed": "הרשאת המשתמש $1 אינה קיימת. נא לנסות משהו אחר.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "שחזורי משתמש לדף",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "הגדרה של מספר הפעמים שהמפקח האוטומטי יכול לשחזר את אותו המשתמש בדף נתון בתוך פרק זמן של 24 שעות. אם הגבלות שחזור המשתמש בדף אחד מופעלות וזה לא מוגדר, המפקח האוטומטי ישחזר את אותו המשתמש מספר בלתי־מוגבל של פעמים.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "להפעיל שחזורי משתמש לדף",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "הפעלת האפשרות להגדיר כמה פעמים המפקח האוטומטי יכול לשחזר את אותו המשתמש בדף נתון בתוך פרק זמן של 24 שעות.",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "הערך שהוזן ל\"שחזורי משתמש לדף\" אינו מספר, נא לנסות ערך אחר."
 }

@@ -15,6 +15,9 @@
 	"automoderator-wiki-revert-edit-summary": "Kennisgeving van automatisch terugdraaien op [[$1]]",
 	"automoderator-wiki-undo-summary": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ([[User talk:$2|overleg]]) ongedaan gemaakt",
 	"automoderator-wiki-undo-summary-anon": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ongedaan gemaakt",
+	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Wijziging|Wijzigingen}} van een verborgen gebruiker teruggedraaid naar de laatste versie van {{GENDER:$1|[[User:$1|$1]]}}",
+	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] teruggedraaid naar de laatste versie van [[User:$1|$1]]",
+	"automoderator-wiki-revertpage": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] ([[User talk:$2|Overleg]]) teruggedraaid naar de laatste versie van [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gebruikersrechten",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator is ingeschakeld",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Terugdraaiingen door AutoModerator worden als kleine bewerkingen beschouwd.",
@@ -40,5 +43,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Hulp:Kleine bewerking]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Handleiding:Robots]",
 	"communityconfiguration-automoderator-description": "Automoderator zo instellen dat het model mogelijk slechte bewerkingen op Wikipedia kan identificeren en ongedaan kan maken.",
-	"automoderator-config-validator-userrights-not-allowed": "Het gebruikersrecht $1 bestaat niet. Probeer een ander."
+	"automoderator-config-validator-userrights-not-allowed": "Het gebruikersrecht $1 bestaat niet. Probeer een ander.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Gebruikersterugdraaiingen per pagina",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Geef aan hoe vaak Automoderator dezelfde gebruiker op een bepaalde pagina binnen een periode van 24 uur kan terugdraaien. Als beperkingen voor gebruikersterugdraaien per pagina zijn ingeschakeld en dit niet is ingesteld, zal Automoderator dezelfde gebruiker een onbeperkt aantal keren terugdraaien.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Gebruikersterugdraaiingen per pagina inschakelen",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Hiermee wordt de functie ingeschakeld waarmee u kunt opgeven hoe vaak Automoderator dezelfde gebruiker binnen 24 uur op een bepaalde pagina kan terugdraaien.",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "De ingevoerde waarde voor Gebruikersterugdraaiingen per pagina is geen getal. Probeer een andere."
 }

@@ -14,6 +14,9 @@
 	"automoderator-wiki-revert-edit-summary": "Ilmoitus automaattisesta kumoamisesta sivulla [[$1]]",
 	"automoderator-wiki-undo-summary": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]])",
 	"automoderator-wiki-undo-summary-anon": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]]",
+	"automoderator-wiki-revertpage-nouser": "Piilotetun käyttäjän {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän {{GENDER:$1|[[User:$1|$1]]}} tekemään versioon",
+	"automoderator-wiki-revertpage-anon": "Käyttäjän [[Special:Contributions/$2|$2]] {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän [[User:$1|$1]] tekemään versioon.",
+	"automoderator-wiki-revertpage": "Käyttäjän [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]]) {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän [[User:$1|$1]] tekemään versioon.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Käyttöoikeudet",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator on käytössä",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "AutoModeratorin tekemät kumoamiset lasketaan pieniksi muutoksiksi.",
@@ -39,5 +42,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:Pieni muutos]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Botit]",
 	"communityconfiguration-automoderator-description": "Määritä Automoderatorin asetukset, jotta malli voi tunnistaa ja kumota mahdollisesti pahantahtoisia muokkauksia Wikipediassa.",
-	"automoderator-config-validator-userrights-not-allowed": "Käyttöoikeutta $1 ei ole olemassa. Kokeile toista."
+	"automoderator-config-validator-userrights-not-allowed": "Käyttöoikeutta $1 ei ole olemassa. Kokeile toista.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Käyttäjän kumoamisten sivukohtainen raja",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Määritä, kuinka monta kertaa Automoderator voi kumota saman käyttäjän muokkauksia tietyllä sivulla 24 tunnin aikana. Jos käyttäjän kumoamisten sivukohtaiset rajat ovat käytössä ja tätä ei ole määritetty, Automoderator kumota voi saman käyttäjän rajattoman määrän kertoja.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Ota käyttäjän kumoamisten sivukohtaiset rajat",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Mahdollistaa sen määrittämisen, kuinka monta kertaa Automoderator voi kumota saman käyttäjän tietyllä sivulla 24 tunnin aikana.",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Käyttäjän kumoamisten sivukohtaiseen rajaan annettu arvo ei ole numero, kokeile toista."
 }
