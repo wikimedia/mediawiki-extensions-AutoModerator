@@ -9,7 +9,7 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> a zlefe bezañ <code>$2</code>, met a zo <code>$3</code>",
 	"automoderator-desc": "Nullañ a ra ent emgefreek kemmoù fall hervez skor eus ur patrom deskiñ mekanik",
 	"automoderator-wiki-report-false-positive": "disklêriañ fals-pozitivel",
-	"automoderator-wiki-revert-message-header": "== {{CURRENTMONTHNAME}} {{CURRENTYEAR}}: nullet eo bet ho kemm gant $1 ==",
+	"automoderator-wiki-revert-message-header": "{{CURRENTMONTHNAME}} {{CURRENTYEAR}}: nullet eo bet ho kemm gant $1",
 	"automoderator-wiki-revert-message": "Demat! [[User:$1|$1]] on, ur reizhiad emgefre a ra gant ur patrom deskiñ mekanik evit kavout ha nullañ kemmoù a c’hall bezañ fall evit derc’hel Wikipedia fiziadus. Siwazh em eus nullet unan eus ho [[Special:Diff/$2|kemmoù a-nevez]] da [[$3]].\n* Peogwir n’eo ket peurvat ar patrom a ran gantañ e nullan kemmoù mat a-wechoù. Ma kredit e oa fardus ar c’hemm ho peus graet, [[$4|disklêriit anezhañ amañ]] mar plij.\n* [[:mw:Moderator Tools/Automoderator|Gouzout hiroc’h]] a-zivout ma meziant.\n* Evit gouzout hiroc’h a-zivout an aozañ kit d’ho [[Special:Homepage|pajenn degemer nevez-deuet]].",
 	"automoderator-wiki-revert-edit-summary": "Kemenn nullañ emgefre da [[$1]]",
 	"automoderator-wiki-undo-summary": "Dizober kemmoù [[Special:Diff/$1|$1]] a-berzh [[Special:Contributions/$2|$2]] ([[User talk:$2|kaozeal]])",

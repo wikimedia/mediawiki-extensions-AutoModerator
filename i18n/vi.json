@@ -11,7 +11,7 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> nên là <code>$2</code>, hiện tại là <code>$3</code>",
 	"automoderator-desc": "Tự động lùi lại sửa đổi xấu dựa trên hệ thống đánh giả tự động theo mô hình học máy",
 	"automoderator-wiki-report-false-positive": "báo cáo nhận diện sai",
-	"automoderator-wiki-revert-message-header": "== $1 $2: $3 đã lùi lại sửa đổi của bạn ==",
+	"automoderator-wiki-revert-message-header": "$1 $2: $3 đã lùi lại sửa đổi của bạn",
 	"automoderator-wiki-revert-message": "Xin chào! Tôi là [[User:$1|$1]], một hệ thống tự động sử dụng mô hình học máy học để phát hiện và lùi lại sửa đổi có nguy cơ gây hại, nhằm đảm bảo độ đáng tin cậy của Wikipedia. Thật đáng tiếc, tôi đã lùi lại một [[Special:Diff/$2|sửa đổi gần đây của bạn]] tại trang [[$3]].\n* Tuy nhiên, mô hình học máy mà tôi sử dụng không thực sự quá hoàn hảo, và do đó, đôi khi tôi có thể lùi nhầm những sửa đổi tốt. Nếu bạn tin rằng sửa đổi của bạn có ích, vui lòng [[$4|báo lỗi tại đây]].\n* [[:mw:Moderator Tools/Automoderator|Tìm hiểu thêm]] về phần mềm tự động này.\n* Hãy đi tới [[Special:Homepage|Trang nhà người mới]] để tìm hiểu thêm về việc sửa đổi Wikipedia.",
 	"automoderator-wiki-revert-edit-summary": "Thông báo: Sửa đổi của bạn tại [[$1]] đã bị lùi lại tự động",
 	"automoderator-wiki-undo-summary": "Đã tự động lùi lại sửa đổi [[Special:Diff/$1|$1]] của [[Special:Contributions/$2|$2]] ([[User talk:$2|thảo luận]])",

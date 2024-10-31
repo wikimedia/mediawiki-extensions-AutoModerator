@@ -4,7 +4,7 @@
 			"Milicevic01"
 		]
 	},
-	"automoderator-wiki-revert-message-header": "== $1 $2: $3 вратио је Вашу измену ==",
+	"automoderator-wiki-revert-message-header": "$1 $2: $3 вратио је Вашу измену",
 	"automoderator-wiki-undo-summary": "Поништена измена [[Special:Diff/$1|$1]] [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]])",
 	"automoderator-wiki-undo-summary-anon": "Поништена измена [[Special:Diff/$1|$1]] корисника [[Special:Contributions/$2|$2]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Корисничка права",

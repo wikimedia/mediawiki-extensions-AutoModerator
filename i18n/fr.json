@@ -13,7 +13,7 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> est attendu comme <code>$2</code>, mais est <code>$3</code>",
 	"automoderator-desc": "Révoque automatiquement les mauvaises modifications à partir du score donné par un modèle d'apprentissage automatique.",
 	"automoderator-wiki-report-false-positive": "signaler un faux positif",
-	"automoderator-wiki-revert-message-header": "== $1 $2 : $3 a révoqué votre modification ==",
+	"automoderator-wiki-revert-message-header": "$1 $2 : $3 a révoqué votre modification",
 	"automoderator-wiki-revert-message": "Bonjour! Je suis [[User:$1|$1]], un système automatisé qui utilise un modèle d'apprentissage automatique pour identifier et révoquer les modifications potentiellement mauvaises afin de garantir que Wikipédia reste fiable et digne de confiance. Malheureusement, j'ai révoqué l'une de vos [[Special:Diff/$2|modifications récentes]] à [[$3]].\n* Étant donné que le modèle que j'utilise n'est pas parfait, il révoque parfois de bonnes modifications. Si vous pensez que la modification que vous avez apportée était constructive, veuillez [[$4|le signaler ici]].\n* [[:mw:Moderator Tools/Automoderator|En savoir plus]] sur mon logiciel.\n* Pour en savoir plus sur la modification, visitez votre [[Special:Homepage|page d'accueil de nouveau]].",
 	"automoderator-wiki-revert-edit-summary": "Avis de révocation automatique sur [[$1]]",
 	"automoderator-wiki-undo-summary": "Annulation des modifications [[Special:Diff/$1|$1]] de [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]])",
