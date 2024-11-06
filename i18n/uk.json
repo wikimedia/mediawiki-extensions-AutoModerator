@@ -10,11 +10,15 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> має бути <code>$2</code>, а є <code>$3</code>",
 	"automoderator-desc": "Автоматично відкочує шкідливі редагування на основі оцінки моделі машинного навчання.",
 	"automoderator-wiki-report-false-positive": "повідомити про помилкове спрацьовування",
-	"automoderator-wiki-revert-message-header": "$1 $2: $3 скасував ваше редагування",
+	"automoderator-wiki-revert-message-header": "$1 $2: $3 відкинув ваше редагування",
 	"automoderator-wiki-revert-message": "Привіт! Я [[User:$1|$1]], автоматизована система, яка використовує модель машинного навчання для виявлення та скасування потенційно шкідливих редагувань, щоб Вікіпедія залишалася надійною та авторитетною. На жаль, я скасувала одне з Ваших [[Special:Diff/$2|нещодавніх редагувань]] до [[$3]].\n* Оскільки модель, яку я використовую, не є досконалою, вона іноді скасовує хороші редагування. Якщо Ви вважаєте, що зроблені Вами зміни були конструктивними, [[$4|повідомте про це тут]].\n* [[:mw:Moderator Tools/Automoderator|Докладніше]] про моє програмне забезпечення.\n* Щоб дізнатися більше про редагування, відвідайте свою [[Special:Homepage|Домашню сторінку новачка]].",
+	"automoderator-wiki-revert-message-follow-up": "Я також відкинув одне з ваших [[Special:Diff/$1|останніх редагувань]] до [[$2]], оскільки вона здалася мені неконструктивною.",
 	"automoderator-wiki-revert-edit-summary": "Повідомлення про автоматичне скасування [[$1]]",
 	"automoderator-wiki-undo-summary": "Скасування редагування №[[Special:Diff/$1|$1]], зробленого [[Special:Contributions/$2|$2]] ([[User talk:$2|обговорення]])",
 	"automoderator-wiki-undo-summary-anon": "Скасування версії [[Special:Diff/$1|$1]] від [[Special:Contributions/$2|$2]]",
+	"automoderator-wiki-revertpage-nouser": "Відкинуто {{PLURAL:$7|правку|правки}} прихованого користувача до версії, зробленої {{GENDER:$1|[[User:$1|$1]]}}",
+	"automoderator-wiki-revertpage-anon": "Відкинуто {{PLURAL:$7|правку|правки}} користувача [[Special:Contributions/$2|$2]] до версії, зробленої [[User:$1|$1]]",
+	"automoderator-wiki-revertpage": "Відкинуто {{PLURAL:$7|правку|правки}} користувача [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]]) до останньої версії, зробленої [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Права користувачів",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Автомодератор увімкнений",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Скасування Автомодератором вважатимуться незначними редагуваннями.",
@@ -40,5 +44,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:Minor edit]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots/uk#The_%22bot%22_flag Manual:Bots]",
 	"communityconfiguration-automoderator-description": "Налаштуйте параметри Автомодератора, щоб модель могла ідентифікувати та скасовувати потенційно погані редагування у Вікіпедії.",
-	"automoderator-config-validator-userrights-not-allowed": "Право користувача $1 не існує. Спробуйте інше."
+	"automoderator-config-validator-userrights-not-allowed": "Право користувача $1 не існує. Спробуйте інше.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Кількість відкотів за сторінкою",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Вкажіть, скільки разів Автомодератор може відкидати правки одного і того ж користувача на певній сторінці протягом 24 годин. Якщо таке обмеження увімкнено, а цей параметр не встановлено, Автомодератор відкидатиме правки одного і того ж користувача необмежену кількість разів.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Увімкнути обмеження відкотів",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Дозволяє вказати, скільки разів Автомодератор може відкинути правки одного і того ж користувача на певній сторінці протягом 24 годин.",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Значення, введене для параметра \"Кількість відкотів за сторінкою\", не є числом, будь ласка, спробуйте ввести інше."
 }

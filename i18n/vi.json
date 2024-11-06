@@ -4,7 +4,8 @@
 			"Hide on Rosé",
 			"Nguyễn Mạnh An",
 			"Phungminh141",
-			"Quangkhanhhuynh"
+			"Quangkhanhhuynh",
+			"Samwalton9 (WMF)"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 có quá nhiều mục (tối đa $2 {{PLURAL:$2| được phép|được phép}})",
@@ -18,7 +19,7 @@
 	"automoderator-wiki-revert-edit-summary": "Thông báo: Sửa đổi của bạn tại [[$1]] đã bị lùi lại tự động",
 	"automoderator-wiki-undo-summary": "Đã tự động lùi lại sửa đổi [[Special:Diff/$1|$1]] của [[Special:Contributions/$2|$2]] ([[User talk:$2|thảo luận]])",
 	"automoderator-wiki-undo-summary-anon": "Đã tự động lùi lại sửa đổi [[Special:Diff/$1|$1]] của [[Special:Contributions/$2|$2]]",
-	"automoderator-wiki-revertpage-nouser": "Đã lùi lại {{PLURAL:$7|sửa đổi}} của thành viên bị ẩn quay về phiên bản cuối của {{GENDER:$1}}[[Thành viên:$1|$1]]",
+	"automoderator-wiki-revertpage-nouser": "Đã lùi lại {{PLURAL:$7|sửa đổi}} của thành viên bị ẩn quay về phiên bản cuối của {{GENDER:$1[[Thành viên:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "Đã lùi lại {{PLURAL:$7|sửa đổi}} của [[Special:Contributions/$2|$2]] quay về phiên bản cuối của [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "Đã lùi lại {{PLURAL:$7|sửa đổi}} của [[Special:Contributions/$2|$2]] ([[User talk:$2|thảo luận]]) quay về phiên bản cuối của [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Quyền thành viên",
