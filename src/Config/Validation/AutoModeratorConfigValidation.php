@@ -37,6 +37,12 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			'AutoModeratorCautionLevel' => [
 				'type' => 'string',
 			],
+			'AutoModeratorEnableUserRevertsPerPage' => [
+				'type' => 'bool',
+			],
+			'AutoModeratorUserRevertsPerPage' => [
+				'type' => '?string',
+			]
 		];
 	}
 
@@ -84,6 +90,12 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 					);
 				}
 			}
+		}
+		if ( $fieldName == "AutoModeratorUserRevertsPerPage" && $value && !is_numeric( $value ) ) {
+			return StatusValue::newFatal(
+				'automoderator-config-validator-user-reverts-per-page-not-number',
+				$value
+			);
 		}
 		return StatusValue::newGood();
 	}

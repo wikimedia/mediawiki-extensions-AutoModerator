@@ -36,6 +36,18 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		self::DEFAULT => false
 	];
 
+	public const AutoModeratorEnableUserRevertsPerPage = [
+		self::REQUIRED => true,
+		self::TYPE => self::TYPE_BOOLEAN,
+		self::DEFAULT => false
+	];
+
+	public const AutoModeratorUserRevertsPerPage = [
+		self::REQUIRED => false,
+		self::TYPE => self::TYPE_STRING,
+		self::DEFAULT => '',
+	];
+
 	public const AutoModeratorSkipUserRights = [
 		self::TYPE => self::TYPE_ARRAY,
 		self::REQUIRED => false,

@@ -16,6 +16,7 @@
 
 namespace AutoModerator\Services;
 
+use AutoModerator\AutoModeratorRevisionStore;
 use AutoModerator\AutoModeratorServices;
 use AutoModerator\OresScoreFetcher;
 use AutoModerator\RevisionCheck;
@@ -119,8 +120,25 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			SlotRecord::MAIN,
 			RevisionRecord::RAW
 		)->getModel() );
-
 		try {
+			$user = $services->getUserFactory()->newFromAnyId(
+				$this->params['userId'],
+				$this->params['userName']
+			);
+			$maxReverts = $wikiConfig->get( 'AutoModeratorUserRevertsPerPage' );
+			if ( $wikiConfig->get( 'AutoModeratorEnableUserRevertsPerPage' ) && $maxReverts ) {
+				$autoModeratorRevisionStore = new AutoModeratorRevisionStore(
+					$connectionProvider->getReplicaDatabase(),
+					$user,
+					$autoModeratorUser,
+					$this->wikiPageId,
+					$revisionStore,
+					$maxReverts
+				);
+				if ( $autoModeratorRevisionStore->hasReachedMaxRevertsForUser() ) {
+					return true;
+				}
+			}
 			$response = false;
 			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
 				$oresModels = $config->get( 'OresModels' );

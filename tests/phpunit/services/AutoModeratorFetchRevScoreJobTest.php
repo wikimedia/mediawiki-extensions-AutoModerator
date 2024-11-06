@@ -59,7 +59,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -103,7 +103,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -150,7 +150,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -197,7 +197,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -246,7 +246,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -276,13 +276,13 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		] );
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
 		$user = $this->getTestUser()->getUserIdentity();
-		$this->editPage( $this->getExistingTestPage( $wikiPage[ 'title' ] ), 'Content' );
+		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content' );
 		$revisionStore = $this->getServiceContainer()->getRevisionStore();
-		$rev = $revisionStore->getRevisionByPageId( $wikiPage[ 'id' ] );
+		$rev = $revisionStore->getRevisionByPageId( $wikiPage['id'] );
 		// Add more edits so that $rev is not the most recent revision, causing a revert conflict
-		$this->editPage( $this->getExistingTestPage( $wikiPage[ 'title' ] ), 'Content33' );
-		$this->editPage( $this->getExistingTestPage( $wikiPage[ 'title' ] ), 'Content44' );
-		$title = $wikiPage[ 'title' ];
+		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content33' );
+		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content44' );
+		$title = $wikiPage['title'];
 
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
@@ -301,7 +301,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -333,7 +333,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -365,7 +365,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -397,7 +397,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -441,7 +441,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => 9999999999,
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -472,21 +472,21 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
 		$score = [];
-		$score[ $rev->getId() ] = [
-				'revertrisklanguageagnostic' => [
-					'score' => [
-						'prediction' => true,
-						'probability' => [
-							'true' => 0.9987422,
-							'false' => 0.00012578,
-						]
+		$score[$rev->getId()] = [
+			'revertrisklanguageagnostic' => [
+				'score' => [
+					'prediction' => true,
+					'probability' => [
+						'true' => 0.9987422,
+						'false' => 0.00012578,
 					]
 				]
-			];
+			]
+		];
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -518,16 +518,16 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
 		$this->getDb()->newInsertQueryBuilder()
-				->insertInto( 'ores_classification' )
-				->row( [
-					'oresc_model' => $this->ensureOresModel( 'revertrisklanguageagnostic' ),
-					'oresc_class' => 1,
-					'oresc_probability' => 0.945,
-					'oresc_is_predicted' => 1,
-					'oresc_rev' => $rev->getId(),
-				] )
-				->caller( __METHOD__ )
-				->execute();
+			->insertInto( 'ores_classification' )
+			->row( [
+				'oresc_model' => $this->ensureOresModel( 'revertrisklanguageagnostic' ),
+				'oresc_class' => 1,
+				'oresc_probability' => 0.945,
+				'oresc_is_predicted' => 1,
+				'oresc_rev' => $rev->getId(),
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$count = $this->getDb()->newSelectQueryBuilder()
 			->select( [ '*' ] )
@@ -541,7 +541,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
@@ -576,16 +576,16 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		// Inserting a row that does not link to the revision we just created
 		// This will force the job to run the LiftWing command
 		$this->getDb()->newInsertQueryBuilder()
-				->insertInto( 'ores_classification' )
-				->row( [
-					'oresc_model' => $this->ensureOresModel( 'revertrisklanguageagnostic' ),
-					'oresc_class' => 1,
-					'oresc_probability' => 0.998,
-					'oresc_is_predicted' => 1,
-					'oresc_rev' => 9012,
-				] )
-				->caller( __METHOD__ )
-				->execute();
+			->insertInto( 'ores_classification' )
+			->row( [
+				'oresc_model' => $this->ensureOresModel( 'revertrisklanguageagnostic' ),
+				'oresc_class' => 1,
+				'oresc_probability' => 0.998,
+				'oresc_is_predicted' => 1,
+				'oresc_rev' => 9012,
+			] )
+			->caller( __METHOD__ )
+			->execute();
 
 		$score = [
 			'model_name' => 'revertrisklanguageagnostic',
@@ -605,7 +605,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
-				'wikiPageId' => $wikiPage[ 'id' ],
+				'wikiPageId' => $wikiPage['id'],
 				'revId' => $rev->getId(),
 				'originalRevId' => false,
 				'userId' => $user->getId(),
