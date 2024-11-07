@@ -3,6 +3,7 @@
 		"authors": [
 			"Apple TD",
 			"Kokage si",
+			"Waki285",
 			"春春眠眠"
 		]
 	},
@@ -10,7 +11,7 @@
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code>は<code>$2</code>であることが期待されますが、<code>$3</code>になっています",
 	"automoderator-desc": "機械学習モデルによるスコアリングに基づいて不適切な編集を自動的に差し戻します。",
 	"automoderator-wiki-report-false-positive": "誤検知を報告する",
-	"automoderator-wiki-revert-message-header": "$2年$1: $3 があなたの編集を差し戻しました",
+	"automoderator-wiki-revert-message-header": "$2年$1月: $3 があなたの編集を差し戻しました",
 	"automoderator-wiki-revert-message": "[[User:$1|$1]]さん、こんにちは。こちらは機械学習モデルを利用して、不適切な可能性のある編集の識別と差し戻しを行い、ウィキペディアの信頼性を維持するための自動化システムです。残念ながら、[[$3]]へのあなたの[[Special:Diff/$2|最近の編集]]のひとつを差し戻しました。\n* 利用しているモデルが完璧ではないため、適切な編集を差し戻してしまうことがあります。建設的な編集であったと思われる場合には、[[$4|こちらでご報告ください]]。\n* ソフトウェアについては[[:mw:Moderator Tools/Automoderator|詳細]]をご覧ください。\n* 編集についてもっと知りたい方は[[Special:Homepage|新規参加者ホームページ]]をご覧ください。",
 	"automoderator-wiki-revert-edit-summary": "[[$1]]における自動差し戻しの通知",
 	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|トーク]]) による版 [[Special:Diff/$1|$1]] を取り消し",
