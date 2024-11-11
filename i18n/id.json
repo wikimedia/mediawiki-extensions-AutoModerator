@@ -11,10 +11,14 @@
 	"automoderator-desc": "Secara otomatis mengembalikan suntingan berniat tidak baik berdasarkan model pembelajaran mesin.",
 	"automoderator-wiki-report-false-positive": "laporkan kesalahan pemeriksaan",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 mengembalikan suntingan Anda",
-	"automoderator-wiki-revert-message": "Halo! Saya adalah [[User:$1|$1]] dan saya bertugas untuk membantu memberantas vandalisme di Wikipedia bahasa Indonesia secara otomatis menggunakan model pembelajaran mesin.\n\nSaya ingin memberitahukan kepada Anda bahwa saya telah mengembalikan [[Special:Diff/$2|suntingan terkini]] Anda ke [[$3]].\n* Dikarenakan model yang dipergunakan belum sepenuhnya sempurna, maka saya bisa saja melakukan kesalahan dalam mengembalikan suntingan yang sebenarnya berniat baik.\n* Apabila Anda merasa suntingan Anda konstruktif dan/atau berniat baik, silakan laporkan kekeliruan yang saya lakukan [[$4|melalui halaman ini]].\n* Pelajari [[:mw:Moderator Tools/Automoderator|lebih lanjut]] perangkat lunak yang saya gunakan.\n* Jika Anda adalah pengguna baru yang ingin berkontribusi di Wikipedia, silakan kunjungi [[Special:Homepage|halaman ini]].\n\nSalam.",
+	"automoderator-wiki-revert-message": "Halo! Saya adalah [[User:$1|$1]] dan saya bertugas untuk membantu memberantas vandalisme di Wikipedia bahasa Indonesia secara otomatis menggunakan model pembelajaran mesin.\n\nSaya ingin memberitahukan kepada Anda bahwa saya telah mengembalikan [[Special:Diff/$2|suntingan terkini]] Anda di artikel [[$3]].\n* Dikarenakan model yang dipergunakan belum sepenuhnya sempurna, maka saya bisa saja melakukan kesalahan dalam mengembalikan suntingan yang sebenarnya berniat baik.\n* Apabila Anda merasa suntingan Anda konstruktif dan/atau berniat baik, silakan laporkan kekeliruan yang saya lakukan [[$4|melalui halaman ini]].\n* Pelajari [[:mw:Moderator Tools/Automoderator|lebih lanjut]] perangkat lunak yang saya gunakan.\n* Jika Anda adalah pengguna baru yang ingin berkontribusi di Wikipedia, silakan kunjungi [[Special:Homepage|halaman ini]].\n\nSalam.",
+	"automoderator-wiki-revert-message-follow-up": "Saya juga mengembalikan salah satu [[Special:Diff/$1|suntingan terkini Anda]] di artikel [[$2]] karena terlihat tidak konstruktif.",
 	"automoderator-wiki-revert-edit-summary": "Memberitahukan suntingan yang dikembalikan secara otomatis di [[$1]]",
 	"automoderator-wiki-undo-summary": "Mengembalikan suntingan [[Special:Diff/$1|$1]] oleh [[Special:Contributions/$2|$2]] ([[User talk:$2|bicara]])",
 	"automoderator-wiki-undo-summary-anon": "Mengembalikan suntingan [[Special:Diff/$1|$1]] oleh [[Special:Contributions/$2|$2]]",
+	"automoderator-wiki-revertpage-nouser": "Mengembalikan $7 suntingan oleh (nama pengguna disembunyikan) ke revisi terakhir oleh [[User:$1|$1]]",
+	"automoderator-wiki-revertpage-anon": "Mengembalikan $7 suntingan oleh [[Special:Contributions/$2|$2]] ke revisi terakhir oleh [[User:$1|$1]]",
+	"automoderator-wiki-revertpage": "Mengembalikan $7 suntingan oleh [[Special:Contributions/$2|$2]] ([[User talk:$2|bicara]]) ke revisi terakhir oleh [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Hak pengguna",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator diaktifkan",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Suntingan yang dikembalikan oleh Automoderator akan dianggap sebagai suntingan kecil.",
@@ -40,5 +44,10 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:Minor edit]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
 	"communityconfiguration-automoderator-description": "Konfigurasikan pengaturan Automoderator, sehingga perkakas ini dapat mengidentifikasi dan mengembalikan suntingan berpotensi vandal di Wikipedia.",
-	"automoderator-config-validator-userrights-not-allowed": "Hak pengguna $1 tidak ditemukan. Silakan coba yang lain."
+	"automoderator-config-validator-userrights-not-allowed": "Hak pengguna $1 tidak ditemukan. Silakan coba yang lain.",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Pengembalian suntingan oleh pengguna pada tiap halaman",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Tentukan seberapa banyak Automoderator dapat mengembalikan suntingan yang dilakukan oleh satu pengguna dalam rentang waktu 24 jam. Apabila opsi ini diaktifkan '''dan''' tidak ditentukan seberapa banyak suntingan yang dikembalikan, maka Automoderator akan mengembalikan suntingan oleh satu pengguna secara tidak terbatas.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Aktifkan pengembalian suntingan oleh pengguna pada tiap halaman",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Aktifkan fitur ini untuk menentukan seberapa banyak Automoderator dapat mengembalikan suntingan dari pengguna yang sama dalam rentang waktu 24 jam.",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Teks yang Anda masukkan bukan berupa angka, silakan coba kembali."
 }
