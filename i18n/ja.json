@@ -3,7 +3,8 @@
 		"authors": [
 			"Apple TD",
 			"Kokage si",
-			"春春眠眠"
+			"春春眠眠",
+			"Waki285"
 		]
 	},
 	"automoderator-config-validator-contentmodel-mismatch": "コンテンツモデルの不一致: 設定ファイルは JSON コンテンツモデルでなければなりませんが、 $1 が検出されました",

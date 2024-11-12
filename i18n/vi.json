@@ -2,9 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"Hide on Rosé",
-			"Nguyễn Mạnh An"
+			"Nguyễn Mạnh An",
+			"Phungminh141",
+			"Quangkhanhhuynh",
+			"Samwalton9 (WMF)"
 		]
 	},
+	"automoderator-config-validator-array-toobig": "$1 có quá nhiều mục (tối đa $2 {{PLURAL:$2| được phép|được phép}})",
 	"automoderator-config-validator-contentmodel-mismatch": "Kiểu nội dung không trùng khớp: tập tin thiết lập phải có kiểu nội dung JSON, phát hiện $1",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> nên là <code>$2</code>, hiện tại là <code>$3</code>",
 	"automoderator-desc": "Tự động lùi lại sửa đổi xấu dựa trên hệ thống đánh giả tự động theo mô hình học máy",
