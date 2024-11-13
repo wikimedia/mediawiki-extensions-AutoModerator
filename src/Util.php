@@ -50,6 +50,42 @@ class Util {
 	}
 
 	/**
+	 *
+	 * @return string The name that ORES uses for the language-agnostic model
+	 */
+	public static function getORESLanguageAgnosticModelName() {
+		return 'revertrisklanguageagnostic';
+	}
+
+	/**
+	 *
+	 * @return string The name that ORES uses for the multilingual model
+	 */
+	public static function getORESMultiLingualModelName() {
+		// TODO: This hasn't been added to ORES; check if the name matches the model name when it is
+		return 'revertriskmultilingual';
+	}
+
+	/**
+	 * Returns the revert risk model the revision will be scored from
+	 * @param Config $config
+	 * @return string
+	 */
+	public static function getRevertRiskModel( Config $config ) {
+		$languageAgnosticModel = self::getORESLanguageAgnosticModelName();
+		$multiLingualModel = self::getORESMultiLingualModelName();
+
+		$isLanguageModelEnabledConfig = self::isMultiLingualRevertRiskEnabled( $config );
+
+		// Check if a multilingual configuration exists and is enabled
+		if ( $isLanguageModelEnabledConfig ) {
+			return $multiLingualModel;
+		} else {
+			return $languageAgnosticModel;
+		}
+	}
+
+	/**
 	 * Get a user to perform moderation actions.
 	 * @param Config $config
 	 * @param UserGroupManager $userGroupManager
@@ -137,27 +173,52 @@ class Util {
 
 	/**
 	 * @param Config $wikiConfig
-	 * @return float AutoModeratorRevertProbability threshold
+	 * @param Config $config
+	 * @param string $revertRiskModelName
+	 * @return float An AutoModeratorRevertProbability threshold  will be chosen depending on the model
 	 */
-	public static function getRevertThreshold( Config $wikiConfig ): float {
+	public static function getRevertThreshold( Config $wikiConfig, Config $config,
+		string $revertRiskModelName ): float {
 		$threshold = 0.990;
-		switch ( $wikiConfig->get( 'AutoModeratorCautionLevel' ) ) {
-			case "very-cautious":
-				$threshold = 0.990;
-				break;
-			case "cautious":
-				$threshold = 0.985;
-				break;
-			case "somewhat-cautious":
-				$threshold = 0.980;
-				break;
-			case "less-cautious":
-				$threshold = 0.975;
-				break;
-			default:
-				break;
+		$cautionLevel = $wikiConfig->get( 'AutoModeratorCautionLevel' );
+		if ( $revertRiskModelName === self::getORESLanguageAgnosticModelName() ) {
+			$languageAgnosticThresholds = [
+				'very-cautious' => 0.990,
+				'cautious' => 0.985,
+				'somewhat-cautious' => 0.980,
+				'less-cautious' => 0.975
+			];
+			return $languageAgnosticThresholds[ $cautionLevel ];
+		} elseif ( $revertRiskModelName === self::getORESMultiLingualModelName() ) {
+			$multiLingualThresholds = self::getMultiLingualThresholds( $config );
+			return $multiLingualThresholds[ $cautionLevel ];
+		} else {
+			return $threshold;
 		}
-		return $threshold;
+	}
+
+	/**
+	 * Returns the revert risk model the revision will be scored from
+	 * @param Config $config
+	 * @return array
+	 */
+	public static function getMultiLingualThresholds( Config $config ) {
+		$multiLingualModel = $config->get( 'AutoModeratorMultiLingualRevertRisk' );
+
+		return $multiLingualModel[ 'thresholds' ];
+	}
+
+	/**
+	 * Checks if multilingual revert risk is enabled on the wiki
+	 * See: https://meta.wikimedia.org/wiki/Machine_learning_models/Production/Multilingual_revert_risk#Motivation
+	 * for more information
+	 * @param Config $config
+	 * @return bool
+	 */
+	public static function isMultiLingualRevertRiskEnabled( Config $config ) {
+		$multiLingualModel = $config->get( 'AutoModeratorMultiLingualRevertRisk' );
+
+		return $multiLingualModel[ 'enabled' ];
 	}
 
 	/**
@@ -165,7 +226,13 @@ class Util {
 	 * @return LiftWingClient
 	 */
 	public static function initializeLiftWingClient( Config $config ): LiftWingClient {
-		$model = 'revertrisk-language-agnostic';
+		$isMultiLingualModelEnabled = self::isMultiLingualRevertRiskEnabled( $config );
+		if ( $isMultiLingualModelEnabled ) {
+			$model = 'revertrisk-multilingual';
+		} else {
+			$model = 'revertrisk-language-agnostic';
+		}
+
 		$lang = self::getLanguageConfiguration( $config );
 		$hostHeader = $config->get( 'AutoModeratorLiftWingAddHostHeader' ) ?
 			$config->get( 'AutoModeratorLiftWingRevertRiskHostHeader' ) : null;

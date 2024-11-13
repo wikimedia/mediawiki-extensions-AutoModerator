@@ -102,6 +102,7 @@ class CheckRevision extends Maintenance {
 			$autoModeratorUser,
 			$revisionStore,
 			$wikiConfig,
+			$config,
 			$contentHandler,
 			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain(),
 			new AutoModeratorRollback(
@@ -161,7 +162,8 @@ class CheckRevision extends Maintenance {
 			default:
 				break;
 		}
-		$reverted = json_encode( $revisionCheck->maybeRollback( $score ),
+		$revertRiskModelName = Util::getRevertRiskModel( $config );
+		$reverted = json_encode( $revisionCheck->maybeRollback( $score, $revertRiskModelName ),
 			JSON_FORCE_OBJECT,
 			JSON_PRETTY_PRINT );
 		$scoreStr = json_encode( $score, JSON_PRETTY_PRINT );

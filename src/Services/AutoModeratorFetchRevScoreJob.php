@@ -146,14 +146,15 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				}
 			}
 			$response = false;
+			// Model name defaults to language-agnostic model name
+			$revertRiskModelName = Util::getRevertRiskModel( $config );
 			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
 				$oresModels = $config->get( 'OresModels' );
 
-				if ( array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
-					$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ]
-				) {
+				if ( array_key_exists( $revertRiskModelName, $oresModels ) &&
+					$oresModels[ $revertRiskModelName ][ 'enabled' ] ) {
 					// ORES is loaded and the model is enabled, fetching the score from there
-					$response = $this->getOresRevScore( $connectionProvider, $config, $wikiId, $logger );
+					$response = $this->getOresRevScore( $connectionProvider, $revertRiskModelName, $wikiId, $logger );
 				}
 			}
 
@@ -174,6 +175,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$autoModeratorUser,
 				$revisionStore,
 				$wikiConfig,
+				$config,
 				$contentHandler,
 				$this->undoSummary,
 				new AutoModeratorRollback(
@@ -193,7 +195,8 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				),
 				true
 			);
-			$reverted = $revisionCheck->maybeRollback( $response );
+			$reverted = $revisionCheck->maybeRollback( $response, $revertRiskModelName );
+
 		} catch ( RuntimeException $exception ) {
 			$this->setLastError( $exception->getMessage() );
 			return false;
@@ -246,20 +249,20 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	/**
 	 * Obtains a score from ORES classification table
 	 * @param IConnectionProvider $connectionProvider
-	 * @param Config $config
+	 * @param string $revertRiskModelName
 	 * @param string $wikiId
 	 * @param LoggerInterface $logger
 	 * @return array|false
 	 */
-	private function getOresRevScore( IConnectionProvider $connectionProvider, Config $config, string $wikiId,
-		LoggerInterface $logger ) {
+	private function getOresRevScore( IConnectionProvider $connectionProvider, string $revertRiskModelName,
+		string $wikiId, LoggerInterface $logger ) {
 		if ( $this->scores ) {
 			foreach ( $this->scores as $rev_id => $score ) {
-				if ( $rev_id === $this->revId && array_key_exists( 'revertrisklanguageagnostic', $score ) ) {
+				if ( $rev_id === $this->revId && array_key_exists( $revertRiskModelName, $score ) ) {
 					return [
 						'output' => [
 							'probabilities' => [
-								'true' => $score[ 'revertrisklanguageagnostic' ][ 'score' ][ 'probability' ][ 'true' ]
+								'true' => $score[ $revertRiskModelName ][ 'score' ][ 'probability' ][ 'true' ]
 							]
 						]
 					];

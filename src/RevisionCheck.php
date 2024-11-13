@@ -56,6 +56,9 @@ class RevisionCheck {
 	/** @var Config */
 	private Config $wikiConfig;
 
+	/** @var Config */
+	private Config $config;
+
 	/** @var string */
 	public string $undoSummary;
 
@@ -75,6 +78,7 @@ class RevisionCheck {
 	 * @param User $autoModeratorUser reverting user
 	 * @param RevisionStore $revisionStore
 	 * @param Config $wikiConfig
+	 * @param Config $config
 	 * @param ContentHandler $contentHandler
 	 * @param string $undoSummary
 	 * @param AutoModeratorRollback $rollbackPage
@@ -87,6 +91,7 @@ class RevisionCheck {
 		User $autoModeratorUser,
 		RevisionStore $revisionStore,
 		Config $wikiConfig,
+		Config $config,
 		ContentHandler $contentHandler,
 		string $undoSummary,
 		AutoModeratorRollback $rollbackPage,
@@ -98,6 +103,7 @@ class RevisionCheck {
 		$this->autoModeratorUser = $autoModeratorUser;
 		$this->revisionStore = $revisionStore;
 		$this->wikiConfig = $wikiConfig;
+		$this->config = $config;
 		$this->contentHandler = $contentHandler;
 		$this->enforce = $enforce;
 		$this->undoSummary = $undoSummary;
@@ -259,17 +265,18 @@ class RevisionCheck {
 	/**
 	 * Check revision; revert if it meets configured critera
 	 * @param array $score
-	 *
+	 * @param string $revertRiskModelName
 	 * @return array
 	 */
-	public function maybeRollback( array $score ): array {
+	public function maybeRollback( array $score, string $revertRiskModelName ): array {
 		$reverted = 0;
 		$status = 'Not reverted';
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		$wikiPage = $this->wikiPageFactory->newFromID( $this->wikiPageId );
 		$rev = $this->revisionStore->getRevisionById( $this->revId );
-		// Automoderator system user may perform updates
-		if ( $probability > Util::getRevertThreshold( $this->wikiConfig ) ) {
+		// Check if the threshold should be taken from the language-agnostic
+		// or the multilingual model based on what model was chosen in the job
+		if ( $probability > Util::getRevertThreshold( $this->wikiConfig, $this->config, $revertRiskModelName ) ) {
 			$prevRev = $this->revisionStore->getPreviousRevision( $rev );
 			$content = $this->getUndoContent( $prevRev, $this->undoSummary, $wikiPage, $rev );
 			if ( !$content ) {

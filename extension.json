@@ -112,6 +112,18 @@
 		"AutoModeratorUserRevertsPerPage": {
 			"description": "Specify how many times AutoModerator can revert the same user on a given page within 24 hours.",
 			"value": null
+		},
+		"AutoModeratorMultiLingualRevertRisk": {
+			"description": "Where the multilingual thresholds are stored per-wiki, alongside a variable that indicates if it is enabled for that wiki.",
+			"value": {
+				"enabled": false,
+				"thresholds": {
+					"very-cautious": 0.990,
+					"cautious": 0.980,
+					"somewhat-cautious": 0.970,
+					"less-cautious": 0.960
+				}
+			}
 		}
 	},
 	"HookHandlers": {
