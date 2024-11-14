@@ -11,5 +11,6 @@
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Враћена измена|Враћене измене}} корисника [[Special:Contributions/$2|$2]] на последњу измену корисника [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Враћена измена|Враћене измене}} корисника [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]]) на последњу измену корисника [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Корисничка права",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Мање измене",
 	"automoderator-config-validator-userrights-not-allowed": "Корисничко право $1 не постоји. Пробајте друго."
 }
