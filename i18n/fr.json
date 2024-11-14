@@ -5,10 +5,11 @@
 			"Goombiis",
 			"SleaY",
 			"Terio legale",
-			"Trizek (WMF)"
+			"Trizek (WMF)",
+			"Mahabarata"
 		]
 	},
 	"automoderator-config-validator-contentmodel-mismatch": "Modèle de contenu non correspondant : le fichier de configuration doit avoir un modèle de contenu JSON, $1 détecté.",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> est attendu comme <code>$2</code>, mais est <code>$3</code>",
-	"automoderator-desc": "Révoque automatiquement les mauvaises modifications à partir du score donné par un modèle d'apprentissage automatique."
+	"automoderator-desc": "Annule automatiquement les mauvaises modifications à partir du score donné par un modèle d'apprentissage automatique."
 }
