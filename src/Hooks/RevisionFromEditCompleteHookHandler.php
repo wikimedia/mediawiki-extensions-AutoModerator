@@ -94,7 +94,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		$title = $wikiPage->getTitle();
 		$wikiPageId = $wikiPage->getId();
 		$revId = $rev->getId();
-		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-undo', $tags ) ) {
+		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-rollback', $tags ) ) {
 			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
 				$talkPageMessageSender = new TalkPageMessageSender( $this->revisionStore, $this->config,
 					$this->wikiConfig, $this->jobQueueGroup );

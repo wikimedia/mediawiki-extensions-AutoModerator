@@ -575,7 +575,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testSelfRevertPreCheckTagUndoEdit() {
-		$this->tags = [ 'mw-undo' ];
+		$this->tags = [ 'mw-rollback' ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
 			$this->autoModeratorUser,
@@ -596,7 +596,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testOthersRevertPreCheckTagUndoEdit() {
-		$this->tags = [ 'mw-undo' ];
+		$this->tags = [ 'mw-rollback' ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,

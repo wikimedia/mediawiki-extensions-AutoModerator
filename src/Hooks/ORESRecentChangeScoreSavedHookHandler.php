@@ -110,7 +110,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
 		$userId = $user->getId();
-		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-undo', $tags ) ) {
+		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-rollback', $tags ) ) {
 			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
 				$talkPageMessageSender = new TalkPageMessageSender( $this->revisionStore, $this->config,
 					$this->wikiConfig, $this->jobQueueGroup );

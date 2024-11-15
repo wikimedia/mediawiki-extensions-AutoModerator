@@ -62,7 +62,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$user->method( 'getId' )->willReturn( 1000 );
 		$user->method( 'getName' )->willReturn( 'TestUser1000' );
 		return [
-			[ $wikiPage, $rev, false, $user, [ 'mw-undo' ] ]
+			[ $wikiPage, $rev, false, $user, [ 'mw-rollback' ] ]
 		];
 	}
 
