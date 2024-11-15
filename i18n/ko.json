@@ -7,5 +7,7 @@
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "사용자 권한",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "토론 문서 메시지",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "사소한 편집",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "봇 편집"
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "봇 편집",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "문서 당 사용자 되돌리기",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "문서 당 사용자 되돌리기 활성화"
 }
