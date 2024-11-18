@@ -48,7 +48,7 @@
 	"communityconfiguration-automoderator-description": "配置Automoderator設定，以便模型識別並回退維基百科上可能有問題的編輯。",
 	"automoderator-config-validator-userrights-not-allowed": "使用者權限$1不存在。請嘗試其他權限。",
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "同一頁面同一使用者可回退次數",
-	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "指定Automoderator在24小時內可在某一頁面上回退同一使用者的編輯的次數。如果啟用了「同一頁面同一使用者可回退次數」限制且未設定此項，Automoderato回退同一使用者時將沒有限制。",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "指定Automoderator在24小時內可在某一頁面上回退同一使用者的編輯的次數。如果啟用了「同一頁面同一使用者可回退次數」限制且未設定此項，Automoderator回退同一使用者時將沒有限制。",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "啟用「同一頁面同一使用者可回退次數」",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "啟用該功能可以指定Automoderator在24小時內可以在某一頁面上回退同一使用者的次數。",
 	"automoderator-config-validator-user-reverts-per-page-not-number": "輸入的「同一頁面同一使用者可回退次數」值不是數字，請嘗試其他值。"

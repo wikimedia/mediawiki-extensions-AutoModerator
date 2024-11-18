@@ -5,6 +5,7 @@
 			"Googology",
 			"Hehua",
 			"Lakejason0",
+			"WiiUf",
 			"人间百态",
 			"沈澄心"
 		]
@@ -15,8 +16,8 @@
 	"automoderator-desc": "根据机器学习模型的评分自动回退有问题的编辑。",
 	"automoderator-wiki-report-false-positive": "汇报误报",
 	"automoderator-wiki-revert-message-header": "$2年$1：$3回退了您的编辑",
-	"automoderator-wiki-revert-message": "您好！我是[[User:$1|$1]]，是一个自动化系统，会使用机器学习模型识别并回退内容有潜在问题的编辑，以确保维基百科内容可靠可信。在这里很遗憾地告知您，我回退了您近期对[[$3]]做出的[[Special:Diff/$2|编辑]]。\n* 由于我使用的模型并不完美，有时会回退没有问题的编辑。如果您认为所做的更改是具有建设性的，请在[[$4|此处]]报告。\n* 要了解关于Automoderator的更多信息，请访问[[:mw:Moderator Tools/Automoderator|该页面]]。\n* 要了解有关编辑上的各项事宜，请访问您的[[Special:Homepage|新人首页]]。",
-	"automoderator-wiki-revert-message-follow-up": "我同时回退了您近期对[[$2]]做出的[[Special:Diff/$1|编辑]]，因为该编辑被判定为不具有建设性。",
+	"automoderator-wiki-revert-message": "您好！我是[[User:$1|$1]]，是一个自动化系统，会使用机器学习模型识别并回退可能有问题的编辑，以确保维基百科内容的可信度。在这里很遗憾地告知您，我回退了您近期对[[$3]]做出的[[Special:Diff/$2|编辑]]。\n* 由于我使用的模型并不完美，有时会回退没有问题的编辑。如果您认为您所做的更改并不是破坏，请在[[$4|此处]]报告。\n* 要了解关于Automoderator的更多信息，请访问[[:mw:Moderator Tools/Automoderator|该页面]]。\n* 要了解有关编辑上的各项事宜，请访问您的[[Special:Homepage|新手首页]]。",
+	"automoderator-wiki-revert-message-follow-up": "我同时回退了您近期对[[$2]]做出的[[Special:Diff/$1|编辑]]，因为该编辑似乎不具建设性。",
 	"automoderator-wiki-revert-edit-summary": "页面[[$1]]的自动回退通知",
 	"automoderator-wiki-undo-summary": "撤销[[Special:Contributions/$2|$2]]（[[User talk:$2|讨论]]）的修订版本[[Special:Diff/$1|$1]]",
 	"automoderator-wiki-undo-summary-anon": "撤销[[Special:Contributions/$2|$2]]的修订版本[[Special:Diff/$1|$1]]",
@@ -31,8 +32,8 @@
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "误报报告页面",
 	"communityconfiguration-automoderator-title": "Automoderator",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "最谨慎（默认值）：回退的编辑最少，但准确度最高。",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "谨慎：回退的编辑相对较少，但准确度下降至中等水平。",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "略微谨慎：相对而言会回退较多的编辑，但准确度进一步降低。",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "谨慎：回退的编辑相对较少，但准确度为中等水平。",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "略微谨慎：相对而言会回退较多的编辑，但准确度稍低。",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "最不谨慎：会尽可能回退编辑，准确度也最低。",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "配置阈值",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
@@ -50,7 +51,7 @@
 	"communityconfiguration-automoderator-description": "配置Automoderator设置，以便模型识别并回退维基百科上可能有问题的编辑。",
 	"automoderator-config-validator-userrights-not-allowed": "用户权限$1不存在。请尝试其他权限。",
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "同一页面同一用户可回退次数",
-	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "指定Automoderator在24小时内可在某一页面上回退同一用户的编辑的次数。如果启用了“同一页面同一用户可回退次数”限制且未设置此项，Automoderato回退同一用户时将没有限制。",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "指定Automoderator在24小时内可在某一页面上回退同一用户的编辑的次数。如果启用了“同一页面同一用户可回退次数”限制且未设置此项，Automoderator回退同一用户时将没有限制。",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "启用“同一页面同一用户可回退次数”",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "启用该功能可以指定Automoderator在24小时内可以在某一页面上回退同一用户的次数。",
 	"automoderator-config-validator-user-reverts-per-page-not-number": "输入的“同一页面同一用户可回退次数”值不是数字，请尝试其他值。"
