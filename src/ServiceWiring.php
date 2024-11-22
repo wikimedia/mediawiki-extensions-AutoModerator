@@ -5,6 +5,7 @@ use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\Validation\ConfigValidatorFactory;
 use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Config\WikiPageConfigLoader;
+use AutoModerator\TalkPageMessageSender;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\GlobalVarConfig;
 use MediaWiki\Logger\LoggerFactory;
@@ -58,6 +59,16 @@ return [
 			$services->getTitleFactory(),
 			$services->getUrlUtils(),
 			defined( 'MW_PHPUNIT_TEST' ) && $services->isStorageDisabled()
+		);
+	},
+
+	'AutoModeratorTalkPageMessageSender' => static function ( MediaWikiServices $services ) {
+		$autoModeratorServices = AutoModeratorServices::wrap( $services );
+		return new TalkPageMessageSender(
+			$services->getRevisionStore(),
+			$services->getMainConfig(),
+			$autoModeratorServices->getAutoModeratorWikiConfig(),
+			$services->getJobQueueGroup()
 		);
 	}
 ];

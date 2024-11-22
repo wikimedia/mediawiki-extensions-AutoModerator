@@ -143,7 +143,8 @@
 				"RevisionStore",
 				"RestrictionStore",
 				"JobQueueGroup",
-				"PermissionManager"
+				"PermissionManager",
+				"AutoModeratorTalkPageMessageSender"
 			]
 		},
 		"ores": {
@@ -158,7 +159,8 @@
 				"JobQueueGroup",
 				"ChangeTagsStore",
 				"PermissionManager",
-				"ConnectionProvider"
+				"ConnectionProvider",
+				"AutoModeratorTalkPageMessageSender"
 			]
 		}
 	},

@@ -43,6 +43,8 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 
 	private IConnectionProvider $connectionProvider;
 
+	private TalkPageMessageSender $talkPageMessageSender;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
@@ -54,6 +56,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 	 * @param ChangeTagsStore $changeTagsStore
 	 * @param PermissionManager $permissionManager
 	 * @param IConnectionProvider $connectionProvider
+	 * @param TalkPageMessageSender $talkPageMessageSender
 	 */
 	public function __construct(
 		Config $wikiConfig,
@@ -65,7 +68,8 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		JobQueueGroup $jobQueueGroup,
 		ChangeTagsStore $changeTagsStore,
 		PermissionManager $permissionManager,
-		IConnectionProvider $connectionProvider
+		IConnectionProvider $connectionProvider,
+		TalkPageMessageSender $talkPageMessageSender
 	) {
 			$this->wikiConfig = $wikiConfig;
 			$this->userGroupManager = $userGroupManager;
@@ -77,6 +81,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 			$this->changeTagsStore = $changeTagsStore;
 			$this->permissionManager = $permissionManager;
 			$this->connectionProvider = $connectionProvider;
+			$this->talkPageMessageSender = $talkPageMessageSender;
 	}
 
 	/**
@@ -112,9 +117,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		$userId = $user->getId();
 		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-rollback', $tags ) ) {
 			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
-				$talkPageMessageSender = new TalkPageMessageSender( $this->revisionStore, $this->config,
-					$this->wikiConfig, $this->jobQueueGroup );
-				$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
+				$this->talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 					$autoModeratorUser, $logger );
 			}
 			return;

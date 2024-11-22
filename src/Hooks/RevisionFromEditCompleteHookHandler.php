@@ -37,6 +37,8 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 
 	private PermissionManager $permissionManager;
 
+	private TalkPageMessageSender $talkPageMessageSender;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
@@ -46,6 +48,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 	 * @param RestrictionStore $restrictionStore
 	 * @param JobQueueGroup $jobQueueGroup
 	 * @param PermissionManager $permissionManager
+	 * @param TalkPageMessageSender $talkPageMessageSender
 	 */
 	public function __construct(
 		Config $wikiConfig,
@@ -55,7 +58,8 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		RevisionStore $revisionStore,
 		RestrictionStore $restrictionStore,
 		JobQueueGroup $jobQueueGroup,
-		PermissionManager $permissionManager
+		PermissionManager $permissionManager,
+		TalkPageMessageSender $talkPageMessageSender
 	) {
 		$this->wikiConfig = $wikiConfig;
 		$this->userGroupManager = $userGroupManager;
@@ -65,6 +69,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		$this->restrictionStore = $restrictionStore;
 		$this->jobQueueGroup = $jobQueueGroup;
 		$this->permissionManager = $permissionManager;
+		$this->talkPageMessageSender = $talkPageMessageSender;
 	}
 
 	/**
@@ -96,9 +101,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		$revId = $rev->getId();
 		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-rollback', $tags ) ) {
 			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
-				$talkPageMessageSender = new TalkPageMessageSender( $this->revisionStore, $this->config,
-					$this->wikiConfig, $this->jobQueueGroup );
-				$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
+				$this->talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 					$autoModeratorUser, $logger );
 			}
 			return;
