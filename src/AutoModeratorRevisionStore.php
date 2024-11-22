@@ -56,7 +56,7 @@ class AutoModeratorRevisionStore {
 			->where( [ 'actor_user' => $this->autoModeratorUser->getId(),
 				'rc_cur_id' => $this->wikiPageId,
 				$this->dbr->expr( 'rc_timestamp', '>', $this->dbr->timestamp( strtotime( "-1 day" ) ) )
-			] )->distinct()->fetchResultSet();
+			] )->distinct()->caller( __METHOD__ )->fetchResultSet();
 	}
 
 	/**
