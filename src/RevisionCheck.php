@@ -279,7 +279,17 @@ class RevisionCheck {
 				$pageRollbackStatus = $this->doRollback();
 				if ( !$pageRollbackStatus->isOK() ) {
 					$errorMessages = $pageRollbackStatus->getMessages( 'error' );
-					return [ $reverted => $errorMessages ? wfMessage( $errorMessages[0] )->inLanguage( "en" )->plain()
+					// checks to see if there was an edit conflict or already rolled error message
+					// which would indicate that someone else
+					// has edited or rolled the page since the job began
+					if ( $errorMessages &&
+						( $errorMessages[0]->getKey() === "alreadyrolled"
+							|| $errorMessages[0]->getKey() === "edit-conflict" ) ) {
+						$status = 'success';
+						return [ $reverted => $status ];
+					}
+					return [ $reverted => $errorMessages ?
+						wfMessage( $errorMessages[0] )->inLanguage( "en" )->plain()
 						: "Failed to save revision" ];
 				}
 			}

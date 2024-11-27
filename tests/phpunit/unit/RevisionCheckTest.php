@@ -6,7 +6,6 @@ use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorRollback;
 use DummyContentForTesting;
 use MediaWiki\Block\AbstractBlock;
-use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\Language\Language;
@@ -15,10 +14,8 @@ use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\MutableRevisionRecord;
 use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\RevisionSlots;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\RevisionStoreRecord;
-use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
@@ -72,23 +69,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$mockRevisionRecord = $this->createMock( RevisionStoreRecord::class );
 		$revisions = [];
 		for ( $i = $numRevs; $i >= 1; $i-- ) {
-			$ogTimestamp = '2020010100000';
-			$wikiId = $rowOverrides['wikiId'] ?? RevisionRecord::LOCAL;
-			$comment = CommentStoreComment::newUnsavedComment( 'Edit ' . $i );
-			$main = SlotRecord::newUnsaved( SlotRecord::MAIN, new DummyContentForTesting( 'Lorem Ipsum' ) );
-			$aux = SlotRecord::newUnsaved( 'aux', new DummyContentForTesting( 'Frumious Bandersnatch' ) );
-			$slots = new RevisionSlots( [ $main, $aux ] );
-			$row = [
-			'rev_id' => $i,
-			'rev_page' => 1,
-			'rev_timestamp' => $ogTimestamp . $i,
-			'rev_deleted' => 0,
-			'rev_minor_edit' => 0,
-			'rev_parent_id' => ( $i == 0 ) ? null : $i - 1,
-			'rev_len' => $slots->computeSize(),
-			'rev_sha1' => $slots->computeSha1(),
-			];
-			$rev = new $mockRevisionRecord( $this->title, $this->user, $comment, (object)$row, $slots, $wikiId );
+			$rev = $this->createMock( RevisionRecord::class );
 			$rev->method( 'getId' )->willReturn( $i );
 			$rev->method( 'getContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
 			$rev->method( 'getUser' )->willReturn( $this->user );
@@ -138,6 +119,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
+		$this->config = $this->createMock( Config::class );
+		$this->config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorUsername', 'AutoModerator' ],
+			[ 'DisableAnonTalk', false ]
+		] );
 		$this->title = $this->makeMockTitle( 'Main_Page', [ 'id' => 1 ] );
 		$this->lang = $this->createMock( Language::class );
 		$this->user = $this->createMock( User::class );
@@ -188,11 +174,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->revisionStoreMock = $this->getMockRevisionStore( $this->fakeRevisions, $this->rev );
 		$this->revisionStoreMock->method( 'getPreviousRevision' )->willReturn( $this->fakeRevisions[ 1 ] );
 		$this->revisionStoreMock->method( 'getFirstRevision' )->willReturn( $this->fakeRevisions[ 0 ] );
-		$this->config = $this->createMock( Config::class );
-		$this->config->method( 'get' )->willReturnMap( [
-				[ 'AutoModeratorUsername', 'AutoModerator' ],
-				[ 'DisableAnonTalk', false ]
-		] );
+
 		$this->wikiConfig = $this->createMock( Config::class );
 		$this->wikiConfig->method( 'get' )->willReturnMap( [
 				[
@@ -291,6 +273,68 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		);
 		$this->assertSame( 0, array_key_first( $reverted ) );
 		$this->assertSame( "Generic Error Message", $reverted[0] );
+	}
+
+	/**
+	 * @covers ::maybeRollback
+	 */
+	public function testMaybeRollbackBadSaveStatusEditConflict() {
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiTestPages = $this->getMockPageAndRollbackPage( NS_MAIN,
+			false,
+			[ $this->getMockMessage( "edit-conflict" ) ] );
+		$wikiPage  = $wikiTestPages[0];
+		$wikiPage->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$rollbackPage = $wikiTestPages[1];
+		$revisionCheck = new RevisionCheck(
+			$wikiPage->getId(),
+			$wikiPageFactory,
+			$this->rev->getId(),
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->undoSummary,
+			$rollbackPage,
+			true
+		);
+		$reverted = $revisionCheck->maybeRollback(
+			$this->failingScore
+		);
+		$this->assertSame( 0, array_key_first( $reverted ) );
+		$this->assertSame( "success", $reverted[0] );
+	}
+
+	/**
+	 * @covers ::maybeRollback
+	 */
+	public function testMaybeRollbackBadSaveStatusAlreadyRolled() {
+		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
+		$wikiTestPages = $this->getMockPageAndRollbackPage( NS_MAIN,
+			false,
+			[ $this->getMockMessage( "alreadyrolled" ) ] );
+		$wikiPage  = $wikiTestPages[0];
+		$wikiPage->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
+		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
+		$rollbackPage = $wikiTestPages[1];
+		$revisionCheck = new RevisionCheck(
+			$wikiPage->getId(),
+			$wikiPageFactory,
+			$this->rev->getId(),
+			$this->autoModeratorUser,
+			$this->revisionStoreMock,
+			$this->wikiConfig,
+			$this->contentHandler,
+			$this->undoSummary,
+			$rollbackPage,
+			true
+		);
+		$reverted = $revisionCheck->maybeRollback(
+			$this->failingScore
+		);
+		$this->assertSame( 0, array_key_first( $reverted ) );
+		$this->assertSame( "success", $reverted[0] );
 	}
 
 	/**

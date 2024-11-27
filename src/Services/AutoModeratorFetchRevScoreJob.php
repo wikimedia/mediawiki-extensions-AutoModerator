@@ -212,7 +212,12 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'Not reverted' ) {
 			return true;
 		}
-		// Revert attempted but failed to save revision record
+		// Revision unable to be reverted due to an edit conflict or race condition in the job queue
+		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'success' ) {
+			$this->setAllowRetries( false );
+			return true;
+		}
+		// Revert attempted but failed to save revision record due to unknown reason
 		if ( array_key_exists( '0', $reverted ) ) {
 			$this->setLastError( $reverted['0'] );
 			$this->setAllowRetries( true );
