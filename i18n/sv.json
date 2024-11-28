@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ainali"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Innehållsmodellen matchar inte: konfigurationsfilen måste ha JSON-innehållsmodell, $1 upptäckt",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> förväntas vara <code>$2</code>, men är <code>$3</code>",
+	"automoderator-desc": "Återställer automatiskt dåliga redigeringar baserat på poängsättning genom en maskininlärningsmodell."
+}

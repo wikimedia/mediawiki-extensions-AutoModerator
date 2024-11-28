@@ -4,5 +4,8 @@
 			"San1joy23",
 			"আফতাবুজ্জামান"
 		]
-	}
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "বিষয়বস্তু মডেলে বৈসাদৃশ্য: কনফিগ ফাইলে অবশ্যই JSON বিষয়বস্তু মডেল থাকতে হবে, $1 শনাক্ত করা হয়েছে",
+	"automoderator-config-validator-datatype-mismatch": "ধারণা করা হচ্ছে <code>$1</code> এর বদলে <code>$2</code> হবে, তবে হয়েছে <code>$3</code>",
+	"automoderator-desc": "একটি মেশিন লার্নিং মডেল থেকে স্কোরিংয়ের উপর ভিত্তি করে খারাপ সম্পাদনাগুলি স্বয়ংক্রিয়ভাবে বাতিল করে।"
 }
