@@ -1,0 +1,40 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ainali"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 har för många objekt (maximalt $2 {{PLURAL:$2| är tillåtet|är tillåtna}})",
+	"automoderator-config-validator-contentmodel-mismatch": "Innehållsmodellen matchar inte: konfigurationsfilen måste ha JSON-innehållsmodell, $1 upptäckt",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> förväntas vara <code>$2</code>, men är <code>$3</code>",
+	"automoderator-desc": "Återställer automatiskt dåliga redigeringar baserat på poängsättning genom en maskininlärningsmodell.",
+	"automoderator-wiki-report-false-positive": "rapportera falsk positiv",
+	"automoderator-wiki-revert-message": "Hej! Jag är [[User:$1|$1]], ett automatiserat system som använder en maskininlärningsmodell för att identifiera och återställa potentiellt dåliga redigeringar för att säkerställa att Wikipedia förblir tillförlitligt och pålitligt. Tyvärr återställde jag en av dina [[Special:Diff/$2|senaste redigeringar]] till [[$3]].\n* Eftersom modellen jag använder inte är perfekt, återställer den ibland bra redigeringar. Om du tror att ändringen du gjorde var konstruktiv, vänligen [[$4|rapportera den här]].\n* [[:mw:Moderator Tools/Automoderator|Läs mer]] om min programvara.\n* För att lära dig mer om redigering besök din [[Special:Homepage|nybörjarhemsida]].",
+	"automoderator-wiki-revert-edit-summary": "Meddelande om automatisk återställning på [[$1]]",
+	"automoderator-wiki-undo-summary": "Gör version [[Special:Diff/$1|$1]] av [[Special:Contributions/$2|$2]] ([[User talk:$2|diskussion]]) ogjord",
+	"automoderator-wiki-undo-summary-anon": "Gör version [[Special:Diff/$1|$1]] av [[Special:Contributions/$2|$2]] ogjord",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Användarrättigheter",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator är aktiverad",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Återställningar av AutoModerator kommer att betraktas som mindre redigeringar.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Diskussionsmeddelande",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Diskussionssidemeddelande är aktiverat",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Rapporteringssida för falska positiva",
+	"communityconfiguration-automoderator-title": "Automoderator",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Mest försiktig (standard): Minsta antal redigeringar kommer att återställas, men noggrannheten kommer att vara högst.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Försiktigt: Relativt få redigeringar kommer att återställas, men noggrannheten kommer att vara medelhög.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Något försiktigt: Relativt fler redigeringar kommer att återställas, men noggrannheten blir låg.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Minsta försiktighet: Det största antalet redigeringar kommer att återställas, men noggrannheten är den lägsta.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Konfigurera tröskel",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Mindre redigeringar",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Ange användarrättigheter vars innehavare Automoderator aldrig ska återställa.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Återställningar av Automoderator kommer att betraktas som botredigeringar.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botredigering",
+	"communityconfiguration-automoderator-info-text": "Varning! När ändringar görs kommer det omedelbart att påverka alla användare i din gemenskap. Det är viktigt att vara försiktig och övervägd. Diskutera och nå ett konsensusbeslut innan du gör konfigurationsändringar.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Det här tillägget utnyttjar de nya återställningsriskmodellerna som kan beräkna en poäng för varje version som anger sannolikheten för att redigeringen ska återställas. Modellerna stöder endast Wikipedia-projekt och tränas på huvudnamnrymden (artikelnamnrymden). Ställ in ett tröskelvärde över vilket redigeringar automatiskt återställs. Lägre tröskelvärden innebär att fler redigeringar återställs, men noggrannheten blir lägre, medan högre tröskelvärden resulterar i att färre redigeringar återställs, men med bättre noggrannhet.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Efter att Automoderator har återställt en redigering kan ett meddelande på diskussionssidan automatiskt skickas till användaren, som förklarar vad som hände och ger användbara länkar.",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Hjälp:Mindre redigering]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bottar]",
+	"communityconfiguration-automoderator-description": "Konfigurera Automoderatorinställningar så att modellen kan identifiera och återställa potentiellt dåliga redigeringar på Wikipedia.",
+	"automoderator-config-validator-userrights-not-allowed": "Användarrättigheten $1 finns inte. Försök med en annan."
+}
