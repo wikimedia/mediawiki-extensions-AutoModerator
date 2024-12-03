@@ -134,18 +134,18 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				$findApiResponse = $apiClient->findComment( $this->talkPageMessageHeader, $userTalkPageTitle );
 			}
 
-			if ( array_key_exists( "discussiontoolsfindcomment", $findApiResponse ) &&
-				$findApiResponse[ "discussiontoolsfindcomment" ][ 0 ]["couldredirect"] ) {
+			if ( array_key_exists( "couldredirect", $findApiResponse ) &&
+				$findApiResponse[ "couldredirect" ] ) {
 				// AutoModerator has already posted on this User Talk page this month
 				// and the topic has not been deleted, adding a follow-up comment instead
 				$pageInfoResponse = $apiClient->getUserTalkPageInfo( $userTalkPageTitle );
 				// Getting the pageInformation to get the comment's id
-				$headerId = $findApiResponse[ "discussiontoolsfindcomment" ][ 0 ][ "id" ];
-				$threadItems = $pageInfoResponse["discussiontoolspageinfo"]["threaditemshtml"];
+				$headerId = $findApiResponse[ "id" ];
+				$threadItems = $pageInfoResponse[ "discussiontoolspageinfo" ][ "threaditemshtml" ];
 				foreach ( $threadItems as $threadItem ) {
-					if ( $threadItem["id"] === $headerId ) {
+					if ( $threadItem[ "id" ] === $headerId ) {
 						// Getting the first reply id from this thread item
-						$commentId = $threadItem["replies"][0]["id"];
+						$commentId = $threadItem[ "replies" ][ 0 ][ "id" ];
 						$followUpComment = wfMessage( 'automoderator-wiki-revert-message-follow-up' )->params(
 							$this->revId,
 							$this->pageTitle
@@ -156,7 +156,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 					}
 				}
 			} else {
-				// AutoModerator hasn't added a User Talk page message this month or it has been deleted,
+				// AutoModerator hasn't added a User Talk page message this month,
 				// adding a new topic message
 				$talkPageMessage = wfMessage( 'automoderator-wiki-revert-message' )->params(
 					$this->autoModeratorUserName,

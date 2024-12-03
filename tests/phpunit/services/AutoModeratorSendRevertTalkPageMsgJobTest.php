@@ -182,6 +182,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob::run
 	 * @covers AutoModerator\ApiClient::findComment
+	 * @covers AutoModerator\ApiClient::checkCommentRedirects
 	 * @covers AutoModerator\ApiClient::getUserTalkPageInfo
 	 * @covers AutoModerator\ApiClient::addTopic
 	 * @covers AutoModerator\Util::initializeApiClient
@@ -189,7 +190,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 	 */
 	public function testRunSuccessSendsTalkPageMessageAddTopic() {
 		[ $user, $title ] = $this->createTestPage();
-		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName(), "some random text" );
+		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName() );
 		$expectedFalsePositiveReportPage = "false-positive-page";
 		$mediaWikiServices = $this->getServiceContainer();
 		$this->overrideConfigValue( 'AutoModeratorUsername', 'AutoModerator' );
@@ -228,6 +229,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob::run
 	 * @covers AutoModerator\ApiClient::findComment
+	 * @covers AutoModerator\ApiClient::checkCommentRedirects
 	 * @covers AutoModerator\ApiClient::getUserTalkPageInfo
 	 * @covers AutoModerator\ApiClient::addFollowUpComment
 	 * @covers AutoModerator\Util::initializeApiClient
@@ -249,7 +251,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 			" reverted your edit==";
 		$headerNoEqualsSymbol = trim( str_replace( "==", "", $talkPageMessageHeader ) );
 		$headerWithoutSpaces = str_replace( " ", "_", $headerNoEqualsSymbol );
-		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName(), "some random text" );
+		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName() );
 
 		// Adding a Topic with AutoModerator's message so the job adds the follow-up message
 		$this->createAddTopicResponse( $autoModeratorUser, $wikiTalkPageCreated,

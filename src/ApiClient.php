@@ -42,11 +42,13 @@ class ApiClient {
 			$context = new DerivativeContext( RequestContext::getMain() );
 			$headerNoEqualsSymbol = trim( str_replace( "==", "", $commentHeader ) );
 			$headerWithoutSpaces = str_replace( " ", "_", $headerNoEqualsSymbol );
+			$userTalkPageString = str_replace( "_", " ", $userTalkPageTitle->getTalkNsText() ) .
+				':' . $userTalkPageTitle->getText();
 			$queryParams = [
 				"action" => "discussiontoolsfindcomment",
 				"format" => "json",
 				"heading" => $headerWithoutSpaces,
-				"page" => $userTalkPageTitle->getTalkNsText() . ':' . $userTalkPageTitle->getText(),
+				"page" => $userTalkPageString,
 				"formatversion" => "2"
 			];
 			$data = $this->executeApiQuery( $context, $queryParams );
@@ -54,7 +56,13 @@ class ApiClient {
 			return [];
 		}
 
-		return $data;
+		if ( array_key_exists( "discussiontoolsfindcomment", $data ) ) {
+			// From findcomment, we only need the comment id and couldredirect
+			return $this->checkCommentRedirects( $data[ "discussiontoolsfindcomment" ],
+				$userTalkPageString );
+		} else {
+			return [];
+		}
 	}
 
 	/**
@@ -165,5 +173,24 @@ class ApiClient {
 		$api->execute();
 		$data = $api->getResult()->getResultData();
 		return $data;
+	}
+
+	/**
+	 * Parses the discussiontoolsfindcomment API response array to check if there are any comments
+	 * where we can append a follow-up message. If one exists, it returns true and the id
+	 * @param array $comments
+	 * @param string $userTalkPageString
+	 * @return array
+	 */
+	private function checkCommentRedirects( array $comments, string $userTalkPageString ) {
+		$couldRedirect = false;
+		$commentId = "";
+		foreach ( $comments as $comment ) {
+			if ( $comment[ "couldredirect" ] && $comment[ "title" ] === $userTalkPageString ) {
+				$couldRedirect = true;
+				$commentId = $comment[ "id" ];
+			}
+		}
+		return [ "couldredirect" => $couldRedirect, "id" => $commentId ];
 	}
 }
