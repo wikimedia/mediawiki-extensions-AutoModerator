@@ -2,10 +2,15 @@
 	"@metadata": {
 		"authors": [
 			"Hide on Rosé",
-			"Nguyễn Mạnh An"
+			"Nguyễn Mạnh An",
+			"FunnyYellowDog",
+			"Phungminh141",
+			"Plantaest",
+			"Quangkhanhhuynh",
+			"Samwalton9 (WMF)"
 		]
 	},
-	"automoderator-config-validator-contentmodel-mismatch": "Kiểu nội dung không trùng khớp: tập tin thiết lập phải có kiểu nội dung JSON, phát hiện $1",
+	"automoderator-config-validator-contentmodel-mismatch": "Kiểu nội dung không trùng khớp: tệp cấu hình phải có kiểu nội dung JSON, phát hiện $1",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> nên là <code>$2</code>, hiện tại là <code>$3</code>",
-	"automoderator-desc": "Tự động lùi lại sửa đổi xấu dựa trên hệ thống đánh giả tự động theo mô hình học máy"
+	"automoderator-desc": "Tự động lùi lại sửa đổi xấu dựa trên hệ thống đánh giá tự động theo mô hình máy học"
 }
