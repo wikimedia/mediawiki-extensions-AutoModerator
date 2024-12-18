@@ -27,8 +27,6 @@ use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
-use MediaWiki\Revision\RevisionRecord;
-use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -45,17 +43,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 * @var int
 	 */
 	private $revId;
-
-	/**
-	 * @var int|false
-	 * @fixme This is unused.
-	 */
-	private $originalRevId;
-
-	/**
-	 * @var string[]
-	 */
-	private $tags;
 
 	/**
 	 * @var bool
@@ -88,8 +75,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		parent::__construct( 'AutoModeratorFetchRevScoreJob', $title, $params );
 		$this->wikiPageId = $params[ 'wikiPageId' ];
 		$this->revId = $params[ 'revId' ];
-		$this->originalRevId = $params[ 'originalRevId' ];
-		$this->tags = $params[ 'tags' ];
 		$this->undoSummary = $params[ 'undoSummary' ];
 		$this->scores = $params[ 'scores' ];
 	}
@@ -97,15 +82,12 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	public function run(): bool {
 		$services = MediaWikiServices::getInstance();
 		$autoModeratorServices = AutoModeratorServices::wrap( $services );
-
 		$wikiPageFactory = $services->getWikiPageFactory();
 		$revisionStore = $services->getRevisionStore();
-		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$userGroupManager = $services->getUserGroupManager();
 		$config = $services->getMainConfig();
 		$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
 		$connectionProvider = $services->getConnectionProvider();
-
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
 		$wikiId = Util::getWikiID( $config );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
@@ -119,11 +101,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			$this->setAllowRetries( true );
 			return false;
 		}
-		$contentHandler = $contentHandlerFactory->getContentHandler( $rev->getSlot(
-			SlotRecord::MAIN,
-			RevisionRecord::RAW
-		)->getModel() );
-
 		try {
 			$user = $userFactory->newFromAnyId(
 				$this->params['userId'],
@@ -169,14 +146,8 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				return false;
 			}
 			$revisionCheck = new RevisionCheck(
-				$this->wikiPageId,
-				$wikiPageFactory,
-				$this->revId,
-				$autoModeratorUser,
-				$revisionStore,
 				$wikiConfig,
 				$config,
-				$contentHandler,
 				$this->undoSummary,
 				new AutoModeratorRollback(
 					new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),

@@ -61,7 +61,6 @@ class CheckRevision extends Maintenance {
 		$restrictionStore = $services->getRestrictionStore();
 		$permissionManager = $services->getPermissionManager();
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
-		$wikiId = Util::getWikiID( $config );
 		$dbr = $this->getReplicaDB();
 		$tags = $changeTagsStore->getTags( $dbr, null, $revId );
 		$rev = $revisionLookup->getRevisionById( $revId );
@@ -95,14 +94,8 @@ class CheckRevision extends Maintenance {
 		}
 
 		$revisionCheck = new RevisionCheck(
-			$wikiPageId,
-			$wikiPageFactory,
-			$rev->getId(),
-			$autoModeratorUser,
-			$revisionStore,
 			$wikiConfig,
 			$config,
-			$contentHandler,
 			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain(),
 			new AutoModeratorRollback(
 				new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),

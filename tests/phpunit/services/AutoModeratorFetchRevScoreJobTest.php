@@ -313,8 +313,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		);
 
 		$success = $job->run();
-		$this->assertNotEmpty( $job->getLastError() );
-		$this->assertFalse( $success );
+		$this->assertTrue( $success );
 	}
 
 	/**

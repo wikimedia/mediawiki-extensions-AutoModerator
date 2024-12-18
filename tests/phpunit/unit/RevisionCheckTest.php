@@ -215,14 +215,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testMaybeRollbackBadEdit() {
 		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
 			$this->rollbackPage,
 			true
@@ -232,34 +226,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			'revertrisklanguageagnostic'
 		) );
 		$this->assertSame( 1, $reverted );
-	}
-
-	/**
-	 * @covers ::maybeRollback
-	 */
-	public function testMaybeRollbackNoContent() {
-		$contentHandler = $this->createMock( ContentHandler::class );
-		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
-		$this->contentHandler->method( 'getUndoContent' )->willReturn( false );
-		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
-			$this->wikiConfig,
-			$this->config,
-			$this->contentHandler,
-			$this->undoSummary,
-			$this->rollbackPage,
-			true
-		);
-		$reverted = $revisionCheck->maybeRollback(
-			$this->failingScore,
-			'revertrisklanguageagnostic'
-		);
-		$this->assertSame( 0, array_key_first( $reverted ) );
-		$this->assertSame( "failure", $reverted[0] );
 	}
 
 	/**
@@ -275,14 +241,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
 		$rollbackPage = $wikiTestPages[1];
 		$revisionCheck = new RevisionCheck(
-			$wikiPage->getId(),
-			$wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
 			$rollbackPage,
 			true
@@ -308,14 +268,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
 		$rollbackPage = $wikiTestPages[1];
 		$revisionCheck = new RevisionCheck(
-			$wikiPage->getId(),
-			$wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
 			$rollbackPage,
 			true
@@ -341,14 +295,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
 		$rollbackPage = $wikiTestPages[1];
 		$revisionCheck = new RevisionCheck(
-			$wikiPage->getId(),
-			$wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
 			$rollbackPage,
 			true
@@ -373,14 +321,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$wikiPage->method( 'getRevisionRecord' )->willReturn( $this->fakeRevisions[ 2 ] );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
 		$revisionCheck = new RevisionCheck(
-			$wikiPage->getId(),
-			$wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
 			$rollbackPage,
 			true
@@ -398,14 +340,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 */
 	public function testMaybeRollbackGoodEdit() {
 		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
 			$this->rollbackPage
 		);
@@ -429,14 +365,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		] );
 
 		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
 			$this->rollbackPage
 		);
@@ -472,16 +402,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		] );
 
 		$revisionCheck = new RevisionCheck(
-			$this->wikiPageMock->getId(),
-			$this->wikiPageFactory,
-			$this->rev->getId(),
-			$this->autoModeratorUser,
-			$this->revisionStoreMock,
 			$this->wikiConfig,
 			$this->config,
-			$this->contentHandler,
 			$this->undoSummary,
-			$this->rollbackPage
+			$this->rollbackPage,
+			true
 		);
 
 		$reverted = array_key_first( $revisionCheck->maybeRollback(

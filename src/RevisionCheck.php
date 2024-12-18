@@ -22,14 +22,11 @@ namespace AutoModerator;
 use AutoModerator\Services\AutoModeratorRollback;
 use ChangeTags;
 use MediaWiki\Config\Config;
-use MediaWiki\Content\Content;
-use MediaWiki\Content\ContentHandler;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
-use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\ExternalUserNames;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
@@ -38,21 +35,6 @@ use StatusValue;
 use WikiPage;
 
 class RevisionCheck {
-
-	/** @var int */
-	private int $wikiPageId;
-
-	/** @var WikiPageFactory */
-	private WikiPageFactory $wikiPageFactory;
-
-	/** @var int */
-	private int $revId;
-
-	/** @var User */
-	private User $autoModeratorUser;
-
-	/** @var RevisionStore */
-	private RevisionStore $revisionStore;
 
 	/** @var Config */
 	private Config $wikiConfig;
@@ -63,9 +45,6 @@ class RevisionCheck {
 	/** @var string */
 	public string $undoSummary;
 
-	/** @var ContentHandler */
-	private ContentHandler $contentHandler;
-
 	/** @var bool */
 	private bool $enforce;
 
@@ -73,87 +52,24 @@ class RevisionCheck {
 	private AutoModeratorRollback $rollbackPage;
 
 	/**
-	 * @param int $wikiPageId WikiPage ID of
-	 * @param WikiPageFactory $wikiPageFactory
-	 * @param int $revId New revision ID
-	 * @param User $autoModeratorUser reverting user
-	 * @param RevisionStore $revisionStore
 	 * @param Config $wikiConfig
 	 * @param Config $config
-	 * @param ContentHandler $contentHandler
 	 * @param string $undoSummary
 	 * @param AutoModeratorRollback $rollbackPage
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
-		int $wikiPageId,
-		WikiPageFactory $wikiPageFactory,
-		int $revId,
-		User $autoModeratorUser,
-		RevisionStore $revisionStore,
 		Config $wikiConfig,
 		Config $config,
-		ContentHandler $contentHandler,
 		string $undoSummary,
 		AutoModeratorRollback $rollbackPage,
 		bool $enforce = false
 	) {
-		$this->wikiPageId = $wikiPageId;
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->revId = $revId;
-		$this->autoModeratorUser = $autoModeratorUser;
-		$this->revisionStore = $revisionStore;
 		$this->wikiConfig = $wikiConfig;
 		$this->config = $config;
-		$this->contentHandler = $contentHandler;
 		$this->enforce = $enforce;
 		$this->undoSummary = $undoSummary;
 		$this->rollbackPage = $rollbackPage;
-	}
-
-	/**
-	 * Cribbed from EditPage.php
-	 * Returns the result of a three-way merge when undoing changes.
-	 *
-	 * @param RevisionRecord $oldRev Revision that is being restored. Corresponds to
-	 *        `undoafter` URL parameter.
-	 * @param ?string &$error If false is returned, this will be set to "norev"
-	 *   if the revision failed to load, or "failure" if the content handler
-	 *   failed to merge the required changes.
-	 * @param WikiPage $wikiPage
-	 * @param RevisionRecord $rev
-	 *
-	 * @return false|Content
-	 */
-	private function getUndoContent(
-		RevisionRecord $oldRev,
-		?string &$error,
-		WikiPage $wikiPage,
-		RevisionRecord $rev
-	) {
-		$currentContent = $wikiPage->getRevisionRecord()
-			->getContent( SlotRecord::MAIN );
-		$undoContent = $rev->getContent( SlotRecord::MAIN );
-		$undoAfterContent = $oldRev->getContent( SlotRecord::MAIN );
-		$undoIsLatest = $wikiPage->getRevisionRecord()->getId() === $this->revId;
-		if ( $currentContent === null
-			|| $undoContent === null
-			|| $undoAfterContent === null
-		) {
-			$error = 'norev';
-			return false;
-		}
-
-		$content = $this->contentHandler->getUndoContent(
-			$currentContent,
-			$undoContent,
-			$undoAfterContent,
-			$undoIsLatest,
-		);
-		if ( $content === false ) {
-			$error = 'failure';
-		}
-		return $content;
 	}
 
 	/**
@@ -280,16 +196,9 @@ class RevisionCheck {
 		$reverted = 0;
 		$status = 'Not reverted';
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
-		$wikiPage = $this->wikiPageFactory->newFromID( $this->wikiPageId );
-		$rev = $this->revisionStore->getRevisionById( $this->revId );
 		// Check if the threshold should be taken from the language-agnostic
 		// or the multilingual model based on what model was chosen in the job
 		if ( $probability > Util::getRevertThreshold( $this->wikiConfig, $this->config, $revertRiskModelName ) ) {
-			$prevRev = $this->revisionStore->getPreviousRevision( $rev );
-			$content = $this->getUndoContent( $prevRev, $this->undoSummary, $wikiPage, $rev );
-			if ( !$content ) {
-				return [ $reverted => $this->undoSummary ];
-			}
 			if ( $this->enforce ) {
 				$pageRollbackStatus = $this->doRollback();
 				if ( !$pageRollbackStatus->isOK() ) {
