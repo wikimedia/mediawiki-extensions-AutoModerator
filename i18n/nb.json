@@ -1,0 +1,40 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 har for mange elementer (maksimalt $2 {{PLURAL:$2|er}} tillatt)",
+	"automoderator-config-validator-contentmodel-mismatch": "Uoverensstemmelse i innholdsmodell: Konfigurasjonsfila må ha innholdsmodellen JSON, men $1 ble returnert",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> er forventet å være <code>$2</code>, men er <code>$3</code>",
+	"automoderator-desc": "Tilbakestiller redigeringer automatisk basert på skår fra en maskinlæringsmodell.",
+	"automoderator-wiki-report-false-positive": "rapporter falsk positiv",
+	"automoderator-wiki-revert-message-header": "$1 $2: $3 tilbakestilte redigeringen din",
+	"automoderator-wiki-revert-message": "Hei! Jeg er [[User:$1|$1]], et automatisk system som bruker en maskinlæringsmodell for å identifisere og tilbakestille potensielt skadelige redigeringer for å sørge for at Wikipedia fortsetter å være pålitelig. Dessverre måtte jeg tilbakestille en av de [[Special:Diff/$2|nylige endringene]] dine på [[$3]].\n* Fordi modellen jeg bruker ikke er perfekt vil gode redigeringer av og til tilbakestilles. Hvis du mener at det er tilfelle, kan du gjerne [[$4|rapportere det her]].\n* [[:mw:Moderator Tools/Automoderator|Lær mer]] om programvaren min.\n* Besøk [[Special:Homepage|hjemmesiden din]] for å lære mer om hvordan man redigerer.",
+	"automoderator-wiki-revert-message-follow-up": "Jeg tilbakestilte også en av [[Special:Diff/$1|redigeringene dine]] på [[$2]] fordi den ikke virket konstruktiv.",
+	"automoderator-wiki-revert-edit-summary": "Varsel om automatisk tilbakestilling på [[$1]]",
+	"automoderator-wiki-undo-summary": "Fjerner sideversjon [[Special:Diff/$1|$1]] av [[Special:Contributions/$2|$2]] ([[User talk:$2|diskusjon]])",
+	"automoderator-wiki-undo-summary-anon": "Fjerner sideversjon [[Special:Diff/$1|$1]] av [[Special:Contributions/$2|$2]]",
+	"automoderator-wiki-revertpage-nouser": "Tilbakestilte {{PLURAL:$7|endring|endringer}} av skjult bruker til siste versjon av\n{{GENDER:$1|[[User:$1|$1]]}}",
+	"automoderator-wiki-revertpage-anon": "Tilbakestilte {{PLURAL:$7|endring|endringer}} av [[Special:Contributions/$2|$2]] til siste versjon av [[User:$1|$1]]",
+	"automoderator-wiki-revertpage": "Tilbakestilte {{PLURAL:$7|endring|endringer}} av [[Special:Contributions/$2|$2]] ([[User talk:$2|brukerdiskusjon]]) til siste versjon av [[User:$1|$1]]",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Brukerrettigheter",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderatoren er aktivert",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Tilbakestillinger av automoderatoren skal anses som mindre endringer.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Beskjed på diskusjonssider",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Beskjed på diskusjonssider er aktivert",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Rapporteringsside for falske positiver",
+	"communityconfiguration-automoderator-title": "Automoderator",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Mest forsiktig (standard): Færrest redigeringer blir tilbakestilt, men nøyaktigheten vil også være høyest",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Forsiktig: Ganske få redigeringer blir tilbakestilt, og nøyaktigheten vil være medium.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Noe forsiktig: Relativt få redigeringer blir tilbakestilt, men nøyaktigheten vil være lav.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Minst forsiktig: Flest redigeringer blir tilbakestilt, men nøyaktigheten vil være lavest.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Konfigurer terskelnivå",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Mindre endringer",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Angi hvilke brukerrettigheter man må ha for aldri å bli tilbakestilt av audomoderatoren.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Tilbakestillinger av automoderatoren skal anses som botredigeringer.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botredigering",
+	"communityconfiguration-automoderator-info-text": "Advarsel! Når endringer gjøres vil de umiddelbart påvirke alle brukerne på denne wikien. Det er viktig å være forsiktig og nøye. Diskuter og kom til enighet om endringene på forhånd før konfigurasjonsendringer gjøres.",
+	"automoderator-config-validator-userrights-not-allowed": "Brukerrettigheten $1 finnes ikke. Prøv en annen."
+}
