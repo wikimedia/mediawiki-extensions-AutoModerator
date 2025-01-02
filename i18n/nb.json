@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Uoverensstemmelse i innholdsmodell: Konfigurasjonsfila må ha innholdsmodellen JSON, men $1 ble returnert",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> er forventet å være <code>$2</code>, men er <code>$3</code>",
+	"automoderator-desc": "Tilbakestiller redigeringer automatisk basert på skår fra en maskinlæringsmodell."
+}
