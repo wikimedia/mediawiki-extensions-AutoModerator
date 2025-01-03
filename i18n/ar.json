@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Cigaryno"
+		]
+	},
+	"automoderator-wiki-report-false-positive": "أبلغ عن إيجابية خاطئة",
+	"automoderator-wiki-revert-message-header": "$1 $2 : $3 قام بتراجع تعديلك",
+	"automoderator-wiki-revert-edit-summary": "ملاحظة تراجع آلي في [[$1]]",
+	"automoderator-wiki-undo-summary": "تراجع عن المراجعة [[Special:Diff/$1|$1]] بواسطة [[Special:Contributions/$2|$2]] ([[User talk:$2|نقاش]]).",
+	"automoderator-wiki-undo-summary-anon": "تراجع عن المراجعة [[Special:Diff/$1|$1]] بواسطة [[Special:Contributions/$2|$2]]",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "صلاحيات المستخدم",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "تعديلات طفيفة",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "تعديل بوت"
+}
