@@ -4,7 +4,8 @@
 			"Cookai1205",
 			"Kly",
 			"人间百态",
-			"Lakejason0"
+			"Lakejason0",
+			"ZhaoFJx"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1的項目過多（最多{{PLURAL:$2|允許}} $2 個）",
@@ -18,10 +19,10 @@
 	"automoderator-wiki-undo-summary": "取消[[Special:Contributions/$2|$2]]（[[User talk:$2|留言]]）作出的修訂[[Special:Diff/$1|$1]]",
 	"automoderator-wiki-undo-summary-anon": "取消[[Special:Contributions/$2|$2]]作出的修訂[[Special:Diff/$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "使用者權限",
-	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator已開啟",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "開啟Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "AutoModerator所做的回退將被視為小編輯。",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "討論頁訊息",
-	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "討論頁訊息已開啟",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "開啟討論頁訊息",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "誤判回報頁面",
 	"communityconfiguration-automoderator-title": "Automoderator",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "最謹慎（預設值）：回退的編輯最少，但準確度最高。",
