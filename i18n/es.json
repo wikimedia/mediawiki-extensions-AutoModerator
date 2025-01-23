@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Suecarmol"
+		]
+	},
+	"automoderator-wiki-report-false-positive": "reportar un falso positivo",
+	"automoderator-wiki-revert-message-header": "$1 $2 : $3 revirtió tu edición",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderador",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Ediciones menores",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edición de bot"
+}
