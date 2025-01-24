@@ -10,8 +10,8 @@
 	"automoderator-desc": "Automatically reverts bad edits based on scoring from a machine learning model.",
 	"automoderator-wiki-report-false-positive": "report false positive",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 reverted your edit",
-	"automoderator-wiki-revert-message": "Hello! I am [[User:$1|$1]], an automated system which uses a machine learning model to identify and revert potentially bad edits to ensure Wikipedia remains reliable and trustworthy. Unfortunately, I reverted one of your [[Special:Diff/$2|recent edits]] to [[$3]].\n* Because the model I use is not perfect, it sometimes reverts good edits. If you believe the change you made was constructive, please [[$4|report it here]].\n* [[:mw:Moderator Tools/Automoderator|Learn more]] about my software.",
-	"automoderator-wiki-revert-message-help-page": "\n* To learn more about editing, please view this help page: [[$1|$2]].",
+	"automoderator-wiki-revert-message": "Hello! I am [[User:$1|$1]], an automated system which uses a machine learning model to identify and revert potentially bad edits to ensure Wikipedia remains reliable and trustworthy. I reverted one of your [[Special:Diff/$2|recent edits]] to [[$3]].\n* Because the model I use is not perfect, it sometimes reverts good edits. If you believe the change you made was constructive, please [[$4|report it here]].\n* [[:mw:Moderator Tools/Automoderator|Learn more]] about my software.",
+	"automoderator-wiki-revert-message-help-page": "\n* To learn more about editing, please view this help page: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "I also reverted one of your [[Special:Diff/$1|recent edits]] to [[$2]] because it seemed unconstructive.",
 	"automoderator-wiki-revert-edit-summary": "Notice of automated revert on [[$1]]",
 	"automoderator-wiki-undo-summary": "Undo revision [[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]])",
@@ -54,5 +54,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Link to a page to help with editing",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Destination page",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Label",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "The talk page message for unregistered contributors will display a link to a page to help them with editing.\nThis link can be configured to be any link in the wiki."
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "The talk page message for unregistered contributors will display a link to a page to help them with editing.\nThis link can be configured to be any link in the wiki.",
+	"automoderator-config-validator-help-page-link-not-filled": "The Destination page field and the Label field both need to be filled."
 }
