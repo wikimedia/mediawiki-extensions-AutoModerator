@@ -35,7 +35,7 @@
 	"communityconfiguration-automoderator-title": "Automoderator",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "最谨慎（默认值）：很少回退编辑，准确度最高。",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "谨慎：较少回退编辑，准确度中等。",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "不太谨慎：相对回退较多编辑，准确度稍低。",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "不太谨慎：相对回退较多编辑，准确度较低。",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "最不谨慎：回退很多编辑，准确度最低。",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "配置阈值",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
