@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Suecarmol"
+		]
+	},
+	"automoderator-wiki-report-false-positive": "reportar un falso positivo",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Permisos de usuario",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderador está activado",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Mensaje de la página de discusión",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "El mensaje de la página de discusión está activado",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Página para reportar falsos positivos",
+	"communityconfiguration-automoderator-title": "Automoderador",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderador",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Ediciones menores",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edición de bot"
+}
