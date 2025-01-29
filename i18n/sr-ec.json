@@ -6,6 +6,7 @@
 	},
 	"automoderator-config-validator-array-toobig": "$1 има превише ставки ({{PLURAL:$2|највише дозвољено}}: $2)",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 вратио је Вашу измену",
+	"automoderator-wiki-revert-message-help-page": "\n* Да научите више о уређивању, молимо погледајте страницу помоћи: [[$1|$2]].",
 	"automoderator-wiki-revert-message-follow-up": "Ја сам такође вратио једну од Ваших [[Special:Diff/$1|скорашњих измена]] на [[$2]], зато што је изгледала неконструктивно.",
 	"automoderator-wiki-undo-summary": "Поништена измена [[Special:Diff/$1|$1]] [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]])",
 	"automoderator-wiki-undo-summary-anon": "Поништена измена [[Special:Diff/$1|$1]] корисника [[Special:Contributions/$2|$2]]",
@@ -14,5 +15,7 @@
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Корисничка права",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Мање измене",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Ботовска измена",
-	"automoderator-config-validator-userrights-not-allowed": "Корисничко право $1 не постоји. Пробајте друго."
+	"automoderator-config-validator-userrights-not-allowed": "Корисничко право $1 не постоји. Пробајте друго.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Одредишна страница",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Назив"
 }

@@ -12,7 +12,8 @@
 	"automoderator-desc": "একটি মেশিন লার্নিং মডেল থেকে স্কোরিংয়ের উপর ভিত্তি করে খারাপ সম্পাদনাগুলি স্বয়ংক্রিয়ভাবে বাতিল করে।",
 	"automoderator-wiki-report-false-positive": "ফলস পজিটিভ রিপোর্ট করুন",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 আপনার সম্পাদনা বাতিল করেছে",
-	"automoderator-wiki-revert-message": "হ্যালো! আমি [[User:$1|$1]], আমি একটি মেশিন লার্নিং মডেল ব্যবহার করে স্বয়ংক্রিয় পদ্ধতিতে সম্ভাব্য খারাপ সম্পাদনাগুলো চিহ্নিত করে বাতিল করি, যাতে উইকিপিডিয়া নির্ভরযোগ্য এবং বিশ্বাসযোগ্য থাকে। দুর্ভাগ্যবশত, আমি [[$3]] পাতায় করা আপনার একটি [[Special:Diff/$2|সাম্প্রতিক সম্পাদনা]] বাতিল করেছি।\n* যেহেতু আমি যে মডেলটি ব্যবহার করি তা নিখুঁত নয়, তাই কখনও কখনও আমি ভালো সম্পাদনাও ভুল করে বাতিল করে ফেলি। আপনি যদি মনে করেন যে আপনার করা পরিবর্তনটি গঠনমূলক ছিল, তবে দয়া করে [[$4|এখানে রিপোর্ট করুন]]।\n* [[:mw:Moderator Tools/Automoderator|এখানে আমার সফটওয়্যার সম্পর্কে আরও জানুন]]।\n* সম্পাদনা সম্পর্কে আরও জানতে আপনার [[Special:Homepage|নবাগতের নীড়পাতায়]] যান।",
+	"automoderator-wiki-revert-message": "হ্যালো! আমি [[User:$1|$1]], আমি একটি মেশিন লার্নিং মডেল ব্যবহার করে স্বয়ংক্রিয় পদ্ধতিতে সম্ভাব্য খারাপ সম্পাদনাগুলো চিহ্নিত করে বাতিল করি, যাতে উইকিপিডিয়া নির্ভরযোগ্য এবং বিশ্বাসযোগ্য থাকে। দুর্ভাগ্যবশত, আমি [[$3]] পাতায় করা আপনার একটি [[Special:Diff/$2|সাম্প্রতিক সম্পাদনা]] বাতিল করেছি।\n* যেহেতু আমি যে মডেলটি ব্যবহার করি তা নিখুঁত নয়, তাই কখনও কখনও আমি ভালো সম্পাদনাও ভুল করে বাতিল করে ফেলি। আপনি যদি মনে করেন যে আপনার করা পরিবর্তনটি গঠনমূলক ছিল, তবে দয়া করে [[$4|এখানে রিপোর্ট করুন]]।\n* [[:mw:Moderator Tools/Automoderator|এখানে আমার সফটওয়্যার সম্পর্কে আরও জানুন]]।",
+	"automoderator-wiki-revert-message-help-page": "* সম্পাদনা সম্পর্কে আরও জানতে, অনুগ্রহ করে এই সাহায্য পাতাটি দেখুন: [[$1|$2]]।",
 	"automoderator-wiki-revert-message-follow-up": "আমি [[$2]] পাতায় করা আপনার আরও একটি [[Special:Diff/$1|সাম্প্রতিক সম্পাদনা]] বাতিল করেছি কারণ এটি অগঠনমূলক বলে মনে হয়েছে।",
 	"automoderator-wiki-revert-edit-summary": "[[$1]] পাতায় স্বয়ংক্রিয়ভাবে সম্পাদনা বাতিলের বিজ্ঞপ্তি",
 	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|আলাপ]])-এর সম্পাদিত [[Special:Diff/$1|$1]] নম্বর সংশোধনটি বাতিল করা হয়েছে",
@@ -50,5 +51,9 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "অটোমডারেটর ২৪ ঘণ্টার মধ্যে প্রদত্ত পাতায় একই ব্যবহারকারীর সম্পাদনা কতবার পূর্বাবস্থায় ফিরিয়ে আনতে পারবে তা নির্দিষ্ট করুন। যদি পাতা প্রতি ব্যবহারকারীর সম্পাদনা প্রত্যাবর্তনের বিধিনিষেধ সক্রিয় করা হয় এবং এটি সেট না করা হয়, তবে অটোমডারেটর একই ব্যবহারকারীর সম্পাদনা সীমাহীন পরিমাণে ফিরিয়ে আনবে।",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "পাতা প্রতি ব্যবহারকারীর সম্পাদনা প্রত্যাবর্তন সক্রিয় করুন",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "অটোমডারেটর ২৪ ঘণ্টার মধ্যে প্রদত্ত পাতায় একই ব্যবহারকারীর সম্পাদনা কতবার পূর্বাবস্থায় ফিরিয়ে আনতে পারবে তা নির্দিষ্ট করার বৈশিষ্ট্যটি সক্রিয় করে।",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "প্রতি পাতায় ব্যবহারকারীর সম্পাদনা প্রত্যাবর্তনের জন্য প্রবেশ করানো মানটি কোনও সংখ্যা নয়, অনুগ্রহ করে অন্য একটি দিয়ে চেষ্টা করুন।"
+	"automoderator-config-validator-user-reverts-per-page-not-number": "প্রতি পাতায় ব্যবহারকারীর সম্পাদনা প্রত্যাবর্তনের জন্য প্রবেশ করানো মানটি কোনও সংখ্যা নয়, অনুগ্রহ করে অন্য একটি দিয়ে চেষ্টা করুন।",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "সম্পাদনা করতে সাহায্য করার জন্য একটি পাতার লিঙ্ক দিন",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "গন্তব্য পাতা",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "লেবেল",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "অনিবন্ধিত অবদানকারীদের ক্ষেত্রে আলাপ পাতার বার্তায় একটি পাতার লিঙ্ক দেওয়া থাকবে যাতে তারা এটি পড়ে সম্পাদনা শিখতে পারে। এই লিঙ্কটি উইকির যে কোনও লিঙ্ক হিসেবে কনফিগার করা যেতে পারে।"
 }

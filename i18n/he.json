@@ -11,7 +11,8 @@
 	"automoderator-desc": "מחזיר באופן אוטומטי עריכות גרועות על סמך דירוג ממודל למידת מכונה.",
 	"automoderator-wiki-report-false-positive": "דיווח תוצאה חיובית שגויה",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 שחזר את העריכה שלך",
-	"automoderator-wiki-revert-message": "שלום! אני [[User:$1|$1]], מערכת אוטומטית שמשתמשת במודל למידת מכונה כדי לזהות ולשחזר עריכות שעלולות להיות גרועות כדי להבטיח שוויקיפדיה תישאר מדויקת ואמינה. לרוע המזל, שחזרתי אחת מה[[Special:Diff/$2|עריכות האחרונות]] שלך לדף [[$3]].\n* מכיוון שהמודל שאני משתמשת בה אינה מושלמת, היא משחזרת לפעמים עריכות טובות. אם נראה לך שהשינוי שביצעת היה מועיל, נא [[$4|לדווח על זה כאן]].\n* [[:mw:Moderator Tools/Automoderator|מידע נוסף]] על התוכנה שלי.\n* למידע נוסף על עריכה, נא לבקר ב[[Special:Homepage|דף הבית למתחילים]].",
+	"automoderator-wiki-revert-message": "שלום! אני [[User:$1|$1]], מערכת אוטומטית שמשתמשת במודל למידת מכונה כדי לזהות ולשחזר עריכות שעלולות להיות גרועות כדי להבטיח שוויקיפדיה תישאר מדויקת ואמינה. לרוע המזל, שחזרתי אחת מה[[Special:Diff/$2|עריכות האחרונות]] שלך לדף [[$3]].\n* מכיוון שהמודל שאני משתמשת בו אינו מושלם, הוא משחזר לפעמים עריכות טובות. אם נראה לך שהשינוי שעשית היה מועיל, נא [[$4|לדווח על זה כאן]].\n* [[:mw:Moderator Tools/Automoderator|מידע נוסף]] על התוכנה שלי.",
+	"automoderator-wiki-revert-message-help-page": "* למידע נוסף על עריכה, נא לבקר בדף העזרה: [[$1|$2]].",
 	"automoderator-wiki-revert-message-follow-up": "שחזרתי גם אחת מה[[Special:Diff/$1|עריכות האחרונות]] שלך שלך בדף [[$2]] כי היא נראתה לא בונה.",
 	"automoderator-wiki-revert-edit-summary": "הודעה על שחזור אוטומטי בדף [[$1]]",
 	"automoderator-wiki-undo-summary": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]])",
@@ -49,5 +50,9 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "הגדרה של מספר הפעמים שהמפקח האוטומטי יכול לשחזר את אותו המשתמש בדף נתון בתוך פרק זמן של 24 שעות. אם הגבלות שחזור המשתמש בדף אחד מופעלות וזה לא מוגדר, המפקח האוטומטי ישחזר את אותו המשתמש מספר בלתי־מוגבל של פעמים.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "להפעיל שחזורי משתמש לדף",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "הפעלת האפשרות להגדיר כמה פעמים המפקח האוטומטי יכול לשחזר את אותו המשתמש בדף נתון בתוך פרק זמן של 24 שעות.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "הערך שהוזן ל\"שחזורי משתמש לדף\" אינו מספר, נא לנסות ערך אחר."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "הערך שהוזן ל\"שחזורי משתמש לדף\" אינו מספר, נא לנסות ערך אחר.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "קישור לדף שיעזור בעריכה",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "דף היעד",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "תווית",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "הודעת דף השיחה לתורמים לא רשומים תציג קישור לדף שיעזור להם בעריכה.\nניתן להגדיר את הקישור הזה לכל קישור בוויקי."
 }

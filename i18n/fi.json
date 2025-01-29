@@ -10,7 +10,8 @@
 	"automoderator-desc": "Kumoaa huonolaatuiset muokkaukset koneoppimismallilla tehdyn pisteytyksen mukaan.",
 	"automoderator-wiki-report-false-positive": "ilmoita väärästä positiivisesta",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 kumosi muokkauksesi",
-	"automoderator-wiki-revert-message": "Hei! Olen [[User:$1|$1]], automaattinen järjestelmä, joka käyttää koneoppimismallia mahdollisesti huonolaatuisten muokkausten tunnistamiseen ja kumoamiseen varmistaakseni, että Wikipedia pysyisi luotettavana.\nIkävä kyllä, kumosin yhden [[Special:Diff/$2|tuoreista muokkauksistasi]] sivulla [[$3]].\n* Koska käyttämäni malli ei ole täydellinen, se kumoaa välillä myös hyvälaatuisia muokkauksia. Jos uskot tekemäsi muutoksen olleen hyödyllinen, [[$4|ilmoita siitä täällä]].\n* [[:mw:Moderator Tools/Automoderator|Lisätietoja]] ohjelmastani.\n* Oppiaksesi lisää muokkaamisesta käy [[Special:Homepage|tulokkaan aloitussivulla]].",
+	"automoderator-wiki-revert-message": "Hei! Olen [[User:$1|$1]], automaattinen järjestelmä, joka käyttää koneoppimismallia mahdollisesti huonolaatuisten muokkausten tunnistamiseen ja kumoamiseen varmistaakseni, että Wikipedia pysyisi luotettavana.\nIkävä kyllä, kumosin yhden [[Special:Diff/$2|tuoreista muokkauksistasi]] sivulla [[$3]].\n* Koska käyttämäni malli ei ole täydellinen, se kumoaa välillä myös hyvälaatuisia muokkauksia. Jos uskot tekemäsi muutoksen olleen hyödyllinen, [[$4|ilmoita siitä täällä]].\n* [[:mw:Moderator Tools/Automoderator|Lisätietoja]] ohjelmastani.",
+	"automoderator-wiki-revert-message-help-page": "* Ohjeita muokkaamiseen löydät tältä ohjesivulta: [[$1|$2]]",
 	"automoderator-wiki-revert-message-follow-up": "Kumosi myös yhden [[Special:Diff/$1|tuoreista muokkauksistasi]] sivulle [[$2]], koska se ei vaikuttanut rakentavalta.",
 	"automoderator-wiki-revert-edit-summary": "Ilmoitus automaattisesta kumoamisesta sivulla [[$1]]",
 	"automoderator-wiki-undo-summary": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]])",
@@ -48,5 +49,9 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Määritä, kuinka monta kertaa Automoderator voi kumota saman käyttäjän muokkauksia tietyllä sivulla 24 tunnin aikana. Jos käyttäjän kumoamisten sivukohtaiset rajat ovat käytössä ja tätä ei ole määritetty, Automoderator kumota voi saman käyttäjän rajattoman määrän kertoja.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Ota käyttäjän kumoamisten sivukohtaiset rajat",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Mahdollistaa sen määrittämisen, kuinka monta kertaa Automoderator voi kumota saman käyttäjän tietyllä sivulla 24 tunnin aikana.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "Käyttäjän kumoamisten sivukohtaiseen rajaan annettu arvo ei ole numero, kokeile toista."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Käyttäjän kumoamisten sivukohtaiseen rajaan annettu arvo ei ole numero, kokeile toista.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Linkki sivulle, jossa on ohjeita muokkaamiseen",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Kohdesivu",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Nimi",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Rekisteröitymättömien käyttäjien keskustelusivuviesti sisältää linkin sivulle, jossa on ohjeita muokkaamiseen. Tämä linkki voidaan määrittää miksi tahansa linkiksi wikissä."
 }

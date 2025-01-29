@@ -10,7 +10,8 @@
 	"automoderator-desc": "Maşın öyrənmə modelindən əldə edilən xal əsasında zərərli redaktələri avtomatik olaraq geri qaytarır.",
 	"automoderator-wiki-report-false-positive": "xətanı bildir",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 redaktənizi geri qaytardı",
-	"automoderator-wiki-revert-message": "Salam! Mənim adım [[User:$1|$1]]dur, Vikipediyanın etibarlı qalmasını təmin etmək üçün potensial pis redaktələri müəyyən etmək və geri qaytarmaq üçün maşın öyrənmə modelindən istifadə edən avtomatlaşdırılmış sisteməm. Təəssüf ki, mən sizin [[$3]] səhifəsindəki [[Special:Diff/$2|son redaktələrinizdən]] birini geri qaytardım.\n* İstifadə etdiyim model mükəmməl olmadığı üçün bəzən yaxşı redaktələri də geri qaytarır. Etdiyiniz dəyişikliyin konstruktiv olduğuna inanırsınızsa, lütfən, [[$4|burada bildirin]].\n* Proqram təminatım haqqında [[:mw:Moderator Tools/Automoderator|buradan ətraflı məlumat əldə edə bilərsiniz]].\n* Redaktə etmək barədə ətraflı öyrənmək üçün [[Special:Homepage|öz ana səhifənizə]] daxil olun.",
+	"automoderator-wiki-revert-message": "Salam! Mənim adım [[User:$1|$1]]dur, Vikipediyanın etibarlı qalmasını təmin etmək üçün potensial pis redaktələri müəyyən etmək və geri qaytarmaq üçün maşın öyrənmə modelindən istifadə edən avtomatlaşdırılmış sisteməm. Təəssüf ki, mən sizin [[$3]] səhifəsindəki [[Special:Diff/$2|son redaktələrinizdən]] birini geri qaytardım.\n* İstifadə etdiyim model mükəmməl olmadığı üçün bəzən yaxşı redaktələri də geri qaytarır. Etdiyiniz dəyişikliyin konstruktiv olduğuna inanırsınızsa, lütfən, [[$4|burada bildirin]].\n* Proqram təminatım haqqında [[:mw:Moderator Tools/Automoderator|buradan ətraflı məlumat əldə edə bilərsiniz]].",
+	"automoderator-wiki-revert-message-help-page": "* Redaktə haqqında ətraflı öyrənmək üçün bu yardım səhifəsinə baxın: [[$1|$2]].",
 	"automoderator-wiki-revert-message-follow-up": "Mən həmçinin qeyri-konstruktiv göründüyü üçün sizin [[$2]] səhifəsindəki [[Special:Diff/$1|son redaktələrinizdən]] birini geri qaytardım",
 	"automoderator-wiki-revert-edit-summary": "[[$1]] səhifəsindəki avtomatik geri qaytarma bildirişi",
 	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|müzakirə]]) tərəfindən edilmiş [[Special:Diff/$1|$1]] nömrəli redaktə geri qaytarılır",
@@ -48,5 +49,9 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Avtomoderatorun 24 saat ərzində verilən səhifədə eyni istifadəçini neçə dəfə geri qaytara biləcəyini təyin edin. Əgər bu məhdudiyyət aktivləşdirilibsə və bu say təyin olunmayıbsa, Avtomoderator eyni istifadəçini sonsuz sayda geri qaytaracaq.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Hər səhifəyə görə istifadəçi geri qaytarılmasını aktivləşdir",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Avtomoderatorun 24 saat ərzində verilən səhifədə eyni istifadəçini neçə dəfə geri qaytara biləcəyini müəyyən etmək üçün funksiyanı aktivləşdirir.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "Hər səhifəyə görə istifadəçi geri qaytarılma üçün daxil edilmiş dəyər rəqəm deyil, bir daha cəhd edin."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Hər səhifəyə görə istifadəçi geri qaytarılma üçün daxil edilmiş dəyər rəqəm deyil, bir daha cəhd edin.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Redaktə ilə bağlı kömək səhifəsinə keçid",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Hədəf səhifəsi",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etiket",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Qeydiyyatdan keçməmiş redaktorlar üçün müzakirə səhifəsi mesajı redaktə ilə bağlı kömək səhifəsinə keçid verəcək.\nBu keçid vikidə istənilən keçid kimi konfiqurasiya edilə bilər."
 }

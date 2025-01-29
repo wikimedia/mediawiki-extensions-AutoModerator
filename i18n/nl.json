@@ -11,7 +11,8 @@
 	"automoderator-desc": "Draait slechte bewerkingen automatisch terug op basis van scores uit een machine learning-model.",
 	"automoderator-wiki-report-false-positive": "vals positief melden",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 heeft uw bewerking teruggedraaid",
-	"automoderator-wiki-revert-message": "Hallo! Ik ben [[User:$1|$1]], een geautomatiseerd systeem dat een machine learning-model gebruikt om mogelijk slechte bewerkingen te identificeren en terug te draaien om ervoor te zorgen dat Wikipedia betrouwbaar en geloofwaardig blijft. Helaas heb ik een van uw [[Special:Diff/$2|recente bewerkingen]] teruggedraaid op de pagina [[$3]].\n* Omdat het model dat dat wordt gebruikt niet perfect is, draait het soms goede bewerkingen terug. Als u denkt dat de wijziging die u hebt aangebracht constructief was, [[$4|meld het dan hier]].\n* [[:mw:Moderator Tools/Automoderator|Lees meer]] over de software.\n* Ga naar de [[Special:Homepage|Homepage voor nieuwkomers]] voor meer informatie over bewerken.",
+	"automoderator-wiki-revert-message": "Hallo! Ik ben [[User:$1|$1]], een geautomatiseerd systeem dat een machine learning-model gebruikt om mogelijk slechte bewerkingen te identificeren en terug te draaien om Wikipedia betrouwbaar en geloofwaardig te houden. Helaas heb ik een van uw [[Special:Diff/$2|recente bewerkingen]] teruggedraaid op de pagina [[$3]].\n* Omdat het model dat dat wordt gebruikt niet perfect is, draait het soms goede bewerkingen terug. Als u denkt dat de wijziging die u hebt aangebracht constructief was, [[$4|meld het dan hier]].\n* [[:mw:Moderator Tools/Automoderator|Lees meer]] over de software.",
+	"automoderator-wiki-revert-message-help-page": "\n* Voor meer informatie over bewerken kunt u deze hulppagina raadplegen: [[$1|$2]].",
 	"automoderator-wiki-revert-message-follow-up": "Ik heb ook een van uw [[Special:Diff/$1|recente bewerkingen]] op [[$2]] teruggedraaid omdat die er niet constructief uitzag.",
 	"automoderator-wiki-revert-edit-summary": "Kennisgeving van automatisch terugdraaien op [[$1]]",
 	"automoderator-wiki-undo-summary": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ([[User talk:$2|overleg]]) ongedaan gemaakt",
@@ -49,5 +50,9 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Geef aan hoe vaak Automoderator dezelfde gebruiker op een bepaalde pagina binnen een periode van 24 uur kan terugdraaien. Als beperkingen voor gebruikersterugdraaien per pagina zijn ingeschakeld en dit niet is ingesteld, zal Automoderator dezelfde gebruiker een onbeperkt aantal keren terugdraaien.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Gebruikersterugdraaiingen per pagina inschakelen",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Hiermee wordt de functie ingeschakeld waarmee u kunt opgeven hoe vaak Automoderator dezelfde gebruiker binnen 24 uur op een bepaalde pagina kan terugdraaien.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "De ingevoerde waarde voor Gebruikersterugdraaiingen per pagina is geen getal. Probeer een andere."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "De ingevoerde waarde voor Gebruikersterugdraaiingen per pagina is geen getal. Probeer een andere.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Koppeling naar een pagina om te helpen bij het bewerken",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Bestemmingspagina",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Label",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "In het bericht op de overlegpagina voor niet-geregistreerde bijdragers staat een koppeling naar een pagina om hen te helpen bij het bewerken.\nDeze koppeling is instelbaar en kan naar een willekeurige pagina op de wiki verwijzen."
 }
