@@ -53,5 +53,7 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Indique le nombre de fois qu'Automoderator peut annuler les modifications d'un même utilisateur sur une page donnée au cours d'une période de 24 heures. Si l'option de restriction du nombre d'annulations sur une page est activée mais qu'aucun nombre maximal n'est fourni, Automoderator considèrera ce nombre comme étant illimité.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Activer la restriction du nombre d'annulations sur une page",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Active l'option pour préciser le nombre de fois qu'Automoderator peut annuler les modifications d'un même utilisateur sur une page donnée au cours d'une période de 24 heures.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "La valeur saisie pour le Nombre maximal d'annulations des modifications d'un utilisateur sur une page doit être un nombre, merci de proposer autre chose."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "La valeur saisie pour le Nombre maximal d'annulations des modifications d'un utilisateur sur une page doit être un nombre, merci de proposer autre chose.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Page de destination",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Libellé"
 }
