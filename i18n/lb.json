@@ -4,7 +4,10 @@
 			"Volvox"
 		]
 	},
+	"automoderator-wiki-revert-message-help-page": "* Fir méi iwwer d'Ännere gewuer ze ginn, kuckt wgl. dës Hëllefssäit: [[$1|$2]].",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Benotzerrechter",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleng Ännerungen",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botännerung"
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botännerung",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zilsäit",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etikett"
 }

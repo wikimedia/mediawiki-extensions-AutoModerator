@@ -2,11 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"Alien333",
+			"Eihel",
 			"Goombiis",
 			"Mahabarata",
 			"SleaY",
 			"Terio legale",
-			"Trizek (WMF)"
+			"Trizek (WMF)",
+			"Wladek92"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 a trop d'éléments ($2 {{PLURAL:$2|est autorisé|sont autorisés}} au maximum)",
@@ -15,7 +17,8 @@
 	"automoderator-desc": "Annule automatiquement les mauvaises modifications à partir du score donné par un modèle d'apprentissage automatique.",
 	"automoderator-wiki-report-false-positive": "signaler un faux positif",
 	"automoderator-wiki-revert-message-header": "$1 $2 : $3 a annulé votre modification",
-	"automoderator-wiki-revert-message": "Bonjour! Je suis [[User:$1|$1]], un système automatisé qui utilise un modèle d'apprentissage automatique pour identifier et annuler les modifications potentiellement mauvaises afin de garantir que Wikipédia reste fiable et digne de confiance. Malheureusement, j'ai annulé l'une de vos [[Special:Diff/$2|modifications récentes]] à [[$3]].\n* Étant donné que le modèle que j'utilise n'est pas parfait, il annule parfois de bonnes modifications. Si vous pensez que la modification que vous avez apportée était constructive, veuillez [[$4|le signaler ici]].\n* [[:mw:Moderator Tools/Automoderator|En savoir plus]] sur mon logiciel.\n* Pour en savoir plus sur la modification, visitez votre [[Special:Homepage|page d'accueil]].",
+	"automoderator-wiki-revert-message": "Bonjour ! Je suis [[User:$1|$1]], un système automatisé qui utilise un modèle d’apprentissage automatique pour identifier et annuler les modifications potentiellement mauvaises afin de garantir que Wikipedia reste fiable et digne de confiance. Malheureusement, j’ai annulé l’une de vos [[Special:Diff/$2|modifications récentes]] à [[$3]].\n* Étant donné que le modèle que j’utilise n’est pas parfait, il annule parfois de bonnes modifications. Si vous pensez que la modification que vous avez apportée était constructive, veuillez [[$4|le signaler ici]], s’il vous plaît.\n* [[:mw:Moderator Tools/Automoderator|En savoir plus]] sur mon logiciel.",
+	"automoderator-wiki-revert-message-help-page": "Pour en savoir plus sur l’édition, veuillez consulter cette page d’aide : [[$1|$2]].",
 	"automoderator-wiki-revert-message-follow-up": "J'ai également annulé l'une de vos [[Special:Diff/$1|modifications récentes]] sur [[$2]] car cela ne semblait pas constructif.",
 	"automoderator-wiki-revert-edit-summary": "Avis d'annulation automatique sur [[$1]]",
 	"automoderator-wiki-undo-summary": "Annulation des modifications [[Special:Diff/$1|$1]] de [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]])",
@@ -54,6 +57,7 @@
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Activer la restriction du nombre d'annulations sur une page",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Active l'option pour préciser le nombre de fois qu'Automoderator peut annuler les modifications d'un même utilisateur sur une page donnée au cours d'une période de 24 heures.",
 	"automoderator-config-validator-user-reverts-per-page-not-number": "La valeur saisie pour le Nombre maximal d'annulations des modifications d'un utilisateur sur une page doit être un nombre, merci de proposer autre chose.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Lien vers une page pour aider l'édition",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Page de destination",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Libellé"
 }

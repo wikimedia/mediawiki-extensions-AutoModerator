@@ -10,7 +10,8 @@
 	"automoderator-desc": "Reverte automaticamente modificationes mal a base de scores calculate per un modello de apprendimento machinal.",
 	"automoderator-wiki-report-false-positive": "signalar false positivo",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 ha revertite tu modification",
-	"automoderator-wiki-revert-message": "Salute! Io es [[User:$1|$1]], un systema automatisate que identifica e disface modificationes potentialmente mal per medio de un modello de apprendimento machinal, a fin de assecurar que Wikipedia remane digne de fide. Regrettabilemente, io ha debite disfacer un de tu [[Special:Diff/$2|modificationes recente]] de [[$3]].\n* Perque le modello que io emplea non es perfecte, pote occurrer que illo reverte bon modificationes. Si tu crede que le modification que tu ha apportate es constructive, per favor [[$4|signala lo hic]].\n* [[:mw:Moderator Tools/Automoderator|Lege plus]] sur mi software.\n* Pro apprender plus sur como modificar, visita tu [[Special:Homepage|Pagina de initio pro novicios]].",
+	"automoderator-wiki-revert-message": "Salute! Io es [[User:$1|$1]], un systema automatisate que identifica e disface modificationes potentialmente mal per medio de un modello de apprendimento machinal, a fin de assecurar que Wikipedia remane digne de fide. Regrettabilemente, io ha debite disfacer un de tu [[Special:Diff/$2|modificationes recente]] de [[$3]].\n* Perque le modello que io emplea non es perfecte, pote occurrer que illo reverte bon modificationes. Si tu crede que le modification que tu ha apportate es constructive, per favor [[$4|signala lo hic]].\n* [[:mw:Moderator Tools/Automoderator|Lege plus]] sur mi software.",
+	"automoderator-wiki-revert-message-help-page": "\n* Pro leger plus sur como modificar, consulta iste pagina de ajuta: [[$1|$2]].",
 	"automoderator-wiki-revert-message-follow-up": "Io ha tamben revertite un de tu [[Special:Diff/$1|modificationes recente]] de [[$2]] perque illo non pareva constructive.",
 	"automoderator-wiki-revert-edit-summary": "Notification de reversion automatic sur [[$1]]",
 	"automoderator-wiki-undo-summary": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]])",
@@ -48,5 +49,9 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Specifica quante vices Automoderator pote reverter le mesme usator sur un pagina specific durante un periodo de 24 horas. Si le restrictiones de reversion per usator per pagina es activate e isto non es configurate, Automoderator revertera le mesme usator un numero illimitate de vices.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Activar le reversiones per usator per pagina",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Activa le function pro specificar quante vices Automoderator pote reverter le mesme usator sur un pagina specific durante un periodo de 24 horas.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "Le valor inserite pro reversiones per usator per pagina non es un numero. Per favor, prova un altere valor."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Le valor inserite pro reversiones per usator per pagina non es un numero. Per favor, prova un altere valor.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Ligamine a un pagina pro adjutar a modificar",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Pagina de destination",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etiquetta",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Le message de pagina de discussion pro contributores non registrate monstrara un ligamine a un pagina pro adjutar les a modificar.\nIste ligamine pote esser configurate pro esser qualcunque ligamine sur le wiki."
 }
