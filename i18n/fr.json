@@ -6,7 +6,9 @@
 			"SleaY",
 			"Terio legale",
 			"Trizek (WMF)",
-			"Mahabarata"
+			"Mahabarata",
+			"Eihel",
+			"Wladek92"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 a trop d'éléments ($2 {{PLURAL:$2|est autorisé|sont autorisés}} au maximum)",
