@@ -16,6 +16,7 @@
 
 namespace AutoModerator\Services;
 
+use AutoModerator\AutoModeratorServices;
 use AutoModerator\Util;
 use Job;
 use MediaWiki\Logger\LoggerFactory;
@@ -102,9 +103,11 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		try {
 			$services = MediaWikiServices::getInstance();
+			$autoModeratorServices = AutoModeratorServices::wrap( $services );
 			$userFactory = $services->getUserFactory();
 			$revisionStore = $services->getRevisionStore();
 			$parentRevision = $revisionStore->getRevisionById( $this->parentRevId );
+			$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
 			if ( !$parentRevision ) {
 				$this->setLastError( self::NO_PARENT_REVISION_FOUND );
 				$this->setAllowRetries( false );
@@ -163,8 +166,18 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 					$this->revId,
 					$this->pageTitle,
 					$this->falsePositiveReportPageTitle )->plain();
-				$apiClient->addTopic( $this->talkPageMessageHeader, $userTalkPageTitle, $talkPageMessage,
-					$this->talkPageMessageEditSummary, $autoModeratorUser );
+				$helpPageLink = $wikiConfig->get( 'AutoModeratorHelpPageLink' );
+				if ( $helpPageLink ) {
+					$helpPageBulletPoint = wfMessage( 'automoderator-wiki-revert-message-help-page' )->params(
+						$helpPageLink
+					)->plain();
+					$apiClient->addTopic( $this->talkPageMessageHeader, $userTalkPageTitle,
+						$talkPageMessage . $helpPageBulletPoint, $this->talkPageMessageEditSummary,
+						$autoModeratorUser );
+				} else {
+					$apiClient->addTopic( $this->talkPageMessageHeader, $userTalkPageTitle, $talkPageMessage,
+						$this->talkPageMessageEditSummary, $autoModeratorUser );
+				}
 			}
 
 		} catch ( RuntimeException $e ) {

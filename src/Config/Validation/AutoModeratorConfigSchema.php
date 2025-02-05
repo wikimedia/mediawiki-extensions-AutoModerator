@@ -36,6 +36,12 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		self::DEFAULT => false
 	];
 
+	public const AutoModeratorHelpPageLink = [
+		self::REQUIRED => false,
+		self::REF => [ 'class' => MediaWikiDefinitions::class, 'field' => 'PageTitle' ],
+		self::DEFAULT => "",
+	];
+
 	public const AutoModeratorEnableUserRevertsPerPage = [
 		self::REQUIRED => true,
 		self::TYPE => self::TYPE_BOOLEAN,

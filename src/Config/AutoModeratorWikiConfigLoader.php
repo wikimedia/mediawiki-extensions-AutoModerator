@@ -32,7 +32,8 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 		'AutoModeratorSkipUserRights',
 		'AutoModeratorCautionLevel',
 		'AutoModeratorEnableUserRevertsPerPage',
-		'AutoModeratorUserRevertsPerPage'
+		'AutoModeratorUserRevertsPerPage',
+		'AutoModeratorHelpPageLink'
 	];
 
 	/**

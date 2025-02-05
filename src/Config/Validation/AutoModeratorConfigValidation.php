@@ -42,6 +42,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			],
 			'AutoModeratorUserRevertsPerPage' => [
 				'type' => '?string',
+			],
+			'AutoModeratorHelpPageLink' => [
+				'type' => '?string'
 			]
 		];
 	}
@@ -97,6 +100,7 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 				$value
 			);
 		}
+
 		return StatusValue::newGood();
 	}
 

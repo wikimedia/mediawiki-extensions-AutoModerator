@@ -124,6 +124,10 @@
 					"less-cautious": 0.960
 				}
 			}
+		},
+		"AutoModeratorHelpPageLink": {
+			"description": "A link that appears in the talk page message that leads them to a community-selected help page.",
+			"value": null
 		}
 	},
 	"HookHandlers": {
