@@ -7,6 +7,7 @@ use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
+use ChangeTags;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
@@ -63,7 +64,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$user->method( 'getId' )->willReturn( 1000 );
 		$user->method( 'getName' )->willReturn( 'TestUser1000' );
 		return [
-			[ $wikiPage, $rev, false, $user, [ 'mw-rollback' ] ]
+			[ $wikiPage, $rev, false, $user, [ ChangeTags::TAG_ROLLBACK ] ]
 		];
 	}
 
@@ -569,7 +570,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob
-	 * @throws \JobQueueError
 	 */
 	public function testOnRevisionFromEditCompleteNotQueuedORESEnabled(
 		$wikiPage, $rev, $originalRevId, $user, $tags ) {

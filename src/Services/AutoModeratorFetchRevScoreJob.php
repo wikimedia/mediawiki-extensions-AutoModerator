@@ -110,10 +110,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$wikiId = Util::getWikiID( $config );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$userFactory = $services->getUserFactory();
-		$user = $userFactory->newFromAnyId(
-			$this->params['userId'],
-			$this->params['userName']
-		);
 
 		$rev = $revisionStore->getRevisionById( $this->revId );
 		if ( $rev === null ) {
@@ -126,8 +122,9 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			SlotRecord::MAIN,
 			RevisionRecord::RAW
 		)->getModel() );
+
 		try {
-			$user = $services->getUserFactory()->newFromAnyId(
+			$user = $userFactory->newFromAnyId(
 				$this->params['userId'],
 				$this->params['userName']
 			);
@@ -189,7 +186,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 					$services->getActorNormalization(),
 					$wikiPageFactory->newFromID( $this->wikiPageId ),
 					$autoModeratorUser->getUser(),
-					$user->getUser(),
+					$user,
 					$config,
 					$wikiConfig
 				),

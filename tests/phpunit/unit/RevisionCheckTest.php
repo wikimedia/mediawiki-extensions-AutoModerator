@@ -4,6 +4,7 @@ namespace AutoModerator\Tests;
 
 use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorRollback;
+use ChangeTags;
 use DummyContentForTesting;
 use MediaWiki\Block\AbstractBlock;
 use MediaWiki\Config\Config;
@@ -514,7 +515,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testSelfRevertPreCheckTagRevertEdit() {
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
 			$this->autoModeratorUser,
@@ -599,7 +600,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testOthersRevertPreCheckTagRevertEdit() {
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
@@ -620,7 +621,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testSelfRevertPreCheckTagRollbackEdit() {
-		$this->tags = [ 'mw-rollback' ];
+		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
 			$this->autoModeratorUser,
@@ -641,7 +642,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testOthersRevertPreCheckTagRollbackEdit() {
-		$this->tags = [ 'mw-rollback' ];
+		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
@@ -662,7 +663,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testSelfRevertPreCheckTagUndoEdit() {
-		$this->tags = [ 'mw-rollback' ];
+		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
 			$this->autoModeratorUser,
@@ -683,7 +684,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testOthersRevertPreCheckTagUndoEdit() {
-		$this->tags = [ 'mw-rollback' ];
+		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
@@ -704,7 +705,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckTagNewRedirect() {
-		$this->tags = [ 'mw-new-redirect' ];
+		$this->tags = [ ChangeTags::TAG_NEW_REDIRECT ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
@@ -725,7 +726,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckTagRemovedRedirect() {
-		$this->tags = [ 'mw-removed-redirect' ];
+		$this->tags = [ ChangeTags::TAG_REMOVED_REDIRECT ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
@@ -746,7 +747,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckTagChangedRedirect() {
-		$this->tags = [ 'mw-changed-redirect-target' ];
+		$this->tags = [ ChangeTags::TAG_CHANGED_REDIRECT_TARGET ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
@@ -837,7 +838,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->user->method( 'getName' )->willReturn( 'ATestUser' );
 		$this->user->method( 'isRegistered' )->willReturn( true );
 		$this->user->method( 'equals' )->willReturn( true );
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 
 		$mockParentRevision = $this->createMock( RevisionRecord::class );
@@ -875,7 +876,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->user->method( 'getName' )->willReturn( 'ATestUser' );
 		$this->user->method( 'isRegistered' )->willReturn( true );
 		$this->user->method( 'equals' )->willReturn( false );
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 
 		$mockParentRevision = $this->createMock( RevisionRecord::class );
@@ -912,7 +913,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->autoModeratorUser->method( 'equals' )->willReturn( true );
 
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 
 		$mockParentRevision = $this->createMock( RevisionRecord::class );
@@ -949,7 +950,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->autoModeratorUser->method( 'equals' )->willReturn( false );
 
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 
 		$mockParentRevision = $this->createMock( RevisionRecord::class );
@@ -983,7 +984,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckFalseWhenNoParentRevision() {
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRevision->method( "getParentId" )->willReturn( 1 );
@@ -1015,7 +1016,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckTrueWhenParentRevision() {
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRevision->method( "getParentId" )->willReturn( 1 );
@@ -1047,7 +1048,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::revertPreCheck
 	 */
 	public function testRevertPreCheckFalseWhenNoParentRevisionUser() {
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRevision->method( "getParentId" )->willReturn( $this->fakeRevisions[0]->getId() );
@@ -1079,7 +1080,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->autoModeratorUser->method( 'equals' )->willReturn( true );
 
-		$this->tags = [ 'mw-manual-revert' ];
+		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 
 		$mockRevision = $this->createMock( RevisionRecord::class );

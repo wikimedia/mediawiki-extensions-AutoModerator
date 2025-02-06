@@ -61,7 +61,8 @@ class TalkPageMessageSender {
 		Title $title,
 		?int $revId,
 		User $autoModeratorUser,
-		LoggerInterface $logger ): void {
+		LoggerInterface $logger
+	): void {
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'DiscussionTools' ) ) {
 			// Discussion Tools is not loaded, we will not push a new job to the queue
 			return;
