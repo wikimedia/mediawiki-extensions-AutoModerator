@@ -172,7 +172,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 						$helpPageLink
 					)->plain();
 					$apiClient->addTopic( $this->talkPageMessageHeader, $userTalkPageTitle,
-						$talkPageMessage . $helpPageBulletPoint, $this->talkPageMessageEditSummary,
+						$talkPageMessage . "\n" . $helpPageBulletPoint, $this->talkPageMessageEditSummary,
 						$autoModeratorUser );
 				} else {
 					$apiClient->addTopic( $this->talkPageMessageHeader, $userTalkPageTitle, $talkPageMessage,
