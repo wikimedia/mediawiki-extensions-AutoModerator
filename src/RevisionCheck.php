@@ -233,6 +233,7 @@ class RevisionCheck {
 		];
 		foreach ( $moveTags as $moveTag ) {
 			if ( in_array( $moveTag, $tags ) ) {
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - page move' );
 				return false;
 			}
 		}
