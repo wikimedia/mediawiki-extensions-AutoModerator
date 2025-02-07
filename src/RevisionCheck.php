@@ -202,31 +202,31 @@ class RevisionCheck {
 			$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
 			return false;
 		}
+		// Skip already reverted edits
+		if ( in_array( ChangeTags::TAG_REVERTED, $tags ) ) {
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - already reverted' );
+			return false;
+		}
 		// Skip reverts made to an AutoModerator bot revert or if
 		// the user reverts their own edit
-		$revertTags = [
-			ChangeTags::TAG_MANUAL_REVERT, ChangeTags::TAG_ROLLBACK, ChangeTags::TAG_UNDO, ChangeTags::TAG_REVERTED
-		];
-		$parentRev = $revisionStore->getRevisionById( $parentId );
-		foreach ( $revertTags as $revertTag ) {
-			if ( in_array( $revertTag, $tags ) ) {
-				if ( !$parentRev ) {
-					$logger->debug( __METHOD__ . ': AutoModerator skip rev - parent revision not found' );
-					return false;
-				}
-				$parentRevUser = $parentRev->getUser();
-				if ( $parentRevUser === null ) {
-					$logger->debug( __METHOD__ . ': AutoModerator skip rev - parent revision user is null' );
-					return false;
-				}
-				if ( self::areUsersEqual( $parentRevUser, $autoModeratorUser ) ) {
-					$logger->debug( __METHOD__ . ': AutoModerator skip rev - AutoModerator reverts' );
-					return false;
-				}
-				if ( self::areUsersEqual( $parentRevUser, $user ) ) {
-					$logger->debug( __METHOD__ . ': AutoModerator skip rev - own reverts' );
-					return false;
-				}
+		if ( array_intersect( $tags, ChangeTags::REVERT_TAGS ) ) {
+			$parentRev = $revisionStore->getRevisionById( $parentId );
+			if ( !$parentRev ) {
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - parent revision not found' );
+				return false;
+			}
+			$parentRevUser = $parentRev->getUser();
+			if ( $parentRevUser === null ) {
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - parent revision user is null' );
+				return false;
+			}
+			if ( self::areUsersEqual( $parentRevUser, $autoModeratorUser ) ) {
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - AutoModerator reverts' );
+				return false;
+			}
+			if ( self::areUsersEqual( $parentRevUser, $user ) ) {
+				$logger->debug( __METHOD__ . ': AutoModerator skip rev - own reverts' );
+				return false;
 			}
 		}
 		// Skip page moves

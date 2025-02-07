@@ -691,51 +691,21 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
-	public function testRevertPreCheckTagNewRedirect() {
-		$this->tags = [ ChangeTags::TAG_NEW_REDIRECT ];
-		$passedPreCheck = RevisionCheck::revertPreCheck(
-			$this->user,
-			$this->autoModeratorUser,
-			$this->logger,
-			$this->revisionStoreMock,
-			$this->tags,
-			$this->restrictionStore,
-			$this->wikiPageFactory,
-			$this->wikiConfig,
-			$this->rev,
-			$this->permissionManager
-		);
-		$this->assertFalse( $passedPreCheck );
+	public function provideRevertPreCheckSkipsOthersTaggedEdit(): array {
+		return [
+			[ ChangeTags::TAG_REVERTED ],
+			[ ChangeTags::TAG_NEW_REDIRECT ],
+			[ ChangeTags::TAG_REMOVED_REDIRECT ],
+			[ ChangeTags::TAG_CHANGED_REDIRECT_TARGET ],
+		];
 	}
 
 	/**
 	 * @covers ::revertPreCheck
+	 * @dataProvider provideRevertPreCheckSkipsOthersTaggedEdit
 	 */
-	public function testRevertPreCheckTagRemovedRedirect() {
-		$this->tags = [ ChangeTags::TAG_REMOVED_REDIRECT ];
-		$passedPreCheck = RevisionCheck::revertPreCheck(
-			$this->user,
-			$this->autoModeratorUser,
-			$this->logger,
-			$this->revisionStoreMock,
-			$this->tags,
-			$this->restrictionStore,
-			$this->wikiPageFactory,
-			$this->wikiConfig,
-			$this->rev,
-			$this->permissionManager
-		);
-		$this->assertFalse( $passedPreCheck );
-	}
-
-	/**
-	 * @covers ::revertPreCheck
-	 */
-	public function testRevertPreCheckTagChangedRedirect() {
-		$this->tags = [ ChangeTags::TAG_CHANGED_REDIRECT_TARGET ];
+	public function testRevertPreCheckSkipsTaggedEdit( string $tag ) {
+		$this->tags = [ $tag ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
 			$this->autoModeratorUser,
