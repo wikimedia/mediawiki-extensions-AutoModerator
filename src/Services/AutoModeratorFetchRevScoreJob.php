@@ -114,6 +114,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$rev = $revisionStore->getRevisionById( $this->revId );
 		if ( $rev === null ) {
 			$error = "rev {$this->revId} not found";
+			$logger->debug( __METHOD__ . " - " . $error );
 			$this->setLastError( $error );
 			$this->setAllowRetries( true );
 			return false;
@@ -139,6 +140,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 					$maxReverts
 				);
 				if ( $autoModeratorRevisionStore->hasReachedMaxRevertsForUser() ) {
+					$logger->debug( __METHOD__ . " - AutoModerator has reached the maximum reverts for this user" );
 					return true;
 				}
 			}
@@ -161,6 +163,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			}
 			if ( !$response ) {
 				$error = "score could not be retrieved for {$this->revId}";
+				$logger->debug( __METHOD__ . " - " . $error );
 				$this->setLastError( $error );
 				$this->setAllowRetries( true );
 				return false;
@@ -195,6 +198,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			$reverted = $revisionCheck->maybeRollback( $response, $revertRiskModelName );
 
 		} catch ( RuntimeException $exception ) {
+			$logger->debug( __METHOD__ . " - " . $exception->getMessage() );
 			$this->setLastError( $exception->getMessage() );
 			return false;
 		}
@@ -214,16 +218,19 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		}
 		// Revision unable to be reverted due to an edit conflict or race condition in the job queue
 		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'success' ) {
+			$logger->debug( __METHOD__ . " - " . $reverted['0'] );
 			$this->setAllowRetries( false );
 			return true;
 		}
 		// Revert attempted but failed to save revision record due to unknown reason
 		if ( array_key_exists( '0', $reverted ) ) {
+			$logger->debug( __METHOD__ . " - " . $reverted['0'] );
 			$this->setLastError( $reverted['0'] );
 			$this->setAllowRetries( true );
 			return false;
 		}
 
+		$logger->debug( __METHOD__ . " - Default false" );
 		return false;
 	}
 
