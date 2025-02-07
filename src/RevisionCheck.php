@@ -20,6 +20,7 @@
 namespace AutoModerator;
 
 use AutoModerator\Services\AutoModeratorRollback;
+use ChangeTags;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\Content;
 use MediaWiki\Content\ContentHandler;
@@ -185,7 +186,7 @@ class RevisionCheck {
 		// Skips reverts if AutoModerator is blocked
 		$autoModeratorBlock = $autoModeratorUser->getBlock();
 		if ( $autoModeratorBlock && $autoModeratorBlock->appliesToPage( $wikiPageId ) ) {
-			$logger->debug( "AutoModerator skip rev" . __METHOD__ . " - AutoModerator is blocked" );
+			$logger->debug( __METHOD__ . ': AutoModerator skip rev - AutoModerator is blocked' );
 			return false;
 		}
 		// Skip AutoModerator edits
@@ -201,7 +202,9 @@ class RevisionCheck {
 		}
 		// Skip reverts made to an AutoModerator bot revert or if
 		// the user reverts their own edit
-		$revertTags = [ 'mw-manual-revert', 'mw-rollback', 'mw-undo', 'mw-reverted' ];
+		$revertTags = [
+			ChangeTags::TAG_MANUAL_REVERT, ChangeTags::TAG_ROLLBACK, ChangeTags::TAG_UNDO, ChangeTags::TAG_REVERTED
+		];
 		$parentRev = $revisionStore->getRevisionById( $parentId );
 		foreach ( $revertTags as $revertTag ) {
 			if ( in_array( $revertTag, $tags ) ) {
@@ -225,7 +228,9 @@ class RevisionCheck {
 			}
 		}
 		// Skip page moves
-		$moveTags = [ 'mw-new-redirect', 'mw-removed-redirect', 'mw-changed-redirect-target' ];
+		$moveTags = [
+			ChangeTags::TAG_NEW_REDIRECT, ChangeTags::TAG_REMOVED_REDIRECT, ChangeTags::TAG_CHANGED_REDIRECT_TARGET
+		];
 		foreach ( $moveTags as $moveTag ) {
 			if ( in_array( $moveTag, $tags ) ) {
 				return false;

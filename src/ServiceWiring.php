@@ -31,7 +31,6 @@ return [
 	'AutoModeratorConfigValidatorFactory' => static function (
 		MediaWikiServices $services
 	): ConfigValidatorFactory {
-		$autoModeratorServices = AutoModeratorServices::wrap( $services );
 		return new ConfigValidatorFactory(
 			$services->getTitleFactory()
 		);
@@ -70,5 +69,5 @@ return [
 			$autoModeratorServices->getAutoModeratorWikiConfig(),
 			$services->getJobQueueGroup()
 		);
-	}
+	},
 ];

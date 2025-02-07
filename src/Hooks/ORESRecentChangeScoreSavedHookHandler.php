@@ -6,6 +6,7 @@ use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
 use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
+use ChangeTags;
 use Exception;
 use JobQueueGroup;
 use MediaWiki\ChangeTags\ChangeTagsStore;
@@ -71,17 +72,17 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		IConnectionProvider $connectionProvider,
 		TalkPageMessageSender $talkPageMessageSender
 	) {
-			$this->wikiConfig = $wikiConfig;
-			$this->userGroupManager = $userGroupManager;
-			$this->config = $config;
-			$this->wikiPageFactory = $wikiPageFactory;
-			$this->revisionStore = $revisionStore;
-			$this->restrictionStore = $restrictionStore;
-			$this->jobQueueGroup = $jobQueueGroup;
-			$this->changeTagsStore = $changeTagsStore;
-			$this->permissionManager = $permissionManager;
-			$this->connectionProvider = $connectionProvider;
-			$this->talkPageMessageSender = $talkPageMessageSender;
+		$this->wikiConfig = $wikiConfig;
+		$this->userGroupManager = $userGroupManager;
+		$this->config = $config;
+		$this->wikiPageFactory = $wikiPageFactory;
+		$this->revisionStore = $revisionStore;
+		$this->restrictionStore = $restrictionStore;
+		$this->jobQueueGroup = $jobQueueGroup;
+		$this->changeTagsStore = $changeTagsStore;
+		$this->permissionManager = $permissionManager;
+		$this->connectionProvider = $connectionProvider;
+		$this->talkPageMessageSender = $talkPageMessageSender;
 	}
 
 	/**
@@ -115,7 +116,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
 		$userId = $user->getId();
-		if ( $autoModeratorUser->getId() === $userId && in_array( 'mw-rollback', $tags ) ) {
+		if ( $autoModeratorUser->getId() === $userId && in_array( ChangeTags::TAG_ROLLBACK, $tags ) ) {
 			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
 				$this->talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
 					$autoModeratorUser, $logger );

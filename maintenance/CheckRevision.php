@@ -36,7 +36,7 @@ class CheckRevision extends Maintenance {
 	}
 
 	public function execute() {
-		if ( !ctype_digit( $this->getoption( 'revid' ) ) ) {
+		if ( !ctype_digit( $this->getOption( 'revid' ) ) ) {
 			$this->output( "'revid' must be an integer\n" );
 			return;
 		}
