@@ -4,7 +4,7 @@
 			"Volvox"
 		]
 	},
-	"automoderator-wiki-revert-message-help-page": "* Fir méi iwwer d'Ännere gewuer ze ginn, kuckt wgl. dës Hëllefssäit: [[$1|$2]].",
+	"automoderator-wiki-revert-message-help-page": "* Fir méi iwwer d'Ännere gewuer ze ginn, kuckt wgl. dës Hëllefssäit: [[$1]].",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Benotzerrechter",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleng Ännerungen",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botännerung",

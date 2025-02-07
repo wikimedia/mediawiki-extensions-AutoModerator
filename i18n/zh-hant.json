@@ -16,7 +16,7 @@
 	"automoderator-wiki-report-false-positive": "回報誤判",
 	"automoderator-wiki-revert-message-header": "$2年$1：$3回退了您的編輯",
 	"automoderator-wiki-revert-message": "您好！我是 [[User:$1|$1]]，一個使用機器學習模型的自動化系統。我負責辨識與回退有問題的編輯，以協助維護維基百科內容的可靠性。在這裡很遺憾地告知您，我回退了您近期對[[$3]]做出的[[Special:Diff/$2|編輯]]。\n* 因為我使用的模型並非完美，有可能會回退正常編輯。如果您認為自己所做的更改並無問題，請在[[$4|此處]]回報。\n* 有關此系統的進一步資訊詳見[[:mw:Moderator Tools/Automoderator|此頁面]]。",
-	"automoderator-wiki-revert-message-help-page": "* 要瞭解關於編輯的更多信息，請檢視此幫助頁面:[[$1|$2]]。",
+	"automoderator-wiki-revert-message-help-page": "* 要瞭解關於編輯的更多信息，請檢視此幫助頁面:[[$1]]。",
 	"automoderator-wiki-revert-message-follow-up": "我同時回退了您近期對[[$2]]做出的[[Special:Diff/$1|編輯]]，因為此編輯被判為不具有建設性。",
 	"automoderator-wiki-revert-edit-summary": "在[[$1]]的自動回退通知",
 	"automoderator-wiki-undo-summary": "取消[[Special:Contributions/$2|$2]]（[[User talk:$2|留言]]）作出的修訂[[Special:Diff/$1|$1]]",

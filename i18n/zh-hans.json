@@ -20,7 +20,7 @@
 	"automoderator-wiki-report-false-positive": "反馈误报",
 	"automoderator-wiki-revert-message-header": "$2年$1：$3回退了您的编辑",
 	"automoderator-wiki-revert-message": "您好，我是[[User:$1|$1]]，一个使用机器学习模型的自动化系统。我负责识别与回退存在问题的编辑，帮助维护维基百科内容的可靠性。在此通知您，我刚刚回退了您近期对[[$3]]做出的[[Special:Diff/$2|编辑]]。\n* 我使用的模型并非完美，有可能会回退正常编辑。如果您认为自己所做的更改得当，请到[[$4|此处]]反馈。\n* 有关该系统的进一步信息详见[[:mw:Moderator Tools/Automoderator|该页面]]。",
-	"automoderator-wiki-revert-message-help-page": "* 要了解有关编辑的更多信息，请查看此帮助页面:[[$1|$2]]。",
+	"automoderator-wiki-revert-message-help-page": "* 要了解有关编辑的更多信息，请查看此帮助页面:[[$1]]。",
 	"automoderator-wiki-revert-message-follow-up": "我也回退了您近期对[[$2]]做出的[[Special:Diff/$1|编辑]]，其似乎不具建设性。",
 	"automoderator-wiki-revert-edit-summary": "通知[[$1]]页面上的编辑被自动回退",
 	"automoderator-wiki-undo-summary": "撤销[[Special:Contributions/$2|$2]]（[[User talk:$2|讨论]]）的修订版本[[Special:Diff/$1|$1]]",

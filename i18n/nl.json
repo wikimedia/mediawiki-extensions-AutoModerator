@@ -12,7 +12,7 @@
 	"automoderator-wiki-report-false-positive": "vals positief melden",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 heeft uw bewerking teruggedraaid",
 	"automoderator-wiki-revert-message": "Hallo! Ik ben [[User:$1|$1]], een geautomatiseerd systeem dat een machine learning-model gebruikt om mogelijk slechte bewerkingen te identificeren en terug te draaien om Wikipedia betrouwbaar en geloofwaardig te houden. Helaas heb ik een van uw [[Special:Diff/$2|recente bewerkingen]] teruggedraaid op de pagina [[$3]].\n* Omdat het model dat dat wordt gebruikt niet perfect is, draait het soms goede bewerkingen terug. Als u denkt dat de wijziging die u hebt aangebracht constructief was, [[$4|meld het dan hier]].\n* [[:mw:Moderator Tools/Automoderator|Lees meer]] over de software.",
-	"automoderator-wiki-revert-message-help-page": "\n* Voor meer informatie over bewerken kunt u deze hulppagina raadplegen: [[$1|$2]].",
+	"automoderator-wiki-revert-message-help-page": "\n* Voor meer informatie over bewerken kunt u deze hulppagina raadplegen: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Ik heb ook een van uw [[Special:Diff/$1|recente bewerkingen]] op [[$2]] teruggedraaid omdat die er niet constructief uitzag.",
 	"automoderator-wiki-revert-edit-summary": "Kennisgeving van automatisch terugdraaien op [[$1]]",
 	"automoderator-wiki-undo-summary": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ([[User talk:$2|overleg]]) ongedaan gemaakt",

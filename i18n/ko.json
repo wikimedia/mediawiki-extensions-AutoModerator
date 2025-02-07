@@ -4,7 +4,7 @@
 			"Ykhwong"
 		]
 	},
-	"automoderator-wiki-revert-message-help-page": "\n* 편집에 관해 자세히 알아보려면 이 도움말 문서를 참고하세요: [[$1|$2]].",
+	"automoderator-wiki-revert-message-help-page": "\n* 편집에 관해 자세히 알아보려면 이 도움말 문서를 참고하세요: [[$1]].",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "사용자 권한",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "토론 문서 메시지",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "사소한 편집",

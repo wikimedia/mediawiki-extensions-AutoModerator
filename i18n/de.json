@@ -10,8 +10,8 @@
 	"automoderator-desc": "Macht fehlerhafte Änderungen automatisch rückgängig, basierend auf der Bewertung durch ein Modell für maschinelles Lernen.",
 	"automoderator-wiki-report-false-positive": "Falsche Positive melden",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 hat deine Bearbeitung rückgängig gemacht",
-	"automoderator-wiki-revert-message": "Hallo! Ich bin [[User:$1|$1]], ein automatisiertes System, das ein maschinelles Lernmodell verwendet, um potenziell schlechte Änderungen zu identifizieren und rückgängig zu machen, damit Wikipedia zuverlässig und vertrauenswürdig bleibt. Leider habe ich eine {{#FORMAL:deiner|Ihrer}} [[Special:Diff/$2|letzten Änderungen]] auf [[$3]] zurückgesetzt.\n* Da das von mir verwendete Modell nicht perfekt ist, macht es manchmal gute Änderungen rückgängig. Wenn {{#FORMAL:du der Meinung bist|Sie der Meinung sind}}, dass die von {{#FORMAL:dir|Ihnen}} vorgenommene Änderung konstruktiv war, [[$4|kann sie hier gemeldet werden]].\n* [[:mw:Moderator Tools/Automoderator|Weitere Informationen]] über meine Software.",
-	"automoderator-wiki-revert-message-help-page": "* Um mehr über die Bearbeitung zu erfahren, besuche diese Hilfeseite:\n: [[$1|$2]].",
+	"automoderator-wiki-revert-message": "Hallo! Ich bin [[User:$1|$1]], ein automatisiertes System, das ein maschinelles Lernmodell verwendet, um potenziell schlechte Änderungen zu identifizieren und rückgängig zu machen, damit Wikipedia zuverlässig und vertrauenswürdig bleibt. Ich habe eine {{#FORMAL:deiner|Ihrer}} [[Special:Diff/$2|letzten Änderungen]] auf [[$3]] zurückgesetzt.\n* Da das von mir verwendete Modell nicht perfekt ist, macht es manchmal gute Änderungen rückgängig. Wenn {{#FORMAL:du der Meinung bist|Sie der Meinung sind}}, dass die von {{#FORMAL:dir|Ihnen}} vorgenommene Änderung konstruktiv war, [[$4|kann sie hier gemeldet werden]].\n* [[:mw:Moderator Tools/Automoderator|Weitere Informationen]] über meine Software.",
+	"automoderator-wiki-revert-message-help-page": "* Um mehr über die Bearbeitung zu erfahren, besuche diese Hilfeseite:\n: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Ich habe außerdem eine deiner [[Special:Diff/$1|letzten Änderungen]] auf [[$2]] zurückgesetzt, da sie nicht konstruktiv erschien.",
 	"automoderator-wiki-revert-edit-summary": "Hinweis zur automatischen Rückgängigmachung von [[$1]]",
 	"automoderator-wiki-undo-summary": "Änderung [[Special:Diff/$1|$1]] von [[Special:Contributions/$2|$2]] ([[User talk:$2|Diskussion]]) rückgängig gemacht.",
@@ -53,5 +53,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Link zu einer Seite, die beim Bearbeiten hilft",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zielseite",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Bezeichnung",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Die Diskussionsseitennachricht für nicht registrierte Benutzer zeigt einen Link zu einer Seite an, der ihnen beim Bearbeiten hilft.\nDieser Link kann so konfiguriert werden, dass es sich um einen beliebigen Link im Wiki handelt."
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Die Diskussionsseitennachricht für nicht registrierte Benutzer zeigt einen Link zu einer Seite an, der ihnen beim Bearbeiten hilft.\nDieser Link kann so konfiguriert werden, dass es sich um einen beliebigen Link im Wiki handelt.",
+	"automoderator-config-validator-help-page-link-not-filled": "Das Feld Zielseite und das Feld Bezeichnung müssen beide ausgefüllt werden."
 }
