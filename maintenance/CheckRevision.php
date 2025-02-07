@@ -87,8 +87,7 @@ class CheckRevision extends Maintenance {
 			$restrictionStore,
 			$wikiPageFactory,
 			$wikiConfig,
-			$revId,
-			$wikiPageId,
+			$rev,
 			$permissionManager
 		) ) {
 			$this->output( "precheck skipped rev:\t$revId\n" );

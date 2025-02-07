@@ -116,8 +116,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$revId,
-			$wikiPageId,
+			$rev,
 			$this->permissionManager ) ) {
 			return;
 		}

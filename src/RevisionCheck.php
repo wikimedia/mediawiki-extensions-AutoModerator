@@ -176,13 +176,15 @@ class RevisionCheck {
 	 * @param RestrictionStore $restrictionStore
 	 * @param WikiPageFactory $wikiPageFactory
 	 * @param Config $wikiConfig
-	 * @param int $revId
-	 * @param int $wikiPageId
+	 * @param RevisionRecord $rev
+	 * @param PermissionManager $permissionManager
 	 * @return bool
 	 */
 	public static function revertPreCheck( UserIdentity $user, User $autoModeratorUser, LoggerInterface $logger,
 		RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore, WikiPageFactory $wikiPageFactory,
-		Config $wikiConfig, int $revId, int $wikiPageId, PermissionManager $permissionManager ): bool {
+		Config $wikiConfig, RevisionRecord $rev, PermissionManager $permissionManager
+	): bool {
+		$wikiPageId = $rev->getPageId();
 		// Skips reverts if AutoModerator is blocked
 		$autoModeratorBlock = $autoModeratorUser->getBlock();
 		if ( $autoModeratorBlock && $autoModeratorBlock->appliesToPage( $wikiPageId ) ) {
@@ -194,7 +196,7 @@ class RevisionCheck {
 			$logger->debug( __METHOD__ . ': AutoModerator skip rev - AutoMod edits' );
 			return false;
 		}
-		$parentId = $revisionStore->getRevisionById( $revId )->getParentId();
+		$parentId = $rev->getParentId();
 		// Skip new page creations
 		if ( self::isNewPageCreation( $parentId ) ) {
 			$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );

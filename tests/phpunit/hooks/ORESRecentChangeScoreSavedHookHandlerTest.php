@@ -6,7 +6,6 @@ use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler;
 use AutoModerator\TalkPageMessageSender;
-use AutoModerator\Util;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Page\WikiPageFactory;
@@ -16,7 +15,6 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
-use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -38,15 +36,16 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		$wikiPage->method( 'getId' )->willReturn( 1 );
 		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
 		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getId' )->willReturn( 1000 );
-		$rev->method( 'getPageId' )->willReturn( 1 );
 		$mockSlotRecord = $this->createMock( SlotRecord::class );
 		$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
-		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'getId' )->willReturn( 1000 );
 		$user->method( 'getName' )->willReturn( 'TestUser1000' );
+		$rev = $this->createMock( RevisionRecord::class );
+		$rev->method( 'getId' )->willReturn( 1000 );
+		$rev->method( 'getParentId' )->willReturn( 999 );
+		$rev->method( 'getPageId' )->willReturn( 1 );
+		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
 		$rev->method( 'getUser' )->willReturn( $user );
 
 		return [
@@ -87,16 +86,12 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUser = $this->createMock( User::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
-		$mockRevision = $this->createMock( RevisionRecord::class );
-		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$mockRevision->method( 'getParentId' )->willReturn( 100 );
-		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+		$mockRevision = $this->createMock( RevisionRecord::class );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$mockRevisionStore->method( 'getRevisionById' )->with( $rev->getParentId() )->willReturn( $mockRevision );
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockChangeTagsStore = $this->createMock( ChangeTagsStore::class );
 		$mockChangeTagsStore->method( 'getTags' )->willReturn( [] );
@@ -159,15 +154,16 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		$wikiPage->method( 'getId' )->willReturn( 1 );
 		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
 		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getId' )->willReturn( 1000 );
-		$rev->method( 'getPageId' )->willReturn( 1 );
 		$mockSlotRecord = $this->createMock( SlotRecord::class );
 		$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
-		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'getId' )->willReturn( 1000 );
 		$user->method( 'getName' )->willReturn( 'TestUser1000' );
+		$rev = $this->createMock( RevisionRecord::class );
+		$rev->method( 'getId' )->willReturn( 1000 );
+		$rev->method( 'getParentId' )->willReturn( 100 );
+		$rev->method( 'getPageId' )->willReturn( 1 );
+		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
 		$rev->method( 'getUser' )->willReturn( $user );
 		$revNoUser = $this->createMock( RevisionRecord::class );
 		$revNoUser->method( 'getUser' )->willReturn( null );
@@ -230,16 +226,15 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUser = $this->createMock( User::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
-		$mockRevision = $this->createMock( RevisionRecord::class );
-		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$mockRevision->method( 'getParentId' )->willReturn( 100 );
-		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+		$mockRevision = $this->createMock( RevisionRecord::class );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		if ( $rev ) {
+			$mockRevisionStore->method( 'getRevisionById' )
+				->with( $rev->getParentId() )->willReturn( $mockRevision );
+		}
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockChangeTagsStore = $this->createMock( ChangeTagsStore::class );
 		$mockChangeTagsStore->method( 'getTags' )->willReturn( [] );
