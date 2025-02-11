@@ -504,8 +504,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -525,8 +524,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -548,8 +546,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		) );
 	}
@@ -570,8 +567,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		) );
 	}
@@ -590,8 +586,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		) );
 	}
@@ -610,8 +605,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -631,8 +625,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -652,8 +645,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -673,8 +665,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -694,8 +685,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -715,8 +705,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -736,8 +725,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -757,8 +745,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -778,8 +765,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -799,8 +785,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -823,8 +808,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -861,8 +845,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -899,8 +882,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -936,8 +918,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -973,8 +954,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -992,9 +972,9 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$mockRevision->method( "getId" )->willReturn( 2 );
 
 		$this->revisionStoreMock
-			->expects( $this->exactly( 2 ) )
 			->method( 'getRevisionById' )
-			->willReturnOnConsecutiveCalls( $mockRevision, null );
+			->with( 1 )
+			->willReturn( null );
 
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
@@ -1005,8 +985,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -1024,9 +1003,9 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$mockRevision->method( "getId" )->willReturn( 2 );
 
 		$this->revisionStoreMock
-			->expects( $this->exactly( 2 ) )
 			->method( 'getRevisionById' )
-			->willReturnOnConsecutiveCalls( $mockRevision, $this->fakeRevisions[0] );
+			->with( 1 )
+			->willReturn( $this->fakeRevisions[0] );
 
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
@@ -1037,8 +1016,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -1066,8 +1044,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -1099,8 +1076,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			2,
-			$this->wikiPageMock->getId(),
+			$mockRevision,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -1119,8 +1095,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertTrue( $passedPreCheck );
@@ -1142,8 +1117,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -1166,8 +1140,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$rev->getId(),
-			$this->wikiPageMock->getId(),
+			$rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -1188,8 +1161,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );
@@ -1210,8 +1182,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$wikiPageFactory,
 			$this->wikiConfig,
-			$this->rev->getId(),
-			$this->wikiPageMock->getId(),
+			$this->rev,
 			$this->permissionManager
 		);
 		$this->assertFalse( $passedPreCheck );

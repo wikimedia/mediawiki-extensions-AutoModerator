@@ -37,10 +37,11 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$wikiPage->method( 'getId' )->willReturn( 1 );
 		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
 		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getId' )->willReturn( 1000 );
 		$mockSlotRecord = $this->createMock( SlotRecord::class );
 		$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
+		$rev = $this->createMock( RevisionRecord::class );
+		$rev->method( 'getId' )->willReturn( 1000 );
+		$rev->method( 'getParentId' )->willReturn( 999 );
 		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'getId' )->willReturn( 1000 );
@@ -57,7 +58,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$wikiPage->method( 'getId' )->willReturn( 1 );
 		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
 		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getUser' )->willReturn( $user = $this->createMock( User::class ) );
+		$rev->method( 'getUser' )->willReturn( $this->createMock( User::class ) );
 		$rev->method( 'getId' )->willReturn( 1000 );
 		$rev->method( 'getParentId' )->willReturn( 999 );
 		$user = $this->createMock( UserIdentity::class );
@@ -97,16 +98,12 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUser = $this->createMock( User::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
-		$mockRevision = $this->createMock( RevisionRecord::class );
-		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$mockRevision->method( 'getParentId' )->willReturn( 100 );
-		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+		$mockRevision = $this->createMock( RevisionRecord::class );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$mockRevisionStore->method( 'getRevisionById' )->with( $rev->getParentId() )->willReturn( $mockRevision );
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
@@ -168,16 +165,12 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUser = $this->createMock( User::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
-		$mockRevision = $this->createMock( RevisionRecord::class );
-		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$mockRevision->method( 'getParentId' )->willReturn( 100 );
-		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
+		$mockRevision = $this->createMock( RevisionRecord::class );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
+		$mockRevisionStore->method( 'getRevisionById' )->with( $rev->getParentId() )->willReturn( $mockRevision );
+		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
@@ -245,12 +238,9 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUser = $this->createMock( User::class );
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
-		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRevision->method( 'getParentId' )->willReturn( 100 );
+		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
@@ -307,13 +297,10 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 			]
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUser = $this->createMock( User::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
 		$mockRevision = $this->createMock( RevisionRecord::class );
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $mockUser );
 		$mockRevision->method( 'getId' )->willReturn( 101 );
 		$mockRevision->method( 'getParentId' )->willReturn( 100 );
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
@@ -472,7 +459,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob
-	 * @throws \JobQueueError
 	 */
 	public function testOnRevisionFromEditCompleteAutoModeratorSendRevertTalkPageMsgJobNotQueuedWhenNotUndoTag(
 		$wikiPage, $rev, $originalRevId, $user, $tags ) {
@@ -521,7 +507,6 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob
-	 * @throws \JobQueueError
 	 */
 	public function testOnRevisionFromEditCompleteAutoModeratorSendRevertTalkPageMsgJobNotQueuedNotAutoModeratorUser(
 		$wikiPage, $rev, $originalRevId, $user, $tags ) {

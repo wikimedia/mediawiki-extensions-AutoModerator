@@ -132,8 +132,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
-			$revId,
-			$wikiPageId,
+			$revision,
 			$this->permissionManager ) ) {
 			return;
 		}
