@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Kareyac"
+			"Kareyac",
+			"Cabadeck"
 		]
 	},
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Права участника"
