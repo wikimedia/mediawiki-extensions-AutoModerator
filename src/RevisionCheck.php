@@ -42,9 +42,6 @@ class RevisionCheck {
 	/** @var Config */
 	private Config $config;
 
-	/** @var string */
-	public string $undoSummary;
-
 	/** @var bool */
 	private bool $enforce;
 
@@ -54,21 +51,18 @@ class RevisionCheck {
 	/**
 	 * @param Config $wikiConfig
 	 * @param Config $config
-	 * @param string $undoSummary
 	 * @param AutoModeratorRollback $rollbackPage
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
 		Config $wikiConfig,
 		Config $config,
-		string $undoSummary,
 		AutoModeratorRollback $rollbackPage,
 		bool $enforce = false
 	) {
 		$this->wikiConfig = $wikiConfig;
 		$this->config = $config;
 		$this->enforce = $enforce;
-		$this->undoSummary = $undoSummary;
 		$this->rollbackPage = $rollbackPage;
 	}
 
@@ -77,7 +71,6 @@ class RevisionCheck {
 	 */
 	private function doRollback(): StatusValue {
 		return $this->rollbackPage
-			->setSummary( $this->undoSummary )
 			->rollback();
 	}
 

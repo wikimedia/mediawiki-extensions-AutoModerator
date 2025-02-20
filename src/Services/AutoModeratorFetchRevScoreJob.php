@@ -50,11 +50,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	private bool $isRetryable = true;
 
 	/**
-	 * @var string
-	 */
-	private string $undoSummary;
-
-	/**
 	 * @var ?array
 	 */
 	private $scores;
@@ -68,14 +63,12 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 *    - 'userId': (int)
 	 *    - 'userName': (string)
 	 *    - 'tags': (string[])
-	 *    - 'undoSummary': (string)
 	 *    - 'scores': (?array)
 	 */
 	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'AutoModeratorFetchRevScoreJob', $title, $params );
 		$this->wikiPageId = $params[ 'wikiPageId' ];
 		$this->revId = $params[ 'revId' ];
-		$this->undoSummary = $params[ 'undoSummary' ];
 		$this->scores = $params[ 'scores' ];
 	}
 
@@ -148,7 +141,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			$revisionCheck = new RevisionCheck(
 				$wikiConfig,
 				$config,
-				$this->undoSummary,
 				new AutoModeratorRollback(
 					new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),
 					$services->getDBLoadBalancerFactory(),

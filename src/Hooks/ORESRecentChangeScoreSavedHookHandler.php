@@ -12,7 +12,6 @@ use JobQueueGroup;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MainConfigNames;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
@@ -136,8 +135,6 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 			$this->permissionManager ) ) {
 			return;
 		}
-		$undoSummaryMessageKey = ( !$user->isRegistered() && $this->config->get( MainConfigNames::DisableAnonTalk ) )
-			? 'automoderator-wiki-undo-summary-anon' : 'automoderator-wiki-undo-summary';
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -150,7 +147,6 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 				'userId' => $userId,
 				'userName' => $user->getName(),
 				'tags' => $tags,
-				'undoSummary' => wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $user->getName() )->plain(),
 				// The score will be evaluated in the job to see whether the revision should be reverted or not
 				'scores' => $scores
 			]
