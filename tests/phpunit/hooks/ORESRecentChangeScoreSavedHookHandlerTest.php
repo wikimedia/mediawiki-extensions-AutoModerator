@@ -131,7 +131,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		// Disabling line too long rule as line is too long for phpcs,
 		// but we need to check for strict equality without newline breaks
 		// phpcs:disable Generic.Files.LineLength.TooLong
-		$undoSummary = "Undo revision [[Special:Diff/1000|1000]] by [[Special:Contributions/TestUser1000|TestUser1000]] ([[User talk:TestUser1000|talk]])";
 		// phpcs:enable
 		$expected = [
 			'wikiPageId' => 1,
@@ -143,7 +142,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			'namespace' => NS_MAIN,
 			'title' => '',
 			'requestId' => 42,
-			'undoSummary' => $undoSummary,
 			'scores' => [ $score ]
 		];
 		$this->assertEquals( $expected, $actual );

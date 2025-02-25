@@ -65,7 +65,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -109,7 +108,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -156,7 +154,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -203,7 +200,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -252,7 +248,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -307,7 +302,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -338,7 +332,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -370,7 +363,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -402,7 +394,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null,
 			]
 		);
@@ -446,7 +437,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null
 			]
 		);
@@ -491,7 +481,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => $score
 			]
 		);
@@ -546,7 +535,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => null
 			]
 		);
@@ -610,7 +598,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 				'userId' => $user->getId(),
 				'userName' => $user->getName(),
 				'tags' => [],
-				'undoSummary' => "undoSummary",
 				'scores' => [ $score ]
 			]
 		);

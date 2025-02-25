@@ -8,7 +8,6 @@ use AutoModerator\Services\AutoModeratorRollback;
 use AutoModerator\Util;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\MainConfigNames;
 use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
@@ -70,8 +69,6 @@ class CheckRevision extends Maintenance {
 			return;
 		}
 		$wikiPageId = $rev->getPageId();
-		$undoSummaryMessageKey = ( !$userIdentity->isRegistered() && $config->get( MainConfigNames::DisableAnonTalk ) )
-			? 'automoderator-wiki-undo-summary-anon' : 'automoderator-wiki-undo-summary';
 		$contentHandler = $contentHandlerFactory->getContentHandler( $rev->getSlot(
 			SlotRecord::MAIN,
 			RevisionRecord::RAW
@@ -96,7 +93,6 @@ class CheckRevision extends Maintenance {
 		$revisionCheck = new RevisionCheck(
 			$wikiConfig,
 			$config,
-			wfMessage( $undoSummaryMessageKey )->rawParams( $revId, $userIdentity->getName() )->plain(),
 			new AutoModeratorRollback(
 				new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),
 				$services->getDBLoadBalancerFactory(),

@@ -57,7 +57,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	private RevisionStore $revisionStoreMock;
 	private Config $config;
 	private Config $wikiConfig;
-	private string $undoSummary;
 	private PermissionManager $permissionManager;
 	private AutoModeratorRollback $rollbackPage;
 
@@ -190,11 +189,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 
 		$this->wikiConfig = $this->createMock( Config::class );
 		$this->wikiConfig->method( 'get' )->willReturnMap( [
-				[
-					'AutoModeratorUndoSummary',
-					'[[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]]'
-				],
-				[ 'AutoModeratorUndoSummaryAnon', '[[Special:Diff/$1|$1]] by [[Special:Contributions/$2|$2]]' ],
 				[ 'AutoModeratorSkipUserRights', [ 'bot', 'autopatrol' ] ],
 				[ 'AutoModeratorUseEditFlagMinor', false ],
 				[ 'AutoModeratorCautionLevel', 'very-cautious' ]
@@ -206,7 +200,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->restrictionStore = $this->createMock( RestrictionStore::class );
 		$this->wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$this->wikiPageFactory->method( 'newFromID' )->willReturn( $this->wikiPageMock );
-		$this->undoSummary = "undoSummary";
 		$this->permissionManager = $this->createMock( PermissionManager::class );
 	}
 
@@ -217,7 +210,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$this->rollbackPage,
 			true
 		);
@@ -243,7 +235,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$rollbackPage,
 			true
 		);
@@ -270,7 +261,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$rollbackPage,
 			true
 		);
@@ -297,7 +287,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$rollbackPage,
 			true
 		);
@@ -323,7 +312,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$rollbackPage,
 			true
 		);
@@ -342,7 +330,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$this->rollbackPage
 		);
 		$reverted = $revisionCheck->maybeRollback(
@@ -367,7 +354,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$this->rollbackPage
 		);
 
@@ -404,7 +390,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
-			$this->undoSummary,
 			$this->rollbackPage,
 			true
 		);
