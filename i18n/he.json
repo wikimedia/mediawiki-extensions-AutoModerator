@@ -15,8 +15,6 @@
 	"automoderator-wiki-revert-message-help-page": "* למידע נוסף על עריכה, נא לבקר בדף העזרה: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "שחזרתי גם אחת מה[[Special:Diff/$1|עריכות האחרונות]] שלך שלך בדף [[$2]] כי היא נראתה לא בונה.",
 	"automoderator-wiki-revert-edit-summary": "הודעה על שחזור אוטומטי בדף [[$1]]",
-	"automoderator-wiki-undo-summary": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]])",
-	"automoderator-wiki-undo-summary-anon": "ביטול גרסה [[Special:Diff/$1|$1]] מאת [[Special:Contributions/$2|$2]]",
 	"automoderator-wiki-revertpage-nouser": "שוחזר {{PLURAL:$7|מעריכה|מעריכות}} של משתמש מוסתר לעריכה האחרונה של {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "שוחזר {{PLURAL:$7|מעריכה|מעריכות}} של [[Special:Contributions/$2|$2]] לעריכה האחרונה של [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "שוחזר {{PLURAL:$7|מעריכה|מעריכות}} של [[Special:Contributions/$2|$2]] ([[User talk:$2|שיחה]]) לעריכה האחרונה של [[User:$1|$1]]",

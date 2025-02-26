@@ -14,8 +14,6 @@
 	"automoderator-wiki-revert-message": "Привіт! Я [[User:$1|$1]], автоматизована система, яка використовує модель машинного навчання для виявлення та скасування потенційно шкідливих редагувань, щоб Вікіпедія залишалася надійною та авторитетною. Я скасувала одне з Ваших [[Special:Diff/$2|нещодавніх редагувань]] до [[$3]].\n* Оскільки модель, яку я використовую, не є досконалою, вона іноді скасовує хороші редагування. Якщо Ви вважаєте, що зроблені Вами зміни були конструктивними, [[$4|повідомте про це тут]].\n* [[:mw:Moderator Tools/Automoderator|Докладніше]] про моє програмне забезпечення.",
 	"automoderator-wiki-revert-message-follow-up": "Я також відкинув одне з ваших [[Special:Diff/$1|останніх редагувань]] до [[$2]], оскільки вона здалася мені неконструктивною.",
 	"automoderator-wiki-revert-edit-summary": "Повідомлення про автоматичне скасування [[$1]]",
-	"automoderator-wiki-undo-summary": "Скасування редагування №[[Special:Diff/$1|$1]], зробленого [[Special:Contributions/$2|$2]] ([[User talk:$2|обговорення]])",
-	"automoderator-wiki-undo-summary-anon": "Скасування версії [[Special:Diff/$1|$1]] від [[Special:Contributions/$2|$2]]",
 	"automoderator-wiki-revertpage-nouser": "Відкинуто {{PLURAL:$7|правку|правки}} прихованого користувача до версії, зробленої {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "Відкинуто {{PLURAL:$7|правку|правки}} користувача [[Special:Contributions/$2|$2]] до версії, зробленої [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "Відкинуто {{PLURAL:$7|правку|правки}} користувача [[Special:Contributions/$2|$2]] ([[User talk:$2|talk]]) до останньої версії, зробленої [[User:$1|$1]]",

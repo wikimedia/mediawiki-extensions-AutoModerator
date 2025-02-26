@@ -15,8 +15,6 @@
 	"automoderator-wiki-revert-message-help-page": "\n* Voor meer informatie over bewerken kunt u deze hulppagina raadplegen: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Ik heb ook een van uw [[Special:Diff/$1|recente bewerkingen]] op [[$2]] teruggedraaid omdat die er niet constructief uitzag.",
 	"automoderator-wiki-revert-edit-summary": "Kennisgeving van automatisch terugdraaien op [[$1]]",
-	"automoderator-wiki-undo-summary": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ([[User talk:$2|overleg]]) ongedaan gemaakt",
-	"automoderator-wiki-undo-summary-anon": "Versie [[Special:Diff/$1|$1]] van [[Special:Contributions/$2|$2]] ongedaan gemaakt",
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Wijziging|Wijzigingen}} van een verborgen gebruiker teruggedraaid naar de laatste versie van {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] teruggedraaid naar de laatste versie van [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] ([[User talk:$2|Overleg]]) teruggedraaid naar de laatste versie van [[User:$1|$1]]",

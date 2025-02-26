@@ -14,8 +14,6 @@
 	"automoderator-wiki-revert-message-help-page": "* Om meer te wete te kom oor redigering, bekyk asseblief hierdie hulpbladsy: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Ek het ook een van jou [[Special:Diff/$1|onlangse wysigings]] na [[$2]] teruggerol omdat dit onopbouend gelyk het.",
 	"automoderator-wiki-revert-edit-summary": "Kennisgewing van outomatiese terugkeering op [[$1]]",
-	"automoderator-wiki-undo-summary": "Maak hersiening [[Special:Diff/$1|$1]] deur [[Special:Contributions/$2|$2]] ([[User talk:$2|bespreking]]) ongedaan",
-	"automoderator-wiki-undo-summary-anon": "Maak hersiening [[Special:Diff/$1|$1]] deur [[Special:Contributions/$2|$2]] ongedaan",
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Wysiging|Wysigings}} deur 'n versteekte gebruiker teruggerol na laaste weergawe deur {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Wysiging|Wysigings}} deur [[Special:Contributions/$2|$2]] teruggerol na laaste weergawe deur [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Wysiging|Wysigings}} deur [[Special:Contributions/$2|$2]] ([[User talk:$2|bespreking]]) teruggerol na laaste weergawe deur [[User:$1|$1]]",

@@ -24,8 +24,6 @@
 	"automoderator-wiki-revert-message-help-page": "* 要了解有关编辑的更多信息，请查看此帮助页面:[[$1]]。",
 	"automoderator-wiki-revert-message-follow-up": "我也回退了您近期对[[$2]]做出的[[Special:Diff/$1|编辑]]，其似乎不具建设性。",
 	"automoderator-wiki-revert-edit-summary": "通知[[$1]]页面上的编辑被自动回退",
-	"automoderator-wiki-undo-summary": "撤销[[Special:Contributions/$2|$2]]（[[User talk:$2|讨论]]）的修订版本[[Special:Diff/$1|$1]]",
-	"automoderator-wiki-undo-summary-anon": "撤销[[Special:Contributions/$2|$2]]的修订版本[[Special:Diff/$1|$1]]",
 	"automoderator-wiki-revertpage-nouser": "已还原某用户的{{PLURAL:$7|编辑}}至最后由{{GENDER:$1|[[User:$1|$1]]}}所修订的版本",
 	"automoderator-wiki-revertpage-anon": "已还原[[Special:Contributions/$2|$2]]的{{PLURAL:$7|编辑}}至最后由[[User:$1|$1]]所修订的版本",
 	"automoderator-wiki-revertpage": "已还原[[Special:Contributions/$2|$2]]（[[User talk:$2|讨论]]）的{{PLURAL:$7|编辑}}至最后由[[User:$1|$1]]修订的版本",

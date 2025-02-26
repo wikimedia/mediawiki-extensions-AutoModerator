@@ -17,8 +17,6 @@
 	"automoderator-wiki-revert-message-help-page": "* 編集についてもっと知りたい場合は、こちらのページをご覧ください: [[$1]]。",
 	"automoderator-wiki-revert-message-follow-up": "また、あなたの[[Special:Diff/$1|最近の編集]]のひとつが建設的でないように思われたため、[[$2]]に差し戻しました。",
 	"automoderator-wiki-revert-edit-summary": "[[$1]]における自動差し戻しの通知",
-	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|トーク]]) による版 [[Special:Diff/$1|$1]] を取り消し",
-	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]]による版 [[Special:Diff/$1|$1]] を取り消し",
 	"automoderator-wiki-revertpage-nouser": "非表示の利用者による{{PLURAL:$7|編集}}を {{GENDER:$1|[[User:$1|$1]]}} による直前の版へ差し戻しました",
 	"automoderator-wiki-revertpage-anon": "[[Special:Contributions/$2|$2]] による{{PLURAL:$7|編集}}を [[User:$1|$1]] による直前の版へ差し戻しました",
 	"automoderator-wiki-revertpage": "[[Special:Contributions/$2|$2]] ([[User talk:$2|トーク]]) による{{PLURAL:$7|編集}}を [[User:$1|$1]] による直前の版へ差し戻しました",

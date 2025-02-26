@@ -13,7 +13,7 @@
 	"automoderator-wiki-revert-message-header": "$1 $2 : $3 revirtió tu edición",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Permisos de usuario",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderador está activado",
-	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Las reversiones por AutoModerator se considerarán ediciones menores.",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Las reversiones por Automoderator se considerarán ediciones menores.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Mensaje de la página de discusión",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "El mensaje de la página de discusión está activado",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Página para reportar falsos positivos",
@@ -21,6 +21,15 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configurar umbral",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderador",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Ediciones menores",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Las reversiones por Automoderator se considerarán ediciones hechas por un bot.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edición de bot",
-	"automoderator-config-validator-userrights-not-allowed": "El permiso de usuario $1 no existe. Por favor prueba con otro."
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Después de que Automoderador revierte una edición, se puede enviar automáticamente un mensaje a la página de discusión del usuario explicando lo sucedido y proporcionando enlaces útiles.",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Ayuda:Edición menor]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
+	"automoderator-config-validator-userrights-not-allowed": "El permiso de usuario $1 no existe. Por favor prueba con otro.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Habilitar reversiones de usuario por página",
+	"automoderator-config-validator-user-reverts-per-page-not-number": "El valor ingresado para Reversiones de usuario por página no es un número, intente con otro.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Enlace a una página con ayuda para editar",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Página de destino",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etiqueta"
 }

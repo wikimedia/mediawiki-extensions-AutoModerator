@@ -19,8 +19,6 @@
 	"automoderator-wiki-revert-message-help-page": "* 要瞭解關於編輯的更多信息，請檢視此幫助頁面:[[$1]]。",
 	"automoderator-wiki-revert-message-follow-up": "我同時回退了您近期對[[$2]]做出的[[Special:Diff/$1|編輯]]，因為此編輯被判為不具有建設性。",
 	"automoderator-wiki-revert-edit-summary": "在[[$1]]的自動回退通知",
-	"automoderator-wiki-undo-summary": "取消[[Special:Contributions/$2|$2]]（[[User talk:$2|留言]]）作出的修訂[[Special:Diff/$1|$1]]",
-	"automoderator-wiki-undo-summary-anon": "取消[[Special:Contributions/$2|$2]]作出的修訂[[Special:Diff/$1|$1]]",
 	"automoderator-wiki-revertpage-nouser": "取消隱藏使用者的{{PLURAL:$7|編輯}}，改回[[User:$1|$1]]的先前版本",
 	"automoderator-wiki-revertpage-anon": "取消[[Special:Contributions/$2|$2]]的{{PLURAL:$7|編輯}}，改回[[User:$1|$1]]的先前版本",
 	"automoderator-wiki-revertpage": "回退[[Special:Contributions/$2|$2]]（[[User talk:$2|留言]]）的{{PLURAL:$7|編輯}}，改回[[User:$1|$1]]的先前版本",

@@ -14,8 +14,6 @@
 	"automoderator-wiki-revert-message-help-page": "* Redaktə haqqında ətraflı öyrənmək üçün bu yardım səhifəsinə baxın: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Mən həmçinin qeyri-konstruktiv göründüyü üçün sizin [[$2]] səhifəsindəki [[Special:Diff/$1|son redaktələrinizdən]] birini geri qaytardım",
 	"automoderator-wiki-revert-edit-summary": "[[$1]] səhifəsindəki avtomatik geri qaytarma bildirişi",
-	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|müzakirə]]) tərəfindən edilmiş [[Special:Diff/$1|$1]] nömrəli redaktə geri qaytarılır",
-	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]] tərəfindən edilmiş [[Special:Diff/$1|$1]] redaktəsi geri qaytarılır",
 	"automoderator-wiki-revertpage-nouser": "Gizlədilmiş istifadəçi tərəfindən edilmiş {{PLURAL:$7|$7 redaktə}} geri qaytarılaraq {{GENDER:$1|[[User:$1|$1]]}} tərəfindən yaradılan sonuncu versiya bərpa olundu",
 	"automoderator-wiki-revertpage-anon": "[[Special:Contributions/$2|$2]] tərəfindən edilmiş {{PLURAL:$7|$7 redaktə}} geri qaytarılaraq [[User:$1|$1]] tərəfindən yaradılan sonuncu versiya bərpa olundu",
 	"automoderator-wiki-revertpage": "[[Special:Contributions/$2|$2]] ([[User talk:$2|müzakirə]]) tərəfindən edilmiş {{PLURAL:$7|$7 redaktə}} geri qaytarılaraq [[User:$1|$1]] tərəfindən yaradılan sonuncu versiya bərpa olundu",

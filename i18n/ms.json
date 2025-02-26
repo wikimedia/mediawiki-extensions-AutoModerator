@@ -13,8 +13,6 @@
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 membalikkan suntingan anda",
 	"automoderator-wiki-revert-message": "Salam sejahtera! Saya [[User:$1|$1]], yakni sebuah sistem automatik yang menggunakan model pembelajaran mesin untuk mengenal pasti serta membalikkan suntingan yang mempunyai potensi buruk, supaya dengan ini dapat memastikan Wikipedia kekal berwibawa dan boleh dipercayai. Malangnya, saya telah mengembalikan salah satu daripada [[Special:Diff/$2|suntingan terbaharu]] anda kepada [[$3]].\n* Disebabkan oleh model yang saya gunakan tidak sempurna, kadangkala ia membalikkan suntingan yang baik. Jika anda percaya perubahan yang anda buat adalah membina, sila [[$4|laporkan di sini]].\n* [[:mw:Moderator Tools/Automoderator|Ketahui lebih lanjut]] tentang perisian berkaitan.\n* Untuk mengetahui lebih lanjut tentang penyuntingan, sila lawati [[Special:Homepage|halaman utama pengguna baharu]].",
 	"automoderator-wiki-revert-edit-summary": "Notis pembalikan suntingan automatik pada [[$1]]",
-	"automoderator-wiki-undo-summary": "Membatalkan semakan [[Special:Diff/$1|$1]] oleh [[Special:Contributions/$2|$2]] ([[User talk:$2|perbincangan]])",
-	"automoderator-wiki-undo-summary-anon": "Membatalkan semakan [[Special:Diff/$1|$1]] oleh [[Special:Contributions/$2|$2]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Hak pengguna",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator dihidupkan",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Pembalikan oleh AutoModerator akan dianggap sebagai suntingan kecil.",

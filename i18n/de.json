@@ -14,8 +14,6 @@
 	"automoderator-wiki-revert-message-help-page": "* Um mehr über die Bearbeitung zu erfahren, besuche diese Hilfeseite:\n: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Ich habe außerdem eine deiner [[Special:Diff/$1|letzten Änderungen]] auf [[$2]] zurückgesetzt, da sie nicht konstruktiv erschien.",
 	"automoderator-wiki-revert-edit-summary": "Hinweis zur automatischen Rückgängigmachung von [[$1]]",
-	"automoderator-wiki-undo-summary": "Änderung [[Special:Diff/$1|$1]] von [[Special:Contributions/$2|$2]] ([[User talk:$2|Diskussion]]) rückgängig gemacht.",
-	"automoderator-wiki-undo-summary-anon": "Änderung [[Special:Diff/$1|$1]] von [[Special:Contributions/$2|$2]] rückgängig gemacht",
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Änderung|Änderungen}} von einem versteckten Benutzer rückgängig gemacht und letzte Version von {{GENDER:$1|[[User:$1|$1]]}} wiederhergestellt",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Änderung|Änderungen}} von [[Special:Contributions/$2|$2]] {{PLURAL:$7|wurde|wurden}} auf die letzte Version von [[User:$1|$1]] zurückgesetzt",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Änderung|Änderungen}} von [[Special:Contributions/$2|$2]] ([[User talk:$2|Diskussion]]) {{PLURAL:$7|wurde|wurden}} auf die letzte Version von [[User:$1|$1]] zurückgesetzt",

@@ -21,8 +21,6 @@
 	"automoderator-wiki-revert-message-help-page": "* Pour en savoir plus sur l’édition, veuillez consulter cette page d’aide : [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "J'ai également annulé l'une de vos [[Special:Diff/$1|modifications récentes]] sur [[$2]] car cela ne semblait pas constructif.",
 	"automoderator-wiki-revert-edit-summary": "Avis d'annulation automatique sur [[$1]]",
-	"automoderator-wiki-undo-summary": "Annulation des modifications [[Special:Diff/$1|$1]] de [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]])",
-	"automoderator-wiki-undo-summary-anon": "Annulation des modifications [[Special:Diff/$1|$1]] de [[Special:Contributions/$2|$2]]",
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Une modification annulée|$7 modifications annulées}} par un utilisateur caché et restauration de la version précédente réalisée par {{GENDER:$1|}}[[User:$1|$1]]",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Une modification annulée|$7 modifications annulées}} par [[Special:Contributions/$2|$2]] et restauration de la version précédente réalisée par [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Une modification annulée|$7 modifications annulées}} par [[Special:Contributions/$2|$2]] ([[User talk:$2|Discuter]]) et restauration de la version précédente réalisée par [[User:$1|$1]]",

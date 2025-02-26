@@ -19,8 +19,6 @@
 	"automoderator-wiki-revert-message": "Xin chào! Tôi là [[User:$1|$1]], một hệ thống tự động sử dụng mô hình học máy học để phát hiện và lùi lại sửa đổi có nguy cơ gây hại, nhằm đảm bảo độ đáng tin cậy của Wikipedia. Thật đáng tiếc, tôi đã lùi lại một [[Special:Diff/$2|sửa đổi gần đây của bạn]] tại trang [[$3]].\n* Tuy nhiên, mô hình học máy mà tôi sử dụng không thực sự quá hoàn hảo, và do đó, đôi khi tôi có thể lùi nhầm những sửa đổi tốt. Nếu bạn tin rằng sửa đổi của bạn có ích, vui lòng [[$4|báo lỗi tại đây]].\n* [[:mw:Moderator Tools/Automoderator|Tìm hiểu thêm]] về phần mềm tự động này.\n* Hãy đi tới [[Special:Homepage|Trang nhà người mới]] để tìm hiểu thêm về việc sửa đổi Wikipedia.",
 	"automoderator-wiki-revert-message-follow-up": "Tôi cũng đã lùi lại một trong số [[Special:Diff/$1|đóng góp gần đây của bạn]] tại [[$2]] vì nó có vẻ không mang tính xây dựng.",
 	"automoderator-wiki-revert-edit-summary": "Thông báo: Sửa đổi của bạn tại [[$1]] đã bị lùi lại tự động",
-	"automoderator-wiki-undo-summary": "Đã tự động lùi lại sửa đổi [[Special:Diff/$1|$1]] của [[Special:Contributions/$2|$2]] ([[User talk:$2|thảo luận]])",
-	"automoderator-wiki-undo-summary-anon": "Đã tự động lùi lại sửa đổi [[Special:Diff/$1|$1]] của [[Special:Contributions/$2|$2]]",
 	"automoderator-wiki-revertpage-nouser": "Đã lùi lại {{PLURAL:$7|sửa đổi}} của thành viên bị ẩn về phiên bản cuối của {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "Đã lùi lại {{PLURAL:$7|sửa đổi}} của [[Special:Contributions/$2|$2]] về phiên bản cuối của [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "Đã lùi lại {{PLURAL:$7|sửa đổi}} của [[Special:Contributions/$2|$2]] ([[User talk:$2|thảo luận]]) về phiên bản cuối của [[User:$1|$1]]",

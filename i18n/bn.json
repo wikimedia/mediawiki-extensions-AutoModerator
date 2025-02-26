@@ -16,8 +16,6 @@
 	"automoderator-wiki-revert-message-help-page": "* সম্পাদনা সম্পর্কে আরও জানতে, অনুগ্রহ করে এই সাহায্য পাতাটি দেখুন: [[$1]]।",
 	"automoderator-wiki-revert-message-follow-up": "আমি [[$2]] পাতায় করা আপনার আরও একটি [[Special:Diff/$1|সাম্প্রতিক সম্পাদনা]] বাতিল করেছি কারণ এটি অগঠনমূলক বলে মনে হয়েছে।",
 	"automoderator-wiki-revert-edit-summary": "[[$1]] পাতায় স্বয়ংক্রিয়ভাবে সম্পাদনা বাতিলের বিজ্ঞপ্তি",
-	"automoderator-wiki-undo-summary": "[[Special:Contributions/$2|$2]] ([[User talk:$2|আলাপ]])-এর সম্পাদিত [[Special:Diff/$1|$1]] নম্বর সংশোধনটি বাতিল করা হয়েছে",
-	"automoderator-wiki-undo-summary-anon": "[[Special:Contributions/$2|$2]]-এর সম্পাদিত [[Special:Diff/$1|$1]] নম্বর সংশোধনটি বাতিল করা হয়েছে",
 	"automoderator-wiki-revertpage-nouser": "একজন গোপন ব্যবহারকারীর {{PLURAL:$7|সম্পাদিত}} সংস্করণ হতে {{GENDER:$1|[[User:$1|$1]]}}-এর সম্পাদিত সর্বশেষ সংস্করণে ফেরত",
 	"automoderator-wiki-revertpage-anon": "[[Special:Contributions/$2|$2]]-এর {{PLURAL:$7|সম্পাদিত}} সংস্করণ হতে [[User:$1|$1]]-এর সম্পাদিত সর্বশেষ সংস্করণে ফেরত",
 	"automoderator-wiki-revertpage": "[[Special:Contributions/$2|$2]] ([[User talk:$2|আলাপ]])-এর {{PLURAL:$7|সম্পাদিত}} সংস্করণ হতে [[User:$1|$1]]-এর সম্পাদিত সর্বশেষ সংস্করণে ফেরত",

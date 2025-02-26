@@ -14,8 +14,6 @@
 	"automoderator-wiki-revert-message-help-page": "* За да дознаете повеќе за уредувањето, погледајте ја оваа помошна страница: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Исто така вратив едно од вашите [[Special:Diff/$1|скорешни уредувања]] на [[$2]] бидејќи делуваше неконструктивно.",
 	"automoderator-wiki-revert-edit-summary": "Напомена за автоматско отповикување на [[$1]]",
-	"automoderator-wiki-undo-summary": "Отповикана преработката [[Special:Diff/$1|$1]] на [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]])",
-	"automoderator-wiki-undo-summary-anon": "Отповикана преработката [[Special:Diff/$1|$1]] на [[Special:Contributions/$2|$2]]",
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Отповикано уредување|Отповикани уредувања}} на скриен корисник на последната преработка на {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Отповикано уредување|Отповикани уредувања}} на [[Special:Contributions/$2|$2]], враќајќи на последната преработка на [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Отповикано уредување|Отповикани уредувања}} на [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]]), враќајќи на последната преработка на [[User:$1|$1]]",

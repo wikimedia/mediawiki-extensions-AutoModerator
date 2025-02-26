@@ -14,8 +14,6 @@
 	"automoderator-wiki-revert-message-help-page": "* Pro leger plus sur como modificar, consulta iste pagina de adjuta: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Io ha tamben revertite un de tu [[Special:Diff/$1|modificationes recente]] de [[$2]] perque illo non pareva constructive.",
 	"automoderator-wiki-revert-edit-summary": "Notification de reversion automatic sur [[$1]]",
-	"automoderator-wiki-undo-summary": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]])",
-	"automoderator-wiki-undo-summary-anon": "Disface le version [[Special:Diff/$1|$1]] per [[Special:Contributions/$2|$2]]",
 	"automoderator-wiki-revertpage-nouser": "Modification{{PLURAL:$7||es}} de un usator celate revertite; ultime version de {{GENDER:$1|[[User:$1|$1]]}} restaurate",
 	"automoderator-wiki-revertpage-anon": "Modification{{PLURAL:$7||es}} de [[Special:Contributions/$2|$2]] revertite; ultime version de [[User:$1|$1]] restaurate",
 	"automoderator-wiki-revertpage": "Modification{{PLURAL:$7||es}} de [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]]) revertite; ultime version de [[User:$1|$1]] restaurate",

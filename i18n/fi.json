@@ -14,8 +14,6 @@
 	"automoderator-wiki-revert-message-help-page": "* Ohjeita muokkaamiseen löydät tältä ohjesivulta: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Kumosi myös yhden [[Special:Diff/$1|tuoreista muokkauksistasi]] sivulle [[$2]], koska se ei vaikuttanut rakentavalta.",
 	"automoderator-wiki-revert-edit-summary": "Ilmoitus automaattisesta kumoamisesta sivulla [[$1]]",
-	"automoderator-wiki-undo-summary": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]])",
-	"automoderator-wiki-undo-summary-anon": "Kumottu muokkaus [[Special:Diff/$1|$1]], jonka teki [[Special:Contributions/$2|$2]]",
 	"automoderator-wiki-revertpage-nouser": "Piilotetun käyttäjän {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän {{GENDER:$1|[[User:$1|$1]]}} tekemään versioon",
 	"automoderator-wiki-revertpage-anon": "Käyttäjän [[Special:Contributions/$2|$2]] {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän [[User:$1|$1]] tekemään versioon.",
 	"automoderator-wiki-revertpage": "Käyttäjän [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]]) {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän [[User:$1|$1]] tekemään versioon.",
