@@ -1,7 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Suecarmol"
+			"Suecarmol",
+			"Superzerocool"
 		]
-	}
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Discrepancia en el modelo de contenidos: el archivo de configuración debe tener un modelo JSON, se detectó $1",
+	"automoderator-config-validator-datatype-mismatch": "Se espera <code>$1</code> sea <code>$2</code>, pero es <code>$3</code>",
+	"automoderator-desc": "Revierte automáticamente ediciones incorrectas basado en puntuación según un modelo de aprendizaje de máquina."
 }
