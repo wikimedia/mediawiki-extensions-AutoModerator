@@ -4,6 +4,7 @@
 			"Alien333",
 			"Eihel",
 			"Goombiis",
+			"JLTRY",
 			"Mahabarata",
 			"SleaY",
 			"Terio legale",
@@ -57,5 +58,7 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "La valeur saisie pour le Nombre maximal d'annulations des modifications d'un utilisateur sur une page doit être un nombre, merci de proposer autre chose.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Lien vers une page pour aider l'édition",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Page de destination",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Libellé"
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Libellé",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Le message de la page de discussion pour les contributeurs non enregistrés affichera un lien vers une page pour les aider à éditer. Ce lien peut être configuré pour être n'importe quel lien du wiki.",
+	"automoderator-config-validator-help-page-link-not-filled": "Le champ Page de destination et le champ Étiquette doivent tous deux être remplis."
 }
