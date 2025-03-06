@@ -6,7 +6,6 @@
 		]
 	},
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 ha annullato la tua modifica",
-	"automoderator-wiki-revert-message": "Ciao! Sono [[Utente:$1|$1]], un sistema automatico che utilizza un modello di apprendimento automatico per identificare e ripristinare le modifiche potenzialmente dannose per garantire che Wikipedia rimanga affidabile e degna di fiducia. Ho ripristinato una delle tue [[Special:Diff/$2|ultime modifiche]] a [[$3]].\n* Poiché il modello che utilizzo non è perfetto, a volte vengono annullate modifiche valide. Se ritieni che la modifica apportata fosse costruttiva, per favore [[$4|segnala qui]].\n* [[:mw:Moderator Tools/Automoderator|Per saperne di più]] sul mio software.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Diritti utente",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Modifiche minori",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Aiuto:Modifica minore]",
