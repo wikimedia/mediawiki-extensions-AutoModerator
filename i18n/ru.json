@@ -2,9 +2,11 @@
 	"@metadata": {
 		"authors": [
 			"Cabadeck",
-			"Kareyac"
+			"Kareyac",
+			"Yurina Tatiana"
 		]
 	},
 	"automoderator-wiki-revert-message-help-page": "* Чтобы узнать больше о редактировании, посетите эту страницу справки: [[$1]].",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Права участника"
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Права участника",
+	"communityconfiguration-automoderator-title": "Автомодератор"
 }
