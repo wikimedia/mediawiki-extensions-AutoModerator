@@ -2,8 +2,10 @@
 	"@metadata": {
 		"authors": [
 			"Kareyac",
-			"Cabadeck"
+			"Cabadeck",
+			"Yurina Tatiana"
 		]
 	},
-	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Права участника"
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Права участника",
+	"communityconfiguration-automoderator-title": "Автомодератор"
 }

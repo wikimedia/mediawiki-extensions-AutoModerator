@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Beta16"
+			"Beta16",
+			"Laos è una regione"
 		]
 	},
 	"automoderator-wiki-revert-message-header": "== $1 $2: $3 ha annullato la tua modifica ==",

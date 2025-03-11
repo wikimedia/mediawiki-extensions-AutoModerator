@@ -8,7 +8,8 @@
 			"Trizek (WMF)",
 			"Mahabarata",
 			"Eihel",
-			"Wladek92"
+			"Wladek92",
+			"JLTRY"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 a trop d'éléments ($2 {{PLURAL:$2|est autorisé|sont autorisés}} au maximum)",
