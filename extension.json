@@ -178,6 +178,15 @@
 				"ConnectionProvider",
 				"AutoModeratorTalkPageMessageSender"
 			]
+		},
+		"articlerollback": {
+			"class": "AutoModerator\\Hooks\\RollbackCompleteHookHandler",
+			"services": [
+				"AutoModeratorWikiConfigLoader",
+				"UserGroupManager",
+				"MainConfig",
+				"AutoModeratorTalkPageMessageSender"
+			]
 		}
 	},
 	"Hooks": {
@@ -186,7 +195,8 @@
 		"PageSaveComplete": "config",
 		"RevisionFromEditComplete": "revisionfromedit",
 		"HistoryTools": "main",
-		"ORESRecentChangeScoreSavedHook": "ores"
+		"ORESRecentChangeScoreSavedHook": "ores",
+		"RollbackComplete": "articlerollback"
 	},
 	"JobClasses": {
 		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob",

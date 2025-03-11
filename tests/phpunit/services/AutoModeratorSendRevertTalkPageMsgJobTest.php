@@ -202,11 +202,15 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 
 		$this->createPageInfoResponse( $autoModeratorUser, $wikiTalkPageCreated );
 		$this->createFindCommentResponse( $autoModeratorUser, $wikiTalkPageCreated, $header );
-
+		$revId = $this->getServiceContainer()
+			->getWikiPageFactory()
+			->newFromTitle( $title )
+			->getRevisionRecord()
+			->getId();
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
 			[
-				'revId' => "",
-				'parentRevId' => 2,
+				'revId' => $revId,
+				'rollbackRevId' => 2,
 				'autoModeratorUserId' => $autoModeratorUser->getId(),
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'talkPageMessageHeader' => $header,
@@ -264,11 +268,15 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$this->createAddFollowUpCommentResponse( $autoModeratorUser, $wikiTalkPageCreated,
 			$commentId, "I also reverted one of your [[Special:Diff/42|recent edits]] to [[" .
 			$title . "]] because it seemed unconstructive." );
-
+		$revId = $this->getServiceContainer()
+			->getWikiPageFactory()
+			->newFromTitle( $title )
+			->getRevisionRecord()
+			->getId();
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
 			[
-				'revId' => 42,
-				'parentRevId' => 2,
+				'revId' => $revId,
+				'rollbackRevId' => 2,
 				'autoModeratorUserId' => $autoModeratorUser->getId(),
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'talkPageMessageHeader' => $talkPageMessageHeader,
@@ -282,7 +290,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$currentTalkPageContent = $this->getExistingTestPage( $wikiTalkPageCreated['title'] )
 			->getContent()
 			->getWikitextForTransclusion();
-		$expectedTalkPageFollowUpComment = "I also reverted one of your [[Special:Diff/42|recent edits]] to [[" .
+		$expectedTalkPageFollowUpComment = "I also reverted one of your [[Special:Diff/$revId|recent edits]] to [[" .
 			$title . "]] because it seemed unconstructive.";
 
 		$this->assertStringContainsString( $expectedTalkPageFollowUpComment, $currentTalkPageContent );
@@ -293,7 +301,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 	 * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob::run
 	 * @group Database
 	 */
-	public function testRunFailureWhenNoParentRevision() {
+	public function testRunFailureWhenNoRevision() {
 		[ $user, $title ] = $this->createTestPage();
 		$mediaWikiServices = $this->getServiceContainer();
 		$expectedFalsePositiveReportPage = "false-positive-page";
@@ -302,8 +310,8 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 
 		$job = new AutoModeratorSendRevertTalkPageMsgJob( $title,
 			[
-				'revId' => "",
-				'parentRevId' => 1000,
+				'revId' => 1000,
+				'rollbackRevId' => 1001,
 				'autoModeratorUserId' => $autoModeratorUser->getId(),
 				'autoModeratorUserName' => $autoModeratorUser->getName(),
 				'talkPageMessageHeader' => "header",

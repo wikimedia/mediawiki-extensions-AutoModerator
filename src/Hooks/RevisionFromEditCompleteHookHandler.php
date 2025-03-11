@@ -6,7 +6,6 @@ use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
 use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
-use ChangeTags;
 use Exception;
 use JobQueueGroup;
 use MediaWiki\Config\Config;
@@ -99,13 +98,6 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		$title = $wikiPage->getTitle();
 		$wikiPageId = $wikiPage->getId();
 		$revId = $rev->getId();
-		if ( $autoModeratorUser->getId() === $userId && in_array( ChangeTags::TAG_ROLLBACK, $tags ) ) {
-			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
-				$this->talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId,
-					$autoModeratorUser, $logger );
-			}
-			return;
-		}
 		if ( !RevisionCheck::revertPreCheck(
 			$user,
 			$autoModeratorUser,

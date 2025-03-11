@@ -52,14 +52,16 @@ class TalkPageMessageSender {
 
 	/**
 	 * @param Title $title
-	 * @param int|null $revId
+	 * @param int $revId
+	 * @param int $rollbackRevId
 	 * @param User $autoModeratorUser
 	 * @param LoggerInterface $logger
 	 * @return void
 	 */
 	public function insertAutoModeratorSendRevertTalkPageMsgJob(
 		Title $title,
-		?int $revId,
+		int $revId,
+		int $rollbackRevId,
 		User $autoModeratorUser,
 		LoggerInterface $logger
 	): void {
@@ -68,17 +70,8 @@ class TalkPageMessageSender {
 			return;
 		}
 		try {
-			if ( $revId === null ) {
-				$logger->debug( __METHOD__ . ': AutoModerator skip rev - revision ID is null' );
-				return;
-			}
 			$rev = $this->revisionStore->getRevisionById( $revId );
 			if ( $rev === null ) {
-				$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
-				return;
-			}
-			$parentRevId = $rev->getParentId();
-			if ( $parentRevId === null ) {
 				$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
 				return;
 			}
@@ -94,7 +87,7 @@ class TalkPageMessageSender {
 				$title,
 				[
 					'revId' => $revId,
-					'parentRevId' => $parentRevId,
+					'rollbackRevId' => $rollbackRevId,
 					// The test/production environments do not work when you pass the entire User object.
 					// To get around this, we have split the required parameters from the User object
 					// into individual parameters so that the test/production Job constructor will accept them.

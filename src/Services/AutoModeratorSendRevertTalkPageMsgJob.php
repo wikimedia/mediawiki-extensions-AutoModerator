@@ -37,11 +37,6 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	private $revId;
 
 	/**
-	 * @var int
-	 */
-	private int $parentRevId;
-
-	/**
 	 * @var ?string
 	 */
 	private ?string $pageTitle;
@@ -75,12 +70,16 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		. 'for sending AutoModerator revert talk page message.';
 
 	private const NO_PARENT_REVISION_FOUND = 'Failed to retrieve reverted revision from revision store.';
+	/**
+	 * @var int
+	 */
+	private $rollbackRevId;
 
 	/**
 	 * @param Title $title
 	 * @param array $params
 	 *    - 'revId': (int)
-	 *    - 'parentRevId': (int)
+	 *    - 'rollbackRevId': (int)
 	 *    - 'autoModeratorUserId': (int)
 	 *    - 'autoModeratorUserName': (string)
 	 *    - 'talkPageMessageHeader': (string)
@@ -91,7 +90,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		parent::__construct( 'AutoModeratorSendRevertTalkPageMsgJob', $title, $params );
 		$this->pageTitle = $title;
 		$this->revId = $params['revId'];
-		$this->parentRevId = $params['parentRevId'];
+		$this->rollbackRevId = $params['rollbackRevId'];
 		$this->autoModeratorUserId = $params['autoModeratorUserId'];
 		$this->autoModeratorUserName = $params['autoModeratorUserName'];
 		$this->talkPageMessageHeader = $params['talkPageMessageHeader'];
@@ -106,16 +105,16 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 			$autoModeratorServices = AutoModeratorServices::wrap( $services );
 			$userFactory = $services->getUserFactory();
 			$revisionStore = $services->getRevisionStore();
-			$parentRevision = $revisionStore->getRevisionById( $this->parentRevId );
+			$revision = $revisionStore->getRevisionById( $this->revId );
 			$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
-			if ( !$parentRevision ) {
+			if ( !$revision ) {
 				$this->setLastError( self::NO_PARENT_REVISION_FOUND );
 				$this->setAllowRetries( false );
 				return false;
 			}
 			$userTalkPageTitle = $services->getTitleFactory()->makeTitleSafe(
 				NS_USER_TALK,
-				$parentRevision->getUser()->getName()
+				$revision->getUser()->getName()
 			);
 			if ( !$userTalkPageTitle ) {
 				$this->setLastError( self::NO_USER_TALK_PAGE_ERROR_MESSAGE );
@@ -150,7 +149,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 						// Getting the first reply id from this thread item
 						$commentId = $threadItem[ "replies" ][ 0 ][ "id" ];
 						$followUpComment = wfMessage( 'automoderator-wiki-revert-message-follow-up' )->params(
-							$this->revId,
+							$this->rollbackRevId,
 							$this->pageTitle
 						)->plain();
 						$apiClient->addFollowUpComment( $commentId, $userTalkPageTitle, $followUpComment,
@@ -163,7 +162,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				// adding a new topic message
 				$talkPageMessage = wfMessage( 'automoderator-wiki-revert-message' )->params(
 					$this->autoModeratorUserName,
-					$this->revId,
+					$this->rollbackRevId,
 					$this->pageTitle,
 					$this->falsePositiveReportPageTitle )->plain();
 				$helpPageLink = $wikiConfig->get( 'AutoModeratorHelpPageLink' );
