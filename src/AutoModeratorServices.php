@@ -34,7 +34,6 @@ class AutoModeratorServices {
 	}
 
 	// Service aliases
-	// phpcs:disable MediaWiki.Commenting.FunctionComment
 
 	/**
 	 * @codeCoverageIgnore
