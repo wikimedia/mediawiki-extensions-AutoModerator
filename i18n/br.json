@@ -10,6 +10,6 @@
 	"automoderator-desc": "Nullañ a ra ent emgefreek kemmoù fall hervez skor eus ur patrom deskiñ mekanik",
 	"automoderator-wiki-report-false-positive": "disklêriañ fals-pozitivel",
 	"automoderator-wiki-revert-message-header": "$1 $2: nullet eo bet ho kemm gant $3",
-	"automoderator-wiki-revert-message": "Demat! [[User:$1|$1]] on, ur reizhiad emgefre a ra gant ur patrom deskiñ mekanik evit kavout ha nullañ kemmoù a c’hall bezañ fall evit derc’hel Wikipedia fiziadus. Siwazh em eus nullet unan eus ho [[Special:Diff/$2|kemmoù a-nevez]] da [[$3]].\n* Peogwir n’eo ket peurvat ar patrom a ran gantañ e nullan kemmoù mat a-wechoù. Ma kredit e oa fardus ar c’hemm ho peus graet, [[$4|disklêriit anezhañ amañ]] mar plij.\n* [[:mw:Moderator Tools/Automoderator|Gouzout hiroc’h]] a-zivout ma meziant.\n* Evit gouzout hiroc’h a-zivout an aozañ kit d’ho [[Special:Homepage|pajenn degemer nevez-deuet]].",
+	"automoderator-wiki-revert-message": "Demat! [[User:$1|$1]] on, ur reizhiad emgefre a ra gant ur patrom deskiñ emgefre evit kavout ha dizober kemmoù a c’hall bezañ fall evit ma chomo Wikipedia fiziadus. Disc’hraet am eus unan eus ho [[Special:Diff/$2|kemmoù a-nevez]] war-du [[$3]].\n* Peogwir n’eo ket peurvat ar patrom a ran gantañ e tisc’hran kemmoù mat a-wechoù. Ma kredit e oa mat ar c’hemm degaset ganeoc’h, [[$4|disklêriit anezhañ amañ]] mar plij.\n* [[:mw:Moderator Tools/Automoderator|Gouzout hiroc’h]] a-zivout ma meziant.",
 	"automoderator-wiki-revert-edit-summary": "Kemenn nullañ emgefre da [[$1]]"
 }
