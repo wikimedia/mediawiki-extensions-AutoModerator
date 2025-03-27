@@ -69,13 +69,14 @@ class Util {
 	/**
 	 * Returns the revert risk model the revision will be scored from
 	 * @param Config $config
+	 * @param Config $wikiConfig
 	 * @return string
 	 */
-	public static function getRevertRiskModel( Config $config ) {
+	public static function getRevertRiskModel( Config $config, Config $wikiConfig ) {
 		$languageAgnosticModel = self::getORESLanguageAgnosticModelName();
 		$multiLingualModel = self::getORESMultiLingualModelName();
 
-		$isLanguageModelEnabledConfig = self::isMultiLingualRevertRiskEnabled( $config );
+		$isLanguageModelEnabledConfig = self::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
 
 		// Check if a multilingual configuration exists and is enabled
 		if ( $isLanguageModelEnabledConfig ) {
@@ -173,14 +174,16 @@ class Util {
 
 	/**
 	 * @param Config $wikiConfig
-	 * @param Config $config
 	 * @param string $revertRiskModelName
 	 * @return float An AutoModeratorRevertProbability threshold  will be chosen depending on the model
 	 */
-	public static function getRevertThreshold( Config $wikiConfig, Config $config,
-		string $revertRiskModelName ): float {
+	public static function getRevertThreshold( Config $wikiConfig, string $revertRiskModelName ): float {
 		$threshold = 0.990;
-		$cautionLevel = $wikiConfig->get( 'AutoModeratorCautionLevel' );
+		if ( $wikiConfig->has( 'AutoModeratorCautionLevel' ) ) {
+			$cautionLevel = $wikiConfig->get( 'AutoModeratorCautionLevel' );
+		} else {
+			$cautionLevel = $wikiConfig->get( 'AutoModeratorMultilingualConfigCautionLevel' );
+		}
 		if ( $revertRiskModelName === self::getORESLanguageAgnosticModelName() ) {
 			$languageAgnosticThresholds = [
 				'very-cautious' => 0.990,
@@ -190,8 +193,7 @@ class Util {
 			];
 			return $languageAgnosticThresholds[ $cautionLevel ];
 		} elseif ( $revertRiskModelName === self::getORESMultiLingualModelName() ) {
-			$multiLingualThresholds = self::getMultiLingualThresholds( $config );
-			return $multiLingualThresholds[ $cautionLevel ];
+			return self::getMultiLingualThreshold( $wikiConfig );
 		} else {
 			return $threshold;
 		}
@@ -199,13 +201,11 @@ class Util {
 
 	/**
 	 * Returns the revert risk model the revision will be scored from
-	 * @param Config $config
-	 * @return array
+	 * @param Config $wikiConfig
+	 * @return float
 	 */
-	public static function getMultiLingualThresholds( Config $config ) {
-		$multiLingualModel = $config->get( 'AutoModeratorMultiLingualRevertRisk' );
-
-		return $multiLingualModel[ 'thresholds' ];
+	public static function getMultiLingualThreshold( Config $wikiConfig ) {
+		return $wikiConfig->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' );
 	}
 
 	/**
@@ -213,20 +213,23 @@ class Util {
 	 * See: https://meta.wikimedia.org/wiki/Machine_learning_models/Production/Multilingual_revert_risk#Motivation
 	 * for more information
 	 * @param Config $config
+	 * @param Config $wikiConfig
 	 * @return bool
 	 */
-	public static function isMultiLingualRevertRiskEnabled( Config $config ) {
-		$multiLingualModel = $config->get( 'AutoModeratorMultiLingualRevertRisk' );
-
-		return $multiLingualModel[ 'enabled' ];
+	public static function isMultiLingualRevertRiskEnabled( Config $config, Config $wikiConfig ): bool {
+		$wikiId = self::getWikiID( $config );
+		$multiLingualCompatibleWikis = $config->get( 'AutoModeratorMultiLingualRevertRisk' );
+		return $wikiConfig->get( 'AutoModeratorMultilingualConfigEnableMultilingual' ) &&
+			in_array( $wikiId, $multiLingualCompatibleWikis );
 	}
 
 	/**
 	 * @param Config $config
+	 * @param Config $wikiConfig
 	 * @return LiftWingClient
 	 */
-	public static function initializeLiftWingClient( Config $config ): LiftWingClient {
-		$isMultiLingualModelEnabled = self::isMultiLingualRevertRiskEnabled( $config );
+	public static function initializeLiftWingClient( Config $config, Config $wikiConfig ): LiftWingClient {
+		$isMultiLingualModelEnabled = self::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
 		if ( $isMultiLingualModelEnabled ) {
 			$model = 'revertrisk-multilingual';
 		} else {

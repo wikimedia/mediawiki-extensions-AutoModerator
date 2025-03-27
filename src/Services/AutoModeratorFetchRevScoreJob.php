@@ -116,7 +116,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			}
 			$response = false;
 			// Model name defaults to language-agnostic model name
-			$revertRiskModelName = Util::getRevertRiskModel( $config );
+			$revertRiskModelName = Util::getRevertRiskModel( $config, $wikiConfig );
 			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
 				$oresModels = $config->get( 'OresModels' );
 
@@ -129,7 +129,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 			if ( !$response ) {
 				// ORES is not loaded, or a score couldn't be retrieved from the extension
-				$response = $this->getLiftWingRevScore( $config );
+				$response = $this->getLiftWingRevScore( $config, $wikiConfig );
 			}
 			if ( !$response ) {
 				$error = "score could not be retrieved for {$this->revId}";
@@ -200,10 +200,11 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	/**
 	 * Obtains a score from LiftWing API
 	 * @param Config $config
+	 * @param Config $wikiConfig
 	 * @return array|false
 	 */
-	private function getLiftWingRevScore( Config $config ) {
-		$liftWingClient = Util::initializeLiftWingClient( $config );
+	private function getLiftWingRevScore( Config $config, Config $wikiConfig ) {
+		$liftWingClient = Util::initializeLiftWingClient( $config, $wikiConfig );
 		$response = $liftWingClient->get( $this->revId );
 		$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
 		if ( isset( $response['errorMessage'] ) ) {

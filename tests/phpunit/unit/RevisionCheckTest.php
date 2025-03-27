@@ -193,6 +193,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 				[ 'AutoModeratorUseEditFlagMinor', false ],
 				[ 'AutoModeratorCautionLevel', 'very-cautious' ]
 		] );
+		$this->wikiConfig->method( 'has' )->willReturn( true );
 		$contentHandler = $this->createMock( ContentHandler::class );
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
 		$this->contentHandler->method( 'getUndoContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
@@ -373,17 +374,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorRevertProbability', 0 ],
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk',
-				[
-					"enabled" => true,
-					"thresholds" => [
-						"very-cautious" => 0.990,
-						"cautious" => 0.980,
-						"somewhat-cautious" => 0.970,
-						"less-cautious" => 0.960
-					]
-				]
-			],
+			[ 'AutoModeratorMultiLingualRevertRisk', null ],
 			[ 'DisableAnonTalk', false ]
 		] );
 

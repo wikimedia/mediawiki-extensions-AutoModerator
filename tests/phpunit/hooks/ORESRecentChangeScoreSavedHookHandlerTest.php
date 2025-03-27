@@ -5,7 +5,6 @@ namespace AutoModerator\Tests\Hooks;
 use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler;
-use AutoModerator\TalkPageMessageSender;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Page\WikiPageFactory;
@@ -97,7 +96,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		$mockChangeTagsStore->method( 'getTags' )->willReturn( [] );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 		$mockConnectionProvider = $this->createMock( IConnectionProvider::class );
-		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
 		$score = [
 			'model_name' => 'revertrisklanguageagnostic',
 			'model_version' => '0.0.1',
@@ -120,8 +118,7 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			$jobQueueGroup,
 			$mockChangeTagsStore,
 			$mockPermissionManager,
-			$mockConnectionProvider,
-			$mockTalkPageMessageSender
+			$mockConnectionProvider
 			)
 		)
 			->onORESRecentChangeScoreSavedHook( $rev, [ $score ] );
@@ -238,7 +235,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		$mockChangeTagsStore->method( 'getTags' )->willReturn( [] );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 		$mockConnectionProvider = $this->createMock( IConnectionProvider::class );
-		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
 
 		( new ORESRecentChangeScoreSavedHookHandler(
 			$autoModWikiConfig,
@@ -250,8 +246,7 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			$jobQueueGroup,
 			$mockChangeTagsStore,
 			$mockPermissionManager,
-			$mockConnectionProvider,
-			$mockTalkPageMessageSender
+			$mockConnectionProvider
 			)
 		)
 			->onORESRecentChangeScoreSavedHook( $rev, $scores );

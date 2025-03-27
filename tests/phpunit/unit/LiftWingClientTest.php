@@ -27,10 +27,15 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 				]
 			],
 		] );
+		$wikiConfig = $this->createMock( Config::class );
+		$wikiConfig->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorMultilingualConfigEnableMultilingual', false ],
+			[ 'AutoModeratorMultilingualConfigMultilingualThreshold', null ]
+		] );
 		$expectedErrorMessage = "an error message";
 		$expectedHttpStatus = 404;
 
-		$client = Util::initializeLiftWingClient( $config );
+		$client = Util::initializeLiftWingClient( $config, $wikiConfig );
 
 		$response = $client->createErrorResponse( $expectedHttpStatus, $expectedErrorMessage, true );
 
@@ -59,8 +64,13 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 				]
 			],
 		] );
+		$wikiConfig = $this->createMock( Config::class );
+		$wikiConfig->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorMultilingualConfigEnableMultilingual', false ],
+			[ 'AutoModeratorMultilingualConfigMultilingualThreshold', null ]
+		] );
 
-		$client = Util::initializeLiftWingClient( $config );
+		$client = Util::initializeLiftWingClient( $config, $wikiConfig );
 
 		$this->assertEquals( 'mediawiki.ext.AutoModerator.id', $client->getUserAgent() );
 	}

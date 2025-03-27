@@ -5,7 +5,6 @@ namespace AutoModerator\Tests\Hooks;
 use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
-use AutoModerator\TalkPageMessageSender;
 use ChangeTags;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Page\WikiPageFactory;
@@ -105,11 +104,10 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
-		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore,
-			$jobQueueGroup, $mockPermissionManager, $mockTalkPageMessageSender ) )
+			$jobQueueGroup, $mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
@@ -170,11 +168,10 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
-		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockPermissionManager, $mockTalkPageMessageSender ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop()->getParams();
@@ -240,11 +237,10 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore = $this->createMock( RestrictionStore::class );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
-		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockPermissionManager, $mockTalkPageMessageSender ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
@@ -301,11 +297,10 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRevisionStore->method( 'getRevisionById' )->willReturn( $mockRevision );
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
-		$mockTalkPageMessageSender = $this->createMock( TalkPageMessageSender::class );
 
 		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
 			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
-			$mockPermissionManager, $mockTalkPageMessageSender ) )
+			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $mockRevision, $originalRevId, $user, $tags );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );

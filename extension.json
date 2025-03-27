@@ -45,6 +45,21 @@
 						]
 					},
 					"type": "mw-config"
+				},
+				"MultilingualConfig": {
+					"store": {
+						"type": "wikipage",
+						"args": [
+							"MediaWiki:AutoModeratorMultilingualConfig.json"
+						]
+					},
+					"validator": {
+						"type": "jsonschema",
+						"args": [
+							"AutoModerator\\Config\\Validation\\AutoModeratorMultilingualConfigSchema"
+						]
+					},
+					"type": "mw-config"
 				}
 			}
 		}
@@ -114,20 +129,67 @@
 			"value": null
 		},
 		"AutoModeratorMultiLingualRevertRisk": {
-			"description": "Where the multilingual thresholds are stored per-wiki, alongside a variable that indicates if it is enabled for that wiki.",
-			"value": {
-				"enabled": false,
-				"thresholds": {
-					"very-cautious": 0.99,
-					"cautious": 0.98,
-					"somewhat-cautious": 0.97,
-					"less-cautious": 0.96
-				}
-			}
+			"description": "An array that lists all the wikis where the multilingual model is available",
+			"value": null
 		},
 		"AutoModeratorHelpPageLink": {
 			"description": "A link that appears in the talk page message that leads them to a community-selected help page.",
 			"value": null
+		},
+		"AutoModeratorMultilingualConfigEnableRevisionCheck": {
+			"description": "Enable AutoModerator automatic revision checks.",
+			"value": false
+		},
+		"AutoModeratorMultilingualConfigFalsePositivePageTitle": {
+			"description": "The page title of the false positive reporting page.",
+			"value": null
+		},
+		"AutoModeratorMultilingualConfigUseEditFlagMinor": {
+			"description": "Enables the minor edit flag for AutoModerator to use when making its edits.",
+			"value": false
+		},
+		"AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled": {
+			"value": false,
+			"description": "Enable or disable sending talk page messages informing the user that an edit has been reverted."
+		},
+		"AutoModeratorMultilingualConfigEnableBotFlag": {
+			"description": "Enable whether AutoModerator uses the Bot flag when making its edits",
+			"value": false
+		},
+		"AutoModeratorMultilingualConfigSkipUserRights": {
+			"description": "Edits made by accounts with one or more of these rights will not be checked by AutoModerator.",
+			"value": [
+				"bot",
+				"autopatrol"
+			]
+		},
+		"AutoModeratorMultilingualConfigCautionLevel": {
+			"description": "Controls the caution level that AutoModerator uses when scoring edits.",
+			"value": "very-cautious"
+		},
+		"AutoModeratorMultilingualConfigEnableUserRevertsPerPage": {
+			"description": "Enables specifying how many times AutoModerator can revert the same user on a given page within 24 hours.",
+			"value": false
+		},
+		"AutoModeratorMultilingualConfigUserRevertsPerPage": {
+			"description": "Specify how many times AutoModerator can revert the same user on a given page within 24 hours.",
+			"value": null
+		},
+		"AutoModeratorMultilingualConfigHelpPageLink": {
+			"description": "A link that appears in the talk page message that leads them to a community-selected help page.",
+			"value": null
+		},
+		"AutoModeratorMultilingualConfigEnableMultilingual": {
+			"description": "Enables use of the multilingual revert risk model.",
+			"value": false
+		},
+		"AutoModeratorMultilingualConfigMultilingualThreshold": {
+			"description": "The threshold the multilingual revert risk model will use to determine whether an edit will be reverted.",
+			"value": null
+		},
+		"AutoModeratorMultilingualConfigEnableLanguageAgnostic": {
+			"description": "Enables use of the language-agnostic revert risk model.",
+			"value": false
 		}
 	},
 	"HookHandlers": {
@@ -187,6 +249,14 @@
 				"MainConfig",
 				"AutoModeratorTalkPageMessageSender"
 			]
+		},
+		"communityconfiguration": {
+			"class": "AutoModerator\\Hooks\\CommunityConfigurationProviderHookHandler",
+			"services": [
+				"MainConfig",
+				"AutoModeratorWikiPageConfigLoader",
+				"TitleFactory"
+			]
 		}
 	},
 	"Hooks": {
@@ -196,7 +266,8 @@
 		"RevisionFromEditComplete": "revisionfromedit",
 		"HistoryTools": "main",
 		"ORESRecentChangeScoreSavedHook": "ores",
-		"RollbackComplete": "articlerollback"
+		"RollbackComplete": "articlerollback",
+		"CommunityConfigurationProvider_initList": "communityconfiguration"
 	},
 	"JobClasses": {
 		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob",

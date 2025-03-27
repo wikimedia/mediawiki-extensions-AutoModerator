@@ -14,6 +14,9 @@ use StatusValue;
 class AutoModeratorConfigValidation implements IConfigValidator {
 	use DatatypeValidationTrait;
 
+	/**
+	 * @codeCoverageIgnore
+	 */
 	private function getConfigDescriptors(): array {
 		return [
 			'AutoModeratorEnableRevisionCheck' => [
@@ -45,6 +48,45 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			],
 			'AutoModeratorHelpPageLink' => [
 				'type' => '?string'
+			],
+			'AutoModeratorMultilingualConfigEnableRevisionCheck' => [
+				'type' => 'bool',
+			],
+			'AutoModeratorMultilingualConfigFalsePositivePageTitle' => [
+				'type' => '?string',
+			],
+			'AutoModeratorMultilingualConfigUseEditFlagMinor' => [
+				'type' => 'bool',
+			],
+			'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' => [
+				'type' => 'bool',
+			],
+			'AutoModeratorMultilingualConfigEnableBotFlag' => [
+				'type' => 'bool',
+			],
+			'AutoModeratorMultilingualConfigSkipUserRights' => [
+				'type' => 'array'
+			],
+			'AutoModeratorMultilingualConfigCautionLevel' => [
+				'type' => 'string',
+			],
+			'AutoModeratorMultilingualConfigEnableUserRevertsPerPage' => [
+				'type' => 'bool',
+			],
+			'AutoModeratorMultilingualConfigUserRevertsPerPage' => [
+				'type' => '?string',
+			],
+			'AutoModeratorMultilingualConfigHelpPageLink' => [
+				'type' => '?string'
+			],
+			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => [
+				'type' => 'bool'
+			],
+			'AutoModeratorMultilingualConfigEnableMultilingual' => [
+				'type' => 'bool'
+			],
+			'AutoModeratorMultilingualConfigMultilingualThreshold' => [
+				'type' => '?string',
 			]
 		];
 	}
@@ -83,7 +125,10 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 				Message::numParam( $descriptor['maxSize'] )
 			);
 		}
-		if ( $fieldName == "AutoModeratorSkipUserRights" ) {
+
+		$isUserRightsField = $fieldName == "AutoModeratorSkipUserRights" ||
+			$fieldName == "AutoModeratorMultilingualConfigSkipUserRights";
+		if ( $isUserRightsField ) {
 			$allPermissions = MediaWikiServices::getInstance()->getPermissionManager()->getAllPermissions();
 			foreach ( $value as $userRight ) {
 				if ( !in_array( $userRight, $allPermissions ) ) {
@@ -94,9 +139,43 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 				}
 			}
 		}
-		if ( $fieldName == "AutoModeratorUserRevertsPerPage" && $value && !is_numeric( $value ) ) {
+
+		$isUserRevertsPerPageField = $fieldName == "AutoModeratorUserRevertsPerPage" ||
+			$fieldName == "AutoModeratorMultilingualConfigUserRevertsPerPage";
+		if ( $isUserRevertsPerPageField && $value && !is_numeric( $value ) ) {
 			return StatusValue::newFatal(
 				'automoderator-config-validator-user-reverts-per-page-not-number',
+				$value
+			);
+		}
+
+		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value && !is_numeric( $value ) ) {
+			return StatusValue::newFatal(
+				'automoderator-config-validator-multilingual-threshold-not-number',
+				$value
+			);
+		}
+
+		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold" &&
+			( $value < 0.950 || $value > 0.999 ) ) {
+			return StatusValue::newFatal(
+				'automoderator-config-validator-multilingual-threshold-value-outside-range',
+				$value
+			);
+		}
+
+		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold"
+			&& !$data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
+			return StatusValue::newFatal(
+				'automoderator-config-validator-multilingual-threshold-multilingual-not-enabled',
+				$value
+			);
+		}
+
+		if ( $fieldName == "AutoModeratorMultilingualConfigEnableLanguageAgnostic" && $value
+			&& $data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
+			return StatusValue::newFatal(
+				'automoderator-config-validator-multilingual-select-only-one-model',
 				$value
 			);
 		}

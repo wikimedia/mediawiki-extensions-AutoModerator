@@ -4,11 +4,10 @@ namespace AutoModerator\Hooks;
 
 use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
-use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
 use Exception;
-use JobQueueGroup;
 use MediaWiki\Config\Config;
+use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPageFactory;
@@ -36,8 +35,6 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 
 	private PermissionManager $permissionManager;
 
-	private TalkPageMessageSender $talkPageMessageSender;
-
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
@@ -47,7 +44,6 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 	 * @param RestrictionStore $restrictionStore
 	 * @param JobQueueGroup $jobQueueGroup
 	 * @param PermissionManager $permissionManager
-	 * @param TalkPageMessageSender $talkPageMessageSender
 	 */
 	public function __construct(
 		Config $wikiConfig,
@@ -57,8 +53,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		RevisionStore $revisionStore,
 		RestrictionStore $restrictionStore,
 		JobQueueGroup $jobQueueGroup,
-		PermissionManager $permissionManager,
-		TalkPageMessageSender $talkPageMessageSender
+		PermissionManager $permissionManager
 	) {
 		$this->wikiConfig = $wikiConfig;
 		$this->userGroupManager = $userGroupManager;
@@ -68,7 +63,6 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		$this->restrictionStore = $restrictionStore;
 		$this->jobQueueGroup = $jobQueueGroup;
 		$this->permissionManager = $permissionManager;
-		$this->talkPageMessageSender = $talkPageMessageSender;
 	}
 
 	/**
@@ -89,7 +83,12 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		if ( !$wikiPage || !$rev || !$user ) {
 			return;
 		}
-		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
+		$revisionCheckNotEnabled = $this->wikiConfig->has( 'AutoModeratorEnableRevisionCheck' ) &&
+		!$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' );
+		$multilingualRevisionCheckNotEnabled = $this->wikiConfig
+			->has( 'AutoModeratorMultilingualConfigEnableRevisionCheck' )
+			&& !$this->wikiConfig->get( 'AutoModeratorMultilingualConfigEnableRevisionCheck' );
+		if ( $revisionCheckNotEnabled && $multilingualRevisionCheckNotEnabled ) {
 			return;
 		}
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );

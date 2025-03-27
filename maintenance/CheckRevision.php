@@ -114,7 +114,7 @@ class CheckRevision extends Maintenance {
 		$score = [];
 		switch ( $this->getOption( 'client', 'liftwing' ) ) {
 			case 'liftwing':
-				$liftWingClient = Util::initializeLiftWingClient( $config );
+				$liftWingClient = Util::initializeLiftWingClient( $config, $wikiConfig );
 				$score = $liftWingClient->get( $rev->getId() );
 				break;
 			case 'testfail':
@@ -150,7 +150,7 @@ class CheckRevision extends Maintenance {
 			default:
 				break;
 		}
-		$revertRiskModelName = Util::getRevertRiskModel( $config );
+		$revertRiskModelName = Util::getRevertRiskModel( $config, $wikiConfig );
 		$reverted = json_encode( $revisionCheck->maybeRollback( $score, $revertRiskModelName ),
 			JSON_FORCE_OBJECT,
 			JSON_PRETTY_PRINT );

@@ -19,7 +19,8 @@ class ConfigValidatorFactory {
 	 * as well.
 	 */
 	private const CONFIG_VALIDATOR_MAP = [
-		'AutoModeratorConfig.json' => AutoModeratorConfigValidation::class
+		'AutoModeratorConfig.json' => AutoModeratorConfigValidation::class,
+		'AutoModeratorMultilingualConfig.json' => AutoModeratorConfigValidation::class
 	];
 
 	/**

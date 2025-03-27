@@ -33,7 +33,21 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 		'AutoModeratorCautionLevel',
 		'AutoModeratorEnableUserRevertsPerPage',
 		'AutoModeratorUserRevertsPerPage',
-		'AutoModeratorHelpPageLink'
+		'AutoModeratorHelpPageLink',
+		'AutoModeratorMultilingualConfigEnableRevisionCheck',
+		'AutoModeratorMultilingualConfigFalsePositivePageTitle',
+		'AutoModeratorMultilingualConfigUseEditFlagMinor',
+		'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled',
+		'AutoModeratorMultilingualConfigEnableBotFlag',
+		'AutoModeratorMultilingualConfigSkipUserRights',
+		'AutoModeratorMultilingualConfigCautionLevel',
+		'AutoModeratorMultilingualConfigEnableUserRevertsPerPage',
+		'AutoModeratorMultilingualConfigUserRevertsPerPage',
+		'AutoModeratorMultilingualConfigHelpPageLink',
+		'AutoModeratorMultilingualConfigEnableLanguageAgnostic',
+		'AutoModeratorMultilingualConfigEnableMultilingual',
+		'AutoModeratorMultilingualConfigMultilingualThreshold',
+		'AutoModeratorMultilingualConfigConfigureThreshold'
 	];
 
 	/**

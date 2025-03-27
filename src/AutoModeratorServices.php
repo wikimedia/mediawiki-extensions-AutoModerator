@@ -18,6 +18,7 @@ class AutoModeratorServices {
 
 	/**
 	 * @param MediaWikiServices $coreServices
+	 * @codeCoverageIgnore
 	 */
 	public function __construct( MediaWikiServices $coreServices ) {
 		$this->coreServices = $coreServices;

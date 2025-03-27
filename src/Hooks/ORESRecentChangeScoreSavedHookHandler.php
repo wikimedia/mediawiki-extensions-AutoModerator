@@ -4,12 +4,11 @@ namespace AutoModerator\Hooks;
 
 use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
-use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
 use Exception;
-use JobQueueGroup;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
+use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
@@ -42,8 +41,6 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 
 	private IConnectionProvider $connectionProvider;
 
-	private TalkPageMessageSender $talkPageMessageSender;
-
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
@@ -55,7 +52,6 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 	 * @param ChangeTagsStore $changeTagsStore
 	 * @param PermissionManager $permissionManager
 	 * @param IConnectionProvider $connectionProvider
-	 * @param TalkPageMessageSender $talkPageMessageSender
 	 */
 	public function __construct(
 		Config $wikiConfig,
@@ -67,8 +63,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		JobQueueGroup $jobQueueGroup,
 		ChangeTagsStore $changeTagsStore,
 		PermissionManager $permissionManager,
-		IConnectionProvider $connectionProvider,
-		TalkPageMessageSender $talkPageMessageSender
+		IConnectionProvider $connectionProvider
 	) {
 		$this->wikiConfig = $wikiConfig;
 		$this->userGroupManager = $userGroupManager;
@@ -80,7 +75,6 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		$this->changeTagsStore = $changeTagsStore;
 		$this->permissionManager = $permissionManager;
 		$this->connectionProvider = $connectionProvider;
-		$this->talkPageMessageSender = $talkPageMessageSender;
 	}
 
 	/**
@@ -91,7 +85,12 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		if ( !$revision || !$scores ) {
 			return;
 		}
-		if ( !$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' ) ) {
+		$revisionCheckNotEnabled = $this->wikiConfig->has( 'AutoModeratorEnableRevisionCheck' ) &&
+		!$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' );
+		$multilingualRevisionCheckNotEnabled = $this->wikiConfig
+			->has( 'AutoModeratorMultilingualConfigEnableRevisionCheck' )
+			&& !$this->wikiConfig->get( 'AutoModeratorMultilingualConfigEnableRevisionCheck' );
+		if ( $revisionCheckNotEnabled && $multilingualRevisionCheckNotEnabled ) {
 			return;
 		}
 		$user = $revision->getUser();

@@ -191,7 +191,7 @@ class RevisionCheck {
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		// Check if the threshold should be taken from the language-agnostic
 		// or the multilingual model based on what model was chosen in the job
-		if ( $probability > Util::getRevertThreshold( $this->wikiConfig, $this->config, $revertRiskModelName ) ) {
+		if ( $probability > Util::getRevertThreshold( $this->wikiConfig, $revertRiskModelName ) ) {
 			if ( $this->enforce ) {
 				$pageRollbackStatus = $this->doRollback();
 				if ( !$pageRollbackStatus->isOK() ) {

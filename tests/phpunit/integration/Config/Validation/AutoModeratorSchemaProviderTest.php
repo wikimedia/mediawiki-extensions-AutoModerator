@@ -23,5 +23,6 @@ class AutoModeratorSchemaProviderTest extends SchemaProviderTestCase {
 		parent::setUp();
 
 		$this->overrideConfigValue( 'AutoModeratorEnableWikiConfig', true );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
 	}
 }

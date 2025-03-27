@@ -21,8 +21,8 @@ namespace AutoModerator;
 
 use AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob;
 use Exception;
-use JobQueueGroup;
 use MediaWiki\Config\Config;
+use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
