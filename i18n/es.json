@@ -18,6 +18,10 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "El mensaje de la página de discusión está activado",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Página para reportar falsos positivos",
 	"communityconfiguration-automoderator-title": "Automoderador",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Más cauteloso (predeterminado): se revertirán la menor cantidad de ediciones, pero la precisión será la más alta.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Cauteloso: se revertirán relativamente pocas ediciones, pero la precisión será media.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Menos cauteloso: se revertirán relativamente más ediciones, pero la precisión será baja.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Mínima precaución: se revertirá la mayor cantidad de ediciones, pero la precisión será la más baja.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configurar umbral",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderador",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Ediciones menores",
@@ -28,5 +32,6 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Después de que Automoderador revierte una edición, se puede enviar automáticamente un mensaje a la página de discusión del usuario explicando lo sucedido y proporcionando enlaces útiles.",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Ayuda:Edición menor]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
+	"communityconfiguration-automoderator-description": "Configure los ajustes del Automoderador, para que el modelo pueda identificar y revertir ediciones potencialmente incorrectas en Wikipedia.",
 	"automoderator-config-validator-userrights-not-allowed": "El permiso de usuario $1 no existe. Por favor prueba con otro."
 }
