@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Pkeciy",
 			"Rooiratel"
 		]
 	},
@@ -13,7 +14,7 @@
 	"automoderator-wiki-revert-message": "Hallo! Ek is [[User:$1|$1]], 'n outomatiese stelsel wat 'n [[Masjienleer|masjienleermodel]] gebruik om potensiële slegte wysigings te identifiseer en terug te rol om te verseker dat Wikipedia vertroubaar en betroubaar bly. Ongelukkig het ek een van jou [[Special:Diff/$2|onlangse wysigings]] teruggestel na [[$3]].\n* Omdat die model wat ek gebruik nie perfek is nie, rol dit soms goeie wysigings terug. As jy glo dat die verandering wat jy gemaak het konstruktief was, [[$4|rapporteer dit asseblief hier]].\n* [[:mw:Moderator Tools/Automoderator|Leer meer]] oor my sagteware.",
 	"automoderator-wiki-revert-message-help-page": "* Om meer te wete te kom oor redigering, bekyk asseblief hierdie hulpbladsy: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Ek het ook een van jou [[Special:Diff/$1|onlangse wysigings]] na [[$2]] teruggerol omdat dit onopbouend gelyk het.",
-	"automoderator-wiki-revert-edit-summary": "Kennisgewing van outomatiese terugkeering op [[$1]]",
+	"automoderator-wiki-revert-edit-summary": "Kennisgewing van outomatiese terugrol op [[$1]]",
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|Wysiging|Wysigings}} deur 'n versteekte gebruiker teruggerol na laaste weergawe deur {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Wysiging|Wysigings}} deur [[Special:Contributions/$2|$2]] teruggerol na laaste weergawe deur [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Wysiging|Wysigings}} deur [[Special:Contributions/$2|$2]] ([[User talk:$2|bespreking]]) teruggerol na laaste weergawe deur [[User:$1|$1]]",

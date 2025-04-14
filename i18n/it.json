@@ -2,10 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Beta16",
-			"Laos è una regione"
+			"Laos è una regione",
+			"Titore"
 		]
 	},
+	"automoderator-wiki-report-false-positive": "segnala falso positivo",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 ha annullato la tua modifica",
+	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Annullata la modifica|Annullate le modifiche}} di [[Special:Contributions/$2|$2]], riportata alla versione precedente di [[User:$1|$1]]",
+	"automoderator-wiki-revertpage": "{{PLURAL:$7|Annullata la modifica|Annullate le modifiche}} di [[Special:Contributions/$2|$2]] ([[User talk:$2|discussione]]), riportata alla versione precedente di [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Diritti utente",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Modifiche minori",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Aiuto:Modifica minore]",
