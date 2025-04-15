@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Rooiratel"
+			"Rooiratel",
+			"Pkeciy"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 het te veel items (maksimum $2 {{PLURAL:$2|word toegelaat}})",
@@ -11,7 +12,7 @@
 	"automoderator-wiki-report-false-positive": "rapporteer 'n vals positief",
 	"automoderator-wiki-revert-message-header": "== $1 $2 : $3 het jou wysiging teruggerol ==",
 	"automoderator-wiki-revert-message": "Hallo! Ek is [[User:$1|$1]], 'n outomatiese stelsel wat 'n [[Masjienleer|masjienleermodel]] gebruik om potensiële slegte wysigings te identifiseer en terug te rol om te verseker dat Wikipedia vertroubaar en betroubaar bly. Ongelukkig het ek een van jou [[Special:Diff/$2|onlangse wysigings]] teruggestel na [[$3]].\n* Omdat die model wat ek gebruik nie perfek is nie, rol dit soms goeie wysigings terug. As jy glo dat die verandering wat jy gemaak het konstruktief was, [[$4|rapporteer dit asseblief hier]].\n* [[:mw:Moderator Tools/Automoderator|Leer meer]] oor my sagetware.\n* Om meer te wete te kom oor redigering, besoek jou [[Special:Homepage|Nuweling-tuisblad]].",
-	"automoderator-wiki-revert-edit-summary": "Kennisgewing van outomatiese terugkeering op [[$1]]",
+	"automoderator-wiki-revert-edit-summary": "Kennisgewing van outomatiese terugrol op [[$1]]",
 	"automoderator-wiki-undo-summary": "Maak hersiening [[Special:Diff/$1|$1]] deur [[Special:Contributions/$2|$2]] ([[User talk:$2|bespreking]]) ongedaan",
 	"automoderator-wiki-undo-summary-anon": "Maak hersiening [[Special:Diff/$1|$1]] deur [[Special:Contributions/$2|$2]] ongedaan",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gebruikersregte",
