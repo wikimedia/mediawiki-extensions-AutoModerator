@@ -7,6 +7,7 @@ use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
@@ -17,7 +18,6 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 use Wikimedia\Rdbms\IConnectionProvider;
-use WikiPage;
 
 /**
  * @group AutoModerator

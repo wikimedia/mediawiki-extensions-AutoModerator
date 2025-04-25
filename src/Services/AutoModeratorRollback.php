@@ -2,17 +2,18 @@
 
 namespace AutoModerator\Services;
 
-use ManualLogEntry;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
 use MediaWiki\Language\RawMessage;
+use MediaWiki\Logging\ManualLogEntry;
 use MediaWiki\MainConfigNames;
 use MediaWiki\Message\Message;
 use MediaWiki\Page\PageIdentity;
 use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\RecentChanges\RecentChange;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
@@ -22,7 +23,6 @@ use MediaWiki\Title\TitleValue;
 use MediaWiki\User\ActorMigration;
 use MediaWiki\User\ActorNormalization;
 use MediaWiki\User\UserIdentity;
-use RecentChange;
 use StatusValue;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\Rdbms\IConnectionProvider;

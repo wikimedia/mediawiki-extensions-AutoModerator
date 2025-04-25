@@ -4,12 +4,13 @@ namespace AutoModerator\Tests;
 
 use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorRollback;
-use ChangeTags;
 use DummyContentForTesting;
 use MediaWiki\Block\AbstractBlock;
+use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\Config;
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\Language\Language;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
@@ -26,7 +27,6 @@ use MockHttpTrait;
 use MockTitleTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use StatusValue;
-use WikiPage;
 
 /**
  * @group AutoModerator

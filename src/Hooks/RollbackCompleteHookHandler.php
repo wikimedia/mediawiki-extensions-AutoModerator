@@ -7,10 +7,10 @@ use AutoModerator\Util;
 use MediaWiki\Config\Config;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\Hook\RollbackCompleteHook;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
-use WikiPage;
 
 class RollbackCompleteHookHandler implements RollbackCompleteHook {
 	private Config $config;

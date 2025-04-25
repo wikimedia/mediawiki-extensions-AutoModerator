@@ -18,7 +18,7 @@ namespace AutoModerator\Services;
 
 use AutoModerator\AutoModeratorServices;
 use AutoModerator\Util;
-use Job;
+use MediaWiki\JobQueue\Job;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;

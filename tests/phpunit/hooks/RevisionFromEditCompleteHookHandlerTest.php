@@ -5,8 +5,9 @@ namespace AutoModerator\Tests\Hooks;
 use AutoModerator\Config\AutoModeratorWikiConfigLoader;
 use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
-use ChangeTags;
+use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
@@ -17,7 +18,6 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
-use WikiPage;
 
 /**
  * @group AutoModerator

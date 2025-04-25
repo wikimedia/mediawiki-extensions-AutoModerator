@@ -20,8 +20,9 @@
 namespace AutoModerator;
 
 use AutoModerator\Services\AutoModeratorRollback;
-use ChangeTags;
+use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\Config;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
@@ -32,7 +33,6 @@ use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
 use StatusValue;
-use WikiPage;
 
 class RevisionCheck {
 

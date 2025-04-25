@@ -8,13 +8,13 @@ use AutoModerator\Hooks\RollbackCompleteHookHandler;
 use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
-use WikiPage;
 
 /**
  * @group AutoModerator
