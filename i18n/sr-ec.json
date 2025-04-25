@@ -14,6 +14,5 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Мање измене",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Ботовска измена",
 	"automoderator-config-validator-userrights-not-allowed": "Корисничко право $1 не постоји. Пробајте друго.",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Одредишна страница",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Назив"
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Одредишна страница"
 }

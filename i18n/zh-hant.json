@@ -55,6 +55,5 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "輸入的「同一頁面同一使用者可回退次數」值不是數字，請嘗試其他值。",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "連結到一個頁面以助編輯",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "目標頁面",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "標籤",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "未註冊貢獻者的討論頁訊息將顯示一個頁面連結，以幫助他們編輯。\n此鏈接可配置為wiki中的任何鏈接。"
 }

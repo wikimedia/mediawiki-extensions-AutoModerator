@@ -11,6 +11,5 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "رسالة صفحة نقاش",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "مشرف آلي",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "تعديلات طفيفة",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "تعديل بوت",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "التسمية"
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "تعديل بوت"
 }

@@ -53,7 +53,6 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "ページ毎の利用者差し戻しに入力された値が数値ではありません。別の値を試してください。",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "編集に役立つページへのリンク",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "リンク先ページ",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "ラベル",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "未登録投稿者向けのトークページメッセージには編集の役に立つページへのリンクが表示されます。\nこのリンクはウィキ内の任意のリンクに設定できます。",
 	"automoderator-config-validator-help-page-link-not-filled": "リンク先ページ欄とラベル欄の両方を埋める必要があります。"
 }

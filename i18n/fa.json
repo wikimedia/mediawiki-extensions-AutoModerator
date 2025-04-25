@@ -8,6 +8,5 @@
 	"automoderator-wiki-revert-message-help-page": "برای اطلاعات بیشتر پیرامون ویرایش، لطفاً این صفحهٔ راهنما را ببینید: [[$1]].",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "پیوند به صفحه‌ای برای راهنمایی پیرامون ویرایش",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "صفحهٔ مقصد",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "برچسب",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "پیام صفحهٔ بحث برای مشارکت‌کنندگان ثبت‌نام‌نکرده، پیوندی به صفحه‌ای برای کسب راهنمایی پیرامون ویرایش را نمایش خواهد داد.\nاین پیوند می‌تواند طوری تنظیم شود که به هریک از صفحه‌های موجود در این ویکی برود."
 }

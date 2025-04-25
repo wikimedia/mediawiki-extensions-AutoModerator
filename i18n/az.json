@@ -50,7 +50,11 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "Hər səhifəyə görə istifadəçi geri qaytarılma üçün daxil edilmiş dəyər rəqəm deyil, bir daha cəhd edin.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Redaktə ilə bağlı kömək səhifəsinə keçid",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Hədəf səhifəsi",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etiket",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Qeydiyyatdan keçməmiş redaktorlar üçün müzakirə səhifəsi mesajı redaktə ilə bağlı kömək səhifəsinə keçid verəcək.\nBu keçid vikidə istənilən keçid kimi konfiqurasiya edilə bilər.",
-	"automoderator-config-validator-help-page-link-not-filled": "Təyinat səhifəsi sahəsi və Nişan sahəsi doldurulmalıdır."
+	"automoderator-config-validator-help-page-link-not-filled": "Təyinat səhifəsi sahəsi və Nişan sahəsi doldurulmalıdır.",
+	"communityconfiguration-multilingualconfig-title": "Avtomoderator",
+	"communityconfiguration-multilingualconfig-description": "Modelin Vikipediyada potensial pis redaktələri müəyyən edib geri qaytara bilməsi üçün Avtomoderator parametrlərini konfiqurasiya et",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Avtomoderator",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-control-label": "Avtomoderator aktivləşdirilib.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-label": "Həddi konfiqurasiya et"
 }

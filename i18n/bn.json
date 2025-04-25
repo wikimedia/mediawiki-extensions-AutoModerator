@@ -52,6 +52,5 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "প্রতি পাতায় ব্যবহারকারীর সম্পাদনা প্রত্যাবর্তনের জন্য প্রবেশ করানো মানটি কোনও সংখ্যা নয়, অনুগ্রহ করে অন্য একটি দিয়ে চেষ্টা করুন।",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "সম্পাদনা করতে সাহায্য করার জন্য একটি পাতার লিঙ্ক দিন",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "গন্তব্য পাতা",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "লেবেল",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "অনিবন্ধিত অবদানকারীদের ক্ষেত্রে আলাপ পাতার বার্তায় একটি পাতার লিঙ্ক দেওয়া থাকবে যাতে তারা এটি পড়ে সম্পাদনা শিখতে পারে। এই লিঙ্কটি উইকির যে কোনও লিঙ্ক হিসেবে কনফিগার করা যেতে পারে।"
 }

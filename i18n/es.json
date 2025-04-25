@@ -48,7 +48,6 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "El valor ingresado para Reversiones de usuario por página no es un número, intente con otro.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Enlace a una página con ayuda para editar",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Página de destino",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etiqueta",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "El mensaje de la página de discusión para personas no registradas mostrará un enlace a una página para ayudarlos con la edición.\nEste enlace se puede configurar para ser cualquier enlace en el wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "Es necesario completar el campo de la página de Destino y el campo de Etiqueta."
 }

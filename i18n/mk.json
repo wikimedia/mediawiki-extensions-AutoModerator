@@ -50,7 +50,6 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "Внесената вредност за Кориснички отповикувања по страница не е број. Обидете се со друго.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Врска до страница за помош со уредување",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Целна страница",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Натпис",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Пораката на разговорната страница на незачленети учесници ќе прикажува врска до страница за помош со уредување.\nМоже да се намести да биде било која врска на викито.",
 	"automoderator-config-validator-help-page-link-not-filled": "Мора да се пополнат полињата „Целна страница“ и „Натпис“."
 }

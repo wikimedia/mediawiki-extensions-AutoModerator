@@ -14,6 +14,5 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Modifiche minori",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Aiuto:Modifica minore]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manuale:Bot]",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Pagina di destinazione",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etichetta"
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Pagina di destinazione"
 }

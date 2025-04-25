@@ -51,6 +51,5 @@
 	"automoderator-config-validator-user-reverts-per-page-not-number": "Die waarde wat vir gebruiker-terugkering per bladsy ingevoer is, is nie 'n nommer nie, probeer asseblief 'n ander een.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Skakel na 'n bladsy om te help met redigering",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Bestemmingsbladsy",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-label-label": "Etiket",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Die besprekingsbladsyboodskap vir ongeregistreerde bydraers sal 'n skakel na 'n bladsy vertoon om hulle te help met redigering.\nHierdie skakel kan opgestel word om enige skakel in die wiki te wees."
 }
