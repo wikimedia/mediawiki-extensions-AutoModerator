@@ -3,6 +3,7 @@
 		"authors": [
 			"Alien333",
 			"Eihel",
+			"Eleanorsilly",
 			"Goombiis",
 			"JLTRY",
 			"Mahabarata",
@@ -65,6 +66,9 @@
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automodérateur",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-control-label": "L'automodérateur est activé.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-label": "Configurer le seuil",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-description": "Choisissez de configurer Automoderator sur votre wiki en utilisant soit 1) le [https://meta.wikimedia.org/wiki/Machine_learning_models/Production/Language-agnostic_revert_risk Modèle indépendant de la langue] ou 2) le [https://meta.wikimedia.org/wiki/Machine_learning_models/Production/Multilingual_revert_risk Modèle multilingue]. Ces modèles utilisent un modèle d'apprentissage automatique pour calculer un score pour chaque révision, prédisant ainsi la probabilité que la modification doive être annulée. Actuellement, ils ne prennent en charge que l'espace de noms principal (articles). Vous pouvez définir ci-dessous le seuil au-delà duquel les modifications seront automatiquement annulées.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-label": "Modèle indépendant de la langue",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-control-label": "Le modèle indépendant de la langue est activé",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "Modèle multilingue",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-control-label": "Le modèle multilingue est activé",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "Seuil",

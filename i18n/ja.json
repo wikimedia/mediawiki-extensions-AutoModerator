@@ -54,5 +54,19 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "編集に役立つページへのリンク",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "リンク先ページ",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "未登録投稿者向けのトークページメッセージには編集の役に立つページへのリンクが表示されます。\nこのリンクはウィキ内の任意のリンクに設定できます。",
-	"automoderator-config-validator-help-page-link-not-filled": "リンク先ページ欄とラベル欄の両方を埋める必要があります。"
+	"automoderator-config-validator-help-page-link-not-filled": "リンク先ページ欄とラベル欄の両方を埋める必要があります。",
+	"communityconfiguration-multilingualconfig-title": "オートモデレーター",
+	"communityconfiguration-multilingualconfig-description": "ウィキペディア上の不適切な可能性のある編集をモデルが識別し差し戻せるように、オートモデレーターの設定をします。",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "オートモデレーター",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-label": "閾値を設定する",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "閾値",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "細部の編集",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-control-label": "オートモデレーターによる差し戻しは細部の編集とみなされます。",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:細部の編集]",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "ボット編集",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-control-label": "オートモデレーターによる差し戻しはボット編集とみなされます。",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-label": "編集に役立つページへのリンク",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "リンク先ページ",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "利用者権限",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-description": "オートモデレーターが差し戻すべきではない利用者権限保持者を指定します。"
 }

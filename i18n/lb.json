@@ -8,5 +8,9 @@
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Benotzerrechter",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleng Ännerungen",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botännerung",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zilsäit"
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zilsäit",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Kleng Ännerungen",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "Botännerung",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "Zilsäit",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "Benotzerrechter"
 }

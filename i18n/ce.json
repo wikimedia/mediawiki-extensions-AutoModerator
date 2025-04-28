@@ -5,5 +5,13 @@
 		]
 	},
 	"automoderator-config-validator-datatype-mismatch": "Хьоьжу, <code>$1</code> хӀокхуьнга <code>$2</code>, иза ду <code>$3</code>",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Декъашхочун бакъонаш"
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Декъашхочун бакъонаш",
+	"communityconfiguration-automoderator-title": "Автомодератор",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Автомодератор",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "КӀеззиг хийцамаш",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Ботийн нисдарш",
+	"communityconfiguration-multilingualconfig-title": "Автомодератор",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Автомодератор",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "КӀеззиг хийцамаш",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "Ботийн нисдарш"
 }
