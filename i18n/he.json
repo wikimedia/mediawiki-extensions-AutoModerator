@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
-			"YaronSh"
+			"YaronSh",
+			"A100Star"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "ל{{GRAMMAR:תחילית|$1}} יש יותר מדי פריטים (מותר {{PLURAL:$2|שיהיה אחד|שיהיו $2}} לכל היותר)",
