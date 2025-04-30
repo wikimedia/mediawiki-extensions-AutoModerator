@@ -55,7 +55,7 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "הודעת דף השיחה לתורמים לא רשומים תציג קישור לדף שיעזור להם בעריכה.\nניתן להגדיר את הקישור הזה לכל קישור בוויקי.",
 	"automoderator-config-validator-help-page-link-not-filled": "יש למלא את שדה דף היעד ואת שדה התווית.",
 	"communityconfiguration-multilingualconfig-title": "מפקח אוטומטי",
-	"communityconfiguration-multilingualconfig-description": "הגדרת התצורה של מפקח אוטומטי (Automoderator), כך שהמודל יוכל לזהות ולשחזור בויקיפדיה עריכות שעלולות להיות גרועות.",
+	"communityconfiguration-multilingualconfig-description": "הגדרת התצורה של מפקח אוטומטי (Automoderator), כך שהמודל יוכל לזהות ולשחזור בוויקיפדיה עריכות שעלולות להיות גרועות.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "מפקח אוטומטי",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-control-label": "המפקח האוטומטי מופעל",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-label": "הגדרת רף",
