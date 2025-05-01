@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"22258",
+			"Suleiman the Magnificent Television",
 			"Ykhwong"
 		]
 	},
@@ -13,5 +14,5 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "문서 당 사용자 되돌리기",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "문서 당 사용자 되돌리기 활성화",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "대상 문서",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "목적지 페이지"
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "대상 문서"
 }
