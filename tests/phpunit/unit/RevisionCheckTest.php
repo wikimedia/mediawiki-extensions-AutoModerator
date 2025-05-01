@@ -592,7 +592,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	public function provideRevertPreCheckSkipsOthersTaggedEdit(): array {
+	public static function provideRevertPreCheckSkipsOthersTaggedEdit(): array {
 		return [
 			[ ChangeTags::TAG_REVERTED ],
 			[ ChangeTags::TAG_NEW_REDIRECT ],
