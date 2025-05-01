@@ -4,5 +4,7 @@
 			"Умар"
 		]
 	},
-	"automoderator-config-validator-datatype-mismatch": "Хьоьжу, <code>$1</code> хӀокхуьнга <code>$2</code>, иза ду <code>$3</code>"
+	"automoderator-config-validator-contentmodel-mismatch": "Чулацаман модель нийса ца хилар: конфигурацин файлехь JSON чулацаман модель хила йеза, $1 гучудаьлла",
+	"automoderator-config-validator-datatype-mismatch": "Хьоьжу, <code>$1</code> хӀокхуьнга <code>$2</code>, иза ду <code>$3</code>",
+	"automoderator-desc": "Авто йухайерзабо вон хийцамаш, машенан Ӏаморийн модель тӀера баллаш хӀитторан буха тӀехь."
 }
