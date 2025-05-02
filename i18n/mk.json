@@ -24,7 +24,7 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Пораката на разговорната страница е вклучена",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Страница за пријава на лажни погодоци",
 	"communityconfiguration-automoderator-title": "Автомодератор",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Многу претпазливо (по основно): Ќе се отповикуваат најмалку уредувања, но точноста ќе биде најголема.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Најпретпазливо (по основно): Ќе се отповикуваат најмалку уредувања, но точноста ќе биде најголема.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Претпазливо: Ќе се отповикуваат релативно малку уредувања, но точноста ќе биде средна.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Донекаде претпазливо: Ќе се отповикуваат релативно повеќе уредувања, но точноста ќе биде мала.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Најмалку претпазливо: Ќе се највеќе по број уредувања, но точноста ќе биде најмала.",
@@ -51,5 +51,18 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Врска до страница за помош со уредување",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Целна страница",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Пораката на разговорната страница на незачленети учесници ќе прикажува врска до страница за помош со уредување.\nМоже да се намести да биде било која врска на викито.",
-	"automoderator-config-validator-help-page-link-not-filled": "Мора да се пополнат полињата „Целна страница“ и „Натпис“."
+	"automoderator-config-validator-help-page-link-not-filled": "Мора да се пополнат полињата „Целна страница“ и „Натпис“.",
+	"communityconfiguration-multilingualconfig-title": "Автомодератор",
+	"communityconfiguration-multilingualconfig-description": "Наместете ги поставките на Автомодератор, така што моделот ќе може да пронаоѓа и отповикува потенцијално лоши уредувања на Википедија.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Автомодератор",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-control-label": "Автомодераторот е вклучен",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-label": "Постави праг",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-label": "Јазично агностички модел",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-control-label": "Јазично агностичкиот модел е вклучен",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigcautionlevel-description": "[https://meta.wikimedia.org/wiki/Machine_learning_models/Production/Language-agnostic_revert_risk Јазично агностичкиот модел] се заснова на нетекстуалните елементи на уредувањата, поради што може да се користи на секоја Википедија. Овој модел е испробан на многу Википедии, и лесно се нагодува со еден од 4 стандардни прагови. Ви препорачуваме да почнете со „Најпретпазливо“ и со време да го прилагодување.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigcautionlevel-option-very-cautious-label": "Најпретпазливо (по основно): Ќе се отповикуваат најмалку уредувања, но точноста ќе биде најголема.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigcautionlevel-option-cautious-label": "Претпазливо: Ќе се отповикуваат релативно малку уредувања, но точноста ќе биде средна.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigcautionlevel-option-somewhat-cautious-label": "Донекаде претпазливо: Ќе се отповикуваат релативно повеќе уредувања, но точноста ќе биде мала.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigcautionlevel-option-less-cautious-label": "Најмалку претпазливо: Ќе се највеќе по број уредувања, но точноста ќе биде најмала.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "Повеќејазичен модел"
 }
