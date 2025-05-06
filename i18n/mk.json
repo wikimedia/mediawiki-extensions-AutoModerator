@@ -21,7 +21,7 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Пораката на разговорната страница е вклучена",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Страница за пријава на лажни погодоци",
 	"communityconfiguration-automoderator-title": "Автомодератор",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Многу претпазливо (по основно): Ќе се отповикуваат најмалку уредувања, но точноста ќе биде најголема.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Најпретпазливо (по основно): Ќе се отповикуваат најмалку уредувања, но точноста ќе биде најголема.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Претпазливо: Ќе се отповикуваат релативно малку уредувања, но точноста ќе биде средна.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Донекаде претпазливо: Ќе се отповикуваат релативно повеќе уредувања, но точноста ќе биде мала.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Најмалку претпазливо: Ќе се највеќе по број уредувања, но точноста ќе биде најмала.",
