@@ -23,10 +23,6 @@ use MediaWiki\User\UserIdentity;
  */
 class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
-	protected function setUp(): void {
-		parent::setUp();
-	}
-
 	public function provideOnRollbackComplete(): array {
 		$wikiPage = $this->createMock( WikiPage::class );
 		$wikiPage->method( 'getId' )->willReturn( 1 );

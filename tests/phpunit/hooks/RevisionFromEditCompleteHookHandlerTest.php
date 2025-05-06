@@ -26,10 +26,6 @@ use MediaWiki\User\UserIdentity;
  */
 class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
-	protected function setUp(): void {
-		parent::setUp();
-	}
-
 	public function provideOnRevisionFromEditCompleteQueued(): array {
 		$wikiPage = $this->createMock( WikiPage::class );
 		$wikiPage->method( 'getId' )->willReturn( 1 );

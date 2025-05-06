@@ -22,10 +22,6 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
  */
 class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
-	protected function setUp(): void {
-		parent::setUp();
-	}
-
 	/**
 	 * @covers AutoModerator\TalkPageMessageSender::insertAutoModeratorSendRevertTalkPageMsgJob
 	 */

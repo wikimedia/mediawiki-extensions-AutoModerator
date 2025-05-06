@@ -26,10 +26,6 @@ use Wikimedia\Rdbms\IConnectionProvider;
  */
 class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
-	protected function setUp(): void {
-		parent::setUp();
-	}
-
 	public function provideOnOresRecentChangesScoreSavedQueued(): array {
 		$wikiPage = $this->createMock( WikiPage::class );
 		$wikiPage->method( 'getId' )->willReturn( 1 );

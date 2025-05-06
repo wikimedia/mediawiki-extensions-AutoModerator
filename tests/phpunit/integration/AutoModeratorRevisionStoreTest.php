@@ -11,10 +11,6 @@ use AutoModerator\AutoModeratorRevisionStore;
  */
 class AutoModeratorRevisionStoreTest extends \MediaWikiIntegrationTestCase {
 
-	protected function setUp(): void {
-		parent::setUp();
-	}
-
 	/**
 	 * @covers \AutoModerator\AutoModeratorRevisionStore::getAutoModeratorReverts
 	 * @group Database

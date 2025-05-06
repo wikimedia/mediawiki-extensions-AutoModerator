@@ -27,10 +27,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		return [ $wikiPage, $user, $rev, $title ];
 	}
 
-	protected function setUp(): void {
-		parent::setUp();
-	}
-
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
 	 * @group Database
