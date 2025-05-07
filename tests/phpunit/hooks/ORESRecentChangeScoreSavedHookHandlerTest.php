@@ -26,36 +26,32 @@ use Wikimedia\Rdbms\IConnectionProvider;
  */
 class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
-	public function provideOnOresRecentChangesScoreSavedQueued(): array {
-		$wikiPage = $this->createMock( WikiPage::class );
-		$wikiPage->method( 'getId' )->willReturn( 1 );
-		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$mockSlotRecord = $this->createMock( SlotRecord::class );
-		$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
-		$user = $this->createMock( UserIdentity::class );
-		$user->method( 'getId' )->willReturn( 1000 );
-		$user->method( 'getName' )->willReturn( 'TestUser1000' );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getId' )->willReturn( 1000 );
-		$rev->method( 'getParentId' )->willReturn( 999 );
-		$rev->method( 'getPageId' )->willReturn( 1 );
-		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
-		$rev->method( 'getUser' )->willReturn( $user );
+	public static function provideOnOresRecentChangesScoreSavedQueued(): array {
+		$revSpec = [
+			'id' => 1000,
+			'parentId' => 999,
+			'pageId' => 1,
+			'slot' => true,
+			'user' => [ 1000, 'TestUser1000' ],
+		];
 
 		return [
-			[ $wikiPage, $rev, $user ]
+			[ true, $revSpec ]
 		];
 	}
 
 	/**
 	 * @dataProvider provideOnOresRecentChangesScoreSavedQueued
 	 */
-	public function testOnOresRecentChangesScoreSavedQueued( $wikiPage, $rev, $user ) {
+	public function testOnOresRecentChangesScoreSavedQueued( $needsWikiPage, $revSpec ) {
 		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
 		] );
+
+		[ $wikiPage, $rev ] = $this->prepareMocks( $needsWikiPage, $revSpec );
+		$user = $rev->getUser();
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
@@ -140,58 +136,44 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		$this->assertEquals( $expected, $actual );
 	}
 
-	public function provideOnOresRecentChangesScoreSavedNotQueued(): array {
-		$wikiPage = $this->createMock( WikiPage::class );
-		$wikiPage->method( 'getId' )->willReturn( 1 );
-		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$mockSlotRecord = $this->createMock( SlotRecord::class );
-		$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
-		$user = $this->createMock( UserIdentity::class );
-		$user->method( 'getId' )->willReturn( 1000 );
-		$user->method( 'getName' )->willReturn( 'TestUser1000' );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getId' )->willReturn( 1000 );
-		$rev->method( 'getParentId' )->willReturn( 100 );
-		$rev->method( 'getPageId' )->willReturn( 1 );
-		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
-		$rev->method( 'getUser' )->willReturn( $user );
-		$revNoUser = $this->createMock( RevisionRecord::class );
-		$revNoUser->method( 'getUser' )->willReturn( null );
-		$revNoPageId = $this->createMock( RevisionRecord::class );
-		$revNoPageId->method( 'getUser' )->willReturn( $user );
-		$revNoPageId->method( 'getPageId' )->willReturn( null );
-		$scores = [
-			[
-				'model_name' => 'revertrisklanguageagnostic',
-				'model_version' => '0.0.1',
-				'wiki_db' => 21879,
-				'revision_id' => 2312,
-				'output' => [
-					'probabilities' => [
-						'true' => 0.998
-					],
-				],
-			]
+	public static function provideOnOresRecentChangesScoreSavedNotQueued(): array {
+		$revSpec = [
+			'id' => 1000,
+			'parentId' => 100,
+			'pageId' => 1,
+			'slot' => true,
+			'user' => [ 1000, 'TestUser1000' ],
+		];
+		$revNoUserSpec = [
+			'user' => null,
+		];
+		$revNoPageIdSpec = [
+			'user' => [ 1000, 'TestUser1000' ],
+			'pageId' => null,
 		];
 
 		return [
-			[ $wikiPage, $rev, null ],
-			[ $wikiPage, null, $scores ],
-			[ null, $rev, $scores ],
-			[ $wikiPage, $revNoUser, $scores ],
-			[ $wikiPage, $revNoPageId, $scores ]
+			[ true, $revSpec, false ],
+			[ true, null, true ],
+			[ false, $revSpec, true ],
+			[ true, $revNoUserSpec, true ],
+			[ true, $revNoPageIdSpec, true ]
 		];
 	}
 
 	/**
 	 * @dataProvider provideOnOresRecentChangesScoreSavedNotQueued
 	 */
-	public function testOnOresRecentChangesScoreSavedNotQueued( $wikiPage, $rev, $scores ) {
+	public function testOnOresRecentChangesScoreSavedNotQueued(
+		bool $needsWikiPage, ?array $revSpec, bool $needsScore
+	) {
 		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
 		] );
+
+		[ $wikiPage, $rev, $scores ] = $this->prepareMocks( $needsWikiPage, $revSpec, $needsScore );
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
@@ -248,6 +230,66 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			->onORESRecentChangeScoreSavedHook( $rev, $scores );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
+	}
+
+	private function prepareMocks( bool $needsWikiPage, ?array $revSpec, bool $needsScore = false ) {
+		if ( $needsWikiPage ) {
+			$wikiPage = $this->createMock( WikiPage::class );
+			$wikiPage->method( 'getId' )->willReturn( 1 );
+			$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
+			$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
+		} else {
+			$wikiPage = null;
+		}
+
+		if ( $revSpec !== null ) {
+			$rev = $this->createMock( RevisionRecord::class );
+			if ( array_key_exists( 'id', $revSpec ) ) {
+				$rev->method( 'getId' )->willReturn( $revSpec['id'] );
+			}
+			if ( array_key_exists( 'parentId', $revSpec ) ) {
+				$rev->method( 'getParentId' )->willReturn( $revSpec['parentId'] );
+			}
+			if ( array_key_exists( 'pageId', $revSpec ) ) {
+				$rev->method( 'getPageId' )->willReturn( $revSpec['pageId'] );
+			}
+			if ( $revSpec['slot'] ?? false ) {
+				$mockSlotRecord = $this->createMock( SlotRecord::class );
+				$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
+				$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
+			}
+			if ( array_key_exists( 'user', $revSpec ) ) {
+				if ( $revSpec['user'] !== null ) {
+					[ $id, $name ] = $revSpec['user'];
+					$user = $this->createMock( UserIdentity::class );
+					$user->method( 'getId' )->willReturn( $id );
+					$user->method( 'getName' )->willReturn( $name );
+				} else {
+					$user = null;
+				}
+				$rev->method( 'getUser' )->willReturn( $user );
+			}
+		} else {
+			$rev = null;
+		}
+		if ( $needsScore ) {
+			$scores = [
+				[
+					'model_name' => 'revertrisklanguageagnostic',
+					'model_version' => '0.0.1',
+					'wiki_db' => 21879,
+					'revision_id' => 2312,
+					'output' => [
+						'probabilities' => [
+							'true' => 0.998
+						],
+					],
+				]
+			];
+		} else {
+			$scores = null;
+		}
+		return [ $wikiPage, $rev, $scores ];
 	}
 
 }

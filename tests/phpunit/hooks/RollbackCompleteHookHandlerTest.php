@@ -23,33 +23,80 @@ use MediaWiki\User\UserIdentity;
  */
 class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
-	public function provideOnRollbackComplete(): array {
-		$wikiPage = $this->createMock( WikiPage::class );
-		$wikiPage->method( 'getId' )->willReturn( 1 );
-		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$mockSlotRecord = $this->createMock( SlotRecord::class );
-		$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getId' )->willReturn( 999 );
-		$rev->method( 'getParentId' )->willReturn( 998 );
-		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
+	private function prepareMocks( bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec ) {
+		if ( $needsWikiPage ) {
+			$wikiPage = $this->createMock( WikiPage::class );
+			$wikiPage->method( 'getId' )->willReturn( 1 );
+			$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
+			$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
+		} else {
+			$wikiPage = null;
+		}
 
-		$rollbackRevision = $this->createMock( RevisionRecord::class );
-		$rollbackRevision->method( 'getId' )->willReturn( 1000 );
-		$rollbackRevision->method( 'getParentId' )->willReturn( 999 );
-		$rollbackRevision->method( 'getSlot' )->willReturn( $mockSlotRecord );
+		if ( $revSpec !== null ) {
+			$rev = $this->createMock( RevisionRecord::class );
+			if ( array_key_exists( 'id', $revSpec ) ) {
+				$rev->method( 'getId' )->willReturn( $revSpec['id'] );
+			}
+			if ( array_key_exists( 'parentId', $revSpec ) ) {
+				$rev->method( 'getParentId' )->willReturn( $revSpec['parentId'] );
+			}
+			if ( $revSpec['slot'] ?? false ) {
+				$mockSlotRecord = $this->createMock( SlotRecord::class );
+				$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
+				$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
+			}
+		} else {
+			$rev = null;
+		}
 
-		$wikiPage->method( 'getRevisionRecord' )->willReturn( $rollbackRevision );
+		if ( $rollbackRevisionSpec !== null ) {
+			$rollbackRevision = $this->createMock( RevisionRecord::class );
+			if ( array_key_exists( 'id', $rollbackRevisionSpec ) ) {
+				$rollbackRevision->method( 'getId' )->willReturn( $rollbackRevisionSpec['id'] );
+			}
+			if ( array_key_exists( 'parentId', $rollbackRevisionSpec ) ) {
+				$rollbackRevision->method( 'getParentId' )->willReturn( $rollbackRevisionSpec['parentId'] );
+			}
+			if ( $rollbackRevisionSpec['slot'] ?? false ) {
+				$mockSlotRecord = $this->createMock( SlotRecord::class );
+				$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
+				$rollbackRevision->method( 'getSlot' )->willReturn( $mockSlotRecord );
+			}
+			$wikiPage->method( 'getRevisionRecord' )->willReturn( $rollbackRevision );
+		} else {
+			$rollbackRevision = null;
+		}
+
+		return [ $wikiPage, $rev, $rollbackRevision ];
+	}
+
+	public static function provideOnRollbackComplete(): array {
+		$revSpec = [
+			'id' => 999,
+			'parentId' => 998,
+			'slot' => true,
+		];
+
+		$rollbackRevisionSpec = [
+			'id' => 1000,
+			'parentId' => 999,
+			'slot' => true,
+		];
+
 		return [
-			[ $wikiPage, $rev, $rollbackRevision ]
+			[ true, $revSpec, $rollbackRevisionSpec ]
 		];
 	}
 
 	/**
 	 * @dataProvider provideOnRollbackComplete
 	 */
-	public function testOnRollbackComplete( $wikiPage, $rev, $rollbackRevision ) {
+	public function testOnRollbackComplete(
+		bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec
+	) {
+		[ $wikiPage, $rev, $rollbackRevision ] = $this->prepareMocks( $needsWikiPage, $revSpec, $rollbackRevisionSpec );
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -102,7 +149,11 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 	/**
 	 * @dataProvider provideOnRollbackComplete
 	 */
-	public function testOnRollbackCompleteDoesNotQueueWhenDisabled( $wikiPage, $rev, $rollbackRevision ) {
+	public function testOnRollbackCompleteDoesNotQueueWhenDisabled(
+		bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec
+	) {
+		[ $wikiPage, $rev, $rollbackRevision ] = $this->prepareMocks( $needsWikiPage, $revSpec, $rollbackRevisionSpec );
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
@@ -152,7 +203,11 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 	/**
 	 * @dataProvider provideOnRollbackComplete
 	 */
-	public function testOnRollbackCompleteDoesNotQueueWhenUserIsNotAutoModerator( $wikiPage, $rev, $rollbackRevision ) {
+	public function testOnRollbackCompleteDoesNotQueueWhenUserIsNotAutoModerator(
+		bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec
+	) {
+		[ $wikiPage, $rev, $rollbackRevision ] = $this->prepareMocks( $needsWikiPage, $revSpec, $rollbackRevisionSpec );
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
 		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );

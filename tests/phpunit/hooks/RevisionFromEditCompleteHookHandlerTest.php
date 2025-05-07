@@ -26,47 +26,50 @@ use MediaWiki\User\UserIdentity;
  */
 class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
-	public function provideOnRevisionFromEditCompleteQueued(): array {
-		$wikiPage = $this->createMock( WikiPage::class );
-		$wikiPage->method( 'getId' )->willReturn( 1 );
-		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$mockSlotRecord = $this->createMock( SlotRecord::class );
-		$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getId' )->willReturn( 1000 );
-		$rev->method( 'getParentId' )->willReturn( 999 );
-		$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
-		$user = $this->createMock( UserIdentity::class );
-		$user->method( 'getId' )->willReturn( 1000 );
-		$user->method( 'getName' )->willReturn( 'TestUser1000' );
-
+	public static function provideOnRevisionFromEditCompleteQueued(): array {
 		return [
-			[ $wikiPage, $rev, false, $user, [] ]
+			[ true, true, false, true, [] ]
 		];
 	}
 
-	public function provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob(): array {
-		$wikiPage = $this->createMock( WikiPage::class );
-		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$wikiPage->method( 'getId' )->willReturn( 1 );
-		$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
-		$rev = $this->createMock( RevisionRecord::class );
-		$rev->method( 'getUser' )->willReturn( $this->createMock( User::class ) );
-		$rev->method( 'getId' )->willReturn( 1000 );
-		$rev->method( 'getParentId' )->willReturn( 999 );
-		$user = $this->createMock( UserIdentity::class );
-		$user->method( 'getId' )->willReturn( 1000 );
-		$user->method( 'getName' )->willReturn( 'TestUser1000' );
+	public static function provideOnRevisionFromEditCompleteQueuedTalkPageMessageJob(): array {
 		return [
-			[ $wikiPage, $rev, false, $user, [ ChangeTags::TAG_ROLLBACK ] ]
+			[ true, false, false, true, [ ChangeTags::TAG_ROLLBACK ] ]
 		];
 	}
 
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteQueued
 	 */
-	public function testOnRevisionFromEditCompleteQueued( $wikiPage, $rev, $originalRevId, $user, $tags ) {
+	public function testOnRevisionFromEditCompleteQueued(
+		$needsWikiPage, $needsRev, $originalRevId, $needsUser, $tags
+	) {
+		if ( $needsWikiPage ) {
+			$wikiPage = $this->createMock( WikiPage::class );
+			$wikiPage->method( 'getId' )->willReturn( 1 );
+			$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
+			$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
+		} else {
+			$wikiPage = null;
+		}
+		if ( $needsRev ) {
+			$mockSlotRecord = $this->createMock( SlotRecord::class );
+			$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
+			$rev = $this->createMock( RevisionRecord::class );
+			$rev->method( 'getId' )->willReturn( 1000 );
+			$rev->method( 'getParentId' )->willReturn( 999 );
+			$rev->method( 'getSlot' )->willReturn( $mockSlotRecord );
+		} else {
+			$rev = null;
+		}
+		if ( $needsUser ) {
+			$user = $this->createMock( UserIdentity::class );
+			$user->method( 'getId' )->willReturn( 1000 );
+			$user->method( 'getName' )->willReturn( 'TestUser1000' );
+		} else {
+			$user = null;
+		}
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
@@ -130,7 +133,33 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteQueued
 	 */
-	public function testOnRevisionFromEditCompleteQueuedWhenUserAnon( $wikiPage, $rev, $originalRevId, $user, $tags ) {
+	public function testOnRevisionFromEditCompleteQueuedWhenUserAnon(
+		$needsWikiPage, $needsRev, $originalRevId, $needsUser, $tags
+	) {
+		if ( $needsWikiPage ) {
+			$wikiPage = $this->createMock( WikiPage::class );
+			$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
+			$wikiPage->method( 'getId' )->willReturn( 1 );
+			$wikiPage->method( 'getTitle' )->willReturn( $this->createMock( Title::class ) );
+		} else {
+			$wikiPage = null;
+		}
+		if ( $needsRev ) {
+			$rev = $this->createMock( RevisionRecord::class );
+			$rev->method( 'getUser' )->willReturn( $this->createMock( User::class ) );
+			$rev->method( 'getId' )->willReturn( 1000 );
+			$rev->method( 'getParentId' )->willReturn( 999 );
+		} else {
+			$rev = null;
+		}
+		if ( $needsUser ) {
+			$user = $this->createMock( UserIdentity::class );
+			$user->method( 'getId' )->willReturn( 1000 );
+			$user->method( 'getName' )->willReturn( 'TestUser1000' );
+		} else {
+			$user = null;
+		}
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiConfig = $this->createMock( WikiPageConfig::class );
@@ -187,22 +216,29 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$this->assertEquals( $expected, $actual );
 	}
 
-	public function provideOnRevisionFromEditCompleteMainNotQueued() {
-		$wikiPage = $this->createMock( WikiPage::class );
-		$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
-		$rev = $this->createMock( RevisionRecord::class );
-		$user = $this->createMock( UserIdentity::class );
+	public static function provideOnRevisionFromEditCompleteMainNotQueued() {
 		return [
-			[ null, $rev, false, $user, [] ],
-			[ $wikiPage, null, false, $user, [] ],
-			[ $wikiPage, $rev, false, null, [] ],
+			[ false, true, false, true, [] ],
+			[ true, false, false, true, [] ],
+			[ true, true, false, false, [] ],
 		];
 	}
 
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteMainNotQueued
 	 */
-	public function testOnRevisionFromEditCompleteMainNotQueued( $wikiPage, $rev, $originalRevId, $user, $tags ) {
+	public function testOnRevisionFromEditCompleteMainNotQueued(
+		$needsWikiPage, $needsRev, $originalRevId, $needsUser, $tags
+	) {
+		if ( $needsWikiPage ) {
+			$wikiPage = $this->createMock( WikiPage::class );
+			$wikiPage->method( 'getNamespace' )->willReturn( NS_MAIN );
+		} else {
+			$wikiPage = null;
+		}
+		$rev = $needsRev ? $this->createMock( RevisionRecord::class ) : null;
+		$user = $needsUser ? $this->createMock( UserIdentity::class ) : null;
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->getServiceContainer()->getWikiPageFactory();
@@ -242,20 +278,27 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
 	}
 
-	public function provideOnRevisionFromEditCompleteTalkNotQueued() {
-		$wikiPage = $this->createMock( WikiPage::class );
-		$wikiPage->method( 'getNamespace' )->willReturn( NS_TALK );
-		$rev = $this->createMock( RevisionRecord::class );
-		$user = $this->createMock( UserIdentity::class );
+	public static function provideOnRevisionFromEditCompleteTalkNotQueued() {
 		return [
-			[ $wikiPage, $rev, false, $user, [] ]
+			[ true, true, false, true, [] ]
 		];
 	}
 
 	/**
 	 * @dataProvider provideOnRevisionFromEditCompleteTalkNotQueued
 	 */
-	public function testOnRevisionFromEditCompleteTalkNotQueued( $wikiPage, $rev, $originalRevId, $user, $tags ) {
+	public function testOnRevisionFromEditCompleteTalkNotQueued(
+		bool $needsWikiPage, bool $needsRev, $originalRevId, bool $needsUser, $tags
+	) {
+		if ( $needsWikiPage ) {
+			$wikiPage = $this->createMock( WikiPage::class );
+			$wikiPage->method( 'getNamespace' )->willReturn( NS_TALK );
+		} else {
+			$wikiPage = null;
+		}
+		$rev = $needsRev ? $this->createMock( RevisionRecord::class ) : null;
+		$user = $needsUser ? $this->createMock( UserIdentity::class ) : null;
+
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
