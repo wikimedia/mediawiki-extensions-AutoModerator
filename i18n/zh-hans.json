@@ -61,5 +61,10 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "链接到一个页面以助编辑",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "目标页面",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "未注册贡献者的讨论页消息将显示一个页面链接，以帮助他们编辑。\n此链接可配置为wiki中的任何链接。",
-	"automoderator-config-validator-help-page-link-not-filled": "目标页面字段和标签字段都需要填写。"
+	"automoderator-config-validator-help-page-link-not-filled": "目标页面字段和标签字段都需要填写。",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "阈值",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "小编辑",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "机器人编辑",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "讨论页消息",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "用户权限"
 }
