@@ -1,0 +1,37 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 ten demasiados elementos (permítese un máximo de {{PLURAL:$2|$2}})",
+	"automoderator-config-validator-contentmodel-mismatch": "Incompatibilidade do modelo de contido: o ficheiro de configuración debe ter un modelo de contido JSON, mais detectouse $1",
+	"automoderator-config-validator-datatype-mismatch": "Espérase que <code>$1</code> sexa <code>$2</code>, pero é <code>$3</code>",
+	"automoderator-desc": "Reverte automaticamente as edicións incorrectas baseándose na puntuación dun modelo de aprendizaxe automática.",
+	"automoderator-wiki-report-false-positive": "informar dun falso positivo",
+	"automoderator-wiki-revert-edit-summary": "Aviso de reversión automática en «[[$1]]»",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Dereitos de usuario",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "O automoderador está activado",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "As reversións feitas polo automoderador consideraranse edicións pequenas.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Mensaxe na páxina de conversa",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "A mensaxe na páxina de conversa está activada",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Páxina para informar dos falsos positivos",
+	"communityconfiguration-automoderator-title": "Automoderador",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Máis cauteloso (predeterminado): reverterase o menor número de edicións, pero a precisión será máxima.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Cauteloso: reverteranse relativamente poucas edicións, pero a precisión será media.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Algo cauteloso: reverteranse relativamente máis edicións, pero a precisión será baixa.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Menos cauteloso: reverterase o maior número de edicións, pero a precisión será máis baixa.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configurar o limiar",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderador",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Edicións pequenas",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Especifica os dereitos de usuario a cuxos titulares o automoderador nunca reverterá.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "As reversións feitas polo automoderador consideraranse edicións dun bot.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edición de bot",
+	"communityconfiguration-automoderator-info-text": "Aviso! Cando se fagan cambios, afectarán inmediatamente a todos os usuarios da túa comunidade. É importante ter coidado e ser prudente. Debate e chega a unha decisión colectiva antes de facer cambios na configuración.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Esta extensión aproveita os novos modelos de risco de reversión que poden calcular unha puntuación para cada revisión; esta puntuación indica a probabilidade de que a edición deba ser revertida. Os modelos só admiten os proxectos da Wikipedia e adéstranse no espazo de nomes principal (artigo). Define un limiar por riba do cal as edicións se reverterán automaticamente. Os limiares máis baixos reverterán máis edicións, pero a precisión será menor; os limiares máis altos resultarán en menos edicións revertidas, pero con maior precisión.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Despois de que o automoderador reverta unha edición, pódese deixar automaticamente unha mensaxe na páxina de conversa do editor explicando o que aconteceu e proporcionando ligazóns útiles.",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Axuda:Edición pequena]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
+	"communityconfiguration-automoderator-description": "Configura os axustes do automoderador para que o modelo poida identificar e reverter as edicións potencialmente incorrectas na Wikipedia.",
+	"automoderator-config-validator-userrights-not-allowed": "O dereito de usuario «$1» non existe. Inténtao con outro."
+}
