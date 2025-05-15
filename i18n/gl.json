@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Incompatibilidade do modelo de contido: o ficheiro de configuración debe ter un modelo de contido JSON, mais detectouse $1",
+	"automoderator-config-validator-datatype-mismatch": "Espérase que <code>$1</code> sexa <code>$2</code>, pero é <code>$3</code>",
+	"automoderator-desc": "Reverte automaticamente as edicións incorrectas baseándose na puntuación dun modelo de aprendizaxe automática."
+}
