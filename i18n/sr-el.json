@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"automoderator-config-validator-array-toobig": "$1 ima previše stavki ({{PLURAL:$2|najviše dozvoljeno}}: $2)",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Korisnička prava",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Manje izmene",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botovska izmena",
+	"automoderator-config-validator-userrights-not-allowed": "Korisničko pravo $1 ne postoji. Probajte drugo."
+}
