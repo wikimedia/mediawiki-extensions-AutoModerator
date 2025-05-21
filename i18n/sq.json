@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Klein Muçi"
+		]
+	},
+	"automoderator-config-validator-array-toobig": "$1 ka shumë artikuj ({{PLURAL:$2| lejohet|lejohen}} maksimalisht $2)",
+	"automoderator-config-validator-contentmodel-mismatch": "Mospërputhja e modelit të përmbajtjes: skedari i konfigurimit duhet të ketë model të përmbajtjen JSON, u zbulua $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> pritet të jetë <code>$2</code> , por është <code>$3</code>",
+	"automoderator-desc": "Rikthen automatikisht ndryshimet e gabuara bazuar në pikëzimin nga një model i të mësuarit automatik.",
+	"automoderator-wiki-report-false-positive": "Raporto rezultate pozitive false",
+	"automoderator-wiki-revert-message-header": "$1 $2 : $3 ktheu ndryshimin tuaj",
+	"automoderator-wiki-revert-message": "Përshëndetje! Unë jam [[User:$1|$1]], një sistem i automatizuar që përdor një model të të mësuarit automatik për të identifikuar dhe rikthyer redaktimet potencialisht të këqija për të siguruar që Wikipedia të mbetet e besueshme dhe e besueshme. Unë riktheva një nga [[Special:Diff/$2|redaktimet tuaja të fundit]] në [[$3]].\n* Meqenëse modeli që përdor nuk është perfekt, ndonjëherë ai rikthen redaktimet e mira. Nëse besoni se ndryshimi që keni bërë ishte konstruktiv, ju lutem [[$4|raportojeni këtu]].\n* [[:mw:Moderator Tools/Automoderator|Mësoni më shumë]] rreth softuerit tim.",
+	"automoderator-wiki-revert-message-help-page": "* Për të mësuar më shumë rreth redaktimit, ju lutemi të shikoni këtë faqe ndihme: [[$1]].",
+	"automoderator-wiki-revert-message-follow-up": "Gjithashtu, riktheva një nga [[Special:Diff/$1|redaktimet e fundit]] të tuat në [[$2]] sepse më dukej jokonstruktive.",
+	"automoderator-wiki-revert-edit-summary": "Njoftim për rikthim automatik te [[$1]]"
+}

@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Milicevic01"
+			"Milicevic01",
+			"Kizule"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 има превише ставки ({{PLURAL:$2|највише дозвољено}}: $2)",
@@ -11,8 +12,30 @@
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Враћена измена|Враћене измене}} корисника [[Special:Contributions/$2|$2]] на последњу измену корисника [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Враћена измена|Враћене измене}} корисника [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]]) на последњу измену корисника [[User:$1|$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Корисничка права",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Аутомодератор је укључен",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Враћања која је направио Аутомодератор ће бити сматрана малим изменама.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Порука на страници за разговор",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Поруке на страници за разговор су укључене",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Страница са извештајем о лажно позитивним резултатима",
+	"communityconfiguration-automoderator-title": "Аутомодератор",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Аутомодератор",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Мање измене",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Ботовска измена",
 	"automoderator-config-validator-userrights-not-allowed": "Корисничко право $1 не постоји. Пробајте друго.",
-	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Одредишна страница"
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Одредишна страница",
+	"communityconfiguration-multilingualconfig-title": "Аутомодератор",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Аутомодератор",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-control-label": "Аутомодератор је укључен",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "Вишејезични модел",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-control-label": "Вишејезични модел је укључен",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "Праг",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-description": "Унесите вредност између 0.950 и 0.999",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Мање измене",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-control-label": "Враћања која је направио Аутомодератор ће бити сматрана малим изменама.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "Ботовска измена",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-control-label": "Враћања која је направио Аутомодератор ће бити сматрана ботовским изменама.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "Порука на страници за разговор",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigreverttalkpagemessageenabled-control-label": "Поруке на страници за разговор су укључене",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "Одредишна страница",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "Корисничка права"
 }
