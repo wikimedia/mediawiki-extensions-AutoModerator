@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Klein Muçi"
+		]
+	},
+	"automoderator-config-validator-contentmodel-mismatch": "Mospërputhja e modelit të përmbajtjes: skedari i konfigurimit duhet të ketë model të përmbajtjen JSON, u zbulua $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> pritet të jetë <code>$2</code> , por është <code>$3</code>",
+	"automoderator-desc": "Rikthen automatikisht ndryshimet e gabuara bazuar në pikëzimin nga një model i të mësuarit automatik."
+}
