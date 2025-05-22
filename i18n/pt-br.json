@@ -1,0 +1,35 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eduardoaddad"
+		]
+	},
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gestão de privilégios {{GENDER:{{BASEPAGENAME}}|do usuário|da usuária|de usuário(a)}}",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "O Automoderador está ativado",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "As reversões feitas pelo AutoModerator serão consideradas edições menores.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Mensagem da página de discussão",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "A mensagem da página de discussão está ativada",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Página de reportar falsos positivos",
+	"communityconfiguration-automoderator-title": "Automoderador",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configurar limite",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderador",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Edições menores",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Especifique os direitos de usuário cujos titulares o Automoderator nunca deve reverter.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "As reversões feitas pelo Automoderador serão consideradas edições de bots.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edição de robô",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Página de destino",
+	"communityconfiguration-multilingualconfig-title": "Automoderador",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderador",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "Modelo multilíngue",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "Limiar",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Edições menores",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-control-label": "As reversões feitas pelo AutoModerator serão consideradas edições menores.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "Edição de robô",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-control-label": "As reversões feitas pelo Automoderador serão consideradas edições de bots.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "Mensagem da página de discussão",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigreverttalkpagemessageenabled-control-label": "A mensagem da página de discussão está ativada",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "Página de destino",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguserrevertsperpage-label": "Reversões do usuário por página",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenableuserrevertsperpage-label": "Permitir reversões de usuário por página",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigfalsepositivepagetitle-label": "Página de reportar falsos positivos"
+}
