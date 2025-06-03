@@ -7,7 +7,8 @@
 			"Quangkhanhhuynh",
 			"Samwalton9 (WMF)",
 			"FunnyYellowDog",
-			"Plantaest"
+			"Plantaest",
+			"Minh Nguyen"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 có quá nhiều mục (tối đa $2 {{PLURAL:$2|mục được phép}})",
@@ -44,6 +45,6 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Tóm lược sửa đổi</b><p>Tóm lược sửa đổi của Automoderator có thể được dịch tại translatewiki, nhưng cũng có thể được ghi đè tại wiki.</p><b>Actions</b><ul><li>Xin hãy dịch chúng tại [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>Đối với tin nhắn tuỳ chỉnh, xin hãy sửa tại [https://{{CONTENTLANGUAGE}}.wikipedia.org/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 system messages].</li></ul>",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Trợ giúp:Sửa đổi nhỏ]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Hướng dẫn:Bots]",
-	"communityconfiguration-automoderator-description": "Tuỳ chỉnh các cài đặt của AutoModerator để nó có thể phát hiện và lùi lại sửa đổi gây hại trên Wikipedia.",
+	"communityconfiguration-automoderator-description": "Tùy chỉnh các cài đặt của AutoModerator để nó có thể phát hiện và lùi lại sửa đổi gây hại trên Wikipedia.",
 	"automoderator-config-validator-userrights-not-allowed": "Quyền $1 không tồn tại. Xin hãy thử lại sau."
 }
