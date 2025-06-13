@@ -44,5 +44,7 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_ %22bot% 22_flag Manual:Bot]",
 	"communityconfiguration-automoderator-description": "Konfigurasikan tetapan Automoderator, supaya model boleh mengenal pasti dan membalikkan suntingan yang mempunyai potensi buruk pada Wikipedia.",
 	"automoderator-config-validator-userrights-not-allowed": "Hak pengguna $1 tidak wujud. Sila cuba yang lain.",
-	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Pembalikan per laman oleh pengguna"
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Pembalikan per laman oleh pengguna",
+	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Tentukan berapa kali Automoderator boleh mengembalikan pengguna yang sama pada laman tertentu dalam tempoh 24 jam. Jika pengehadan terhadap pembalikan pengguna setiap laman didayakan sehingga nilai pembalikan tersebut tidak ditetapkan, maka Automoderator akan membalikkan pengguna yang sama tanpa had berapa kali.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Dayakan pembalikan pengguna setiap laman"
 }
