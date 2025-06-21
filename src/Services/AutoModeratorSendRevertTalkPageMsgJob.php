@@ -180,7 +180,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 			}
 
 		} catch ( RuntimeException $e ) {
-			$this->setLastError( $e );
+			$this->setLastError( $e->getMessage() );
 			$logger->error( $e->getMessage() );
 			return false;
 		}
