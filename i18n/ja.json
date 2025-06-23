@@ -3,6 +3,7 @@
 		"authors": [
 			"Apple TD",
 			"Kokage si",
+			"Shirayuki",
 			"Waki285",
 			"春春眠眠"
 		]
@@ -39,7 +40,7 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "ボット編集",
 	"communityconfiguration-automoderator-info-text": "警告！変更を行うと、コミュニティの全利用者に直ちに影響します。慎重に検討することが重要です。議論を行い合意に達してから、設定を変更してください。",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "この拡張機能は新しい差し戻しリスクモデルを活用しており、それぞれの版についてスコアを計算し編集を差し戻すべき公算を示すことができます。モデルはウィキペディアプロジェクトのみをサポートし、メイン（記事）名前空間で訓練されています。しきい値を設定すると、しきい値を超える編集は自動的に差し戻されます。しきい値が低いほど、より多くの編集を差し戻すものの、精度はより低くなり、一方しきい値が高いほど、差し戻される編集は少なくものの、精度はより良くなるということです。",
-	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "オートモデレーターが編集を差し戻した後、編集者の会話ページに自動的にメッセージを送り、何が起きたのか説明し、有用なリンクを提供することができます。",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "オートモデレーターが編集を差し戻した後、編集者の会話ページに自動的にメッセージを送り、何が起きたのか説明し、有用なリンクを提供できます。",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b>操作</b><ul><li>[https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki]で翻訳してください。</li><li>カスタムトークページメッセージは[{{fullurl:Special:AllMessages|prefix=automoderator-wiki&filter=all&limit=50}} システムメッセージ]のテキストを上書きします。</li></ul>",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>編集の翻訳</b><p>オートモデレーターの編集の要約はtranslatewikiでの翻訳および、ローカルな上書きができます。</p><b>操作</b><ul><li>[https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki]で翻訳してください。</li><li>カスタムトークページメッセージは [{{fullurl:Special:AllMessages|prefix=automoderator-wiki&filter=all&limit=50}} システムメッセージ]のテキストを上書きします。</li></ul>",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:細部の編集]",
