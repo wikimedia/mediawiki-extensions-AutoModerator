@@ -72,13 +72,18 @@ class Hooks implements
 			return;
 		}
 		$falsePositivePageUrl = $falsePositivePageTitle->getFullURL();
+		// Add parameters to false positive page
+		$falsePositivePreloadTemplate = $falsePositivePageTitle . '/Preload';
+		$pageTitle = $this->titleFactory->newFromPageIdentity( $revRecord->getPage() );
+		$falsePositiveParams = '?action=edit&section=new&nosummary=true&preload=' . $falsePositivePreloadTemplate .
+			'&preloadparams[]=' . $revRecord->getId() . '&preloadparams[]=' . $pageTitle;
 		// Only add the report link if it's an AutoModerator revert
 		if ( $autoModeratorUser->getId() === $revUser->getId() ) {
 			$links[] = Html::element(
 				'a',
 				[
 					'class' => 'mw-automoderator-report-link',
-					'href' => $falsePositivePageUrl,
+					'href' => $falsePositivePageUrl . $falsePositiveParams,
 					'title' => wfMessage( 'automoderator-wiki-report-false-positive' )->text(),
 				],
 				wfMessage( 'automoderator-wiki-report-false-positive' )->text()

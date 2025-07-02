@@ -11,6 +11,7 @@ use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
 use Psr\Log\LoggerInterface;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
@@ -54,9 +55,10 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
-			$autoModWikiConfig, $jobQueueGroup );
+			$autoModWikiConfig, $jobQueueGroup, $titleFactory );
 		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob(
 			$title,
 			1,
@@ -103,9 +105,10 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
-			$autoModWikiConfig, $jobQueueGroup );
+			$autoModWikiConfig, $jobQueueGroup, $titleFactory );
 		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId, 2,
 			$autoModeratorUser, $logger );
 
@@ -149,9 +152,10 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
-			$autoModWikiConfig, $jobQueueGroup );
+			$autoModWikiConfig, $jobQueueGroup, $titleFactory );
 		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId, 2,
 			$autoModeratorUser, $logger );
 
@@ -197,9 +201,10 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
-			$autoModWikiConfig, $jobQueueGroup );
+			$autoModWikiConfig, $jobQueueGroup, $titleFactory );
 		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId, 2,
 			$autoModeratorUser, $logger );
 
@@ -243,9 +248,13 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+		$titleFactory = $this->createMock( TitleFactory::class );
+		$titleFalsePositive = $this->createMock( Title::class );
+		$titleFalsePositive->method( 'getFullURL' )->willReturn( 'User:AutoModerator/False' );
+		$titleFactory->method( 'newFromText' )->willReturn( $titleFalsePositive );
 
 		$talkPageMessageSender = new TalkPageMessageSender( $mockRevisionStore, $config,
-			$autoModWikiConfig, $jobQueueGroup );
+			$autoModWikiConfig, $jobQueueGroup, $titleFactory );
 		$talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob( $title, $revId, 2,
 			$autoModeratorUser, $logger );
 
@@ -263,7 +272,8 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'autoModeratorUserName' => 'AutoModerator',
 			'talkPageMessageHeader' => $month . ' ' . $year . ': AutoModerator reverted your edit',
 			'talkPageMessageEditSummary' => 'Notice of automated revert on [[]]',
-			'falsePositiveReportPageTitle' => '',
+			'falsePositiveReportPageTitle' => 'User:AutoModerator/False?action=edit&section=new&' .
+				'nosummary=true&preload=/Preload&preloadparams%5B%5D=94&preloadparams%5B%5D=',
 			'namespace' => 0,
 			'title' => '',
 			'requestId' => 99

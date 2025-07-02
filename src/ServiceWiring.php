@@ -67,7 +67,8 @@ return [
 			$services->getRevisionStore(),
 			$services->getMainConfig(),
 			$autoModeratorServices->getAutoModeratorWikiConfig(),
-			$services->getJobQueueGroup()
+			$services->getJobQueueGroup(),
+			$services->getTitleFactory()
 		);
 	},
 ];

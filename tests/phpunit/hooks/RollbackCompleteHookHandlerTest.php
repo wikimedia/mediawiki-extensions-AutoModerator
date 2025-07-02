@@ -13,6 +13,7 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 
@@ -126,12 +127,15 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			'TranslateNumerals' => false
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$titleFactory = $this->createMock( TitleFactory::class );
+		$titleFactory->method( 'newFromText' )->willReturn( $this->createMock( Title::class ) );
 
 		$talkPageMessageSender = new TalkPageMessageSender(
 			$revisionStore,
 			$config,
 			$autoModWikiConfig,
 			$jobQueueGroup,
+			$titleFactory
 		);
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 
@@ -183,12 +187,14 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			'TranslateNumerals' => false
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 		$talkPageMessageSender = new TalkPageMessageSender(
 			$revisionStore,
 			$config,
 			$autoModWikiConfig,
 			$jobQueueGroup,
+			$titleFactory
 		);
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 
@@ -237,12 +243,14 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			'TranslateNumerals' => false
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 		$talkPageMessageSender = new TalkPageMessageSender(
 			$revisionStore,
 			$config,
 			$autoModWikiConfig,
 			$jobQueueGroup,
+			$titleFactory
 		);
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'getId' )->willReturn( 1001 );

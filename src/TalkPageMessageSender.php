@@ -28,6 +28,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
+use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
 use Psr\Log\LoggerInterface;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
@@ -42,12 +43,15 @@ class TalkPageMessageSender {
 
 	private JobQueueGroup $jobQueueGroup;
 
+	private TitleFactory $titleFactory;
+
 	public function __construct( RevisionStore $revisionStore, Config $config, Config $wikiConfig,
-		JobQueueGroup $jobQueueGroup ) {
+		JobQueueGroup $jobQueueGroup, TitleFactory $titleFactory ) {
 		$this->revisionStore = $revisionStore;
 		$this->config = $config;
 		$this->wikiConfig = $wikiConfig;
 		$this->jobQueueGroup = $jobQueueGroup;
+		$this->titleFactory = $titleFactory;
 	}
 
 	/**
@@ -83,6 +87,13 @@ class TalkPageMessageSender {
 				$year = $timestamp->format( 'Y' );
 			}
 
+			$falsePositivePageTitleText = $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" );
+			$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageTitleText )->getFullURL();
+			$falsePositivePreloadTemplate = $falsePositivePageTitleText . '/Preload';
+			$pageTitle = $this->titleFactory->newFromPageIdentity( $rev->getPage() );
+			$falsePositiveParams = '?action=edit&section=new&nosummary=true&preload=' . $falsePositivePreloadTemplate .
+			'&preloadparams%5B%5D=' . $revId . '&preloadparams%5B%5D=' . $pageTitle;
+
 			$userTalkPageJob = new AutoModeratorSendRevertTalkPageMsgJob(
 				$title,
 				[
@@ -100,7 +111,7 @@ class TalkPageMessageSender {
 							$autoModeratorUser->getName() )->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
 						->params( $title )->plain(),
-					'falsePositiveReportPageTitle' => $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" )
+					'falsePositiveReportPageTitle' => $falsePositivePageTitle . $falsePositiveParams
 				]
 			);
 			$this->jobQueueGroup->push( $userTalkPageJob );
