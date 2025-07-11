@@ -52,7 +52,7 @@ class ApiClient {
 				"formatversion" => "2"
 			];
 			$data = $this->executeApiQuery( $context, $queryParams );
-		} catch ( ApiUsageException $e ) {
+		} catch ( ApiUsageException ) {
 			return [];
 		}
 
