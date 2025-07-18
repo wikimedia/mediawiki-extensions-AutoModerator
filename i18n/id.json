@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"BAPerdana-WMF",
-			"Fafau06"
+			"Fafau06",
+			"Hidayatsrf"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 memiliki terlalu banyak item (maksimal $2 yang {{PLURAL:$2|diperbolehkan|diizinkan}})",
@@ -12,6 +13,7 @@
 	"automoderator-wiki-report-false-positive": "laporkan kesalahan pemeriksaan",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 mengembalikan suntingan Anda",
 	"automoderator-wiki-revert-message": "Halo! Saya adalah [[User:$1|$1]] dan saya bertugas untuk membantu memberantas vandalisme di Wikipedia bahasa Indonesia secara otomatis menggunakan model pembelajaran mesin.\n\nSaya ingin memberitahukan kepada Anda bahwa saya telah mengembalikan [[Special:Diff/$2|suntingan terkini]] Anda di artikel [[$3]].\n* Dikarenakan model yang dipergunakan belum sepenuhnya sempurna, maka saya bisa saja melakukan kesalahan dalam mengembalikan suntingan yang sebenarnya berniat baik.\n* Apabila Anda merasa suntingan Anda konstruktif dan/atau berniat baik, silakan laporkan kekeliruan yang saya lakukan [[$4|melalui halaman ini]].\n* Pelajari [[:mw:Moderator Tools/Automoderator|lebih lanjut]] perangkat lunak yang saya gunakan.\n* Jika Anda adalah pengguna baru yang ingin berkontribusi di Wikipedia, silakan kunjungi [[Special:Homepage|halaman ini]].\n\nSalam.",
+	"automoderator-wiki-revert-message-help-page": "* Untuk mempelajari lebih lanjut tentang penyuntingan, silakan lihat halaman bantuan ini: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Saya juga mengembalikan salah satu [[Special:Diff/$1|suntingan terkini Anda]] di artikel [[$2]] karena terlihat tidak konstruktif.",
 	"automoderator-wiki-revert-edit-summary": "Memberitahukan suntingan yang dikembalikan secara otomatis di [[$1]]",
 	"automoderator-wiki-revertpage-nouser": "Mengembalikan $7 suntingan oleh (nama pengguna disembunyikan) ke revisi terakhir oleh [[User:$1|$1]]",
@@ -47,5 +49,18 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Tentukan seberapa banyak Automoderator dapat mengembalikan suntingan yang dilakukan oleh satu pengguna dalam rentang waktu 24 jam. Apabila opsi ini diaktifkan '''dan''' tidak ditentukan seberapa banyak suntingan yang dikembalikan, maka Automoderator akan mengembalikan suntingan oleh satu pengguna secara tidak terbatas.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Aktifkan pengembalian suntingan oleh pengguna pada tiap halaman",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Aktifkan fitur ini untuk menentukan seberapa banyak Automoderator dapat mengembalikan suntingan dari pengguna yang sama dalam rentang waktu 24 jam.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "Teks yang Anda masukkan bukan berupa angka, silakan coba kembali."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Teks yang Anda masukkan bukan berupa angka, silakan coba kembali.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Pranala ke halaman untuk membantu penyuntingan",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Halaman tujuan",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Pesan halaman pembicaraan untuk kontributor yang tidak terdaftar akan menampilkan tautan ke halaman untuk membantu mereka dalam penyuntingan. Tautan ini dapat dikonfigurasi menjadi tautan apa pun di wiki.",
+	"automoderator-config-validator-help-page-link-not-filled": "Halaman Tujuan dan Label keduanya perlu diisi.",
+	"communityconfiguration-multilingualconfig-title": "Automoderator",
+	"communityconfiguration-multilingualconfig-description": "Konfigurasikan pengaturan Automoderator, sehingga perkakas ini dapat mengidentifikasi dan mengembalikan suntingan berpotensi vandal di Wikipedia.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-control-label": "Automoderator diaktifkan",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-label": "Konfigurasikan ambang batas",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-label": "Model agnostik bahasa",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-control-label": "Model agnostik bahasa diaktifkan",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "Hak pengguna",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigfalsepositivepagetitle-label": "Halaman pelaporan kesalahan pemeriksaan"
 }
