@@ -14,7 +14,7 @@
 	"automoderator-desc": "機械学習モデルによるスコアリングに基づいて不適切な編集を自動的に差し戻します。",
 	"automoderator-wiki-report-false-positive": "誤検知を報告する",
 	"automoderator-wiki-revert-message-header": "$2年$1月: $3 があなたの編集を差し戻しました",
-	"automoderator-wiki-revert-message": "[[User:$1|$1]]さん、こんにちは。こちらは機械学習モデルを利用して、不適切な可能性のある編集の識別と差し戻しを行い、ウィキペディアの信頼性を維持するための自動化システムです。[[$3]]へのあなたの[[Special:Diff/$2|最近の編集]]のひとつを差し戻しました。\n* 利用しているモデルが完璧ではないため、適切な編集を差し戻してしまうことがあります。建設的な編集であったと思われる場合には、[[$4|こちらでご報告ください]]。\n* ソフトウェアについては[[:mw:Moderator Tools/Automoderator|詳細]]をご覧ください。",
+	"automoderator-wiki-revert-message": "[[User:$1|$1]]さん、こんにちは。こちらは機械学習モデルを利用して、不適切な可能性のある編集の識別と差し戻しを行い、ウィキペディアの信頼性を維持するための自動化システムです。[[$3]]へのあなたの[[Special:Diff/$2|最近の編集]]のひとつを差し戻しました。\n* 利用しているモデルが完璧ではないため、適切な編集を差し戻してしまうことがあります。建設的な編集であったと思われる場合には、[$4 こちらでご報告ください]。\n* ソフトウェアについては[[:mw:Moderator Tools/Automoderator|詳細]]をご覧ください。",
 	"automoderator-wiki-revert-message-help-page": "* 編集についてもっと知りたい場合は、こちらのページをご覧ください: [[$1]]。",
 	"automoderator-wiki-revert-message-follow-up": "また、あなたの[[Special:Diff/$1|最近の編集]]のひとつが建設的でないように思われたため、[[$2]]に差し戻しました。",
 	"automoderator-wiki-revert-edit-summary": "[[$1]]における自動差し戻しの通知",
