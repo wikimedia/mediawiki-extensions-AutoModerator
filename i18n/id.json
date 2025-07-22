@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"BAPerdana-WMF",
-			"Fafau06"
+			"Fafau06",
+			"Hidayatsrf"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 memiliki terlalu banyak item (maksimal $2 yang {{PLURAL:$2|diperbolehkan|diizinkan}})",
