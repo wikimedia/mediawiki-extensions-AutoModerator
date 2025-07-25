@@ -88,9 +88,11 @@ class TalkPageMessageSender {
 			}
 
 			$falsePositivePageTitleText = $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" );
-			$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageTitleText )->getFullURL();
-			$falsePositivePreloadTemplate = $falsePositivePageTitleText . '/Preload';
-			$pageTitle = $this->titleFactory->newFromPageIdentity( $rev->getPage() );
+			$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageTitleText );
+			$falsePositivePageURL = $falsePositivePageTitle->getFullURL();
+			$falsePositivePreloadTemplate = $falsePositivePageTitle->getNsText() . ":" .
+				$falsePositivePageTitle->getDBkey() . '/Preload';
+			$pageTitle = $this->titleFactory->newFromPageIdentity( $rev->getPage() )->getDBkey();
 			$falsePositiveParams = '?action=edit&section=new&nosummary=true&preload=' . $falsePositivePreloadTemplate .
 			'&preloadparams%5B%5D=' . $revId . '&preloadparams%5B%5D=' . $pageTitle;
 
@@ -111,7 +113,7 @@ class TalkPageMessageSender {
 							$autoModeratorUser->getName() )->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
 						->params( $title )->plain(),
-					'falsePositiveReportPageTitle' => $falsePositivePageTitle . $falsePositiveParams
+					'falsePositiveReportPageTitle' => $falsePositivePageURL . $falsePositiveParams
 				]
 			);
 			$this->jobQueueGroup->push( $userTalkPageJob );

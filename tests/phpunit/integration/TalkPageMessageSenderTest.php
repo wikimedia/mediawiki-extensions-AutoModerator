@@ -273,7 +273,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'talkPageMessageHeader' => $month . ' ' . $year . ': AutoModerator reverted your edit',
 			'talkPageMessageEditSummary' => 'Notice of automated revert on [[]]',
 			'falsePositiveReportPageTitle' => 'User:AutoModerator/False?action=edit&section=new&' .
-				'nosummary=true&preload=/Preload&preloadparams%5B%5D=94&preloadparams%5B%5D=',
+				'nosummary=true&preload=:/Preload&preloadparams%5B%5D=94&preloadparams%5B%5D=',
 			'namespace' => 0,
 			'title' => '',
 			'requestId' => 99

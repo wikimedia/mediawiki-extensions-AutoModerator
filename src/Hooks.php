@@ -73,8 +73,9 @@ class Hooks implements
 		}
 		$falsePositivePageUrl = $falsePositivePageTitle->getFullURL();
 		// Add parameters to false positive page
-		$falsePositivePreloadTemplate = $falsePositivePageTitle . '/Preload';
-		$pageTitle = $this->titleFactory->newFromPageIdentity( $revRecord->getPage() );
+		$falsePositivePreloadTemplate = $falsePositivePageTitle->getNsText() . ":" .
+			$falsePositivePageTitle->getDBkey() . '/Preload';
+		$pageTitle = $this->titleFactory->newFromPageIdentity( $revRecord->getPage() )->getDBkey();
 		$falsePositiveParams = '?action=edit&section=new&nosummary=true&preload=' . $falsePositivePreloadTemplate .
 			'&preloadparams[]=' . $revRecord->getId() . '&preloadparams[]=' . $pageTitle;
 		// Only add the report link if it's an AutoModerator revert
