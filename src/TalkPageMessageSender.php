@@ -89,12 +89,18 @@ class TalkPageMessageSender {
 
 			$falsePositivePageTitleText = $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" );
 			$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageTitleText );
-			$falsePositivePageURL = $falsePositivePageTitle->getFullURL();
-			$falsePositivePreloadTemplate = $falsePositivePageTitle->getNsText() . ":" .
-				$falsePositivePageTitle->getDBkey() . '/Preload';
-			$pageTitle = $this->titleFactory->newFromPageIdentity( $rev->getPage() )->getDBkey();
-			$falsePositiveParams = '?action=edit&section=new&nosummary=true&preload=' . $falsePositivePreloadTemplate .
-			'&preloadparams%5B%5D=' . $revId . '&preloadparams%5B%5D=' . $pageTitle;
+			if ( !$falsePositivePageTitle ) {
+				$falsePositivePageURL = "";
+				$falsePositiveParams = "";
+			} else {
+				$falsePositivePageURL = $falsePositivePageTitle->getFullURL();
+				$falsePositivePreloadTemplate = $falsePositivePageTitle->getNsText() . ":" .
+					$falsePositivePageTitle->getDBkey() . '/Preload';
+				$pageTitle = $this->titleFactory->newFromPageIdentity( $rev->getPage() )->getDBkey();
+				$falsePositiveParams = '?action=edit&section=new&nosummary=true&preload=' .
+					$falsePositivePreloadTemplate . '&preloadparams%5B%5D=' . $revId .
+					'&preloadparams%5B%5D=' . $pageTitle;
+			}
 
 			$userTalkPageJob = new AutoModeratorSendRevertTalkPageMsgJob(
 				$title,

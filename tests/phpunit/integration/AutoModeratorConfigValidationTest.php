@@ -3,10 +3,12 @@
 namespace AutoModerator\Tests;
 
 use AutoModerator\Config\Validation\AutoModeratorConfigValidation;
+use MediaWiki\Title\Title;
 use StatusValue;
 
 /**
  * @coversDefaultClass \AutoModerator\Config\Validation\AutoModeratorConfigValidation
+ * @group Database
  */
 class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 
@@ -167,6 +169,54 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 		] );
 		$this->assertEquals( StatusValue::newFatal(
 			'automoderator-config-validator-multilingual-select-only-one-model',
+			true
+		), $result );
+	}
+
+	/**
+	 * @covers ::validate when the talk page message is enabled, but the false positive page is empty
+	 */
+	public function testValidateWhenTalkPageEnabledNoFalsePositivePage() {
+		$validator = new AutoModeratorConfigValidation();
+
+		$result = $validator->validate( [
+			'AutoModeratorRevertTalkPageMessageEnabled' => true,
+			'AutoModeratorFalsePositivePageTitle' => null
+		] );
+		$this->assertEquals( StatusValue::newFatal(
+			'automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled',
+			true
+		), $result );
+	}
+
+	/**
+	 * @covers ::validate when the talk page message is enabled, but the false positive page is empty
+	 */
+	public function testValidateWhenTalkPageEnabledNoFalsePositivePageMultilingual() {
+		$validator = new AutoModeratorConfigValidation();
+
+		$result = $validator->validate( [
+			'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' => true,
+			'AutoModeratorMultilingualConfigFalsePositivePageTitle' => null
+		] );
+		$this->assertEquals( StatusValue::newFatal(
+			'automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled',
+			true
+		), $result );
+	}
+
+	/**
+	 * @covers ::validate when the talk page message is enabled, but the false positive page is empty
+	 */
+	public function testValidateWhenFalsePositivePageNotExists() {
+		$validator = new AutoModeratorConfigValidation();
+		$mockTitle = $this->createMock( Title::class );
+		$mockTitle->method( 'exists' )->willReturn( false );
+		$result = $validator->validate( [
+			'AutoModeratorMultilingualConfigFalsePositivePageTitle' => 'Does not exist'
+		] );
+		$this->assertEquals( StatusValue::newFatal(
+			'automoderator-config-validator-false-positive-page-not-exist',
 			true
 		), $result );
 	}

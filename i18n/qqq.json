@@ -54,6 +54,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Label for the destination page in the help page link field section.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Description for the field help page link.",
 	"automoderator-config-validator-help-page-link-not-filled": "Error returned by the AutoModerator configuration validator when one of the help page fields are not filled.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Error returned when the talk page message is enabled, but the false positive page field is empty",
+	"automoderator-config-validator-false-positive-page-not-exist": "Error returned when the false positive page the user added does not exist.",
 	"communityconfiguration-multilingualconfig-title": "Title for the community configuration multilingual form for AutoModerator.",
 	"communityconfiguration-multilingualconfig-description": "Description for the community configuration multilingual form.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Label for the field to enable AutoModerator.",
@@ -96,5 +98,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "Error returned by AutoModerator configuration validator when the multilingual threshold field is not a number.",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "Error returned by AutoModerator configuration validator when the multilingual threshold field is not in the specified range.",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Error returned by AutoModerator configuration when the multilingual model was not enabled, but a threshold was set.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Error returned by AutoModerator configuration when the language-agnostic and multilingual models have been selected."
+	"automoderator-config-validator-multilingual-select-only-one-model": "Error returned by AutoModerator configuration when the language-agnostic and multilingual models have been selected.",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Error returned when the talk page message is enabled, but the false positive page field is empty"
 }

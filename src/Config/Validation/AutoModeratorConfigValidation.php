@@ -180,6 +180,35 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			);
 		}
 
+		if ( $fieldName == "AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled" && $value
+			&& !$data['AutoModeratorMultilingualConfigFalsePositivePageTitle'] ) {
+			return StatusValue::newFatal(
+				'automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled',
+				$value
+			);
+		}
+
+		if ( $fieldName == "AutoModeratorRevertTalkPageMessageEnabled" && $value
+			&& !$data['AutoModeratorFalsePositivePageTitle'] ) {
+			return StatusValue::newFatal(
+				'automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled',
+				$value
+			);
+		}
+
+		$isFalsePositivePageTitle = $fieldName == 'AutoModeratorFalsePositivePageTitle' ||
+			$fieldName == 'AutoModeratorMultilingualConfigFalsePositivePageTitle';
+		if ( $isFalsePositivePageTitle && $value ) {
+			$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+			$title = $titleFactory->newFromText( $value );
+			if ( !$title?->exists() ) {
+				return StatusValue::newFatal(
+					'automoderator-config-validator-false-positive-page-not-exist',
+					$value
+				);
+			}
+		}
+
 		return StatusValue::newGood();
 	}
 
@@ -202,6 +231,7 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 
 	/**
 	 * @inheritDoc
+	 * @codeCoverageIgnore
 	 */
 	public function validateVariable( string $variable, $value ): void {
 		if ( !in_array( $variable, AutoModeratorWikiConfigLoader::ALLOW_LIST ) ) {
@@ -213,6 +243,7 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 
 	/**
 	 * @inheritDoc
+	 * @codeCoverageIgnore
 	 */
 	public function getDefaultContent(): array {
 		return [];
