@@ -52,6 +52,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zielseite",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Die Diskussionsseitennachricht für nicht registrierte Benutzer zeigt einen Link zu einer Seite an, der ihnen beim Bearbeiten hilft.\nDieser Link kann so konfiguriert werden, dass es sich um einen beliebigen Link im Wiki handelt.",
 	"automoderator-config-validator-help-page-link-not-filled": "Das Feld Zielseite und das Feld Bezeichnung müssen beide ausgefüllt werden.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Du musst eine Seite für falsch positive Meldungen hinzufügen, wenn die Meldung auf der Diskussionsseite aktiviert ist",
+	"automoderator-config-validator-false-positive-page-not-exist": "Diese Seite existiert nicht. Bitte füge eine gültige Seite falsch positive Meldungen hinzu.",
 	"communityconfiguration-multilingualconfig-title": "Automoderator",
 	"communityconfiguration-multilingualconfig-description": "Konfigurieren der Automoderator-Einstellungen, damit das Modell potenziell schlechte Bearbeitungen in Wikipedia erkennen und rückgängig machen kann.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",
@@ -93,5 +95,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "Die Schwelle für die Mehrsprachigkeit muss eine Zahl sein",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "Der Wert liegt außerhalb des Bereichs. Bitte gib einen Wert zwischen 0.950 und 0.999 ein.",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Das mehrsprachige Modell wurde nicht aktiviert, aber es wurde ein Schwellenwert festgelegt. Bitte aktiviere das mehrsprachige Modell.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Es wurden sowohl das sprachunabhängige als auch das mehrsprachige Modell ausgewählt. Bitte aktiviere nur eines der Modelle."
+	"automoderator-config-validator-multilingual-select-only-one-model": "Es wurden sowohl das sprachunabhängige als auch das mehrsprachige Modell ausgewählt. Bitte aktiviere nur eines der Modelle.",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Du musst eine Seite für falsch positive Meldungen hinzufügen, wenn die Meldung auf der Diskussionsseite aktiviert ist"
 }

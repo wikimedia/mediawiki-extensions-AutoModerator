@@ -52,6 +52,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Páxina de destino",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "A mensaxe da páxina de conversa para as persoas non rexistradas mostrará unha ligazón a unha páxina para axudalas coa edición.\nEsta ligazón pódese configurar e ser calquera ligazón do wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "Cómpre encher tanto o campo da páxina de destino como o campo da etiqueta.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Cómpre engadir unha páxina para informar de falsos positivos cando a mensaxe da páxina de conversa está habilitada",
+	"automoderator-config-validator-false-positive-page-not-exist": "A páxina non existe. Engade unha páxina para informar de falsos positivos.",
 	"communityconfiguration-multilingualconfig-title": "Automoderador",
 	"communityconfiguration-multilingualconfig-description": "Configura os axustes do automoderador para que o modelo poida identificar e reverter as edicións potencialmente incorrectas na Wikipedia.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderador",
@@ -93,5 +95,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "O limiar multilingüe debe ser un número.",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "O valor está fóra do rango. Introduce un valor entre 0,950 e 0,999.",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "O modelo multilingüe non está activado, pero estableceuse un limiar. Activa o modelo multilingüe.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Seleccionáronse o modelo independente da lingua e mais o modelo multilingüe. Activa só un dos modelos."
+	"automoderator-config-validator-multilingual-select-only-one-model": "Seleccionáronse o modelo independente da lingua e mais o modelo multilingüe. Activa só un dos modelos.",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Cómpre engadir unha páxina para informar de falsos positivos cando a mensaxe da páxina de conversa está habilitada"
 }
