@@ -53,6 +53,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Bestemmingspagina",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "In het bericht op de overlegpagina voor niet-geregistreerde bijdragers staat een koppeling naar een pagina om hen te helpen bij het bewerken.\nDeze koppeling is instelbaar en kan naar een willekeurige pagina op de wiki verwijzen.",
 	"automoderator-config-validator-help-page-link-not-filled": "De velden Bestemmingspagina en Label moeten beide worden ingevuld.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "U moet een pagina voor het melden van valse positieven toevoegen wanneer het overlegpaginabericht is ingeschakeld",
+	"automoderator-config-validator-false-positive-page-not-exist": "Deze pagina bestaat niet. Voeg een juiste pagina voor het melden van valse positieven toe.",
 	"communityconfiguration-multilingualconfig-title": "Automoderator",
 	"communityconfiguration-multilingualconfig-description": "Automoderator zo instellen dat het model mogelijk slechte bewerkingen op Wikipedia kan identificeren en ongedaan kan maken.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",
@@ -94,5 +96,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "De meertalige drempelwaarde moet een getal zijn.",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "De waarde valt buiten het bereik. Voer een waarde in tussen 0,950 en 0,999.",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Het meertalige model is niet ingeschakeld, maar er is een drempelwaarde ingesteld. Schakel het meertalige model in.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Zowel het taalonafhankelijke als het meertalige model zijn geselecteerd. Schakel slechts één van de modellen in."
+	"automoderator-config-validator-multilingual-select-only-one-model": "Zowel het taalonafhankelijke als het meertalige model zijn geselecteerd. Schakel slechts één van de modellen in.",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "U moet een pagina voor het melden van valse positieven toevoegen wanneer het overlegpaginabericht is ingeschakeld"
 }

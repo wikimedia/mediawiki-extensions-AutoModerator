@@ -10,7 +10,7 @@
 	"automoderator-desc": "Автоматски отповикува лоши уредувања врз основа на бодување од модел за машинско учење.",
 	"automoderator-wiki-report-false-positive": "пријави погрешен погодок",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 го врати вашето уредување",
-	"automoderator-wiki-revert-message": "Здраво! Јас сум [[User:$1|$1]], автоматизиран систем кој користи модел за машинско учење утврдување и враќање на потенцијално непожелни уредувања за да се обезбеди доверливоста и меродавноста на Википедија. Вратив едно од вашите [[Special:Diff/$2|скорешни уредувања]] на [[$3]].\n* Бидејќи моделот што го користам не е совршен, понекогаш враќам добри уредувања. Доколку сметате дека промената што ја направивте е конструктивна, тогаш [[$4|пријавете ја овде]].\n* [[:mw:Moderator Tools/Automoderator|Дознајте повеќе]] програмата на која работам.",
+	"automoderator-wiki-revert-message": "Здраво! Јас сум [[User:$1|$1]], автоматизиран систем кој користи модел за машинско учење утврдување и враќање на потенцијално непожелни уредувања за да се обезбеди доверливоста и меродавноста на Википедија. Вратив едно од вашите [[Special:Diff/$2|скорешни уредувања]] на [[$3]].\n* Бидејќи моделот што го користам не е совршен, понекогаш враќам добри уредувања. Доколку сметате дека промената што ја направивте е конструктивна, тогаш [$4 пријавете ја овде].\n* [[:mw:Moderator Tools/Automoderator|Дознајте повеќе]] програмата на која работам.",
 	"automoderator-wiki-revert-message-help-page": "* За да дознаете повеќе за уредувањето, погледајте ја оваа помошна страница: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Исто така вратив едно од вашите [[Special:Diff/$1|скорешни уредувања]] на [[$2]] бидејќи делуваше неконструктивно.",
 	"automoderator-wiki-revert-edit-summary": "Напомена за автоматско отповикување на [[$1]]",
@@ -52,6 +52,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Целна страница",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Пораката на разговорната страница на незачленети учесници ќе прикажува врска до страница за помош со уредување.\nМоже да се намести да биде било која врска на викито.",
 	"automoderator-config-validator-help-page-link-not-filled": "Мора да се пополнат полињата „Целна страница“ и „Натпис“.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Ќе треба да додадете страница за пријавување на лажни погодоци кога ќе се овозможи порака на разговорна страница",
+	"automoderator-config-validator-false-positive-page-not-exist": "Оваа страница не постои. Додајте важечка страница за пријавување на лажни погодоци.",
 	"communityconfiguration-multilingualconfig-title": "Автомодератор",
 	"communityconfiguration-multilingualconfig-description": "Наместете ги поставките на Автомодератор, така што моделот ќе може да пронаоѓа и отповикува потенцијално лоши уредувања на Википедија.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Автомодератор",
@@ -93,5 +95,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "Прагот на повеќејазичност мора да биде број.",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "Вредноста е вон опсегот. Внесете вредност помеѓу 0.950 и 0.999",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Повеќејазичниот модел не е овозможен, но зададен е праг. Овозможете го повеќејазичниот модел.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Изберени се и јазично агностичниот и повеќејазичниот модел. Овозможете само еден од нив."
+	"automoderator-config-validator-multilingual-select-only-one-model": "Изберени се и јазично агностичниот и повеќејазичниот модел. Овозможете само еден од нив.",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Ќе треба да додадете страница за пријавување на лажни погодоци кога ќе се овозможи порака на разговорна страница"
 }
