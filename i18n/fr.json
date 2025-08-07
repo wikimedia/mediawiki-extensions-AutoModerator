@@ -62,6 +62,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Page de destination",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Le message de la page de discussion pour les contributeurs non enregistrés affichera un lien vers une page pour les aider à éditer. Ce lien peut être configuré pour être n'importe quel lien du wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "Le champ Page de destination et le champ Étiquette doivent tous deux être remplis.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Vous devez ajouter une page de rapport de faux positifs lorsque le message de la page de discussion est activé",
+	"automoderator-config-validator-false-positive-page-not-exist": "Cette page n'existe pas. Veuillez ajouter une page de signalement de faux positifs valide.",
 	"communityconfiguration-multilingualconfig-title": "Automodérateur",
 	"communityconfiguration-multilingualconfig-description": "Configurez les paramètres d'Automodérator afin que ce modèle puisse identifier et annuler les modifications potentiellement mauvaises sur Wikipédia.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automodérateur",
@@ -103,5 +105,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "Le seuil multilingue doit être un nombre.",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "La valeur est hors de la plage. Veuillez saisir une valeur comprise entre 0,950 et 0,999",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Le modèle multilingue n'a pas été activé, mais un seuil a été défini. Veuillez l'activer.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Le modèle multilingue et le modèle de langage agnostique ont été sélectionnés. Veuillez n’activer qu’un seul de ces modèles."
+	"automoderator-config-validator-multilingual-select-only-one-model": "Le modèle multilingue et le modèle de langage agnostique ont été sélectionnés. Veuillez n’activer qu’un seul de ces modèles.",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Vous devez ajouter une page de rapport de faux positifs lorsque le message de la page de discussion est activé"
 }
