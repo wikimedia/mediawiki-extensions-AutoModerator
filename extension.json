@@ -26,7 +26,7 @@
 		"src/ServiceWiring.php"
 	],
 	"ConfigRegistry": {
-		"AutoModerator": "GlobalVarConfig::newInstance"
+		"AutoModerator": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
 	},
 	"attributes": {
 		"CommunityConfiguration": {
