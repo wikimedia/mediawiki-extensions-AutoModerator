@@ -1,0 +1,18 @@
+{
+	"@metadata": {
+		"authors": [
+			"Mansil alfalb"
+		]
+	},
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Direitos do utilizador",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Auto moderador está ativado",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Mensagem da página de discussão",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Mensagem da página de discussão está ativada",
+	"communityconfiguration-automoderator-title": "Auto moderador",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Auto moderador",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Edições menores",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edição de robô",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Ajuda: Edição menor]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual: Robôs]",
+	"automoderator-config-validator-userrights-not-allowed": "O direito de utilizador $1 não existe. Por favor, tente outro."
+}
