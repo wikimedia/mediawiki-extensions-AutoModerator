@@ -11,7 +11,7 @@
 	"automoderator-desc": "Membalikkan suntingan buruk secara automatik berdasarkan pemarkahan daripada model pembelajaran mesin.",
 	"automoderator-wiki-report-false-positive": "laporkan hasil positif palsu",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 membalikkan suntingan anda",
-	"automoderator-wiki-revert-message": "Salam sejahtera! Saya [[User:$1|$1]], yakni sebuah sistem automatik yang menggunakan model pembelajaran mesin untuk mengenal pasti serta membalikkan suntingan yang berkemungkinan buruk, supaya dengan cara ini dapat memastikan Wikipedia kekal berwibawa dan boleh dipercayai. Malangnya, saya telah mengembalikan salah satu daripada [[Special:Diff/$2|suntingan terkini]] anda kepada [[$3]].\n* Disebabkan oleh model yang saya gunakan tidak sempurna, kadangkala ia membalikkan suntingan yang baik. Jika anda percaya perubahan yang anda buat adalah membina, sila [[$4|laporkan di sini]].\n* [[:mw:Moderator Tools/Automoderator|Ketahui lebih lanjut]] tentang perisian saya.",
+	"automoderator-wiki-revert-message": "Salam sejahtera! Saya [[User:$1|$1]], yakni sebuah sistem automatik yang menggunakan model pembelajaran mesin untuk mengenal pasti serta membalikkan suntingan yang berkemungkinan buruk, supaya dengan cara ini dapat memastikan Wikipedia kekal berwibawa dan boleh dipercayai. Malangnya, saya telah mengembalikan salah satu daripada [[Special:Diff/$2|suntingan terkini]] anda kepada [[$3]].\n* Disebabkan oleh model yang saya gunakan tidak sempurna, kadangkala ia membalikkan suntingan yang baik. Jika anda percaya perubahan yang anda buat adalah membina, sila [$4 laporkan di sini].\n* [[:mw:Moderator Tools/Automoderator|Ketahui lebih lanjut]] tentang perisian saya.",
 	"automoderator-wiki-revert-message-help-page": "* Untuk mengetahui lebih lanjut mengenai penyuntingan, sila lihat laman bantuan ini: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Saya juga telah mengembalikan salah satu daripada [[Special:Diff/$1|suntingan terkini]] anda kepada [[$2]] kerana ia kelihatan tidak membina.",
 	"automoderator-wiki-revert-edit-summary": "Notis pembalikan suntingan automatik pada [[$1]]",
@@ -53,6 +53,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Laman destinasi",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Mesej laman perbincangan untuk penyumbang tidak berdaftar akan memaparkan pautan ke laman untuk membantu mereka menyunting.\nPautan ini boleh dikonfigurasikan menjadi mana-mana pautan dalam wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "Kedua-dua medan laman Destinasi dan medan Label perlu diisi.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Anda perlu menambah laman pelaporan positif palsu apabila mesej laman perbincangan didayakan",
+	"automoderator-config-validator-false-positive-page-not-exist": "Laman ini tidak wujud. Sila tambah laman pelaporan positif palsu yang sah.",
 	"communityconfiguration-multilingualconfig-title": "Automoderator",
 	"communityconfiguration-multilingualconfig-description": "Konfigurasikan tetapan Automoderator, supaya model boleh mengenal pasti dan membalikkan suntingan yang mempunyai potensi buruk terhadap Wikipedia.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",
@@ -94,5 +96,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "Ambang model berbilang bahasa mestilah berbentuk nombor.",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "Nilai berada di luar julat. Sila masukkan nilai antara 0.950 dan 0.999",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Model berbilang bahasa tidak didayakan, tetapi ambang telah ditetapkan. Sila dayakan model berbilang bahasa.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Kedua-dua model agnostik bahasa dan model berbilang bahasa telah dipilih. Sila dayakan hanya satu model."
+	"automoderator-config-validator-multilingual-select-only-one-model": "Kedua-dua model agnostik bahasa dan model berbilang bahasa telah dipilih. Sila dayakan hanya satu model.",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Anda perlu menambah laman pelaporan positif palsu apabila mesej laman perbincangan didayakan"
 }
