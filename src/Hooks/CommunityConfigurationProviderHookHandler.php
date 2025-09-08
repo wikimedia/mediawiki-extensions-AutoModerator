@@ -9,8 +9,6 @@ use MediaWiki\Config\Config;
 use MediaWiki\Extension\CommunityConfiguration\Hooks\CommunityConfigurationProvider_initListHook;
 use MediaWiki\Title\TitleFactory;
 
-// phpcs:ignore MediaWiki.Commenting.CommentBeforeClass
-// @phan-suppress-next-line PhanUndeclaredInterface
 class CommunityConfigurationProviderHookHandler implements CommunityConfigurationProvider_initListHook {
 
 	private Config $config;
@@ -51,7 +49,6 @@ class CommunityConfigurationProviderHookHandler implements CommunityConfiguratio
 				"validator" => [
 					"type" => "jsonschema",
 					"args" => [
-						// @phan-suppress-next-line PhanUndeclaredClassReference
 						AutoModeratorMultilingualConfigSchema::class,
 					],
 				],
