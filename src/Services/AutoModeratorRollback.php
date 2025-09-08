@@ -115,7 +115,6 @@ class AutoModeratorRollback {
 	}
 
 	/**
-	 *
 	 * @return StatusValue On success, wrapping the array with the following keys:
 	 *   'summary' - rollback edit summary
 	 *   'current-revision-record' - revision record that was current before rollback

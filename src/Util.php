@@ -50,7 +50,6 @@ class Util {
 	}
 
 	/**
-	 *
 	 * @return string The name that ORES uses for the language-agnostic model
 	 */
 	public static function getORESLanguageAgnosticModelName() {
@@ -58,7 +57,6 @@ class Util {
 	}
 
 	/**
-	 *
 	 * @return string The name that ORES uses for the multilingual model
 	 */
 	public static function getORESMultiLingualModelName() {

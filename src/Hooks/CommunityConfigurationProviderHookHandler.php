@@ -9,6 +9,7 @@ use MediaWiki\Config\Config;
 use MediaWiki\Extension\CommunityConfiguration\Hooks\CommunityConfigurationProvider_initListHook;
 use MediaWiki\Title\TitleFactory;
 
+// phpcs:ignore MediaWiki.Commenting.CommentBeforeClass
 // @phan-suppress-next-line PhanUndeclaredInterface
 class CommunityConfigurationProviderHookHandler implements CommunityConfigurationProvider_initListHook {
 
