@@ -12,7 +12,8 @@
 			"ZhaoFJx",
 			"人间百态",
 			"沈澄心",
-			"Peterxy12"
+			"Peterxy12",
+			"范"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1包含太多项（最多{{PLURAL:$2|允许}}$2项）",
