@@ -10,7 +10,7 @@
 	"automoderator-desc": "Авто йухайерзабо вон хийцамаш, машенан Ӏаморийн модель тӀера баллаш хӀитторан буха тӀехь.",
 	"automoderator-wiki-report-false-positive": "харц хиламах хаам бан",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 йухабаьккхина хьан хийцам",
-	"automoderator-wiki-revert-message": "Маршалла хуьлда! Со йу [[User:$1|$1]], автоматизицийина система, цо лелайо машенан Ӏаморийн модель, вон хила тарлуш болу хийцамаш къастош а, йухаберзош а, Википеди тешаме а, теша мегар долуш а хилийтархьама. Ас хьан [[Special:Diff/$2|тӀеххьара хийцамех]] цхьаъ [[$3]] йухаберзийна.\n* Ас лелош йолу модель кхачам боллуш ца хиларна, цо наггахь дика хийцамаш йухаберзабо. Нагахь санна ахь бина хийцам конструктиван бу аьлла хетахь, дехар ду [[$4|хаийта кхузахь]].\n* [[:mw:Moderator Tools/Automoderator|Кхин дӀа а довза]] сан программех лаьцна.",
+	"automoderator-wiki-revert-message": "Маршалла хуьлда! Со йу [[User:$1|$1]], автоматизицийина система, цо лелайо машенан Ӏаморийн модель, вон хила тарлуш болу хийцамаш къастош а, йухаберзош а, Википеди тешаме а, теша мегар долуш а хилийтархьама. Ас хьан [[Special:Diff/$2|тӀеххьара хийцамех]] цхьаъ [[$3]] йухаберзийна.\n* Ас лелош йолу модель кхачам боллуш ца хиларна, цо наггахь дика хийцамаш йухаберзабо. Нагахь санна ахь бина хийцам конструктиван бу аьлла хетахь, дехар ду [$4 хаийта кхузахь].\n* [[:mw:Moderator Tools/Automoderator|Кхин дӀа а довза]] сан программех лаьцна.",
 	"automoderator-wiki-revert-message-help-page": "* Хийцамех лаьцна кхин дӀа хаа лаахь хӀокху гӀоьнан агӀоне хьажа: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Ас иштта йухаберзийра хьан [[Special:Diff/$1|тӀаьххьара хийцамех]] цхьаъ [[$2]], хӀунда аьлча иза суна санна конструктиван боцуш хетара.",
 	"automoderator-wiki-revert-edit-summary": "Авто йухадерзоран хьокъехь хаам [[$1]] тӀехь.",
@@ -52,6 +52,8 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "ДӀакхачаран агӀо",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Регистраци ца йинчу декъашхошна леррина дийцарийн агӀонан тӀехь хаамо гойтур йу агӀонан тӀе хьажорг, царна гӀо дан хийцамаш беш.\nХӀара хьажорг нисйан йиш йу вики чохь муьлхха а хьажорг хилийта.",
 	"automoderator-config-validator-help-page-link-not-filled": "ТӀейуза йезаш йу «ДӀакхачаран агӀо» а, «билгало» а.",
+	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Харц дика агӀо тӀетоха йеза, нагахь санна дийцарийн агӀонан хаам дӀахӀоттийна белахь",
+	"automoderator-config-validator-false-positive-page-not-exist": "ХӀара агӀо йац. Дехар до, нийса харц дика хаам баран агӀо тӀетоха.",
 	"communityconfiguration-multilingualconfig-title": "Автомодератор",
 	"communityconfiguration-multilingualconfig-description": "Автомодераторан параметраш хӀиттайе, модельна аьтто хилийта Википеди тӀехь хила тарлуш болу вон хийцамаш къасто а, йухаберзо а.",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Автомодератор",
@@ -93,5 +95,6 @@
 	"automoderator-config-validator-multilingual-threshold-not-number": "Дуккха а меттанийн порог терахь хила деза.",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "МаьӀна диапазонал арахьа ду. Дехар до, 0,950-0,999 йукъахь долу маьӀна йазде.",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Дуккха а меттанийн модель дӀахӀоттийна йацара, амма порог хӀоттийна. Дехар ду, дуккха а меттанийн модель дӀахӀоттайе.",
-	"automoderator-config-validator-multilingual-select-only-one-model": "Шеа модель къастийна: меттан а, дуккха а меттанийн а. Дехар до, цхьа модель бен ма хӀоттайе"
+	"automoderator-config-validator-multilingual-select-only-one-model": "Шеа модель къастийна: меттан а, дуккха а меттанийн а. Дехар до, цхьа модель бен ма хӀоттайе",
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Харц дика агӀо тӀетоха йеза, нагахь санна дийцарийн агӀонан хаам дӀахӀоттийна белахь"
 }
