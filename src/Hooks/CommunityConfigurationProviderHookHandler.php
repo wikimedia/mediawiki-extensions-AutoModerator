@@ -4,7 +4,6 @@ namespace AutoModerator\Hooks;
 
 use AutoModerator\Config\Validation\AutoModeratorMultilingualConfigSchema;
 use AutoModerator\Config\WikiPageConfigLoader;
-use AutoModerator\Util;
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\CommunityConfiguration\Hooks\CommunityConfigurationProvider_initListHook;
 use MediaWiki\Title\TitleFactory;
@@ -32,14 +31,13 @@ class CommunityConfigurationProviderHookHandler implements CommunityConfiguratio
 	public function onCommunityConfigurationProvider_initList( array &$providers ) {
 		$multiLingualWikis = $this->config->get( 'AutoModeratorMultiLingualRevertRisk' );
 		if ( !$multiLingualWikis ) {
-			unset( $providers['MultilingualConfig'] );
+			unset( $providers['AutomoderatorMultilingual'] );
 			return;
 		}
-		$wikiId = Util::getWikiID( $this->config );
-		if ( in_array( $wikiId, $multiLingualWikis ) ) {
+		if ( $this->config->get( 'AutoModeratorMultiLingualRevertRisk' ) ) {
 			// The multilingual model can be configured in this wiki, adding the new configuration
 			// and unsetting the original CC form
-			$providers['MultilingualConfig'] = [
+			$providers['AutomoderatorMultilingual'] = [
 				"store" => [
 					"type" => "wikipage",
 					"args" => [
@@ -64,7 +62,7 @@ class CommunityConfigurationProviderHookHandler implements CommunityConfiguratio
 			}
 			$this->configLoader->load( $configTitle );
 		} else {
-			unset( $providers['MultilingualConfig'] );
+			unset( $providers['AutomoderatorMultilingual'] );
 		}
 	}
 

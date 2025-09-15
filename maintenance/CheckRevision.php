@@ -84,6 +84,7 @@ class CheckRevision extends Maintenance {
 			$tags,
 			$restrictionStore,
 			$wikiPageFactory,
+			$config,
 			$wikiConfig,
 			$rev,
 			$permissionManager

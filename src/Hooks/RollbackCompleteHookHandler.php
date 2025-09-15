@@ -50,7 +50,7 @@ class RollbackCompleteHookHandler implements RollbackCompleteHook {
 		$revId = $current->getId();
 		$rollbackRevId = $wikiPage->getRevisionRecord()->getId();
 		if ( $autoModeratorUser->getId() === $user->getId() ) {
-			if ( $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' ) ) {
+			if ( $this->shouldSendTalkPageMessage() ) {
 				$this->talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob(
 						$wikiPage->getTitle(),
 						$revId,
@@ -59,5 +59,13 @@ class RollbackCompleteHookHandler implements RollbackCompleteHook {
 						LoggerFactory::getInstance( 'AutoModerator' ) );
 			}
 		}
+	}
+
+	private function shouldSendTalkPageMessage(): bool {
+		$isMultilingualRevertRiskEnabled = Util::isWikiMultilingual( $this->config );
+		if ( $isMultilingualRevertRiskEnabled ) {
+			return $this->wikiConfig->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' );
+		}
+		return $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' );
 	}
 }

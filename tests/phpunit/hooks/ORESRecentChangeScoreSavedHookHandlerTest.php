@@ -64,6 +64,7 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorSkipUserRights' => [],
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false
 			] )
 		);
 		$config = new HashConfig( [
@@ -72,9 +73,10 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => false,
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
-			]
+			],
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
@@ -194,6 +196,7 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => false,
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
 			]

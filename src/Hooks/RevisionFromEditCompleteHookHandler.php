@@ -83,12 +83,12 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		if ( !$wikiPage || !$rev || !$user ) {
 			return;
 		}
-		$revisionCheckNotEnabled = $this->wikiConfig->has( 'AutoModeratorEnableRevisionCheck' ) &&
-		!$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' );
-		$multilingualRevisionCheckNotEnabled = $this->wikiConfig
-			->has( 'AutoModeratorMultilingualConfigEnableRevisionCheck' )
-			&& !$this->wikiConfig->get( 'AutoModeratorMultilingualConfigEnableRevisionCheck' );
-		if ( $revisionCheckNotEnabled && $multilingualRevisionCheckNotEnabled ) {
+		$enabledConfigKey = Util::isWikiMultilingual( $this->config )
+			? "AutoModeratorMultilingualConfigEnableRevisionCheck"
+			: "AutoModeratorEnableRevisionCheck";
+		$revisionCheckEnabled = $this->wikiConfig->has( $enabledConfigKey )
+			&& $this->wikiConfig->get( $enabledConfigKey );
+		if ( !$revisionCheckEnabled ) {
 			return;
 		}
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
@@ -105,6 +105,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 			$tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$rev,
 			$this->permissionManager ) ) {

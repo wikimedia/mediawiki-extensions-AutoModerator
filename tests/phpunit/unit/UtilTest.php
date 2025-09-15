@@ -44,9 +44,9 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', false ],
 		] );
-		$revertThreshold = Util::getRevertThreshold( $wikiConfig, 'revertrisklanguageagnostic' );
+		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
 		$this->assertSame(
 			0.985,
 			$revertThreshold
@@ -60,15 +60,16 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$wikiConfig = $this->createMock( Config::class );
 		$wikiConfig->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorCautionLevel', 'very-cautious' ],
+			[ 'AutoModeratorMultilingualConfigCautionLevel', 'very-cautious' ]
 		] );
 		$wikiConfig->method( 'has' )->willReturn( true );
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
-		$revertThreshold = Util::getRevertThreshold( $wikiConfig, 'revertrisklanguageagnostic' );
+		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
 		$this->assertSame(
 			0.990,
 			$revertThreshold
@@ -88,9 +89,9 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', false ],
 		] );
-		$revertThreshold = Util::getRevertThreshold( $wikiConfig, 'revertrisklanguageagnostic' );
+		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
 		$this->assertSame(
 			0.980,
 			$revertThreshold
@@ -110,9 +111,9 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', false ],
 		] );
-		$revertThreshold = Util::getRevertThreshold( $wikiConfig, 'revertrisklanguageagnostic' );
+		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
 		$this->assertSame(
 			0.975,
 			$revertThreshold
@@ -138,7 +139,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorLiftWingBaseUrl', $expectedUrl ],
 			[ 'AutoModeratorLiftWingAddHostHeader', false ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 
 		$wikiConfig = $this->createMock( Config::class );
@@ -182,7 +183,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorLiftWingAddHostHeader', true ],
 			[ 'AutoModeratorLiftWingRevertRiskHostHeader', $expectedHostHeader ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 
 		$wikiConfig = $this->createMock( Config::class );
@@ -226,7 +227,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorLiftWingAddHostHeader', true ],
 			[ 'AutoModeratorLiftWingRevertRiskHostHeader', $expectedHostHeader ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 
 		$wikiConfig = $this->createMock( Config::class );
@@ -278,12 +279,42 @@ class UtilTest extends MediaWikiUnitTestCase {
 		] );
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 
 		$isMultiLingualRevertRiskEnabled = Util::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
 
 		$this->assertFalse( $isMultiLingualRevertRiskEnabled );
+	}
+
+	/**
+	 * @covers ::isWikiMultilingual
+	 */
+	public function testIsWikiMultilingual() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorWikiId', 'testwiki' ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
+		] );
+
+		$isWikiMultilingual = Util::isWikiMultilingual( $config );
+
+		$this->assertTrue( $isWikiMultilingual );
+	}
+
+	/**
+	 * @covers ::isWikiMultilingual
+	 */
+	public function testIsWikiMultilingualNot() {
+		$config = $this->createMock( Config::class );
+		$config->method( 'get' )->willReturnMap( [
+			[ 'AutoModeratorWikiId', 'testwiki' ],
+			[ 'AutoModeratorMultiLingualRevertRisk', false ],
+		] );
+
+		$isWikiMultilingual = Util::isWikiMultilingual( $config );
+
+		$this->assertFalse( $isWikiMultilingual );
 	}
 
 	/**
@@ -298,7 +329,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 
 		$isMultiLingualRevertRiskEnabled = Util::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
@@ -317,7 +348,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorWikiId', $wikiId ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 		$wikiConfig = $this->createMock( Config::class );
 		$wikiConfig->method( 'get' )->willReturnMap( [
@@ -342,7 +373,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorWikiId', $wikiId ],
-			[ 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] ],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 		$wikiConfig = $this->createMock( Config::class );
 		$wikiConfig->method( 'get' )->willReturnMap( [

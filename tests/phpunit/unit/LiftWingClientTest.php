@@ -15,17 +15,7 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 		$config = $this->createMock( Config::class );
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorLiftWingBaseUrl', "example.org" ],
-			[ 'AutoModeratorMultiLingualRevertRisk',
-				[
-					"enabled" => true,
-					"thresholds" => [
-						"very-cautious" => 0.990,
-						"cautious" => 0.980,
-						"somewhat-cautious" => 0.970,
-						"less-cautious" => 0.960
-					]
-				]
-			],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 		$wikiConfig = $this->createMock( Config::class );
 		$wikiConfig->method( 'get' )->willReturnMap( [
@@ -52,17 +42,7 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorLiftWingBaseUrl', "example.org" ],
 			[ 'AutoModeratorWikiId', "idwiki" ],
-			[ 'AutoModeratorMultiLingualRevertRisk',
-				[
-					"enabled" => true,
-					"thresholds" => [
-						"very-cautious" => 0.990,
-						"cautious" => 0.980,
-						"somewhat-cautious" => 0.970,
-						"less-cautious" => 0.960
-					]
-				]
-			],
+			[ 'AutoModeratorMultiLingualRevertRisk', true ],
 		] );
 		$wikiConfig = $this->createMock( Config::class );
 		$wikiConfig->method( 'get' )->willReturnMap( [

@@ -104,7 +104,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testValidateWhenMultilingualThresholdIsNotANumber() {
 		$validator = new AutoModeratorConfigValidation();
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
 
 		$result = $validator->validate( [ 'AutoModeratorMultilingualConfigMultilingualThreshold' => 'oopsie' ] );
 		$this->assertEquals( StatusValue::newFatal(
@@ -133,7 +133,8 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	public function testValidateWhenMultilingualThresholdIsNotWithinRange() {
 		$validator = new AutoModeratorConfigValidation();
 
-		$result = $validator->validate( [ 'AutoModeratorMultilingualConfigMultilingualThreshold' => '0.500' ] );
+		$result = $validator->validate( [ 'AutoModeratorMultilingualConfigMultilingualThreshold' => '0.500',
+			'AutoModeratorMultilingualConfigEnableMultilingual' => true ] );
 		$this->assertEquals( StatusValue::newFatal(
 			'automoderator-config-validator-multilingual-threshold-value-outside-range',
 			'0.500'

@@ -171,29 +171,16 @@ class Util {
 	}
 
 	/**
+	 * @param Config $config
 	 * @param Config $wikiConfig
-	 * @param string $revertRiskModelName
 	 * @return float An AutoModeratorRevertProbability threshold  will be chosen depending on the model
 	 */
-	public static function getRevertThreshold( Config $wikiConfig, string $revertRiskModelName ): float {
-		$threshold = 0.990;
-		if ( $wikiConfig->has( 'AutoModeratorCautionLevel' ) ) {
-			$cautionLevel = $wikiConfig->get( 'AutoModeratorCautionLevel' );
-		} else {
-			$cautionLevel = $wikiConfig->get( 'AutoModeratorMultilingualConfigCautionLevel' );
-		}
-		if ( $revertRiskModelName === self::getORESLanguageAgnosticModelName() ) {
-			$languageAgnosticThresholds = [
-				'very-cautious' => 0.990,
-				'cautious' => 0.985,
-				'somewhat-cautious' => 0.980,
-				'less-cautious' => 0.975
-			];
-			return $languageAgnosticThresholds[ $cautionLevel ];
-		} elseif ( $revertRiskModelName === self::getORESMultiLingualModelName() ) {
+	public static function getRevertThreshold( Config $config, Config $wikiConfig ): float {
+		if ( self::isWikiMultilingual( $config ) ) {
 			return self::getMultiLingualThreshold( $wikiConfig );
 		} else {
-			return $threshold;
+			$cautionLevel = $wikiConfig->get( 'AutoModeratorCautionLevel' );
+			return self::getCautionLevel( $cautionLevel );
 		}
 	}
 
@@ -203,7 +190,22 @@ class Util {
 	 * @return float
 	 */
 	public static function getMultiLingualThreshold( Config $wikiConfig ) {
-		return $wikiConfig->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' );
+		if ( $wikiConfig->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' ) ) {
+			return $wikiConfig->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' );
+		}
+		$cautionLevel = $wikiConfig->get( 'AutoModeratorMultilingualConfigCautionLevel' );
+		return self::getCautionLevel( $cautionLevel );
+	}
+
+	/**
+	 * Checks if multilingual revert risk is enabled on the wiki
+	 * See: https://meta.wikimedia.org/wiki/Machine_learning_models/Production/Multilingual_revert_risk#Motivation
+	 * for more information
+	 * @param Config $config
+	 * @return bool
+	 */
+	public static function isWikiMultilingual( Config $config ): bool {
+		return $config->get( 'AutoModeratorMultiLingualRevertRisk' );
 	}
 
 	/**
@@ -215,10 +217,9 @@ class Util {
 	 * @return bool
 	 */
 	public static function isMultiLingualRevertRiskEnabled( Config $config, Config $wikiConfig ): bool {
-		$wikiId = self::getWikiID( $config );
-		$multiLingualCompatibleWikis = $config->get( 'AutoModeratorMultiLingualRevertRisk' );
 		return $wikiConfig->get( 'AutoModeratorMultilingualConfigEnableMultilingual' ) &&
-			in_array( $wikiId, $multiLingualCompatibleWikis );
+			self::isWikiMultilingual( $config )
+			&& !$wikiConfig->get( 'AutoModeratorMultilingualConfigEnableLanguageAgnostic' );
 	}
 
 	/**
@@ -258,5 +259,19 @@ class Util {
 	public static function getLanguageConfiguration( Config $config ) {
 		$wikiId = self::getWikiID( $config );
 		return substr( $wikiId, 0, strpos( $wikiId, "wiki" ) );
+	}
+
+	/**
+	 * @param mixed $cautionLevel
+	 * @return float
+	 */
+	public static function getCautionLevel( mixed $cautionLevel ): float {
+		$languageAgnosticThresholds = [
+			'very-cautious' => 0.990,
+			'cautious' => 0.985,
+			'somewhat-cautious' => 0.980,
+			'less-cautious' => 0.975
+		];
+		return $languageAgnosticThresholds[$cautionLevel];
 	}
 }

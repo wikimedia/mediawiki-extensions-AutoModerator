@@ -99,8 +99,9 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$this->params['userId'],
 				$this->params['userName']
 			);
-			$maxReverts = $wikiConfig->get( 'AutoModeratorUserRevertsPerPage' );
-			if ( $wikiConfig->get( 'AutoModeratorEnableUserRevertsPerPage' ) && $maxReverts ) {
+			$isWikiMultilingual = Util::isWikiMultilingual( $config );
+			$maxReverts = $this->getMaxReverts( $isWikiMultilingual, $wikiConfig );
+			if ( $this->getMaxRevertsEnabled( $isWikiMultilingual, $wikiConfig ) && $maxReverts ) {
 				$autoModeratorRevisionStore = new AutoModeratorRevisionStore(
 					$connectionProvider->getReplicaDatabase(),
 					$user,
@@ -279,4 +280,27 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	public function ignoreDuplicates(): bool {
 		return true;
 	}
+
+	/**
+	 * @param bool $isMultiLingualRevertRiskEnabled
+	 * @param Config $wikiConfig
+	 * @return mixed
+	 */
+	private function getMaxReverts( bool $isMultiLingualRevertRiskEnabled, Config $wikiConfig ): mixed {
+		return $isMultiLingualRevertRiskEnabled ?
+			$wikiConfig->get( "AutoModeratorMultilingualConfigUserRevertsPerPage" ) :
+			$wikiConfig->get( 'AutoModeratorUserRevertsPerPage' );
+	}
+
+	/**
+	 * @param bool $isMultiLingualRevertRiskEnabled
+	 * @param Config $wikiConfig
+	 * @return mixed
+	 */
+	private function getMaxRevertsEnabled( bool $isMultiLingualRevertRiskEnabled, Config $wikiConfig ): mixed {
+		return $isMultiLingualRevertRiskEnabled ?
+			$wikiConfig->get( 'AutoModeratorMultilingualConfigEnableUserRevertsPerPage' ) :
+			$wikiConfig->get( 'AutoModeratorEnableUserRevertsPerPage' );
+	}
+
 }

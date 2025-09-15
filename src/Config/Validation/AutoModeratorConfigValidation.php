@@ -157,15 +157,15 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 		}
 
 		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold" &&
-			( $value < 0.950 || $value > 0.999 ) ) {
+			$data['AutoModeratorMultilingualConfigEnableMultilingual'] &&
+			( $value < 0.850 || $value > 0.999 ) ) {
 			return StatusValue::newFatal(
 				'automoderator-config-validator-multilingual-threshold-value-outside-range',
 				$value
 			);
 		}
-
-		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold"
-			&& !$data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
+		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value &&
+			!$data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
 			return StatusValue::newFatal(
 				'automoderator-config-validator-multilingual-threshold-multilingual-not-enabled',
 				$value

@@ -18,6 +18,7 @@ namespace AutoModerator\Services;
 
 use AutoModerator\AutoModeratorServices;
 use AutoModerator\Util;
+use MediaWiki\Config\Config;
 use MediaWiki\JobQueue\Job;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -107,6 +108,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 			$revisionStore = $services->getRevisionStore();
 			$revision = $revisionStore->getRevisionById( $this->revId );
 			$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
+			$config = $services->getMainConfig();
 			if ( !$revision ) {
 				$this->setLastError( self::NO_PARENT_REVISION_FOUND );
 				$this->setAllowRetries( false );
@@ -165,7 +167,8 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 					$this->rollbackRevId,
 					$this->pageTitle,
 					$this->falsePositiveReportPageTitle )->plain();
-				$helpPageLink = $wikiConfig->get( 'AutoModeratorHelpPageLink' );
+				$isMultiLingualRevertRiskEnabled = Util::isWikiMultilingual( $config );
+				$helpPageLink = $this->getHelpPageLink( $isMultiLingualRevertRiskEnabled, $wikiConfig );
 				if ( $helpPageLink ) {
 					$helpPageBulletPoint = wfMessage( 'automoderator-wiki-revert-message-help-page' )->params(
 						$helpPageLink
@@ -205,5 +208,16 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 */
 	public function ignoreDuplicates(): bool {
 		return true;
+	}
+
+	/**
+	 * @param bool $isMultiLingualRevertRiskEnabled
+	 * @param \MediaWiki\Config\Config $wikiConfig
+	 * @return mixed
+	 */
+	private function getHelpPageLink( bool $isMultiLingualRevertRiskEnabled, Config $wikiConfig ): mixed {
+		return $isMultiLingualRevertRiskEnabled ?
+			$wikiConfig->get( 'AutoModeratorMultilingualConfigHelpPageLink' )
+			: $wikiConfig->get( 'AutoModeratorHelpPageLink' );
 	}
 }

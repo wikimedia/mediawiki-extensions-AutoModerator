@@ -41,7 +41,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
 				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
 				'AutoModeratorFalsePositivePageTitle' => "",
-
 			] )
 		);
 		$config = new HashConfig( [
@@ -91,7 +90,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
 				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
 				'AutoModeratorFalsePositivePageTitle' => "",
-
 			] )
 		);
 		$config = new HashConfig( [
@@ -138,7 +136,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
 				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
 				'AutoModeratorFalsePositivePageTitle' => "",
-
 			] )
 		);
 		$config = new HashConfig( [
@@ -187,7 +184,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
 				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
 				'AutoModeratorFalsePositivePageTitle' => "",
-
 			] )
 		);
 		$config = new HashConfig( [
@@ -234,7 +230,7 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorRevertTalkPageMessageHeading' => "heading",
 				'AutoModeratorRevertTalkPageMessageEditSummary' => "edit summary",
 				'AutoModeratorFalsePositivePageTitle' => "",
-
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			] )
 		);
 		$config = new HashConfig( [
@@ -242,7 +238,8 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => "en",
-			'TranslateNumerals' => false
+			'TranslateNumerals' => false,
+			'AutoModeratorMultiLingualRevertRisk' => false
 		] );
 		$logger = $this->createMock( LoggerInterface::class );
 

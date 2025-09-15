@@ -87,6 +87,17 @@ class WikiPageConfig implements Config {
 			// configLoader throws an exception for no-page case
 			return [];
 		}
+		// Load the multilingual configuration page if it exists
+		// in order to merge the multilingual configuration into the language agnostic configuration.
+		$multilingualConfigPage = $this->titleFactory->makeTitleSafe(
+			NS_MEDIAWIKI,
+			'AutoModeratorMultilingualConfig.json'
+		);
+		$multilingualResult = $multilingualConfigPage ? $this->configLoader->load(
+			$multilingualConfigPage, $flags ) : [];
+		if ( $multilingualResult instanceof StatusValue ) {
+			$multilingualResult = [];
+		}
 		$res = $this->configLoader->load( $this->getConfigTitle(), $flags );
 		if ( $res instanceof StatusValue ) {
 			// Loading config failed. This can happen in case of both a software error and
@@ -108,7 +119,8 @@ class WikiPageConfig implements Config {
 			//  while get still throws an exception (as calling get with has() returning false is unexpected).
 			return [];
 		}
-		return $res;
+		// merge both language agnostic and multilingual configuration
+		return array_merge( $res, $multilingualResult );
 	}
 
 	/**

@@ -37,7 +37,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
 		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
@@ -82,9 +82,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
-
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',
@@ -131,8 +130,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
@@ -180,8 +178,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
@@ -231,9 +228,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		] );
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideConfigValue( 'AutoModeratorEnableBotFlag', false );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
-
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',
@@ -279,8 +274,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
 		$user = $this->getTestUser()->getUserIdentity();
@@ -331,8 +325,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -365,8 +358,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -399,8 +391,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -433,8 +424,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -482,8 +472,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -529,8 +518,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -586,8 +574,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', false );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -645,8 +632,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', [ 'enwiki' ] );
-		$this->overrideConfigValue( 'AutoModeratorEnableMultilingual', true );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
 
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
 		$user = $this->getTestUser()->getUserIdentity();

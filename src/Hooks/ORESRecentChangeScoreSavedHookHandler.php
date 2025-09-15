@@ -85,12 +85,12 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		if ( !$revision || !$scores ) {
 			return;
 		}
-		$revisionCheckNotEnabled = $this->wikiConfig->has( 'AutoModeratorEnableRevisionCheck' ) &&
-		!$this->wikiConfig->get( 'AutoModeratorEnableRevisionCheck' );
-		$multilingualRevisionCheckNotEnabled = $this->wikiConfig
-			->has( 'AutoModeratorMultilingualConfigEnableRevisionCheck' )
-			&& !$this->wikiConfig->get( 'AutoModeratorMultilingualConfigEnableRevisionCheck' );
-		if ( $revisionCheckNotEnabled && $multilingualRevisionCheckNotEnabled ) {
+		$enabledConfigKey = Util::isWikiMultilingual( $this->config ) ?
+			"AutoModeratorMultilingualConfigEnableRevisionCheck"
+			: "AutoModeratorEnableRevisionCheck";
+		$revisionCheckEnabled = $this->wikiConfig->has( $enabledConfigKey )
+			&& $this->wikiConfig->get( $enabledConfigKey );
+		if ( !$revisionCheckEnabled ) {
 			return;
 		}
 		$user = $revision->getUser();
@@ -121,6 +121,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 			$tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$revision,
 			$this->permissionManager ) ) {

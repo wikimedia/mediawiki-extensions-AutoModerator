@@ -113,6 +113,7 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => true,
 				'AutoModeratorFalsePositivePageTitle' => Title::newFromText( __METHOD__ ),
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false
 			] )
 		);
 		$config = new HashConfig( [
@@ -124,7 +125,8 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 			],
-			'TranslateNumerals' => false
+			'TranslateNumerals' => false,
+			'AutoModeratorMultiLingualRevertRisk' => false
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$titleFactory = $this->createMock( TitleFactory::class );
@@ -173,6 +175,7 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => false,
 				'AutoModeratorFalsePositivePageTitle' => Title::newFromText( __METHOD__ ),
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false
 			] )
 		);
 		$config = new HashConfig( [
@@ -184,7 +187,8 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 			],
-			'TranslateNumerals' => false
+			'TranslateNumerals' => false,
+			'AutoModeratorMultiLingualRevertRisk' => false
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$titleFactory = $this->getServiceContainer()->getTitleFactory();
@@ -229,6 +233,7 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => false,
 				'AutoModeratorFalsePositivePageTitle' => Title::newFromText( __METHOD__ ),
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false
 			] )
 		);
 		$config = new HashConfig( [

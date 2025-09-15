@@ -43,7 +43,7 @@
 					},
 					"type": "mw-config"
 				},
-				"MultilingualConfig": {
+				"AutomoderatorMultilingual": {
 					"store": {
 						"type": "wikipage",
 						"args": [
@@ -126,8 +126,8 @@
 			"value": null
 		},
 		"AutoModeratorMultiLingualRevertRisk": {
-			"description": "An array that lists all the wikis where the multilingual model is available",
-			"value": null
+			"description": "A boolean that indicates whether the wiki is multilingual capable.",
+			"value": false
 		},
 		"AutoModeratorHelpPageLink": {
 			"description": "A link that appears in the talk page message that leads them to a community-selected help page.",

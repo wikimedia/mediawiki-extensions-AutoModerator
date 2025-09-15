@@ -46,8 +46,7 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 		'AutoModeratorMultilingualConfigHelpPageLink',
 		'AutoModeratorMultilingualConfigEnableLanguageAgnostic',
 		'AutoModeratorMultilingualConfigEnableMultilingual',
-		'AutoModeratorMultilingualConfigMultilingualThreshold',
-		'AutoModeratorMultilingualConfigConfigureThreshold'
+		'AutoModeratorMultilingualConfigMultilingualThreshold'
 	];
 
 	/**

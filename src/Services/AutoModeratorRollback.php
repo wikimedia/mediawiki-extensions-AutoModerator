@@ -2,6 +2,7 @@
 
 namespace AutoModerator\Services;
 
+use AutoModerator\Util;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
@@ -177,11 +178,12 @@ class AutoModeratorRollback {
 		// Save
 		$flags = EDIT_UPDATE | EDIT_INTERNAL;
 
-		if ( $this->wikiConfig->get( 'AutoModeratorUseEditFlagMinor' ) ) {
+		$isMultiLingualRevertRiskEnabled = Util::isWikiMultilingual( $this->config );
+		if ( $this->shouldAddEditMinorFlag( $isMultiLingualRevertRiskEnabled ) ) {
 			$flags |= EDIT_MINOR;
 		}
 
-		if ( $this->wikiConfig->get( 'AutoModeratorEnableBotFlag' ) ) {
+		if ( $this->shouldAddBotFlag( $isMultiLingualRevertRiskEnabled ) ) {
 			$flags |= EDIT_FORCE_BOT;
 		}
 
@@ -412,5 +414,27 @@ class AutoModeratorRollback {
 
 		// Trim spaces on user supplied text
 		return trim( $summary );
+	}
+
+	/**
+	 * @param bool $isMultiLingualRevertRiskEnabled
+	 * @return bool
+	 */
+	private function shouldAddEditMinorFlag( bool $isMultiLingualRevertRiskEnabled ): bool {
+		if ( $isMultiLingualRevertRiskEnabled ) {
+			return $this->wikiConfig->get( 'AutoModeratorMultilingualConfigUseEditFlagMinor' );
+		}
+		return $this->wikiConfig->get( 'AutoModeratorUseEditFlagMinor' );
+	}
+
+	/**
+	 * @param bool $isMultiLingualRevertRiskEnabled
+	 * @return bool
+	 */
+	public function shouldAddBotFlag( bool $isMultiLingualRevertRiskEnabled ): bool {
+		if ( $isMultiLingualRevertRiskEnabled ) {
+			return $this->wikiConfig->get( 'AutoModeratorMultilingualConfigEnableBotFlag' );
+		}
+		return $this->wikiConfig->get( 'AutoModeratorEnableBotFlag' );
 	}
 }

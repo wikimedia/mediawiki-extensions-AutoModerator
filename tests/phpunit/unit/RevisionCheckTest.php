@@ -124,17 +124,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
 			[ 'DisableAnonTalk', false ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk',
-				[
-					"enabled" => true,
-					"thresholds" => [
-						"very-cautious" => 0.990,
-						"cautious" => 0.980,
-						"somewhat-cautious" => 0.970,
-						"less-cautious" => 0.960
-					]
-				]
-			],
+			[ 'AutoModeratorMultiLingualRevertRisk', false ],
 		] );
 		$this->title = $this->makeMockTitle( 'Main_Page', [ 'id' => 1 ] );
 		$this->lang = $this->createMock( Language::class );
@@ -349,7 +339,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$config->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorRevertProbability', 0 ],
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
-			[ 'DisableAnonTalk', false ]
+			[ 'DisableAnonTalk', false ],
+			[ 'AutoModeratorMultiLingualRevertRisk', false ],
 		] );
 
 		$revisionCheck = new RevisionCheck(
@@ -374,7 +365,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			[ 'AutoModeratorRevertProbability', 0 ],
 			[ 'AutoModeratorUsername', 'AutoModerator' ],
 			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', null ],
+			[ 'AutoModeratorMultiLingualRevertRisk', false ],
 			[ 'DisableAnonTalk', false ]
 		] );
 
@@ -404,6 +395,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -424,6 +416,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -447,6 +440,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->wikiConfig,
+			$this->config,
 			$this->rev,
 			$this->permissionManager
 		) );
@@ -467,6 +461,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -486,6 +481,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -505,6 +501,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -525,6 +522,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -545,6 +543,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -565,6 +564,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -585,6 +585,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -615,6 +616,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -635,6 +637,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -655,6 +658,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -678,6 +682,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -715,6 +720,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -752,6 +758,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -788,6 +795,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -824,6 +832,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -855,6 +864,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -886,6 +896,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -914,6 +925,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -946,6 +958,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$mockRevision,
 			$this->permissionManager
@@ -965,6 +978,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -987,6 +1001,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -1010,6 +1025,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$rev,
 			$this->permissionManager
@@ -1031,6 +1047,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$this->wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -1052,6 +1069,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->tags,
 			$this->restrictionStore,
 			$wikiPageFactory,
+			$this->config,
 			$this->wikiConfig,
 			$this->rev,
 			$this->permissionManager
@@ -1063,13 +1081,14 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::shouldSkipUser
 	 */
 	public function testShouldSkipUserTrue() {
-		$config = $this->createMock( Config::class );
-		$config->method( 'get' )->willReturnMap( [
+		$wikiConfig = $this->createMock( Config::class );
+		$wikiConfig->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorSkipUserRights', [ 'bot' ] ],
 		] );
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
 		$this->assertTrue(
-			RevisionCheck::shouldSkipUser( $this->permissionManager, $this->autoModeratorUser, $config )
+			RevisionCheck::shouldSkipUser( $this->permissionManager,
+				$this->autoModeratorUser, $wikiConfig, $this->config )
 		);
 	}
 
@@ -1077,12 +1096,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::shouldSkipUser
 	 */
 	public function testShouldSkipUserFalse() {
-		$config = $this->createMock( Config::class );
-		$config->method( 'get' )->willReturnMap( [
+		$wikiConfig = $this->createMock( Config::class );
+		$wikiConfig->method( 'get' )->willReturnMap( [
 			[ 'AutoModeratorSkipUserRights', [ 'bot' ] ],
 		] );
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( false );
-		$this->assertFalse( RevisionCheck::shouldSkipUser( $this->permissionManager, $this->user, $config ) );
+		$this->assertFalse(
+			RevisionCheck::shouldSkipUser( $this->permissionManager, $this->user, $wikiConfig, $this->config ) );
 	}
 
 	/**

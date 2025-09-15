@@ -82,17 +82,18 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorSkipUserRights' => [],
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			] )
 		);
 		$config = new HashConfig( [
 			'DisableAnonTalk' => false,
 			'AutoModeratorEnableWikiConfig' => true,
-			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
-			]
+			],
+			'AutoModeratorMultiLingualRevertRisk' => false,
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
@@ -172,17 +173,18 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorSkipUserRights' => [],
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			] )
 		);
 		$config = new HashConfig( [
 			'DisableAnonTalk' => true,
 			'AutoModeratorEnableWikiConfig' => true,
-			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
-			]
+			],
+			'AutoModeratorMultiLingualRevertRisk' => false,
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
@@ -314,17 +316,18 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false
 			] )
 		);
 		$config = new HashConfig( [
 			'DisableAnonTalk' => true,
 			'AutoModeratorEnableWikiConfig' => true,
-			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
+			'AutoModeratorWikiId' => "enwiki",
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
-			]
+			],
+			'AutoModeratorMultiLingualRevertRisk' => false
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );

@@ -86,8 +86,8 @@ class TalkPageMessageSender {
 			} else {
 				$year = $timestamp->format( 'Y' );
 			}
-
-			$falsePositivePageTitleText = $this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" );
+			$isMultiLingualRevertRiskEnabled = Util::isWikiMultilingual( $this->config );
+			$falsePositivePageTitleText = $this->getFalsePositivePageTitleText( $isMultiLingualRevertRiskEnabled );
 			$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageTitleText );
 			if ( !$falsePositivePageTitle ) {
 				$falsePositivePageURL = "";
@@ -133,6 +133,16 @@ class TalkPageMessageSender {
 				'msg' => $msg
 			] );
 		}
+	}
+
+	/**
+	 * @param bool $isMultiLingualRevertRiskEnabled
+	 * @return mixed
+	 */
+	private function getFalsePositivePageTitleText( bool $isMultiLingualRevertRiskEnabled ): mixed {
+		return $isMultiLingualRevertRiskEnabled ?
+			$this->wikiConfig->get( "AutoModeratorMultilingualConfigFalsePositivePageTitle" ) :
+			$this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" );
 	}
 
 }

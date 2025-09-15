@@ -195,6 +195,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$mediaWikiServices = $this->getServiceContainer();
 		$this->overrideConfigValue( 'AutoModeratorUsername', 'AutoModerator' );
 		$this->overrideConfigValue( 'AutoModeratorHelpPageLink', 'Special:Help' );
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 		$autoModeratorUser = Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),
 			$mediaWikiServices->getUserGroupManager() );
 
