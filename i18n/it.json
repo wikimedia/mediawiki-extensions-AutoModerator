@@ -3,14 +3,29 @@
 		"authors": [
 			"Beta16",
 			"Laos è una regione",
-			"Titore"
+			"Titore",
+			"Superpes15"
 		]
 	},
+	"automoderator-desc": "Annulla automaticamente le modifiche errate in base al punteggio ottenuto da un modello di apprendimento automatico.",
 	"automoderator-wiki-report-false-positive": "segnala falso positivo",
 	"automoderator-wiki-revert-message-header": "== $1 $2: $3 ha annullato la tua modifica ==",
+	"automoderator-wiki-revert-edit-summary": "Avviso di annullamento automatico su [[$1]]",
 	"automoderator-wiki-undo-summary": "Annullata la modifica [[Special:Diff/$1|$1]] di [[Special:Contributions/$2|$2]] ([[User talk:$2|discussione]])",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Diritti utente",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator è attivo",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Gli annullamenti effettuati da AutoModerator saranno considerate modifiche minori.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Messaggio nella pagina di discussione",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Il messaggio nella pagina di discussione è attivo",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Pagina di segnalazione dei falsi positivi",
+	"communityconfiguration-automoderator-title": "Automoderator",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configura soglia",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Modifiche minori",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Specifica i diritti utente ai cui titolari Automoderator non deve mai annullare le modifiche.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Gli annullamenti fatti da Automoderator saranno considerati modifiche di un bot.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Modifica di un bot",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Aiuto:Modifica minore]",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manuale:Bot]"
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manuale:Bot]",
+	"automoderator-config-validator-userrights-not-allowed": "Il diritto utente $1 non esiste. Prova a inserirne un altro."
 }
