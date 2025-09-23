@@ -7,6 +7,9 @@
 			"Superpes15"
 		]
 	},
+	"automoderator-config-validator-array-toobig": "$1 ha troppi elementi ({{PLURAL:$2|è consentito|sono consentiti}} massimo $2)",
+	"automoderator-config-validator-contentmodel-mismatch": "Mancata corrispondenza del modello di contenuto: il file di configurazione deve avere un modello di contenuto JSON, rilevato $1",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> dovrebbe essere <code>$2</code>, ma è <code>$3</code>",
 	"automoderator-desc": "Annulla automaticamente le modifiche errate in base al punteggio ottenuto da un modello di apprendimento automatico.",
 	"automoderator-wiki-report-false-positive": "segnala falso positivo",
 	"automoderator-wiki-revert-message-header": "== $1 $2: $3 ha annullato la tua modifica ==",
@@ -19,13 +22,21 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Il messaggio nella pagina di discussione è attivo",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Pagina di segnalazione dei falsi positivi",
 	"communityconfiguration-automoderator-title": "Automoderator",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Molto prudente (predefinito): verrà annullato un basso numero di modifiche, ma l'accuratezza sarà più elevata.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Prudente: Verranno annullate relativamente meno modifiche, ma l'accuratezza sarà media.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Lievemente prudente: Verranno annullate relativamente più modifiche, ma l'accuratezza sarà bassa.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Meno prudente: verrà annullato un alto numero di modifiche, ma l'accuratezza sarà più bassa.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configura soglia",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Modifiche minori",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Specifica i diritti utente ai cui titolari Automoderator non deve mai annullare le modifiche.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Gli annullamenti fatti da Automoderator saranno considerati modifiche di un bot.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Modifica di un bot",
+	"communityconfiguration-automoderator-info-text": "Attenzione! Le modifiche apportate avranno effetto immediato su tutti gli utenti della comunità. È importante che ciò avvenga in maniera prudente e consapevole. Discutete e raggiungete una decisione collettiva prima di apportare modifiche alla configurazione.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Questa estensione sfrutta i nuovi modelli di rischio degli annullamenti, che possono calcolare un punteggio per ogni versione indicando la probabilità che la modifica debba essere annullata. I modelli supportano solo i progetti Wikipedia e sono stati addestrati sul namespace principale (Voce). Imposta una soglia, al di sopra della quale le modifiche verranno automaticamente annullate. Soglie più basse comportano che verrà annullato un numero maggiore di modifiche, ma con una precisione inferiore, mentre soglie più alte comportano un numero minore di annullamenti, ma con una precisione maggiore.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Dopo che Automoderator ha annullato una modifica, è possibile inviare automaticamente un messaggio nella pagina di discussione dell'utente che ha modificato, spiegando cosa è successo e fornendo collegamenti utili.",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Aiuto:Modifica minore]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manuale:Bot]",
+	"communityconfiguration-automoderator-description": "Configura le impostazioni di Automoderator, in modo che il modello possa identificare e annullare modifiche potenzialmente errate su Wikipedia.",
 	"automoderator-config-validator-userrights-not-allowed": "Il diritto utente $1 non esiste. Prova a inserirne un altro."
 }
