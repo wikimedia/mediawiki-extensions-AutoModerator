@@ -13,7 +13,8 @@
 			"人间百态",
 			"沈澄心",
 			"Peterxy12",
-			"范"
+			"范",
+			"Libamidi"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1包含太多项（最多{{PLURAL:$2|允许}}$2项）",
@@ -76,6 +77,7 @@
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-control-label": "多语言模型已开启",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "阈值",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "小编辑",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit/zh 帮助:小编辑]",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "机器人编辑",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "讨论页消息",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigreverttalkpagemessageenabled-control-label": "开启讨论页消息",

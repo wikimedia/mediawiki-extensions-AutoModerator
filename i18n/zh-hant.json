@@ -6,7 +6,8 @@
 			"Lakejason0",
 			"SCP-2000",
 			"ZhaoFJx",
-			"人间百态"
+			"人间百态",
+			"LowensteinYang"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1的項目過多（最多{{PLURAL:$2|允許}} $2 個）",
