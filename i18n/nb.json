@@ -12,6 +12,7 @@
 	"automoderator-wiki-report-false-positive": "rapporter falsk positiv",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 tilbakestilte redigeringen din",
 	"automoderator-wiki-revert-message": "Hei! Jeg er [[User:$1|$1]], et automatisk system som bruker en maskinlæringsmodell for å identifisere og tilbakestille potensielt skadelige redigeringer for å sørge for at Wikipedia fortsetter å være pålitelig. Dessverre måtte jeg tilbakestille en av de [[Special:Diff/$2|nylige endringene]] dine på [[$3]].\n* Fordi modellen jeg bruker ikke er perfekt vil gode redigeringer av og til tilbakestilles. Hvis du mener at det er tilfelle, kan du gjerne [[$4|rapportere det her]].\n* [[:mw:Moderator Tools/Automoderator|Lær mer]] om programvaren min.\n* Besøk [[Special:Homepage|hjemmesiden din]] for å lære mer om hvordan man redigerer.",
+	"automoderator-wiki-revert-message-help-page": "* Besøk denne hjelpesiden for å lære mer om redigering: [[$1]].",
 	"automoderator-wiki-revert-message-follow-up": "Jeg tilbakestilte også en av [[Special:Diff/$1|redigeringene dine]] på [[$2]] fordi den ikke virket konstruktiv.",
 	"automoderator-wiki-revert-edit-summary": "Varsel om automatisk tilbakestilling på [[$1]]",
 	"automoderator-wiki-revertpage-nouser": "Tilbakestilte {{PLURAL:$7|endring|endringer}} av skjult bruker til siste versjon av\n{{GENDER:$1|[[User:$1|$1]]}}",
@@ -35,5 +36,10 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Tilbakestillinger av automoderatoren skal anses som botredigeringer.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botredigering",
 	"communityconfiguration-automoderator-info-text": "Advarsel! Når endringer gjøres, vil de umiddelbart påvirke alle brukerne på denne wikien. Det er viktig å være forsiktig og nøye. Diskuter og kom til enighet om endringene på forhånd før konfigurasjonsendringer gjøres.",
-	"automoderator-config-validator-userrights-not-allowed": "Brukerrettigheten $1 finnes ikke. Prøv en annen."
+	"automoderator-config-validator-userrights-not-allowed": "Brukerrettigheten $1 finnes ikke. Prøv en annen.",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "Flerspråklig modell",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-control-label": "Flerspråklig modell er aktivert",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "Terskelverdi",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-description": "Skriv inn en verdi mellom 0,950 og 0,999",
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Mindre endringer"
 }
