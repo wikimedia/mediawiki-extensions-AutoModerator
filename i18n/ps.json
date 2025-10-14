@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"شاه زمان پټان"
+		]
+	},
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "کارن رښتې",
+	"communityconfiguration-automoderator-title": "خپلکاره‌مدير",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "خپلکاره‌مدير",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "کوچني سمونونه",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "روباټ سمون"
+}
