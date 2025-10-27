@@ -42,6 +42,16 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			if ( array_key_exists( 'parentId', $revSpec ) ) {
 				$rev->method( 'getParentId' )->willReturn( $revSpec['parentId'] );
 			}
+			if ( array_key_exists( 'user', $revSpec ) ) {
+				$userId = $revSpec['user'];
+
+				$user = $this->createMock( UserIdentity::class );
+				$user->method( 'getId' )->willReturn( $userId );
+				$user->method( 'getName' )->willReturn( 'Example' );
+				$user->method( 'isRegistered' )->willReturn( $userId !== 0 );
+
+				$rev->method( 'getUser' )->willReturn( $user );
+			}
 			if ( $revSpec['slot'] ?? false ) {
 				$mockSlotRecord = $this->createMock( SlotRecord::class );
 				$mockSlotRecord->method( 'getModel' )->willReturn( "wikitext" );
@@ -76,6 +86,26 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 		$revSpec = [
 			'id' => 999,
 			'parentId' => 998,
+			'user' => 1234,
+			'slot' => true,
+		];
+
+		$rollbackRevisionSpec = [
+			'id' => 1000,
+			'parentId' => 999,
+			'slot' => true,
+		];
+
+		return [
+			[ true, $revSpec, $rollbackRevisionSpec ]
+		];
+	}
+
+	public static function provideOnRollbackCompleteNotRegistered(): array {
+		$revSpec = [
+			'id' => 999,
+			'parentId' => 998,
+			'user' => 0,
 			'slot' => true,
 		];
 
@@ -112,6 +142,7 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => true,
+				'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => false,
 				'AutoModeratorFalsePositivePageTitle' => Title::newFromText( __METHOD__ ),
 				'AutoModeratorMultilingualConfigEnableMultilingual' => false
 			] )
@@ -142,7 +173,7 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 
 		( new RollbackCompleteHookHandler( $autoModWikiConfig, $userGroupManager, $config,
-			$talkPageMessageSender ) )
+			$talkPageMessageSender, $this->getServiceContainer()->getUserIdentityUtils() ) )
 			->onRollbackComplete( $wikiPage, $user, $rev, $rev );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop()->getParams();
@@ -174,6 +205,7 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 				'AutoModeratorEnableRevisionCheck' => true,
 				'AutoModeratorUsername' => 'AutoModerator',
 				'AutoModeratorRevertTalkPageMessageEnabled' => false,
+				'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => false,
 				'AutoModeratorFalsePositivePageTitle' => Title::newFromText( __METHOD__ ),
 				'AutoModeratorMultilingualConfigEnableMultilingual' => false
 			] )
@@ -203,7 +235,7 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 
 		( new RollbackCompleteHookHandler( $autoModWikiConfig, $userGroupManager, $config,
-			$talkPageMessageSender ) )
+			$talkPageMessageSender, $this->getServiceContainer()->getUserIdentityUtils() ) )
 			->onRollbackComplete( $wikiPage, $user, $rev, $rev );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop();
@@ -262,10 +294,133 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 		$user->method( 'getName' )->willReturn( __METHOD__ );
 
 		( new RollbackCompleteHookHandler( $autoModWikiConfig, $userGroupManager, $config,
-			$talkPageMessageSender ) )
+			$talkPageMessageSender, $this->getServiceContainer()->getUserIdentityUtils() ) )
 			->onRollbackComplete( $wikiPage, $user, $rev, $rev );
 
 		$actual = $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop();
 		$this->assertFalse( $actual );
+	}
+
+	/**
+	 * @dataProvider provideOnRollbackCompleteNotRegistered
+	 */
+	public function testOnRollbackCompleteDoesNotQueueWhenUserIsNotRegistered(
+		bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec
+	) {
+		[ $wikiPage, $rev, $rollbackRevision ] = $this->prepareMocks( $needsWikiPage, $revSpec, $rollbackRevisionSpec );
+
+		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+		$wikiConfig = $this->createMock( WikiPageConfig::class );
+		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
+		$wikiConfig->method( "get" )->willReturn( true );
+		$revisionStore = $this->createMock( RevisionStore::class );
+		$revisionStore->method( 'getRevisionById' )->willReturn( $rev );
+
+		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+			$wikiConfig,
+			new HashConfig( [
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorRevertTalkPageMessageEnabled' => true,
+				'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => true,
+				'AutoModeratorFalsePositivePageTitle' => Title::newFromText( __METHOD__ ),
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false
+			] )
+		);
+		$config = new HashConfig( [
+			'DisableAnonTalk' => false,
+			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorWikiId' => 'enwiki',
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			],
+			'TranslateNumerals' => false,
+			'AutoModeratorMultiLingualRevertRisk' => false
+		] );
+		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$titleFactory = $this->createMock( TitleFactory::class );
+		$titleFactory->method( 'newFromText' )->willReturn( $this->createMock( Title::class ) );
+
+		$talkPageMessageSender = new TalkPageMessageSender(
+			$revisionStore,
+			$config,
+			$autoModWikiConfig,
+			$jobQueueGroup,
+			$titleFactory
+		);
+		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
+
+		( new RollbackCompleteHookHandler( $autoModWikiConfig, $userGroupManager, $config,
+			$talkPageMessageSender, $this->getServiceContainer()->getUserIdentityUtils() ) )
+			->onRollbackComplete( $wikiPage, $user, $rev, $rev );
+
+		$actual = $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop();
+		$this->assertFalse( $actual );
+	}
+
+	/**
+	 * @dataProvider provideOnRollbackComplete
+	 */
+	public function testOnRollbackCompleteDoesQueueWhenUserIsRegistered(
+		bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec
+	) {
+		[ $wikiPage, $rev, $rollbackRevision ] = $this->prepareMocks( $needsWikiPage, $revSpec, $rollbackRevisionSpec );
+
+		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
+		$wikiConfig = $this->createMock( WikiPageConfig::class );
+		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
+		$wikiConfig->method( "get" )->willReturn( true );
+		$revisionStore = $this->createMock( RevisionStore::class );
+		$revisionStore->method( 'getRevisionById' )->willReturn( $rev );
+
+		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
+			$wikiConfig,
+			new HashConfig( [
+				'AutoModeratorEnableWikiConfig' => true,
+				'AutoModeratorEnableRevisionCheck' => true,
+				'AutoModeratorUsername' => 'AutoModerator',
+				'AutoModeratorRevertTalkPageMessageEnabled' => true,
+				'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => true,
+				'AutoModeratorFalsePositivePageTitle' => Title::newFromText( __METHOD__ ),
+				'AutoModeratorMultilingualConfigEnableMultilingual' => false
+			] )
+		);
+		$config = new HashConfig( [
+			'DisableAnonTalk' => false,
+			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorWikiId' => 'enwiki',
+			'OresModels' => [
+				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
+			],
+			'TranslateNumerals' => false,
+			'AutoModeratorMultiLingualRevertRisk' => false
+		] );
+		$userGroupManager = $this->createMock( UserGroupManager::class );
+		$titleFactory = $this->createMock( TitleFactory::class );
+		$titleFactory->method( 'newFromText' )->willReturn( $this->createMock( Title::class ) );
+
+		$talkPageMessageSender = new TalkPageMessageSender(
+			$revisionStore,
+			$config,
+			$autoModWikiConfig,
+			$jobQueueGroup,
+			$titleFactory
+		);
+		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
+
+		( new RollbackCompleteHookHandler( $autoModWikiConfig, $userGroupManager, $config,
+			$talkPageMessageSender, $this->getServiceContainer()->getUserIdentityUtils() ) )
+			->onRollbackComplete( $wikiPage, $user, $rev, $rev );
+
+		$actual = $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop()->getParams();
+		$this->assertEquals( $rev->getId(), $actual['revId'] );
+		$this->assertEquals( $rollbackRevision->getId(), $actual['rollbackRevId'] );
+		$this->assertEquals( $user->getId(), $actual['autoModeratorUserId'] );
+		$this->assertEquals( $user->getName(), $actual['autoModeratorUserName'] );
 	}
 }

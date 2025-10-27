@@ -102,6 +102,10 @@
 			"value": false,
 			"description": "Enable or disable sending talk page messages informing the user that an edit has been reverted."
 		},
+		"AutoModeratorRevertTalkPageMessageRegisteredUsersOnly": {
+			"description": "Enable or disable sending talk page messages to named users only.",
+			"value": false
+		},
 		"AutoModeratorEnableBotFlag": {
 			"description": "Enable whether AutoModerator uses the Bot flag when making its edits",
 			"value": false
@@ -148,6 +152,10 @@
 		"AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled": {
 			"value": false,
 			"description": "Enable or disable sending talk page messages informing the user that an edit has been reverted."
+		},
+		"AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly": {
+			"description": "Enable or disable sending talk page messages to named users only.",
+			"value": false
 		},
 		"AutoModeratorMultilingualConfigEnableBotFlag": {
 			"description": "Enable whether AutoModerator uses the Bot flag when making its edits",
@@ -244,7 +252,8 @@
 				"AutoModeratorWikiConfigLoader",
 				"UserGroupManager",
 				"MainConfig",
-				"AutoModeratorTalkPageMessageSender"
+				"AutoModeratorTalkPageMessageSender",
+				"UserIdentityUtils"
 			]
 		},
 		"communityconfiguration": {

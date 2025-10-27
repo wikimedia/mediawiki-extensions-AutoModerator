@@ -11,6 +11,7 @@ use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
+use MediaWiki\User\UserIdentityUtils;
 
 class RollbackCompleteHookHandler implements RollbackCompleteHook {
 	private Config $config;
@@ -21,22 +22,27 @@ class RollbackCompleteHookHandler implements RollbackCompleteHook {
 
 	private TalkPageMessageSender $talkPageMessageSender;
 
+	private UserIdentityUtils $userIdentityUtils;
+
 	/**
 	 * @param Config $wikiConfig
 	 * @param UserGroupManager $userGroupManager
 	 * @param Config $config
 	 * @param TalkPageMessageSender $talkPageMessageSender
+	 * @param UserIdentityUtils $userIdentityUtils
 	 */
 	public function __construct(
 		Config $wikiConfig,
 		UserGroupManager $userGroupManager,
 		Config $config,
-		TalkPageMessageSender $talkPageMessageSender
+		TalkPageMessageSender $talkPageMessageSender,
+		UserIdentityUtils $userIdentityUtils
 	) {
 		$this->wikiConfig = $wikiConfig;
 		$this->userGroupManager = $userGroupManager;
 		$this->config = $config;
 		$this->talkPageMessageSender = $talkPageMessageSender;
+		$this->userIdentityUtils = $userIdentityUtils;
 	}
 
 	/**
@@ -50,7 +56,7 @@ class RollbackCompleteHookHandler implements RollbackCompleteHook {
 		$revId = $current->getId();
 		$rollbackRevId = $wikiPage->getRevisionRecord()->getId();
 		if ( $autoModeratorUser->getId() === $user->getId() ) {
-			if ( $this->shouldSendTalkPageMessage() ) {
+			if ( $this->shouldSendTalkPageMessage( $current ) ) {
 				$this->talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob(
 						$wikiPage->getTitle(),
 						$revId,
@@ -61,11 +67,16 @@ class RollbackCompleteHookHandler implements RollbackCompleteHook {
 		}
 	}
 
-	private function shouldSendTalkPageMessage(): bool {
+	private function shouldSendTalkPageMessage( RevisionRecord $current ): bool {
 		$isMultilingualRevertRiskEnabled = Util::isWikiMultilingual( $this->config );
-		if ( $isMultilingualRevertRiskEnabled ) {
-			return $this->wikiConfig->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' );
-		}
-		return $this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' );
+		$isMessageEnabled = $isMultilingualRevertRiskEnabled ?
+			$this->wikiConfig->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' ) :
+			$this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' );
+		$isMessageRegisteredUsersOnly = $isMultilingualRevertRiskEnabled ?
+			$this->wikiConfig->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly' ) :
+			$this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' );
+		$isCurrentUserNamed = $this->userIdentityUtils->isNamed( $current->getUser() );
+
+		return $isMessageEnabled && ( $isCurrentUserNamed || !$isMessageRegisteredUsersOnly );
 	}
 }

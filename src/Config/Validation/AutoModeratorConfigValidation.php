@@ -31,6 +31,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			'AutoModeratorRevertTalkPageMessageEnabled' => [
 				'type' => 'bool',
 			],
+			'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => [
+				'type' => 'bool',
+			],
 			'AutoModeratorEnableBotFlag' => [
 				'type' => 'bool',
 			],
@@ -59,6 +62,9 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 				'type' => 'bool',
 			],
 			'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' => [
+				'type' => 'bool',
+			],
+			'AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly' => [
 				'type' => 'bool',
 			],
 			'AutoModeratorMultilingualConfigEnableBotFlag' => [

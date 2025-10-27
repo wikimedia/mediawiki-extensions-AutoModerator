@@ -58,6 +58,11 @@ class AutoModeratorMultilingualConfigSchema extends JsonSchema {
 		self::DEFAULT => false
 	];
 
+	public const AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly = [
+		self::TYPE => self::TYPE_BOOLEAN,
+		self::DEFAULT => false
+	];
+
 	public const AutoModeratorMultilingualConfigHelpPageLink = [
 		self::REQUIRED => false,
 		self::REF => [ 'class' => MediaWikiDefinitions::class, 'field' => 'PageTitle' ],

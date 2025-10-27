@@ -7,6 +7,7 @@ return (object) array(
    'AutoModeratorUseEditFlagMinor' => false,
    'AutoModeratorEnableBotFlag' => false,
    'AutoModeratorRevertTalkPageMessageEnabled' => false,
+   'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => false,
    'AutoModeratorHelpPageLink' => '',
    'AutoModeratorEnableUserRevertsPerPage' => false,
    'AutoModeratorUserRevertsPerPage' => '',

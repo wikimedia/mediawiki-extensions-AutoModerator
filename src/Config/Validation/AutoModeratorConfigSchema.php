@@ -36,6 +36,11 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		self::DEFAULT => false
 	];
 
+	public const AutoModeratorRevertTalkPageMessageRegisteredUsersOnly = [
+		self::TYPE => self::TYPE_BOOLEAN,
+		self::DEFAULT => false
+	];
+
 	public const AutoModeratorHelpPageLink = [
 		self::REQUIRED => false,
 		self::REF => [ 'class' => MediaWikiDefinitions::class, 'field' => 'PageTitle' ],
