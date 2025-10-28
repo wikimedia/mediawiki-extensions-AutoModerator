@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"22258",
+			"Ellif",
 			"Suleiman the Magnificent Television",
 			"YeBoy371",
 			"Ykhwong"
@@ -15,10 +16,10 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "문서 당 사용자 되돌리기",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "문서 당 사용자 되돌리기 활성화",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "대상 문서",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "다언어 모델",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-control-label": "다언어 모델이 켜져 있습니다",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "사소한 편집",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "봇 편집",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "대상 문서",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "사용자 권한"
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-label": "다언어 모델",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-control-label": "다국어 모델 선택",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "사소한 편집",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "봇 편집",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-url-label": "대상 문서",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "사용자 권한"
 }

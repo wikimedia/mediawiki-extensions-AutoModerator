@@ -9,8 +9,9 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleng Ännerungen",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botännerung",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zilsäit",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Kleng Ännerungen",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "Botännerung",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "Zilsäit",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "Benotzerrechter"
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-description": "Gitt e Wäert tëscht 0,850 an 0,999 an",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "Kleng Ännerungen",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "Botännerung",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-url-label": "Zilsäit",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "Benotzerrechter"
 }

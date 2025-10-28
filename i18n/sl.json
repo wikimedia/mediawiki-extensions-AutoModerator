@@ -9,9 +9,9 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Manjša urejanja",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Ta razširitev uporablja nove modele tveganja za vrnitev, ki lahko za vsako redakcijo izračunajo oceno verjetnosti, da bo treba urejanje vrniti. Modeli podpirajo samo projekte Wikipedije in so izurjeni za osnovni imenski prostor (članki). Nastavite prag, nad katerim bodo urejanja samodejno vrnjena. Nižji pragi pomenijo, da bo vrnjenih več urejanj, vendar bo natančnost manjša, višji pragi pa pomenijo manj vrnjenih urejanj, vendar z večjo natančnostjo.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Ciljna stran",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-label": "Jezikovno agnostični model",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "Prag",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Manjša urejanja",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "Urejanje bota",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "Uporabniške pravice"
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablelanguageagnostic-label": "Jezikovno agnostični model",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-label": "Prag",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "Manjša urejanja",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "Urejanje bota",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "Uporabniške pravice"
 }
