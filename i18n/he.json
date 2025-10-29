@@ -6,7 +6,7 @@
 			"YaronSh"
 		]
 	},
-	"automoderator-config-validator-array-toobig": "ל{{GRAMMAR:תחילית|$1}} יש יותר מדי פריטים (מותר {{PLURAL:$2|שיהיה אחד|שיהיו $2}} לכל היותר)",
+	"automoderator-config-validator-array-toobig": "למשתנה $1 יש יותר מדי פריטים (מותר {{PLURAL:$2|שיהיה אחד|שיהיו $2}} לכל היותר)",
 	"automoderator-config-validator-contentmodel-mismatch": "חוסר־התאמה במודל התוכן: לקובץ ההגדרות צריך להיות מודל התוכן JSON, וזוהה $1",
 	"automoderator-config-validator-datatype-mismatch": "מצופה שהערך של <code>$1</code> יהיה <code>$2</code>, אבל הוא <code>$3</code>",
 	"automoderator-desc": "מחזיר באופן אוטומטי עריכות גרועות על סמך דירוג ממודל למידת מכונה.",
