@@ -19,7 +19,7 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Automoderatorin tekemät kumoamiset merkitään pieniksi muutoksiksi.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Keskustelusivuviesti",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Keskustelusivuviesti on käytössä",
-	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Väärien positiivisten ilmoitussivu",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Väärien positiivisten ilmoittamissivu",
 	"communityconfiguration-automoderator-title": "Automoderator",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Varovaisin (oletus): Muokkauksia kumotaan vähiten, mutta tarkkuus on suurin.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Varovainen: Muokkauksia kumotaan verrattain vähän, mutta tarkkuus on keskitasolla.",
