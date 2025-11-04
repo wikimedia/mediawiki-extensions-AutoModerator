@@ -4,7 +4,6 @@ namespace AutoModerator\Tests;
 
 use AutoModerator\RevisionCheck;
 use AutoModerator\Services\AutoModeratorRollback;
-use DummyContentForTesting;
 use MediaWiki\Block\AbstractBlock;
 use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\Config;
@@ -18,6 +17,7 @@ use MediaWiki\Revision\MutableRevisionRecord;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Revision\RevisionStoreRecord;
+use MediaWiki\Tests\Mocks\Content\DummyContentForTesting;
 use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
