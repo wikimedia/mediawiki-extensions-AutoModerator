@@ -54,13 +54,12 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Halaman tujuan",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Pesan halaman pembicaraan untuk kontributor yang tidak terdaftar akan menampilkan tautan ke halaman untuk membantu mereka dalam penyuntingan. Tautan ini dapat dikonfigurasi menjadi tautan apa pun di wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "Halaman Tujuan dan Label keduanya perlu diisi.",
-	"communityconfiguration-multilingualconfig-title": "Automoderator",
-	"communityconfiguration-multilingualconfig-description": "Konfigurasikan pengaturan Automoderator, sehingga perkakas ini dapat mengidentifikasi dan mengembalikan suntingan berpotensi vandal di Wikipedia.",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-control-label": "Automoderator diaktifkan",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigconfigurethreshold-label": "Konfigurasikan ambang batas",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-label": "Model agnostik bahasa",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablelanguageagnostic-control-label": "Model agnostik bahasa diaktifkan",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "Hak pengguna",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigfalsepositivepagetitle-label": "Halaman pelaporan kesalahan pemeriksaan"
+	"communityconfiguration-automoderatormultilingual-title": "Automoderator",
+	"communityconfiguration-automoderatormultilingual-description": "Konfigurasikan pengaturan Automoderator, sehingga perkakas ini dapat mengidentifikasi dan mengembalikan suntingan berpotensi vandal di Wikipedia.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-control-label": "Automoderator diaktifkan",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigconfigurethreshold-label": "Konfigurasikan ambang batas",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablelanguageagnostic-label": "Model agnostik bahasa",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "Hak pengguna",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigfalsepositivepagetitle-label": "Halaman pelaporan kesalahan pemeriksaan"
 }

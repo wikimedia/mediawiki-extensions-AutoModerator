@@ -11,14 +11,13 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "روباټ سمون",
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "په هر مخ د کارن پرڅټ‌گرځونې",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "موخې‌وړ مخ",
-	"communityconfiguration-multilingualconfig-title": "خپلکاره‌مدير",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablerevisioncheck-label": "خپلکاره‌مدير",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "څوژبيزه نمونه",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-control-label": "څوژبيزه نمونه بله شوې ده",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "دورشل",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "کوچني سمونونه",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "روباټ سمون",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "موخې‌وړ مخ",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguserrevertsperpage-label": "په هر مخ د کارن پرڅټ‌گرځونې",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "کارن رښتې"
+	"communityconfiguration-automoderatormultilingual-title": "خپلکاره‌مدير",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "خپلکاره‌مدير",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-label": "څوژبيزه نمونه",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-label": "دورشل",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "کوچني سمونونه",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "روباټ سمون",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-url-label": "موخې‌وړ مخ",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguserrevertsperpage-label": "په هر مخ د کارن پرڅټ‌گرځونې",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "کارن رښتې"
 }

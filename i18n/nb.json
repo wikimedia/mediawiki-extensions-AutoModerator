@@ -37,9 +37,7 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botredigering",
 	"communityconfiguration-automoderator-info-text": "Advarsel! Når endringer gjøres, vil de umiddelbart påvirke alle brukerne på denne wikien. Det er viktig å være forsiktig og nøye. Diskuter og kom til enighet om endringene på forhånd før konfigurasjonsendringer gjøres.",
 	"automoderator-config-validator-userrights-not-allowed": "Brukerrettigheten $1 finnes ikke. Prøv en annen.",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-label": "Flerspråklig modell",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablemultilingual-control-label": "Flerspråklig modell er aktivert",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-label": "Terskelverdi",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigmultilingualthreshold-description": "Skriv inn en verdi mellom 0,950 og 0,999",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Mindre endringer"
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-label": "Flerspråklig modell",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-label": "Terskelverdi",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "Mindre endringer"
 }

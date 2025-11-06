@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Cigaryno"
+			"Cigaryno",
+			"Mohammed Qays"
 		]
 	},
 	"automoderator-wiki-report-false-positive": "أبلغ عن إيجابية خاطئة",
@@ -11,5 +12,9 @@
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "رسالة صفحة نقاش",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "مشرف آلي",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "تعديلات طفيفة",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "تعديل بوت"
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "تعديل بوت",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablelanguageagnostic-control-label": "اختر نموذجًا لا يعتمد على اللغة",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-control-label": "اختر النموذج متعدد اللغات",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-description": "أدخل قيمة بين 0.850 و 0.999",
+	"automoderator-config-validator-multilingual-threshold-value-outside-range": "إنّ المدخلات المحدودة خارج النطاق. من فضلك أدخل قيمة تتراوح بين 0.850 و 0.999"
 }
