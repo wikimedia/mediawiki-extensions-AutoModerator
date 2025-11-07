@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"LisafBia",
+			"Sakblue",
 			"ToprakM",
 			"Vikipolimer"
 		]
@@ -19,5 +20,6 @@
 	"communityconfiguration-automoderator-title": "Otomoderatör",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot değişikliği",
 	"communityconfiguration-automoderator-info-text": "Uyarı! Değişiklikler yapıldığında, topluluğunuzdaki tüm kullanıcıları hemen etkileyecektir. Dikkatli ve bilinçli olmak önemlidir. Yapılandırma değişiklikleri yapmadan önce tartışın ve toplu bir karara varın.",
-	"automoderator-config-validator-userrights-not-allowed": "Kullanıcı hakkı $1 mevcut değil. Lütfen başka bir hakkı deneyin."
+	"automoderator-config-validator-userrights-not-allowed": "Kullanıcı hakkı $1 mevcut değil. Lütfen başka bir hakkı deneyin.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-control-label": "Çok Dilli Modelleri Seç"
 }
