@@ -25,6 +25,7 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Gli annullamenti effettuati da AutoModerator saranno considerate modifiche minori.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Messaggio nella pagina di discussione",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Il messaggio nella pagina di discussione è attivo",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageregisteredusersonly-control-label": "Invia i messaggi nella pagina di discussione solo agli utenti registrati",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Pagina di segnalazione dei falsi positivi",
 	"communityconfiguration-automoderator-title": "Automoderator",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Molto prudente (predefinito): verrà annullato un basso numero di modifiche, ma l'accuratezza sarà più elevata.",
