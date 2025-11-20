@@ -3,7 +3,9 @@
 		"authors": [
 			"LisafBia",
 			"ToprakM",
-			"Vikipolimer"
+			"Vikipolimer",
+			"Sakblue",
+			"SaldırganSincap"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 çok fazla öğe içeriyor (en fazla $2 öğeye {{{{PLURAL:$2|}}|izin veriliyor|izin veriliyor}})",
@@ -12,12 +14,13 @@
 	"automoderator-desc": "Makine öğrenme modelinden gelen puanlamaya dayanarak kötü niyetli düzenlemeleri otomatik olarak geri döndürür.",
 	"automoderator-wiki-report-false-positive": "hatalı pozitif bildir",
 	"automoderator-wiki-revert-message-header": "$1 $2: $3 değişikliğinizi geri aldı",
-	"automoderator-wiki-revert-message": "Merhaba! Ben [[User:$1|$1]], Vikipedi'nin güvenilir ve itibarlı bir yer olarak kaldığından emin olmak adına potensiyel kötü değişiklikleri geri alan ve makine öğrenme modeli kullanan otomatik bir sistemim. Maalesef, [[$3]] sayfasındaki [[Special:Diff/$2|son düzenlemelerinden]] birini geri aldım.\n* Kullandığım model mükemmel olmadığından dolayı bazen iyi değişiklikleri geri alabiliyorum. Eğer yaptığınız düzenlemenin yapıcı oladığına inanıyorsanız lütfen [[$4|buraya bildirin]].\n* Yazılımım hakkında [[:mw:Moderator Tools/Automoderator|daha fazlasını öğrenin]].\n* Düzenleme yapmak hakkında daha fazlasını öğrenmek için [[Special:Homepage|Yeni başlayan anasayfanıza]] göz atın.",
+	"automoderator-wiki-revert-message": "Merhaba! Ben [[User:$1|$1]], Vikipedi'nin güvenilir ve itibarlı bir yer olarak kaldığından emin olmak adına potensiyel kötü değişiklikleri geri alan ve makine öğrenme modeli kullanan otomatik bir sistemim. [[$3]] sayfasındaki [[Special:Diff/$2|son düzenlemelerinden]] birini geri aldım.\n* Kullandığım model mükemmel olmadığından dolayı bazen iyi değişiklikleri geri alabiliyorum. Eğer yaptığınız düzenlemenin yapıcı oladığına inanıyorsanız lütfen [$4 buraya bildirin].\n* Yazılımım hakkında [[:mw:Moderator Tools/Automoderator|daha fazlasını öğrenin]].",
 	"automoderator-wiki-revert-message-follow-up": "Ayrıca, yapıcı görünmediği için [[$2]] sayfasındaki [[Special:Diff/$1|son değişikliklerinizden birini]] geri aldım.",
 	"automoderator-wiki-revert-edit-summary": "[[$1]] sayfasında otomatik geri alma bildirimi",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Otomoderatör açıldı",
 	"communityconfiguration-automoderator-title": "Otomoderatör",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Bot değişikliği",
 	"communityconfiguration-automoderator-info-text": "Uyarı! Değişiklikler yapıldığında, topluluğunuzdaki tüm kullanıcıları hemen etkileyecektir. Dikkatli ve bilinçli olmak önemlidir. Yapılandırma değişiklikleri yapmadan önce tartışın ve toplu bir karara varın.",
-	"automoderator-config-validator-userrights-not-allowed": "Kullanıcı hakkı $1 mevcut değil. Lütfen başka bir hakkı deneyin."
+	"automoderator-config-validator-userrights-not-allowed": "Kullanıcı hakkı $1 mevcut değil. Lütfen başka bir hakkı deneyin.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-control-label": "Çok Dilli Modelleri Seç"
 }
