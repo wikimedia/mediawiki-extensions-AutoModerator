@@ -4,7 +4,8 @@
 			"ToprakM",
 			"Vikipolimer",
 			"LisafBia",
-			"Sakblue"
+			"Sakblue",
+			"SaldırganSincap"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 çok fazla öğe içeriyor (en fazla $2 öğeye {{{{PLURAL:$2|}}|izin veriliyor|izin veriliyor}})",
