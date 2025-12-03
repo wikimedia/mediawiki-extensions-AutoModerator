@@ -14,7 +14,8 @@
 			"沈澄心",
 			"Peterxy12",
 			"范",
-			"Libamidi"
+			"Libamidi",
+			"Stang"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1包含太多项（最多{{PLURAL:$2|允许}}$2项）",
@@ -85,5 +86,8 @@
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-label": "链接到一个页面以助编辑",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfighelppagelink-url-label": "目标页面",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguserrevertsperpage-label": "同一页面同一用户可回退次数",
-	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "用户权限"
+	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigskipuserrights-label": "用户权限",
+	"automoderator-config-validator-multilingual-threshold-not-number": "多语言阈值必须是一个数字。",
+	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "多语言模型未启用，但设置了阈值。请启用多语言模型。",
+	"automoderator-config-validator-multilingual-select-only-one-model": "语言无关模型和多语言模型均已被选中。请仅启用其中一种模型。"
 }
