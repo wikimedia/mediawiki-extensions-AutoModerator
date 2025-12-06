@@ -12,31 +12,20 @@ use StatusValue;
 
 class WikiPageConfig implements Config {
 
-	private LoggerInterface $logger;
-	private TitleFactory $titleFactory;
-	private ?WikiPageConfigLoader $configLoader;
 	private ?Title $configTitle = null;
-	/**
-	 * @var bool Hack to disable DB access in non-database tests.
-	 */
-	private bool $isTestWithStorageDisabled;
 
 	/**
 	 * @param LoggerInterface $logger
 	 * @param TitleFactory $titleFactory
 	 * @param WikiPageConfigLoader $configLoader
-	 * @param bool $isTestWithStorageDisabled
+	 * @param bool $isTestWithStorageDisabled Hack to disable DB access in non-database tests.
 	 */
 	public function __construct(
-		LoggerInterface $logger,
-		TitleFactory $titleFactory,
-		WikiPageConfigLoader $configLoader,
-		bool $isTestWithStorageDisabled
+		private readonly LoggerInterface $logger,
+		private readonly TitleFactory $titleFactory,
+		private readonly WikiPageConfigLoader $configLoader,
+		private readonly bool $isTestWithStorageDisabled,
 	) {
-		$this->logger = $logger;
-		$this->titleFactory = $titleFactory;
-		$this->configLoader = $configLoader;
-		$this->isTestWithStorageDisabled = $isTestWithStorageDisabled;
 	}
 
 	/**

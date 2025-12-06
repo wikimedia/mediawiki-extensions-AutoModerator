@@ -21,60 +21,18 @@ use Wikimedia\Rdbms\IConnectionProvider;
 
 class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSavedHook {
 
-	private Config $wikiConfig;
-
-	private UserGroupManager $userGroupManager;
-
-	private Config $config;
-
-	private WikiPageFactory $wikiPageFactory;
-
-	private RevisionStore $revisionStore;
-
-	private RestrictionStore $restrictionStore;
-
-	private JobQueueGroup $jobQueueGroup;
-
-	private ChangeTagsStore $changeTagsStore;
-
-	private PermissionManager $permissionManager;
-
-	private IConnectionProvider $connectionProvider;
-
-	/**
-	 * @param Config $wikiConfig
-	 * @param UserGroupManager $userGroupManager
-	 * @param Config $config
-	 * @param WikiPageFactory $wikiPageFactory
-	 * @param RevisionStore $revisionStore
-	 * @param RestrictionStore $restrictionStore
-	 * @param JobQueueGroup $jobQueueGroup
-	 * @param ChangeTagsStore $changeTagsStore
-	 * @param PermissionManager $permissionManager
-	 * @param IConnectionProvider $connectionProvider
-	 */
 	public function __construct(
-		Config $wikiConfig,
-		UserGroupManager $userGroupManager,
-		Config $config,
-		WikiPageFactory $wikiPageFactory,
-		RevisionStore $revisionStore,
-		RestrictionStore $restrictionStore,
-		JobQueueGroup $jobQueueGroup,
-		ChangeTagsStore $changeTagsStore,
-		PermissionManager $permissionManager,
-		IConnectionProvider $connectionProvider
+		private readonly Config $wikiConfig,
+		private readonly UserGroupManager $userGroupManager,
+		private readonly Config $config,
+		private readonly WikiPageFactory $wikiPageFactory,
+		private readonly RevisionStore $revisionStore,
+		private readonly RestrictionStore $restrictionStore,
+		private readonly JobQueueGroup $jobQueueGroup,
+		private readonly ChangeTagsStore $changeTagsStore,
+		private readonly PermissionManager $permissionManager,
+		private readonly IConnectionProvider $connectionProvider,
 	) {
-		$this->wikiConfig = $wikiConfig;
-		$this->userGroupManager = $userGroupManager;
-		$this->config = $config;
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->revisionStore = $revisionStore;
-		$this->restrictionStore = $restrictionStore;
-		$this->jobQueueGroup = $jobQueueGroup;
-		$this->changeTagsStore = $changeTagsStore;
-		$this->permissionManager = $permissionManager;
-		$this->connectionProvider = $connectionProvider;
 	}
 
 	/**

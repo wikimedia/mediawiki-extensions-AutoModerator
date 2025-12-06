@@ -20,9 +20,6 @@ use MediaWiki\Settings\Config\MergeStrategy;
  */
 class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 
-	private WikiPageConfig $wikiPageConfig;
-	private Config $globalVarConfig;
-
 	public const ALLOW_LIST = [
 		'AutoModeratorEnableRevisionCheck',
 		'AutoModeratorFalsePositivePageTitle',
@@ -57,16 +54,10 @@ class AutoModeratorWikiConfigLoader implements Config, ICustomReadConstants {
 	 */
 	public const MERGE_STRATEGIES = [];
 
-	/**
-	 * @param WikiPageConfig $wikiPageConfig
-	 * @param Config $globalVarConfig
-	 */
 	public function __construct(
-		WikiPageConfig $wikiPageConfig,
-		Config $globalVarConfig
+		private readonly WikiPageConfig $wikiPageConfig,
+		private readonly Config $globalVarConfig,
 	) {
-		$this->wikiPageConfig = $wikiPageConfig;
-		$this->globalVarConfig = $globalVarConfig;
 	}
 
 	/**

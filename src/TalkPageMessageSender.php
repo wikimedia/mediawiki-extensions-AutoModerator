@@ -35,23 +35,13 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class TalkPageMessageSender {
 
-	private RevisionStore $revisionStore;
-
-	private Config $config;
-
-	private Config $wikiConfig;
-
-	private JobQueueGroup $jobQueueGroup;
-
-	private TitleFactory $titleFactory;
-
-	public function __construct( RevisionStore $revisionStore, Config $config, Config $wikiConfig,
-		JobQueueGroup $jobQueueGroup, TitleFactory $titleFactory ) {
-		$this->revisionStore = $revisionStore;
-		$this->config = $config;
-		$this->wikiConfig = $wikiConfig;
-		$this->jobQueueGroup = $jobQueueGroup;
-		$this->titleFactory = $titleFactory;
+	public function __construct(
+		private readonly RevisionStore $revisionStore,
+		private readonly Config $config,
+		private readonly Config $wikiConfig,
+		private readonly JobQueueGroup $jobQueueGroup,
+		private readonly TitleFactory $titleFactory,
+	) {
 	}
 
 	/**

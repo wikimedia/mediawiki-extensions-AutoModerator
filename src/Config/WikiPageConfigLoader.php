@@ -34,18 +34,7 @@ use Wikimedia\Rdbms\IDBAccessObject;
  */
 class WikiPageConfigLoader implements ICustomReadConstants {
 
-	private ConfigValidatorFactory $configValidatorFactory;
-	private HttpRequestFactory $requestFactory;
-	private RevisionLookup $revisionLookup;
-	private TitleFactory $titleFactory;
-	private WANObjectCache $cache;
-	private HashBagOStuff $inProcessCache;
-	private UrlUtils $urlUtils;
-	/**
-	 * @var bool Hack to disable DB access in non-database tests. The proper replacement to this would be a
-	 * NullConfigLoader or similar class, and the ServiceWiring code would determine which one to use.
-	 */
-	private bool $isTestWithStorageDisabled;
+	private readonly HashBagOStuff $inProcessCache;
 
 	/**
 	 * @param WANObjectCache $cache
@@ -54,25 +43,20 @@ class WikiPageConfigLoader implements ICustomReadConstants {
 	 * @param RevisionLookup $revisionLookup
 	 * @param TitleFactory $titleFactory
 	 * @param UrlUtils $urlUtils
-	 * @param bool $isTestWithStorageDisabled
+	 * @param bool $isTestWithStorageDisabled Hack to disable DB access in non-database tests.
+	 *   The proper replacement to this would be a NullConfigLoader or similar class,
+	 *   and the ServiceWiring code would determine which one to use.
 	 */
 	public function __construct(
-		WANObjectCache $cache,
-		ConfigValidatorFactory $configValidatorFactory,
-		HttpRequestFactory $requestFactory,
-		RevisionLookup $revisionLookup,
-		TitleFactory $titleFactory,
-		UrlUtils $urlUtils,
-		bool $isTestWithStorageDisabled
+		private readonly WANObjectCache $cache,
+		private readonly ConfigValidatorFactory $configValidatorFactory,
+		private readonly HttpRequestFactory $requestFactory,
+		private readonly RevisionLookup $revisionLookup,
+		private readonly TitleFactory $titleFactory,
+		private readonly UrlUtils $urlUtils,
+		private readonly bool $isTestWithStorageDisabled,
 	) {
-		$this->cache = $cache;
 		$this->inProcessCache = new HashBagOStuff();
-		$this->configValidatorFactory = $configValidatorFactory;
-		$this->requestFactory = $requestFactory;
-		$this->revisionLookup = $revisionLookup;
-		$this->titleFactory = $titleFactory;
-		$this->urlUtils = $urlUtils;
-		$this->isTestWithStorageDisabled = $isTestWithStorageDisabled;
 	}
 
 	/**

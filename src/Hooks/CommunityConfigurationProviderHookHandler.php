@@ -10,19 +10,11 @@ use MediaWiki\Title\TitleFactory;
 
 class CommunityConfigurationProviderHookHandler implements CommunityConfigurationProvider_initListHook {
 
-	private Config $config;
-	private WikiPageConfigLoader $configLoader;
-	private TitleFactory $titleFactory;
-
-	/**
-	 * @param Config $config
-	 * @param WikiPageConfigLoader $configLoader
-	 * @param TitleFactory $titleFactory
-	 */
-	public function __construct( Config $config, WikiPageConfigLoader $configLoader, TitleFactory $titleFactory ) {
-		$this->config = $config;
-		$this->configLoader = $configLoader;
-		$this->titleFactory = $titleFactory;
+	public function __construct(
+		private readonly Config $config,
+		private readonly WikiPageConfigLoader $configLoader,
+		private readonly TitleFactory $titleFactory,
+	) {
 	}
 
 	/**

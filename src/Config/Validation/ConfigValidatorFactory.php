@@ -8,8 +8,6 @@ use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 
 class ConfigValidatorFactory {
-	private TitleFactory $titleFactory;
-
 	/**
 	 * @var string[]
 	 *
@@ -23,13 +21,9 @@ class ConfigValidatorFactory {
 		'AutoModeratorMultilingualConfig.json' => AutoModeratorConfigValidation::class
 	];
 
-	/**
-	 * @param TitleFactory $titleFactory
-	 */
 	public function __construct(
-		TitleFactory $titleFactory
+		private readonly TitleFactory $titleFactory,
 	) {
-		$this->titleFactory = $titleFactory;
 	}
 
 	/**

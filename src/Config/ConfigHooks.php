@@ -25,27 +25,12 @@ class ConfigHooks implements
 	JsonValidateSaveHook,
 	PageSaveCompleteHook
 {
-	private ConfigValidatorFactory $configValidatorFactory;
-	private WikiPageConfigLoader $configLoader;
-	private TitleFactory $titleFactory;
-	private Config $config;
-
-	/**
-	 * @param ConfigValidatorFactory $configValidatorFactory
-	 * @param WikiPageConfigLoader $configLoader
-	 * @param TitleFactory $titleFactory
-	 * @param Config $config
-	 */
 	public function __construct(
-		ConfigValidatorFactory $configValidatorFactory,
-		WikiPageConfigLoader $configLoader,
-		TitleFactory $titleFactory,
-		Config $config
+		private readonly ConfigValidatorFactory $configValidatorFactory,
+		private readonly WikiPageConfigLoader $configLoader,
+		private readonly TitleFactory $titleFactory,
+		private readonly Config $config,
 	) {
-		$this->configValidatorFactory = $configValidatorFactory;
-		$this->configLoader = $configLoader;
-		$this->titleFactory = $titleFactory;
-		$this->config = $config;
 	}
 
 	/**

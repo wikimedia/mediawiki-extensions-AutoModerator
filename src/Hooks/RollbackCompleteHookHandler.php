@@ -14,35 +14,13 @@ use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
 
 class RollbackCompleteHookHandler implements RollbackCompleteHook {
-	private Config $config;
-
-	private UserGroupManager $userGroupManager;
-
-	private Config $wikiConfig;
-
-	private TalkPageMessageSender $talkPageMessageSender;
-
-	private UserIdentityUtils $userIdentityUtils;
-
-	/**
-	 * @param Config $wikiConfig
-	 * @param UserGroupManager $userGroupManager
-	 * @param Config $config
-	 * @param TalkPageMessageSender $talkPageMessageSender
-	 * @param UserIdentityUtils $userIdentityUtils
-	 */
 	public function __construct(
-		Config $wikiConfig,
-		UserGroupManager $userGroupManager,
-		Config $config,
-		TalkPageMessageSender $talkPageMessageSender,
-		UserIdentityUtils $userIdentityUtils
+		private readonly Config $wikiConfig,
+		private readonly UserGroupManager $userGroupManager,
+		private readonly Config $config,
+		private readonly TalkPageMessageSender $talkPageMessageSender,
+		private readonly UserIdentityUtils $userIdentityUtils,
 	) {
-		$this->wikiConfig = $wikiConfig;
-		$this->userGroupManager = $userGroupManager;
-		$this->config = $config;
-		$this->talkPageMessageSender = $talkPageMessageSender;
-		$this->userIdentityUtils = $userIdentityUtils;
 	}
 
 	/**

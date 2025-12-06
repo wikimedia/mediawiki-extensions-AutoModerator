@@ -51,57 +51,28 @@ class AutoModeratorRollback {
 	/** @var string[] */
 	private array $tags = [];
 
-	private ServiceOptions $options;
-	private IConnectionProvider $dbProvider;
-	private RevisionStore $revisionStore;
-	private TitleFormatter $titleFormatter;
 	private HookRunner $hookRunner;
-	private WikiPageFactory $wikiPageFactory;
-	private ActorMigration $actorMigration;
-	private ActorNormalization $actorNormalization;
-	private PageIdentity $page;
-	private UserIdentity $performer;
-	/** @var UserIdentity who made the edits we are rolling back */
-	private UserIdentity $byUser;
-
-	/** @var Config */
-	private Config $wikiConfig;
-
-	/** @var Config */
-	private Config $config;
 
 	/**
 	 * @internal Create via the RollbackPageFactory service.
 	 */
 	public function __construct(
-		ServiceOptions $options,
-		IConnectionProvider $dbProvider,
-		RevisionStore $revisionStore,
-		TitleFormatter $titleFormatter,
+		private readonly ServiceOptions $options,
+		private readonly IConnectionProvider $dbProvider,
+		private readonly RevisionStore $revisionStore,
+		private readonly TitleFormatter $titleFormatter,
 		HookContainer $hookContainer,
-		WikiPageFactory $wikiPageFactory,
-		ActorMigration $actorMigration,
-		ActorNormalization $actorNormalization,
-		PageIdentity $page,
-		UserIdentity $performer,
-		UserIdentity $byUser,
-		Config $config,
-		Config $wikiConfig
+		private readonly WikiPageFactory $wikiPageFactory,
+		private readonly ActorMigration $actorMigration,
+		private readonly ActorNormalization $actorNormalization,
+		private readonly PageIdentity $page,
+		private readonly UserIdentity $performer,
+		private readonly UserIdentity $byUser,
+		private readonly Config $config,
+		private readonly Config $wikiConfig,
 	) {
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
-		$this->options = $options;
-		$this->dbProvider = $dbProvider;
-		$this->revisionStore = $revisionStore;
-		$this->titleFormatter = $titleFormatter;
 		$this->hookRunner = new HookRunner( $hookContainer );
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->actorMigration = $actorMigration;
-		$this->actorNormalization = $actorNormalization;
-		$this->page = $page;
-		$this->performer = $performer;
-		$this->byUser = $byUser;
-		$this->config = $config;
-		$this->wikiConfig = $wikiConfig;
 	}
 
 	/**

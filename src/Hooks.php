@@ -29,30 +29,12 @@ class Hooks implements
 	HistoryToolsHook
 {
 
-	private Config $wikiConfig;
-
-	private UserGroupManager $userGroupManager;
-
-	private Config $config;
-
-	private TitleFactory $titleFactory;
-
-	/**
-	 * @param Config $wikiConfig
-	 * @param UserGroupManager $userGroupManager
-	 * @param Config $config
-	 * @param TitleFactory $titleFactory
-	 */
 	public function __construct(
-		Config $wikiConfig,
-		UserGroupManager $userGroupManager,
-		Config $config,
-		TitleFactory $titleFactory
+		private readonly Config $wikiConfig,
+		private readonly UserGroupManager $userGroupManager,
+		private readonly Config $config,
+		private readonly TitleFactory $titleFactory,
 	) {
-		$this->wikiConfig = $wikiConfig;
-		$this->userGroupManager = $userGroupManager;
-		$this->config = $config;
-		$this->titleFactory = $titleFactory;
 	}
 
 	/**

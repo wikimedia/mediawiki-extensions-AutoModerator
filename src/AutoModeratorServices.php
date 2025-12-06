@@ -14,14 +14,7 @@ use MediaWiki\MediaWikiServices;
  */
 class AutoModeratorServices {
 
-	private MediaWikiServices $coreServices;
-
-	/**
-	 * @param MediaWikiServices $coreServices
-	 * @codeCoverageIgnore
-	 */
-	public function __construct( MediaWikiServices $coreServices ) {
-		$this->coreServices = $coreServices;
+	public function __construct( private readonly MediaWikiServices $coreServices ) {
 	}
 
 	/**

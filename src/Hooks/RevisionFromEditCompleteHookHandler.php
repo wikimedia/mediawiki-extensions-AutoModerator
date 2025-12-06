@@ -19,50 +19,16 @@ use MediaWiki\User\UserGroupManager;
 
 class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHook {
 
-	private Config $wikiConfig;
-
-	private UserGroupManager $userGroupManager;
-
-	private Config $config;
-
-	private WikiPageFactory $wikiPageFactory;
-
-	private RevisionStore $revisionStore;
-
-	private RestrictionStore $restrictionStore;
-
-	private JobQueueGroup $jobQueueGroup;
-
-	private PermissionManager $permissionManager;
-
-	/**
-	 * @param Config $wikiConfig
-	 * @param UserGroupManager $userGroupManager
-	 * @param Config $config
-	 * @param WikiPageFactory $wikiPageFactory
-	 * @param RevisionStore $revisionStore
-	 * @param RestrictionStore $restrictionStore
-	 * @param JobQueueGroup $jobQueueGroup
-	 * @param PermissionManager $permissionManager
-	 */
 	public function __construct(
-		Config $wikiConfig,
-		UserGroupManager $userGroupManager,
-		Config $config,
-		WikiPageFactory $wikiPageFactory,
-		RevisionStore $revisionStore,
-		RestrictionStore $restrictionStore,
-		JobQueueGroup $jobQueueGroup,
-		PermissionManager $permissionManager
+		private readonly Config $wikiConfig,
+		private readonly UserGroupManager $userGroupManager,
+		private readonly Config $config,
+		private readonly WikiPageFactory $wikiPageFactory,
+		private readonly RevisionStore $revisionStore,
+		private readonly RestrictionStore $restrictionStore,
+		private readonly JobQueueGroup $jobQueueGroup,
+		private readonly PermissionManager $permissionManager,
 	) {
-		$this->wikiConfig = $wikiConfig;
-		$this->userGroupManager = $userGroupManager;
-		$this->config = $config;
-		$this->wikiPageFactory = $wikiPageFactory;
-		$this->revisionStore = $revisionStore;
-		$this->restrictionStore = $restrictionStore;
-		$this->jobQueueGroup = $jobQueueGroup;
-		$this->permissionManager = $permissionManager;
 	}
 
 	/**
