@@ -3,7 +3,8 @@
 		"authors": [
 			"BAPerdana-WMF",
 			"Fafau06",
-			"Hidayatsrf"
+			"Hidayatsrf",
+			"Penyuwangi"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 memiliki terlalu banyak item (maksimal $2 yang {{PLURAL:$2|diperbolehkan|diizinkan}})",
@@ -47,8 +48,8 @@
 	"automoderator-config-validator-userrights-not-allowed": "Hak pengguna $1 tidak ditemukan. Silakan coba yang lain.",
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "Pengembalian suntingan oleh pengguna pada tiap halaman",
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Tentukan seberapa banyak Automoderator dapat mengembalikan suntingan yang dilakukan oleh satu pengguna dalam rentang waktu 24 jam. Apabila opsi ini diaktifkan '''dan''' tidak ditentukan seberapa banyak suntingan yang dikembalikan, maka Automoderator akan mengembalikan suntingan oleh satu pengguna secara tidak terbatas.",
-	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Aktifkan pengembalian suntingan oleh pengguna pada tiap halaman",
-	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Aktifkan fitur ini untuk menentukan seberapa banyak Automoderator dapat mengembalikan suntingan dari pengguna yang sama dalam rentang waktu 24 jam.",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Nyalakan pengembalian suntingan oleh pengguna pada tiap halaman",
+	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Nyalakan fitur ini untuk menentukan seberapa banyak Automoderator dapat mengembalikan suntingan dari pengguna yang sama dalam rentang waktu 24 jam.",
 	"automoderator-config-validator-user-reverts-per-page-not-number": "Teks yang Anda masukkan bukan berupa angka, silakan coba kembali.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "Pranala ke halaman untuk membantu penyuntingan",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Halaman tujuan",
