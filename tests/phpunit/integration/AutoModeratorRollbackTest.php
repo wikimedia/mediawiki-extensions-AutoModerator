@@ -4,7 +4,7 @@ namespace AutoModerator\Tests;
 
 use AutoModerator\Services\AutoModeratorRollback;
 use MediaWiki\CommentStore\CommentStoreComment;
-use MediaWiki\Config\Config;
+use MediaWiki\Config\HashConfig;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\MainConfigNames;
@@ -31,12 +31,12 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 		$mediaWikiServices = $this->getServiceContainer();
 		$title = $mediaWikiServices->getTitleFactory()->newFromText( "Title" );
 		$wikiPage = $mediaWikiServices->getWikiPageFactory()->newFromTitle( $title );
-		$config = $this->createMock( Config::class );
-		$config->method( "has" )->willReturn( true );
-		$config->method( "get" )->willReturn( [ [ MainConfigNames::UseRCPatrol, true ],
-			[ MainConfigNames::DisableAnonTalk, true ] ] );
+		$config = new HashConfig( [
+			MainConfigNames::UseRCPatrol => true,
+			MainConfigNames::DisableAnonTalk => true,
+		] );
 
-		$wikiConfig = $this->createMock( Config::class );
+		$wikiConfig = new HashConfig();
 
 		$expectedContentAfterRollback = 'any new text';
 		$mediaWikiServices
@@ -93,12 +93,12 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 		$mediaWikiServices = $this->getServiceContainer();
 		$title = $mediaWikiServices->getTitleFactory()->newFromText( "Title" );
 		$wikiPage = $mediaWikiServices->getWikiPageFactory()->newFromTitle( $title );
-		$config = $this->createMock( Config::class );
-		$config->method( "has" )->willReturn( true );
-		$config->method( "get" )->willReturn( [ [ MainConfigNames::UseRCPatrol, true ],
-			[ MainConfigNames::DisableAnonTalk, true ] ] );
+		$config = new HashConfig( [
+			MainConfigNames::UseRCPatrol => true,
+			MainConfigNames::DisableAnonTalk => true,
+		] );
 
-		$wikiConfig = $this->createMock( Config::class );
+		$wikiConfig = new HashConfig();
 
 		$contentAfterRollback = 'any new text';
 		$mediaWikiServices

@@ -7,6 +7,7 @@ use AutoModerator\Services\AutoModeratorRollback;
 use MediaWiki\Block\AbstractBlock;
 use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\Config;
+use MediaWiki\Config\HashConfig;
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPage;
@@ -119,12 +120,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->config = $this->createMock( Config::class );
-		$this->config->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorUsername', 'AutoModerator' ],
-			[ 'DisableAnonTalk', false ],
-			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', false ],
+		$this->config = new HashConfig( [
+			'AutoModeratorUsername' => 'AutoModerator',
+			'DisableAnonTalk' => false,
+			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => false,
 		] );
 		$this->title = $this->makeMockTitle( 'Main_Page', [ 'id' => 1 ] );
 		$this->lang = $this->createMock( Language::class );
@@ -177,13 +177,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->revisionStoreMock->method( 'getPreviousRevision' )->willReturn( $this->fakeRevisions[ 1 ] );
 		$this->revisionStoreMock->method( 'getFirstRevision' )->willReturn( $this->fakeRevisions[ 0 ] );
 
-		$this->wikiConfig = $this->createMock( Config::class );
-		$this->wikiConfig->method( 'get' )->willReturnMap( [
-				[ 'AutoModeratorSkipUserRights', [ 'bot', 'autopatrol' ] ],
-				[ 'AutoModeratorUseEditFlagMinor', false ],
-				[ 'AutoModeratorCautionLevel', 'very-cautious' ]
+		$this->wikiConfig = new HashConfig( [
+			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
+			'AutoModeratorUseEditFlagMinor' => false,
+			'AutoModeratorCautionLevel' => 'very-cautious',
 		] );
-		$this->wikiConfig->method( 'has' )->willReturn( true );
 		$contentHandler = $this->createMock( ContentHandler::class );
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
 		$this->contentHandler->method( 'getUndoContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
@@ -335,14 +333,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::maybeRollback with lower than minimum threshold configured and passing score
 	 */
 	public function testMaybeRollbackWithLowThresholdSuccess() {
-		$config = $this->createMock( Config::class );
-		$config->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorRevertProbability', 0 ],
-			[ 'AutoModeratorUsername', 'AutoModerator' ],
-			[ 'DisableAnonTalk', false ],
-			[ 'AutoModeratorMultiLingualRevertRisk', false ],
-		] );
-
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
@@ -360,15 +350,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::maybeRollback with lower than minimum threshold configured and failing score
 	 */
 	public function testMaybeRollbackWithLowThresholdFailing() {
-		$config = $this->createMock( Config::class );
-		$config->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorRevertProbability', 0 ],
-			[ 'AutoModeratorUsername', 'AutoModerator' ],
-			[ 'AutoModeratorWikiId', 'enwiki' ],
-			[ 'AutoModeratorMultiLingualRevertRisk', false ],
-			[ 'DisableAnonTalk', false ]
-		] );
-
 		$revisionCheck = new RevisionCheck(
 			$this->wikiConfig,
 			$this->config,
@@ -1081,9 +1062,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::shouldSkipUser
 	 */
 	public function testShouldSkipUserTrue() {
-		$wikiConfig = $this->createMock( Config::class );
-		$wikiConfig->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorSkipUserRights', [ 'bot' ] ],
+		$wikiConfig = new HashConfig( [
+			'AutoModeratorSkipUserRights' => [ 'bot' ],
 		] );
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
 		$this->assertTrue(
@@ -1096,9 +1076,8 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	 * @covers ::shouldSkipUser
 	 */
 	public function testShouldSkipUserFalse() {
-		$wikiConfig = $this->createMock( Config::class );
-		$wikiConfig->method( 'get' )->willReturnMap( [
-			[ 'AutoModeratorSkipUserRights', [ 'bot' ] ],
+		$wikiConfig = new HashConfig( [
+			'AutoModeratorSkipUserRights' => [ 'bot' ],
 		] );
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( false );
 		$this->assertFalse(
