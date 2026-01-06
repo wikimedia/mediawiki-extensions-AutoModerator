@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ainali"
+			"Ainali",
+			"Stefan2255"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 har för många objekt (maximalt $2 {{PLURAL:$2| är tillåtet|är tillåtna}})",
