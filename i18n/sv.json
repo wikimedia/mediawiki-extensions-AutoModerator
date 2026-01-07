@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ainali"
+			"Ainali",
+			"Stefan2255"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 har för många objekt (maximalt $2 {{PLURAL:$2| är tillåtet|är tillåtna}})",
@@ -36,8 +37,8 @@
 	"communityconfiguration-automoderator-info-text": "Varning! När ändringar görs kommer det omedelbart att påverka alla användare i din gemenskap. Det är viktigt att vara försiktig och övervägd. Diskutera och nå ett konsensusbeslut innan du gör konfigurationsändringar.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Det här tillägget utnyttjar de nya återställningsriskmodellerna som kan beräkna en poäng för varje version som anger sannolikheten för att redigeringen ska återställas. Modellerna stöder endast Wikipedia-projekt och tränas på huvudnamnrymden (artikelnamnrymden). Ställ in ett tröskelvärde över vilket redigeringar automatiskt återställs. Lägre tröskelvärden innebär att fler redigeringar återställs, men noggrannheten blir lägre, medan högre tröskelvärden resulterar i att färre redigeringar återställs, men med bättre noggrannhet.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Efter att Automoderator har återställt en redigering kan ett meddelande på diskussionssidan automatiskt skickas till användaren, som förklarar vad som hände och ger användbara länkar.",
-	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b>Åtgärder</b><ul><li> Skapa översättningar via [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li> För ett lokalanpassat meddelande på diskussionssidan, överrid texten i [/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 systemmeddelanden].</li></ul>",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Redigeringssammanfattning</b><p> Automoderators redigeringssammanfattning kan översättas på translatewiki och skrivas över lokalt.</p> <b>Åtgärder</b><ul><li>Skapa översättningar via [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li> För ett lokalanpassat meddelande på diskussionssidan, överrid texten i [/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 systemmeddelanden].</li></ul>",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-help-text": "<b>Åtgärder</b><ul><li>Skapa översättningar via [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>För ett lokalanpassat meddelande på diskussionssidan, åsidosätt texten i [/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 systemmeddelanden].</li></ul>",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-help-text": "<b>Redigeringssammanfattning</b><p>Automoderatorns redigeringssammanfattning kan översättas på translatewiki och skrivas över lokalt.</p> <b>Åtgärder</b><ul><li>Skapa översättningar via [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>För ett lokalanpassat meddelande på diskussionssidan, åsidosätt texten i [/wiki/Special:AllMessages?prefix=automoderator-wiki&filter=all&limit=50 systemmeddelanden].</li></ul>",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Hjälp:Mindre redigering]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bottar]",
 	"communityconfiguration-automoderator-description": "Konfigurera Automoderatorinställningar så att modellen kan identifiera och återställa potentiellt dåliga redigeringar på Wikipedia.",

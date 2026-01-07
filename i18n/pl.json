@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Msz2001"
+			"Msz2001",
+			"Woytecr"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 ma za dużo elementów ({{PLURAL:$1|dopuszczalny jest|dopuszczalne są|dopuszczalnych jest}} maksymalnie $2)",
