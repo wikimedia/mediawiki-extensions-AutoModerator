@@ -12,7 +12,8 @@
 			"JLTRY",
 			"Eleanorsilly",
 			"Derugon",
-			"Escargot bleu"
+			"Escargot bleu",
+			"Pa2chant.bis"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 a trop d'éléments ($2 {{PLURAL:$2|est autorisé|sont autorisés}} au maximum)",
@@ -34,7 +35,7 @@
 	"communityconfiguration-automoderator-title": "Automodérateur",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Le plus prudent (par défaut) : moins de modifications seront annulées mais la précision sera la plus élevée.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Prudent : relativement peu de modifications seront annulées mais la précision sera moyenne.",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Relativement prudent : relativement plus de modifications seront annulées mais la précision sera faible.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Confiance relative : relativement plus de modifications seront annulées mais avec un degré d'exactitude  faible.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Prudence minimale : le plus de modifications seront annulées mais la précision sera la plus faible.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Configurer le seuil",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automodérateur",
