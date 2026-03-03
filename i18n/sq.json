@@ -24,7 +24,7 @@
 	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Konfiguro pragun",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Automoderatori",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Redaktime të vogla",
-	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Përcaktoni të drejtat e përdoruesve që Automoderatori nuk duhet t’i kthejë kurrë.",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Përcaktoni të drejtat e përdoruesve që Automoderatori nuk duhet t'i kthejë kurrë.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Kthimet nga Automoderatori do të konsiderohen si redaktime robotësh.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Redaktim roboti",
 	"communityconfiguration-automoderator-info-text": "Kujdes! Kur bëhen ndryshime, ato do të ndikojnë menjëherë te të gjithë përdoruesit në komunitetin tuaj. Është e rëndësishme të jeni të kujdesshëm dhe të veproni me mendje. Diskutoni dhe arrini një vendim të përbashkët para se të bëni ndryshime në konfigurim.",
