@@ -108,7 +108,7 @@ class TalkPageMessageSender {
 							$year,
 							$autoModeratorUser->getName() )->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
-						->params( $title )->plain(),
+						->params( $title->getPrefixedText() )->plain(),
 					'falsePositiveReportPageTitle' => $falsePositivePageURL . $falsePositiveParams
 				]
 			);

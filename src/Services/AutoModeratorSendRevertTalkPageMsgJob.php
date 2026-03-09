@@ -89,7 +89,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 */
 	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'AutoModeratorSendRevertTalkPageMsgJob', $title, $params );
-		$this->pageTitle = $title;
+		$this->pageTitle = $title->getPrefixedText();
 		$this->revId = $params['revId'];
 		$this->rollbackRevId = $params['rollbackRevId'];
 		$this->autoModeratorUserId = $params['autoModeratorUserId'];
