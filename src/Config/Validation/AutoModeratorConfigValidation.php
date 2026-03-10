@@ -202,19 +202,6 @@ class AutoModeratorConfigValidation implements IConfigValidator {
 			);
 		}
 
-		$isFalsePositivePageTitle = $fieldName == 'AutoModeratorFalsePositivePageTitle' ||
-			$fieldName == 'AutoModeratorMultilingualConfigFalsePositivePageTitle';
-		if ( $isFalsePositivePageTitle && $value ) {
-			$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-			$title = $titleFactory->newFromText( $value );
-			if ( !$title?->exists() ) {
-				return StatusValue::newFatal(
-					'automoderator-config-validator-false-positive-page-not-exist',
-					$value
-				);
-			}
-		}
-
 		return StatusValue::newGood();
 	}
 

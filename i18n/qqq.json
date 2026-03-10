@@ -56,7 +56,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Description for the field help page link.",
 	"automoderator-config-validator-help-page-link-not-filled": "Error returned by the AutoModerator configuration validator when one of the help page fields are not filled.",
 	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Error returned when the talk page message is enabled, but the false positive page field is empty",
-	"automoderator-config-validator-false-positive-page-not-exist": "Error returned when the false positive page the user added does not exist.",
 	"communityconfiguration-automoderatormultilingual-title": "Title for the community configuration multilingual form for AutoModerator.",
 	"communityconfiguration-automoderatormultilingual-description": "Description for the community configuration multilingual form.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Label for the field to enable AutoModerator.",
