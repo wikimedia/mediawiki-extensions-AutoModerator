@@ -54,7 +54,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Die Diskussionsseitennachricht für nicht registrierte Benutzer zeigt einen Link zu einer Seite an, der ihnen beim Bearbeiten hilft.\nDieser Link kann so konfiguriert werden, dass es sich um einen beliebigen Link im Wiki handelt.",
 	"automoderator-config-validator-help-page-link-not-filled": "Das Feld Zielseite und das Feld Bezeichnung müssen beide ausgefüllt werden.",
 	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Du musst eine Seite für falsch positive Meldungen hinzufügen, wenn die Meldung auf der Diskussionsseite aktiviert ist",
-	"automoderator-config-validator-false-positive-page-not-exist": "Diese Seite existiert nicht. Bitte füge eine gültige Seite falsch positive Meldungen hinzu.",
 	"communityconfiguration-automoderatormultilingual-title": "Automoderator",
 	"communityconfiguration-automoderatormultilingual-description": "Konfigurieren der Automoderator-Einstellungen, damit das Modell potenziell schlechte Bearbeitungen in Wikipedia erkennen und rückgängig machen kann.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",

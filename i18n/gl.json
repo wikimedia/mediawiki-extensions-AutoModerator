@@ -54,7 +54,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "A mensaxe da páxina de conversa para as persoas non rexistradas mostrará unha ligazón a unha páxina para axudalas coa edición.\nEsta ligazón pódese configurar e ser calquera ligazón do wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "Cómpre encher tanto o campo da páxina de destino como o campo da etiqueta.",
 	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Cómpre engadir unha páxina para informar de falsos positivos cando a mensaxe da páxina de conversa está habilitada",
-	"automoderator-config-validator-false-positive-page-not-exist": "A páxina non existe. Engade unha páxina para informar de falsos positivos.",
 	"communityconfiguration-automoderatormultilingual-title": "Automoderador",
 	"communityconfiguration-automoderatormultilingual-description": "Configura os axustes do automoderador para que o modelo poida identificar e reverter as edicións potencialmente incorrectas na Wikipedia.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderador",

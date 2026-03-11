@@ -54,7 +54,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Пораката на разговорната страница на незачленети учесници ќе прикажува врска до страница за помош со уредување.\nМоже да се намести да биде било која врска на викито.",
 	"automoderator-config-validator-help-page-link-not-filled": "Мора да се пополнат полињата „Целна страница“ и „Натпис“.",
 	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Ќе треба да додадете страница за пријавување на лажни погодоци кога ќе се овозможи порака на разговорна страница",
-	"automoderator-config-validator-false-positive-page-not-exist": "Оваа страница не постои. Додајте важечка страница за пријавување на лажни погодоци.",
 	"communityconfiguration-automoderatormultilingual-title": "Автомодератор",
 	"communityconfiguration-automoderatormultilingual-description": "Наместете ги поставките на Автомодератор, така што моделот ќе може да пронаоѓа и отповикува потенцијално лоши уредувања на Википедија.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Автомодератор",

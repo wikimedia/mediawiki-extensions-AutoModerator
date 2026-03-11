@@ -57,7 +57,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Il messaggio nella pagina di discussione per gli utenti non registrati mostrerà un collegamento a una pagina di aiuto nella modifica.\nQuesto collegamento può essere configurato come qualsiasi collegamento su wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "È necessario compilare sia il campo \"Pagina di destinazione\" che il campo \"Etichetta\".",
 	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "È necessario aggiungere una pagina di segnalazione dei falsi positivi quando il messaggio nella pagina di discussione è attivo",
-	"automoderator-config-validator-false-positive-page-not-exist": "Questa pagina non esiste. Aggiungi una pagina valida per la segnalazione di falsi positivi.",
 	"communityconfiguration-automoderatormultilingual-title": "Automoderator",
 	"communityconfiguration-automoderatormultilingual-description": "Configura le impostazioni di Automoderator, in modo che il modello possa identificare e annullare modifiche potenzialmente errate su Wikipedia.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",

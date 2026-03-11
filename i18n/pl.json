@@ -55,7 +55,6 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "Wiadomość na stronie dyskusji dla niezarejestrowanych użytkowników będzie wyświetlać odnośnik do strony pomocy, która pomoże im w nauce edycji.\nTen odnośnik można skonfigurować tak, aby był dowolnym odnośnikiem do strony wiki.",
 	"automoderator-config-validator-help-page-link-not-filled": "Należy wypełnić zarówno pole Strona docelowa, jak i pole Etykieta.",
 	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "Musisz dodać stronę do umieszczania zgłoszeń błędnych rozpoznań, gdy włączone jest umieszczanie wiadomości na stronie dyskusji",
-	"automoderator-config-validator-false-positive-page-not-exist": "Ta strona nie istnieje. Podaj prawidłową stronę do umieszczania zgłoszeń błędnych rozpoznań.",
 	"communityconfiguration-automoderatormultilingual-title": "Automoderator",
 	"communityconfiguration-automoderatormultilingual-description": "Skonfiguruj ustawienia Automoderatora, aby model mógł identyfikować i cofać potencjalnie błędne edycje w Wikipedii.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderator",
