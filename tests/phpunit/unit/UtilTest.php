@@ -167,6 +167,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			'AutoModeratorLiftWingBaseUrl' => $expectedUrl,
 			'AutoModeratorLiftWingAddHostHeader' => true,
 			'AutoModeratorLiftWingRevertRiskHostHeader' => $expectedHostHeader,
+			'AutoModeratorLiftWingMultiLingualRevertRiskHostHeader' => "another-host-header",
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => true,
 		] );
@@ -208,7 +209,8 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config = new HashConfig( [
 			'AutoModeratorLiftWingBaseUrl' => $expectedUrl,
 			'AutoModeratorLiftWingAddHostHeader' => true,
-			'AutoModeratorLiftWingRevertRiskHostHeader' => $expectedHostHeader,
+			'AutoModeratorLiftWingRevertRiskHostHeader' => "another-host-header",
+			'AutoModeratorLiftWingMultiLingualRevertRiskHostHeader' => $expectedHostHeader,
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => true,
 		] );
