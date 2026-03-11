@@ -231,13 +231,13 @@ class Util {
 		$isMultiLingualModelEnabled = self::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
 		if ( $isMultiLingualModelEnabled ) {
 			$model = 'revertrisk-multilingual';
+			$hostHeaderKey = 'AutoModeratorLiftWingMultiLingualRevertRiskHostHeader';
 		} else {
 			$model = 'revertrisk-language-agnostic';
+			$hostHeaderKey = 'AutoModeratorLiftWingRevertRiskHostHeader';
 		}
-
+		$hostHeader = $config->get( 'AutoModeratorLiftWingAddHostHeader' ) ? $config->get( $hostHeaderKey ) : null;
 		$lang = self::getLanguageConfiguration( $config );
-		$hostHeader = $config->get( 'AutoModeratorLiftWingAddHostHeader' ) ?
-			$config->get( 'AutoModeratorLiftWingRevertRiskHostHeader' ) : null;
 		return new LiftWingClient(
 			$model,
 			$lang,
