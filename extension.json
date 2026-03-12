@@ -28,6 +28,30 @@
 	},
 	"attributes": {
 		"CommunityConfiguration": {
+			"Validators": {
+				"AutoModerator": {
+					"class": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation",
+					"factory": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
+					"services": [
+						"CommunityConfiguration.ValidatorFactory",
+						"MainConfig"
+					],
+					"args": [
+						"AutoModerator\\Config\\Validation\\AutoModeratorConfigSchema"
+					]
+				},
+				"AutoModeratorMultilingual": {
+					"class": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation",
+					"factory": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
+					"services": [
+						"CommunityConfiguration.ValidatorFactory",
+						"MainConfig"
+					],
+					"args": [
+						"AutoModerator\\Config\\Validation\\AutoModeratorMultilingualConfigSchema"
+					]
+				}
+			},
 			"Providers": {
 				"AutoModerator": {
 					"store": {
@@ -37,10 +61,7 @@
 						]
 					},
 					"validator": {
-						"type": "jsonschema",
-						"args": [
-							"AutoModerator\\Config\\Validation\\AutoModeratorConfigSchema"
-						]
+						"type": "AutoModerator"
 					},
 					"type": "mw-config"
 				},
@@ -52,10 +73,7 @@
 						]
 					},
 					"validator": {
-						"type": "jsonschema",
-						"args": [
-							"AutoModerator\\Config\\Validation\\AutoModeratorMultilingualConfigSchema"
-						]
+						"type": "AutoModeratorMultilingual"
 					},
 					"type": "mw-config"
 				}
@@ -74,10 +92,6 @@
 		"AutoModeratorWikiId": {
 			"description": "language code of project used to target liftwing lang parameter",
 			"value": null
-		},
-		"AutoModeratorEnableWikiConfig": {
-			"description": "If set to false, on-wiki configuration will be ignored.",
-			"value": true
 		},
 		"AutoModeratorLiftWingBaseUrl": {
 			"description": "The base URL of the LiftWing service. We set it by default to use the API Gateway endpoint which is publicly accessible and is modified by mediawiki deployments that run within the production WMF cluster and have access to the internal endpoint.",
@@ -203,30 +217,19 @@
 		}
 	},
 	"HookHandlers": {
-		"config": {
-			"class": "AutoModerator\\Config\\ConfigHooks",
-			"services": [
-				"AutoModeratorConfigValidatorFactory",
-				"AutoModeratorWikiPageConfigLoader",
-				"TitleFactory",
-				"MainConfig"
-			]
-		},
 		"main": {
 			"class": "AutoModerator\\Hooks",
 			"services": [
-				"AutoModeratorWikiConfigLoader",
 				"UserGroupManager",
-				"MainConfig",
+				"AutoModeratorConfig",
 				"TitleFactory"
 			]
 		},
 		"revisionfromedit": {
 			"class": "AutoModerator\\Hooks\\RevisionFromEditCompleteHookHandler",
 			"services": [
-				"AutoModeratorWikiConfigLoader",
 				"UserGroupManager",
-				"MainConfig",
+				"AutoModeratorConfig",
 				"WikiPageFactory",
 				"RevisionStore",
 				"RestrictionStore",
@@ -238,9 +241,8 @@
 		"ores": {
 			"class": "AutoModerator\\Hooks\\ORESRecentChangeScoreSavedHookHandler",
 			"services": [
-				"AutoModeratorWikiConfigLoader",
 				"UserGroupManager",
-				"MainConfig",
+				"AutoModeratorConfig",
 				"WikiPageFactory",
 				"RevisionStore",
 				"RestrictionStore",
@@ -254,9 +256,8 @@
 		"articlerollback": {
 			"class": "AutoModerator\\Hooks\\RollbackCompleteHookHandler",
 			"services": [
-				"AutoModeratorWikiConfigLoader",
 				"UserGroupManager",
-				"MainConfig",
+				"AutoModeratorConfig",
 				"AutoModeratorTalkPageMessageSender",
 				"UserIdentityUtils"
 			]
@@ -265,15 +266,11 @@
 			"class": "AutoModerator\\Hooks\\CommunityConfigurationProviderHookHandler",
 			"services": [
 				"MainConfig",
-				"AutoModeratorWikiPageConfigLoader",
 				"TitleFactory"
 			]
 		}
 	},
 	"Hooks": {
-		"EditFilterMergedContent": "config",
-		"JsonValidateSave": "config",
-		"PageSaveComplete": "config",
 		"RevisionFromEditComplete": "revisionfromedit",
 		"HistoryTools": "main",
 		"ORESRecentChangeScoreSavedHook": "ores",

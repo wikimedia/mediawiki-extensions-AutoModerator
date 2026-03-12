@@ -2,206 +2,331 @@
 
 namespace AutoModerator\Tests;
 
+use AutoModerator\Config\Validation\AutoModeratorConfigSchema;
 use AutoModerator\Config\Validation\AutoModeratorConfigValidation;
-use StatusValue;
+use AutoModerator\Config\Validation\AutoModeratorMultilingualConfigSchema;
+use MediaWiki\Extension\CommunityConfiguration\Validation\ValidationStatus;
+use MediaWiki\Extension\CommunityConfiguration\Validation\ValidatorFactory;
 
 /**
  * @coversDefaultClass \AutoModerator\Config\Validation\AutoModeratorConfigValidation
  * @group Database
  */
 class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
+	private array $config;
+	private array $multilingualConfig;
+	private ValidatorFactory $validatorFactory;
+
+	protected function setUp(): void {
+		$services = $this->getServiceContainer();
+		$this->config = [
+			'AutoModeratorEnableRevisionCheck' => false,
+			'AutoModeratorFalsePositivePageTitle' => '',
+			'AutoModeratorUseEditFlagMinor' => false,
+			'AutoModeratorRevertTalkPageMessageEnabled' => false,
+			'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => false,
+			'AutoModeratorEnableBotFlag' => false,
+			'AutoModeratorSkipUserRights' => [
+				'bot',
+				'autopatrol',
+			],
+			'AutoModeratorCautionLevel' => "very-cautious",
+			'AutoModeratorEnableUserRevertsPerPage' => false,
+			'AutoModeratorUserRevertsPerPage' => '',
+			'AutoModeratorHelpPageLink' => '',
+		];
+		$this->multilingualConfig = [
+			'AutoModeratorMultilingualConfigEnableRevisionCheck' => false,
+			'AutoModeratorMultilingualConfigFalsePositivePageTitle' => '',
+			'AutoModeratorMultilingualConfigUseEditFlagMinor' => false,
+			'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' => false,
+			'AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly' => false,
+			'AutoModeratorMultilingualConfigEnableBotFlag' => false,
+			'AutoModeratorMultilingualConfigSkipUserRights' => [
+				'bot',
+				'autopatrol',
+			],
+			'AutoModeratorMultilingualConfigCautionLevel' => 'very-cautious',
+			'AutoModeratorMultilingualConfigEnableUserRevertsPerPage' => false,
+			'AutoModeratorMultilingualConfigUserRevertsPerPage' => '',
+			'AutoModeratorMultilingualConfigHelpPageLink' => '',
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
+			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
+		];
+		$this->validatorFactory = $services->getService( 'CommunityConfiguration.ValidatorFactory' );
+	}
+
+	private function validate( $class ) {
+		switch ( $class ) {
+			case 'AutoModerator\Config\Validation\AutoModeratorConfigSchema':
+				$config = (object)$this->config;
+				break;
+			case 'AutoModerator\Config\Validation\AutoModeratorMultilingualConfigSchema':
+				$config = (object)$this->multilingualConfig;
+				$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
+				break;
+
+		}
+		// CC validators expect objects
+		$validator = AutoModeratorConfigValidation::factory( $this->validatorFactory, $config, $class );
+		return $validator->validateStrictly( $config );
+	}
 
 	/**
-	 * @covers ::validate when user right valid
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when user right valid
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRightValid() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [ 'AutoModeratorSkipUserRights' => [ 'bot' ] ] );
-		$this->assertEquals( StatusValue::newGood(), $result );
+		$this->config[ 'AutoModeratorSkipUserRights' ] = [ 'bot' ];
+		$result = $this->validate( AutoModeratorConfigSchema::class );
+		$this->assertEquals( ValidationStatus::newGood(), $result );
 	}
 
 	/**
-	 * @covers ::validate when user right invalid
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when user right invalid
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRightInvalid() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [ 'AutoModeratorSkipUserRights' => [ 'bot-2' ] ] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-userrights-not-allowed',
-			'bot-2'
-		), $result );
+		$this->config[ 'AutoModeratorSkipUserRights' ] = [ 'bot-2' ];
+		$result = $this->validate( AutoModeratorConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 1, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorSkipUserRights',
+					'User right bot-2 does not exist. Please try another.',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validate when user reverts per page not a number
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when user reverts per page not a number
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageNotANumber() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [ 'AutoModeratorUserRevertsPerPage' => 'not a number' ] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-user-reverts-per-page-not-number',
-			'not a number'
-		), $result );
+		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = 'not a number';
+		$result = $this->validate( AutoModeratorConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 1, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorUserRevertsPerPage',
+					'The value entered for User reverts per page is not a number, please try another.',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validate when user reverts per page not set
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when user reverts per page not set
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageNotSet() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [ 'AutoModeratorUserRevertsPerPage' => null ] );
-		$this->assertEquals( StatusValue::newGood(), $result );
+		unset( $this->config[ 'AutoModeratorUserRevertsPerPage' ] );
+		$result = $this->validate( AutoModeratorConfigSchema::class );
+		$this->assertEquals( ValidationStatus::newGood(), $result );
 	}
 
 	/**
-	 * @covers ::validate when user reverts per page not set
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when user reverts per page not set
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageNotSetEmptyString() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [ 'AutoModeratorUserRevertsPerPage' => '' ] );
-		$this->assertEquals( StatusValue::newGood(), $result );
+		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = '';
+		$result = $this->validate( AutoModeratorConfigSchema::class );
+		$this->assertEquals( ValidationStatus::newGood(), $result );
 	}
 
 	/**
-	 * @covers ::validate when user reverts per page is a number
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when user reverts per page is a number
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageIsANumber() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [ 'AutoModeratorUserRevertsPerPage' => '25' ] );
-		$this->assertEquals( StatusValue::newGood(), $result );
+		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = '25';
+		$result = $this->validate( AutoModeratorConfigSchema::class );
+		$this->assertEquals( ValidationStatus::newGood(), $result );
 	}
 
 	/**
-	 * @covers ::validate when multilingual threshold is a number
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when multilingual threshold is a number
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdIsANumber() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [
-			'AutoModeratorMultiLingualConfigMultilingualThreshold' => '0.992',
-			'AutoModeratorMultilingualConfigEnableMultilingual' => true
-		] );
-		$this->assertEquals( StatusValue::newGood(), $result );
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.992';
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
+		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
+		$this->assertEquals( ValidationStatus::newGood(), $result );
 	}
 
 	/**
-	 * @covers ::validate when multilingual threshold is not a number
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when multilingual threshold is not a number
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdIsNotANumber() {
-		$validator = new AutoModeratorConfigValidation();
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
-
-		$result = $validator->validate( [ 'AutoModeratorMultilingualConfigMultilingualThreshold' => 'oopsie' ] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-multilingual-threshold-not-number',
-			'oopsie'
-		), $result );
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = 'oopsie';
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
+		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 2, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorMultilingualConfigMultilingualThreshold',
+					'The multilingual threshold must be a number.',
+				],
+			],
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorMultilingualConfigMultilingualThreshold',
+					'The threshold input is outside the range. Please input a value that is between 0.850 and 0.999',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validate when multilingual threshold is within range
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when multilingual threshold is within range
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdIsWithinRange() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [
-			'AutoModeratorMultiLingualConfigMultilingualThreshold' => '0.992',
-			'AutoModeratorMultilingualConfigEnableMultilingual' => true
-		] );
-		$this->assertEquals( StatusValue::newGood(), $result );
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.992';
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
+		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
+		$this->assertEquals( ValidationStatus::newGood(), $result );
 	}
 
 	/**
-	 * @covers ::validate when multilingual threshold is out of range
+	 * @covers ::validateStrictly when multilingual threshold is out of range
 	 */
 	public function testValidateWhenMultilingualThresholdIsNotWithinRange() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [ 'AutoModeratorMultilingualConfigMultilingualThreshold' => '0.500',
-			'AutoModeratorMultilingualConfigEnableMultilingual' => true ] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-multilingual-threshold-value-outside-range',
-			'0.500'
-		), $result );
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.001';
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
+		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 1, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorMultilingualConfigMultilingualThreshold',
+					'The threshold input is outside the range. Please input a value that is between 0.850 and 0.999',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validate when multilingual threshold is added but the model is not enabled
-	 * @covers ::validateField
+	 * @covers ::validateStrictly when multilingual threshold is added but the model is not enabled
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdAddedModelNotEnabled() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [
-			'AutoModeratorMultilingualConfigMultilingualThreshold' => '0.967',
-			'AutoModeratorMultilingualConfigEnableMultilingual' => false
-		] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-multilingual-threshold-multilingual-not-enabled',
-			'0.967'
-		), $result );
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.967';
+		unset( $this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] );
+		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 1, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorMultilingualConfigMultilingualThreshold',
+					// phpcs:ignore
+					'The multilingual model was not enabled, but a threshold was set. Please enable the multilingual model.',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validate when the multilingual and the language-agnostic models are both enabled
+	 * @covers ::validateStrictly when the multilingual and the language-agnostic models are both enabled
 	 */
 	public function testValidateWhenMultilingualModelAndLanguageAgnosticEnabled() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [
-			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => true,
-			'AutoModeratorMultilingualConfigEnableMultilingual' => true
-		] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-multilingual-select-only-one-model',
-			true
-		), $result );
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableLanguageAgnostic' ] = true;
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
+		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 1, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorMultilingualConfigEnableLanguageAgnostic',
+					// phpcs:ignore
+					'Both the language-agnostic and multilingual models have been selected. Please enable only one of the models.',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validate when the talk page message is enabled, but the false positive page is empty
+	 * @covers ::validateStrictly when the talk page message is enabled, but the false positive page is empty
 	 */
 	public function testValidateWhenTalkPageEnabledNoFalsePositivePage() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [
-			'AutoModeratorRevertTalkPageMessageEnabled' => true,
-			'AutoModeratorFalsePositivePageTitle' => null
-		] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled',
-			true
-		), $result );
+		$this->config[ 'AutoModeratorRevertTalkPageMessageEnabled' ] = true;
+		$this->config[ 'AutoModeratorFalsePositivePageTitle' ] = '';
+		$result = $this->validate( AutoModeratorConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 1, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorRevertTalkPageMessageEnabled',
+					'You need to add a false positive reporting page when the talk page message is enabled',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validate when the talk page message is enabled, but the false positive page is empty
+	 * @covers ::validateStrictly when the talk page message is enabled, but the false positive page is empty
 	 */
 	public function testValidateWhenTalkPageEnabledNoFalsePositivePageMultilingual() {
-		$validator = new AutoModeratorConfigValidation();
-
-		$result = $validator->validate( [
-			'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' => true,
-			'AutoModeratorMultilingualConfigFalsePositivePageTitle' => null
-		] );
-		$this->assertEquals( StatusValue::newFatal(
-			'automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled',
-			true
-		), $result );
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' ] = true;
+		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigFalsePositivePageTitle' ] = '';
+		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
+		$this->assertFalse( $result->isGood() );
+		$errors = $result->getErrors();
+		$this->assertCount( 1, $errors );
+		$expected = [
+			[
+				'type' => 'error',
+				'message' => 'communityconfiguration-schema-validation-error',
+				'params' => [
+					'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled',
+					'You need to add a false positive reporting page when the talk page message is enabled',
+				],
+			],
+		];
+		$this->assertEquals( $expected, $errors );
 	}
 }

@@ -34,15 +34,13 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::getRevertThreshold cautious
 	 */
 	public function testGetRevertThresholdCautiousLanguageAgnostic() {
-		$wikiConfig = new HashConfig( [
-			'AutoModeratorCautionLevel' => 'cautious',
-		] );
 		$config = new HashConfig( [
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorCautionLevel' => 'cautious',
 		] );
-		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
+		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
 			0.985,
 			$revertThreshold
@@ -53,18 +51,16 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::getRevertThreshold very-cautious
 	 */
 	public function testGetRevertThresholdVeryCautiousLanguageAgnostic() {
-		$wikiConfig = new HashConfig( [
+		$config = new HashConfig( [
+			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => true,
 			'AutoModeratorCautionLevel' => 'very-cautious',
 			'AutoModeratorMultilingualConfigCautionLevel' => 'very-cautious',
 			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => null,
 		] );
-		$config = new HashConfig( [
-			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => 'enwiki',
-			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
-		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
+		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
 			0.990,
 			$revertThreshold
@@ -75,15 +71,13 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::getRevertThreshold somewhat-cautious
 	 */
 	public function testGetRevertThresholdSomewhatCautious() {
-		$wikiConfig = new HashConfig( [
-			'AutoModeratorCautionLevel' => 'somewhat-cautious',
-		] );
 		$config = new HashConfig( [
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorCautionLevel' => 'somewhat-cautious',
 		] );
-		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
+		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
 			0.980,
 			$revertThreshold
@@ -94,15 +88,13 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::getRevertThreshold less-cautious
 	 */
 	public function testGetRevertThresholdLessCautiousLanguageAgnostic() {
-		$wikiConfig = new HashConfig( [
-			'AutoModeratorCautionLevel' => 'less-cautious',
-		] );
 		$config = new HashConfig( [
 			'AutoModeratorUsername' => 'AutoModerator',
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorCautionLevel' => 'less-cautious',
 		] );
-		$revertThreshold = Util::getRevertThreshold( $config, $wikiConfig );
+		$revertThreshold = Util::getRevertThreshold( $config );
 		$this->assertSame(
 			0.975,
 			$revertThreshold
@@ -128,13 +120,11 @@ class UtilTest extends MediaWikiUnitTestCase {
 			'AutoModeratorLiftWingAddHostHeader' => false,
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
-		$wikiConfig = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => null,
 		] );
 
-		$client = Util::initializeLiftWingClient( $config, $wikiConfig );
+		$client = Util::initializeLiftWingClient( $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -170,14 +160,11 @@ class UtilTest extends MediaWikiUnitTestCase {
 			'AutoModeratorLiftWingMultiLingualRevertRiskHostHeader' => "another-host-header",
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
-
-		$wikiConfig = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => null,
 		] );
 
-		$client = Util::initializeLiftWingClient( $config, $wikiConfig );
+		$client = Util::initializeLiftWingClient( $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -213,15 +200,12 @@ class UtilTest extends MediaWikiUnitTestCase {
 			'AutoModeratorLiftWingMultiLingualRevertRiskHostHeader' => $expectedHostHeader,
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
-
-		$wikiConfig = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => true,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => 0.987,
 			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
 		] );
 
-		$client = Util::initializeLiftWingClient( $config, $wikiConfig );
+		$client = Util::initializeLiftWingClient( $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -256,15 +240,13 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::isMultiLingualRevertRiskEnabled
 	 */
 	public function testIsMultiLingualRevertRiskEnabledFalse() {
-		$wikiConfig = new HashConfig( [
+		$config = new HashConfig( [
+			'AutoModeratorMultiLingualRevertRisk' => true,
 			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => null,
 		] );
-		$config = new HashConfig( [
-			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
 
-		$isMultiLingualRevertRiskEnabled = Util::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
+		$isMultiLingualRevertRiskEnabled = Util::isMultiLingualRevertRiskEnabled( $config );
 
 		$this->assertFalse( $isMultiLingualRevertRiskEnabled );
 	}
@@ -301,17 +283,15 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::isMultiLingualRevertRiskEnabled
 	 */
 	public function testIsMultiLingualRevertRiskEnabledTrue() {
-		$wikiConfig = new HashConfig( [
+		$config = new HashConfig( [
+			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => true,
 			'AutoModeratorMultilingualConfigEnableMultilingual' => true,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => 0.987,
 			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
 		] );
-		$config = new HashConfig( [
-			'AutoModeratorWikiId' => 'enwiki',
-			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
 
-		$isMultiLingualRevertRiskEnabled = Util::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
+		$isMultiLingualRevertRiskEnabled = Util::isMultiLingualRevertRiskEnabled( $config );
 
 		$this->assertTrue( $isMultiLingualRevertRiskEnabled );
 	}
@@ -327,15 +307,13 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config = new HashConfig( [
 			'AutoModeratorWikiId' => $wikiId,
 			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
-		$wikiConfig = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => true,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => 0.987,
 			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
 		] );
 
 		$expectedRevertRiskModelName = Util::getORESMultiLingualModelName();
-		$revertRiskModelName = Util::getRevertRiskModel( $config, $wikiConfig );
+		$revertRiskModelName = Util::getRevertRiskModel( $config );
 
 		$this->assertSame( $expectedRevertRiskModelName, $revertRiskModelName );
 	}
@@ -351,14 +329,12 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$config = new HashConfig( [
 			'AutoModeratorWikiId' => $wikiId,
 			'AutoModeratorMultiLingualRevertRisk' => true,
-		] );
-		$wikiConfig = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => null,
 		] );
 
 		$expectedRevertRiskModelName = Util::getORESLanguageAgnosticModelName();
-		$revertRiskModelName = Util::getRevertRiskModel( $config, $wikiConfig );
+		$revertRiskModelName = Util::getRevertRiskModel( $config );
 
 		$this->assertSame( $expectedRevertRiskModelName, $revertRiskModelName );
 	}
@@ -367,13 +343,13 @@ class UtilTest extends MediaWikiUnitTestCase {
 	 * @covers ::getMultiLingualThreshold
 	 */
 	public function testGetMultiLingualThreshold() {
-		$wikiConfig = new HashConfig( [
+		$config = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => true,
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => 0.987,
 		] );
 
 		$expectedThreshold = 0.987;
-		$threshold = Util::getMultiLingualThreshold( $wikiConfig );
+		$threshold = Util::getMultiLingualThreshold( $config );
 
 		$this->assertSame( $expectedThreshold, $threshold );
 	}

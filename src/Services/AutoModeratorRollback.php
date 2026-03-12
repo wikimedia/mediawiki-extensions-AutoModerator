@@ -69,7 +69,6 @@ class AutoModeratorRollback {
 		private readonly UserIdentity $performer,
 		private readonly UserIdentity $byUser,
 		private readonly Config $config,
-		private readonly Config $wikiConfig,
 	) {
 		$options->assertRequiredOptions( self::CONSTRUCTOR_OPTIONS );
 		$this->hookRunner = new HookRunner( $hookContainer );
@@ -149,12 +148,11 @@ class AutoModeratorRollback {
 		// Save
 		$flags = EDIT_UPDATE | EDIT_INTERNAL;
 
-		$isMultiLingualRevertRiskEnabled = Util::isWikiMultilingual( $this->config );
-		if ( $this->shouldAddEditMinorFlag( $isMultiLingualRevertRiskEnabled ) ) {
+		if ( Util::getUseEditFlagMinor( $this->config ) ) {
 			$flags |= EDIT_MINOR;
 		}
 
-		if ( $this->shouldAddBotFlag( $isMultiLingualRevertRiskEnabled ) ) {
+		if ( Util::getEnableBotFlag( $this->config ) ) {
 			$flags |= EDIT_FORCE_BOT;
 		}
 
@@ -387,25 +385,4 @@ class AutoModeratorRollback {
 		return trim( $summary );
 	}
 
-	/**
-	 * @param bool $isMultiLingualRevertRiskEnabled
-	 * @return bool
-	 */
-	private function shouldAddEditMinorFlag( bool $isMultiLingualRevertRiskEnabled ): bool {
-		if ( $isMultiLingualRevertRiskEnabled ) {
-			return $this->wikiConfig->get( 'AutoModeratorMultilingualConfigUseEditFlagMinor' );
-		}
-		return $this->wikiConfig->get( 'AutoModeratorUseEditFlagMinor' );
-	}
-
-	/**
-	 * @param bool $isMultiLingualRevertRiskEnabled
-	 * @return bool
-	 */
-	public function shouldAddBotFlag( bool $isMultiLingualRevertRiskEnabled ): bool {
-		if ( $isMultiLingualRevertRiskEnabled ) {
-			return $this->wikiConfig->get( 'AutoModeratorMultilingualConfigEnableBotFlag' );
-		}
-		return $this->wikiConfig->get( 'AutoModeratorEnableBotFlag' );
-	}
 }

@@ -2,8 +2,6 @@
 
 namespace AutoModerator\Tests\Hooks;
 
-use AutoModerator\Config\AutoModeratorWikiConfigLoader;
-use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\HashConfig;
@@ -54,24 +52,12 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$wikiConfig->method( "get" )->willReturn( true );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserRights' => [],
-				'AutoModeratorMultilingualConfigEnableMultilingual' => false
-			] )
-		);
 		$config = new HashConfig( [
-			'DisableAnonTalk' => false,
-			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorSkipUserRights' => [],
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
+			'DisableAnonTalk' => false,
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => false,
 			'OresModels' => [
@@ -103,7 +89,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		];
 
 		( new ORESRecentChangeScoreSavedHookHandler(
-			$autoModWikiConfig,
 			$userGroupManager,
 			$config,
 			$wikiPageFactory,
@@ -178,23 +163,11 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$wikiConfig->method( "get" )->willReturn( true );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserGroups' => [],
-			] )
-		);
 		$config = new HashConfig( [
-			'DisableAnonTalk' => false,
-			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorSkipUserGroups' => [],
+			'DisableAnonTalk' => false,
 			'AutoModeratorWikiId' => 'enwiki',
 			'AutoModeratorMultiLingualRevertRisk' => false,
 			'OresModels' => [
@@ -218,7 +191,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 		$mockConnectionProvider = $this->createMock( IConnectionProvider::class );
 
 		( new ORESRecentChangeScoreSavedHookHandler(
-			$autoModWikiConfig,
 			$userGroupManager,
 			$config,
 			$wikiPageFactory,

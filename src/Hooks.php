@@ -30,7 +30,6 @@ class Hooks implements
 {
 
 	public function __construct(
-		private readonly Config $wikiConfig,
 		private readonly UserGroupManager $userGroupManager,
 		private readonly Config $config,
 		private readonly TitleFactory $titleFactory,
@@ -42,7 +41,8 @@ class Hooks implements
 	 */
 	public function onHistoryTools( $revRecord, &$links, $prevRevRecord, $userIdentity ) {
 		$revUser = $revRecord->getUser();
-		$falsePositivePageText = $this->wikiConfig->get( 'AutoModeratorFalsePositivePageTitle' );
+
+		$falsePositivePageText = Util::getFalsePositivePageTitleText( $this->config );
 		if ( $revUser === null || $falsePositivePageText === null ) {
 			// Cannot see the user or the false positive page isn't configured
 			return;

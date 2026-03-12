@@ -22,7 +22,6 @@ use Wikimedia\Rdbms\IConnectionProvider;
 class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSavedHook {
 
 	public function __construct(
-		private readonly Config $wikiConfig,
 		private readonly UserGroupManager $userGroupManager,
 		private readonly Config $config,
 		private readonly WikiPageFactory $wikiPageFactory,
@@ -43,12 +42,7 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		if ( !$revision || !$scores ) {
 			return;
 		}
-		$enabledConfigKey = Util::isWikiMultilingual( $this->config ) ?
-			"AutoModeratorMultilingualConfigEnableRevisionCheck"
-			: "AutoModeratorEnableRevisionCheck";
-		$revisionCheckEnabled = $this->wikiConfig->has( $enabledConfigKey )
-			&& $this->wikiConfig->get( $enabledConfigKey );
-		if ( !$revisionCheckEnabled ) {
+		if ( !Util::getEnableRevisionCheck( $this->config ) ) {
 			return;
 		}
 		$user = $revision->getUser();
@@ -80,7 +74,6 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->config,
-			$this->wikiConfig,
 			$revision,
 			$this->permissionManager ) ) {
 			return;

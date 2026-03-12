@@ -2,8 +2,6 @@
 
 namespace AutoModerator\Tests\Hooks;
 
-use AutoModerator\Config\AutoModeratorWikiConfigLoader;
-use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\HashConfig;
@@ -72,23 +70,12 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$wikiConfig->method( "get" )->willReturn( true );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserRights' => [],
-				'AutoModeratorMultilingualConfigEnableMultilingual' => false,
-			] )
-		);
 		$config = new HashConfig( [
-			'DisableAnonTalk' => false,
-			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorSkipUserRights' => [],
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
+			'DisableAnonTalk' => false,
 			'AutoModeratorWikiId' => 'enwiki',
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
@@ -105,8 +92,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
-		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore,
+		( new RevisionFromEditCompleteHookHandler( $userGroupManager, $config,
+			$wikiPageFactory, $mockRevisionStore, $mockRestrictionStore,
 			$jobQueueGroup, $mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
@@ -163,23 +150,12 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$wikiConfig->method( "get" )->willReturn( true );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserRights' => [],
-				'AutoModeratorMultilingualConfigEnableMultilingual' => false,
-			] )
-		);
 		$config = new HashConfig( [
-			'DisableAnonTalk' => true,
-			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorSkipUserRights' => [],
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
+			'DisableAnonTalk' => true,
 			'AutoModeratorWikiId' => 'enwiki',
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
@@ -196,8 +172,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
-		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
+		( new RevisionFromEditCompleteHookHandler( $userGroupManager, $config,
+			$wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
@@ -244,19 +220,7 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup = $this->getServiceContainer()->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->getServiceContainer()->getWikiPageFactory();
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->never() )->method( 'hasWithFlags' );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-			] )
-		);
 		$config = new HashConfig( [
-			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
 			'OresModels' => [
@@ -272,8 +236,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
-		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
+		( new RevisionFromEditCompleteHookHandler( $userGroupManager, $config,
+			$wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, $tags );
 
@@ -305,29 +269,17 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( $wikiPage );
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->atLeastOnce() )->method( 'hasWithFlags' );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$wikiConfig->method( "get" )->willReturn( true );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
-				'AutoModeratorMultilingualConfigEnableMultilingual' => false
-			] )
-		);
 		$config = new HashConfig( [
-			'DisableAnonTalk' => true,
-			'AutoModeratorEnableWikiConfig' => true,
+			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
+			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
+			'DisableAnonTalk' => true,
 			'AutoModeratorWikiId' => "enwiki",
 			'OresModels' => [
 				'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 			],
-			'AutoModeratorMultiLingualRevertRisk' => false
+			'AutoModeratorMultiLingualRevertRisk' => false,
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 		$mockRevisionStore = $this->createMock( RevisionStore::class );
@@ -340,8 +292,8 @@ class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestC
 		$mockRestrictionStore->method( 'isProtected' )->willReturn( false );
 		$mockPermissionManager = $this->createMock( PermissionManager::class );
 
-		( new RevisionFromEditCompleteHookHandler( $autoModWikiConfig, $userGroupManager,
-			$config, $wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
+		( new RevisionFromEditCompleteHookHandler( $userGroupManager, $config,
+			$wikiPageFactory, $mockRevisionStore, $mockRestrictionStore, $jobQueueGroup,
 			$mockPermissionManager ) )
 			->onRevisionFromEditComplete( $wikiPage, $mockRevision, $originalRevId, $user, $tags );
 

@@ -38,7 +38,6 @@ class TalkPageMessageSender {
 	public function __construct(
 		private readonly RevisionStore $revisionStore,
 		private readonly Config $config,
-		private readonly Config $wikiConfig,
 		private readonly JobQueueGroup $jobQueueGroup,
 		private readonly TitleFactory $titleFactory,
 	) {
@@ -76,8 +75,7 @@ class TalkPageMessageSender {
 			} else {
 				$year = $timestamp->format( 'Y' );
 			}
-			$isMultiLingualRevertRiskEnabled = Util::isWikiMultilingual( $this->config );
-			$falsePositivePageTitleText = $this->getFalsePositivePageTitleText( $isMultiLingualRevertRiskEnabled );
+			$falsePositivePageTitleText = Util::getFalsePositivePageTitleText( $this->config );
 			$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageTitleText );
 			if ( !$falsePositivePageTitle ) {
 				$falsePositivePageURL = "";
@@ -123,16 +121,6 @@ class TalkPageMessageSender {
 				'msg' => $msg
 			] );
 		}
-	}
-
-	/**
-	 * @param bool $isMultiLingualRevertRiskEnabled
-	 * @return mixed
-	 */
-	private function getFalsePositivePageTitleText( bool $isMultiLingualRevertRiskEnabled ): mixed {
-		return $isMultiLingualRevertRiskEnabled ?
-			$this->wikiConfig->get( "AutoModeratorMultilingualConfigFalsePositivePageTitle" ) :
-			$this->wikiConfig->get( "AutoModeratorFalsePositivePageTitle" );
 	}
 
 }

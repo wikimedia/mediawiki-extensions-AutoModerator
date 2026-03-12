@@ -20,7 +20,6 @@ use MediaWiki\User\UserGroupManager;
 class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHook {
 
 	public function __construct(
-		private readonly Config $wikiConfig,
 		private readonly UserGroupManager $userGroupManager,
 		private readonly Config $config,
 		private readonly WikiPageFactory $wikiPageFactory,
@@ -37,9 +36,10 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
 			$oresModels = $this->config->get( 'OresModels' );
+			$revertRiskModelName = Util::getRevertRiskModel( $this->config );
 
-			if ( array_key_exists( 'revertrisklanguageagnostic', $oresModels ) &&
-				$oresModels[ 'revertrisklanguageagnostic' ][ 'enabled' ]
+			if ( array_key_exists( $revertRiskModelName, $oresModels ) &&
+				$oresModels[ $revertRiskModelName ][ 'enabled' ]
 			) {
 				// ORES is loaded and model is enabled; not calling the job from this hook handler
 				return;
@@ -49,12 +49,7 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 		if ( !$wikiPage || !$rev || !$user ) {
 			return;
 		}
-		$enabledConfigKey = Util::isWikiMultilingual( $this->config )
-			? "AutoModeratorMultilingualConfigEnableRevisionCheck"
-			: "AutoModeratorEnableRevisionCheck";
-		$revisionCheckEnabled = $this->wikiConfig->has( $enabledConfigKey )
-			&& $this->wikiConfig->get( $enabledConfigKey );
-		if ( !$revisionCheckEnabled ) {
+		if ( !Util::getEnableRevisionCheck( $this->config ) ) {
 			return;
 		}
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
@@ -72,7 +67,6 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 			$this->restrictionStore,
 			$this->wikiPageFactory,
 			$this->config,
-			$this->wikiConfig,
 			$rev,
 			$this->permissionManager ) ) {
 			return;

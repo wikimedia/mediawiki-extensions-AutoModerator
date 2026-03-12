@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-namespace MediaWiki\Extension\CommunityConfigurationExample\Tests\Integration;
+namespace MediaWiki\Extension\AutoModerator\Tests\Integration;
 
 use MediaWiki\Extension\CommunityConfiguration\Tests\SchemaProviderTestCase;
 
@@ -22,7 +22,6 @@ class AutoModeratorSchemaProviderTest extends SchemaProviderTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->overrideConfigValue( 'AutoModeratorEnableWikiConfig', true );
 		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', null );
 	}
 }

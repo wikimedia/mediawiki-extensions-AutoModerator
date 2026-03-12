@@ -18,7 +18,6 @@ namespace AutoModerator\Services;
 
 use AutoModerator\AutoModeratorServices;
 use AutoModerator\Util;
-use MediaWiki\Config\Config;
 use MediaWiki\JobQueue\Job;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -103,12 +102,9 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		try {
 			$services = MediaWikiServices::getInstance();
-			$autoModeratorServices = AutoModeratorServices::wrap( $services );
 			$userFactory = $services->getUserFactory();
 			$revisionStore = $services->getRevisionStore();
 			$revision = $revisionStore->getRevisionById( $this->revId );
-			$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
-			$config = $services->getMainConfig();
 			if ( !$revision ) {
 				$this->setLastError( self::NO_PARENT_REVISION_FOUND );
 				$this->setAllowRetries( false );
@@ -162,13 +158,14 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 			} else {
 				// AutoModerator hasn't added a User Talk page message this month,
 				// adding a new topic message
+				$autoModeratorServices = AutoModeratorServices::wrap( $services );
+				$config = $autoModeratorServices->getAutoModeratorConfig();
 				$talkPageMessage = wfMessage( 'automoderator-wiki-revert-message' )->params(
 					$this->autoModeratorUserName,
 					$this->rollbackRevId,
 					$this->pageTitle,
 					$this->falsePositiveReportPageTitle )->plain();
-				$isMultiLingualRevertRiskEnabled = Util::isWikiMultilingual( $config );
-				$helpPageLink = $this->getHelpPageLink( $isMultiLingualRevertRiskEnabled, $wikiConfig );
+				$helpPageLink = Util::getHelpPageLink( $config );
 				if ( $helpPageLink ) {
 					$helpPageBulletPoint = wfMessage( 'automoderator-wiki-revert-message-help-page' )->params(
 						$helpPageLink
@@ -208,16 +205,5 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 	 */
 	public function ignoreDuplicates(): bool {
 		return true;
-	}
-
-	/**
-	 * @param bool $isMultiLingualRevertRiskEnabled
-	 * @param \MediaWiki\Config\Config $wikiConfig
-	 * @return mixed
-	 */
-	private function getHelpPageLink( bool $isMultiLingualRevertRiskEnabled, Config $wikiConfig ): mixed {
-		return $isMultiLingualRevertRiskEnabled ?
-			$wikiConfig->get( 'AutoModeratorMultilingualConfigHelpPageLink' )
-			: $wikiConfig->get( 'AutoModeratorHelpPageLink' );
 	}
 }

@@ -52,8 +52,7 @@ class CheckRevision extends Maintenance {
 		$autoModeratorServices = AutoModeratorServices::wrap( $services );
 
 		$changeTagsStore = $services->getChangeTagsStore();
-		$config = $services->getMainConfig();
-		$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
+		$config = $autoModeratorServices->getAutoModeratorConfig();
 		$contentHandlerFactory = $services->getContentHandlerFactory();
 		$revisionLookup = $services->getRevisionLookup();
 		$revisionStore = $services->getRevisionStoreFactory()->getRevisionStore();
@@ -85,7 +84,6 @@ class CheckRevision extends Maintenance {
 			$restrictionStore,
 			$wikiPageFactory,
 			$config,
-			$wikiConfig,
 			$rev,
 			$permissionManager
 		) ) {
@@ -94,7 +92,6 @@ class CheckRevision extends Maintenance {
 		}
 
 		$revisionCheck = new RevisionCheck(
-			$wikiConfig,
 			$config,
 			new AutoModeratorRollback(
 				new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),
@@ -108,8 +105,7 @@ class CheckRevision extends Maintenance {
 				$wikiPageFactory->newFromID( $wikiPageId ),
 				$autoModeratorUser->getUser(),
 				$rev->getUser(),
-				$config,
-				$wikiConfig
+				$config
 			)
 		);
 
@@ -117,7 +113,7 @@ class CheckRevision extends Maintenance {
 		$score = [];
 		switch ( $this->getOption( 'client', 'liftwing' ) ) {
 			case 'liftwing':
-				$liftWingClient = Util::initializeLiftWingClient( $config, $wikiConfig );
+				$liftWingClient = Util::initializeLiftWingClient( $config );
 				$score = $liftWingClient->get( $rev->getId() );
 				break;
 			case 'testfail':
@@ -153,7 +149,7 @@ class CheckRevision extends Maintenance {
 			default:
 				break;
 		}
-		$revertRiskModelName = Util::getRevertRiskModel( $config, $wikiConfig );
+		$revertRiskModelName = Util::getRevertRiskModel( $config );
 		$reverted = json_encode( $revisionCheck->maybeRollback( $score, $revertRiskModelName ),
 			JSON_FORCE_OBJECT,
 			JSON_PRETTY_PRINT );

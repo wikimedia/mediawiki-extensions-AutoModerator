@@ -36,8 +36,6 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 			MainConfigNames::DisableAnonTalk => true,
 		] );
 
-		$wikiConfig = new HashConfig();
-
 		$expectedContentAfterRollback = 'any new text';
 		$mediaWikiServices
 			->getPageUpdaterFactory()
@@ -76,7 +74,6 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 			self::getTestSysop()->getUser(),
 			self::getTestUser()->getUser(),
 			$config,
-			$wikiConfig,
 		);
 
 		$rollbackPage->rollback();
@@ -97,8 +94,6 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 			MainConfigNames::UseRCPatrol => true,
 			MainConfigNames::DisableAnonTalk => true,
 		] );
-
-		$wikiConfig = new HashConfig();
 
 		$contentAfterRollback = 'any new text';
 		$mediaWikiServices
@@ -139,7 +134,6 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 			self::getTestUser()->getUser(),
 			self::getTestSysop()->getUser(),
 			$config,
-			$wikiConfig,
 		);
 
 		$rollbackPage->rollback();

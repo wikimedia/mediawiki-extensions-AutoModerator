@@ -1,74 +1,28 @@
 <?php
 
 use AutoModerator\AutoModeratorServices;
-use AutoModerator\Config\AutoModeratorWikiConfigLoader;
-use AutoModerator\Config\Validation\ConfigValidatorFactory;
-use AutoModerator\Config\WikiPageConfig;
-use AutoModerator\Config\WikiPageConfigLoader;
 use AutoModerator\TalkPageMessageSender;
 use MediaWiki\Config\Config;
-use MediaWiki\Config\GlobalVarConfig;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 
 /**
  * @codeCoverageIgnore
+ * @phpcs-require-sorted-array
  */
 return [
 
 	'AutoModeratorConfig' => static function ( MediaWikiServices $services ): Config {
-		return $services->getConfigFactory()->makeConfig( 'AutoModerator' );
-	},
-
-	'AutoModeratorWikiConfigLoader' => static function ( MediaWikiServices $services ): Config {
-		$autoModeratorServices = AutoModeratorServices::wrap( $services );
-		return new AutoModeratorWikiConfigLoader(
-			$autoModeratorServices->getWikiPageConfig(),
-			GlobalVarConfig::newInstance()
-		);
-	},
-
-	'AutoModeratorConfigValidatorFactory' => static function (
-		MediaWikiServices $services
-	): ConfigValidatorFactory {
-		return new ConfigValidatorFactory(
-			$services->getTitleFactory()
-		);
-	},
-
-	'AutoModeratorWikiPageConfig' => static function ( MediaWikiServices $services ): Config {
-		$autoModeratorServices = AutoModeratorServices::wrap( $services );
-		return new WikiPageConfig(
-			LoggerFactory::getInstance( 'AutoModerator' ),
-			$services->getTitleFactory(),
-			$autoModeratorServices->getWikiPageConfigLoader(),
-			defined( 'MW_PHPUNIT_TEST' ) && $services->isStorageDisabled()
-		);
-	},
-
-	'AutoModeratorWikiPageConfigLoader' => static function (
-		MediaWikiServices $services
-	): WikiPageConfigLoader {
-		return new WikiPageConfigLoader(
-			$services->getMainWANObjectCache(),
-			AutoModeratorServices::wrap( $services )
-				->getWikiPageConfigValidatorFactory(),
-			$services->getHttpRequestFactory(),
-			$services->getRevisionLookup(),
-			$services->getTitleFactory(),
-			$services->getUrlUtils(),
-			defined( 'MW_PHPUNIT_TEST' ) && $services->isStorageDisabled()
-		);
+		return $services->getService( 'CommunityConfiguration.MediaWikiConfigRouter' );
 	},
 
 	'AutoModeratorTalkPageMessageSender' => static function ( MediaWikiServices $services ) {
 		$autoModeratorServices = AutoModeratorServices::wrap( $services );
 		return new TalkPageMessageSender(
 			$services->getRevisionStore(),
-			$services->getMainConfig(),
-			$autoModeratorServices->getAutoModeratorWikiConfig(),
+			$autoModeratorServices->getAutoModeratorConfig(),
 			$services->getJobQueueGroup(),
 			$services->getTitleFactory()
 		);
 	},
+
 ];

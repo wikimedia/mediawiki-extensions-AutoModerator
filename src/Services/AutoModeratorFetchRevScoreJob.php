@@ -75,11 +75,10 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	public function run(): bool {
 		$services = MediaWikiServices::getInstance();
 		$autoModeratorServices = AutoModeratorServices::wrap( $services );
+		$config = $autoModeratorServices->getAutoModeratorConfig();
 		$wikiPageFactory = $services->getWikiPageFactory();
 		$revisionStore = $services->getRevisionStore();
 		$userGroupManager = $services->getUserGroupManager();
-		$config = $services->getMainConfig();
-		$wikiConfig = $autoModeratorServices->getAutoModeratorWikiConfig();
 		$connectionProvider = $services->getConnectionProvider();
 		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
 		$wikiId = Util::getWikiID( $config );
@@ -99,9 +98,8 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$this->params['userId'],
 				$this->params['userName']
 			);
-			$isWikiMultilingual = Util::isWikiMultilingual( $config );
-			$maxReverts = $this->getMaxReverts( $isWikiMultilingual, $wikiConfig );
-			if ( $this->getMaxRevertsEnabled( $isWikiMultilingual, $wikiConfig ) && $maxReverts ) {
+			$maxReverts = Util::getMaxReverts( $config );
+			if ( Util::getMaxRevertsEnabled( $config ) && $maxReverts ) {
 				$autoModeratorRevisionStore = new AutoModeratorRevisionStore(
 					$connectionProvider->getReplicaDatabase(),
 					$user,
@@ -117,7 +115,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			}
 			$response = false;
 			// Model name defaults to language-agnostic model name
-			$revertRiskModelName = Util::getRevertRiskModel( $config, $wikiConfig );
+			$revertRiskModelName = 'revertrisklanguageagnostic';
 			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
 				$oresModels = $config->get( 'OresModels' );
 
@@ -130,7 +128,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 			if ( !$response ) {
 				// ORES is not loaded, or a score couldn't be retrieved from the extension
-				$response = $this->getLiftWingRevScore( $config, $wikiConfig );
+				$response = $this->getLiftWingRevScore( $config );
 			}
 			if ( !$response ) {
 				$error = "score could not be retrieved for {$this->revId}";
@@ -140,7 +138,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				return false;
 			}
 			$revisionCheck = new RevisionCheck(
-				$wikiConfig,
 				$config,
 				new AutoModeratorRollback(
 					new ServiceOptions( AutoModeratorRollback::CONSTRUCTOR_OPTIONS, $config ),
@@ -154,8 +151,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 					$wikiPageFactory->newFromID( $this->wikiPageId ),
 					$autoModeratorUser->getUser(),
 					$user,
-					$config,
-					$wikiConfig
+					$config
 				),
 				true
 			);
@@ -201,11 +197,10 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	/**
 	 * Obtains a score from LiftWing API
 	 * @param Config $config
-	 * @param Config $wikiConfig
 	 * @return array|false
 	 */
-	private function getLiftWingRevScore( Config $config, Config $wikiConfig ) {
-		$liftWingClient = Util::initializeLiftWingClient( $config, $wikiConfig );
+	private function getLiftWingRevScore( Config $config ) {
+		$liftWingClient = Util::initializeLiftWingClient( $config );
 		$response = $liftWingClient->get( $this->revId );
 		$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
 		if ( isset( $response['errorMessage'] ) ) {
@@ -279,28 +274,6 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 */
 	public function ignoreDuplicates(): bool {
 		return true;
-	}
-
-	/**
-	 * @param bool $isMultiLingualRevertRiskEnabled
-	 * @param Config $wikiConfig
-	 * @return mixed
-	 */
-	private function getMaxReverts( bool $isMultiLingualRevertRiskEnabled, Config $wikiConfig ): mixed {
-		return $isMultiLingualRevertRiskEnabled ?
-			$wikiConfig->get( "AutoModeratorMultilingualConfigUserRevertsPerPage" ) :
-			$wikiConfig->get( 'AutoModeratorUserRevertsPerPage' );
-	}
-
-	/**
-	 * @param bool $isMultiLingualRevertRiskEnabled
-	 * @param Config $wikiConfig
-	 * @return mixed
-	 */
-	private function getMaxRevertsEnabled( bool $isMultiLingualRevertRiskEnabled, Config $wikiConfig ): mixed {
-		return $isMultiLingualRevertRiskEnabled ?
-			$wikiConfig->get( 'AutoModeratorMultilingualConfigEnableUserRevertsPerPage' ) :
-			$wikiConfig->get( 'AutoModeratorEnableUserRevertsPerPage' );
 	}
 
 }

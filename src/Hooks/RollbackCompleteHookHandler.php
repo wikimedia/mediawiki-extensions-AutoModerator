@@ -15,7 +15,6 @@ use MediaWiki\User\UserIdentityUtils;
 
 class RollbackCompleteHookHandler implements RollbackCompleteHook {
 	public function __construct(
-		private readonly Config $wikiConfig,
 		private readonly UserGroupManager $userGroupManager,
 		private readonly Config $config,
 		private readonly TalkPageMessageSender $talkPageMessageSender,
@@ -46,13 +45,8 @@ class RollbackCompleteHookHandler implements RollbackCompleteHook {
 	}
 
 	private function shouldSendTalkPageMessage( RevisionRecord $current ): bool {
-		$isMultilingualRevertRiskEnabled = Util::isWikiMultilingual( $this->config );
-		$isMessageEnabled = $isMultilingualRevertRiskEnabled ?
-			$this->wikiConfig->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' ) :
-			$this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageEnabled' );
-		$isMessageRegisteredUsersOnly = $isMultilingualRevertRiskEnabled ?
-			$this->wikiConfig->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly' ) :
-			$this->wikiConfig->get( 'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' );
+		$isMessageEnabled = Util::getRevertTalkPageMessageEnabled( $this->config );
+		$isMessageRegisteredUsersOnly = Util::getRevertTalkPageMessageRegisteredUsersOnly( $this->config );
 		$isCurrentUserNamed = $this->userIdentityUtils->isNamed( $current->getUser() );
 
 		return $isMessageEnabled && ( $isCurrentUserNamed || !$isMessageRegisteredUsersOnly );

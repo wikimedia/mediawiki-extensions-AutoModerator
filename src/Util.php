@@ -67,14 +67,13 @@ class Util {
 	/**
 	 * Returns the revert risk model the revision will be scored from
 	 * @param Config $config
-	 * @param Config $wikiConfig
 	 * @return string
 	 */
-	public static function getRevertRiskModel( Config $config, Config $wikiConfig ) {
+	public static function getRevertRiskModel( Config $config ) {
 		$languageAgnosticModel = self::getORESLanguageAgnosticModelName();
 		$multiLingualModel = self::getORESMultiLingualModelName();
 
-		$isLanguageModelEnabledConfig = self::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
+		$isLanguageModelEnabledConfig = self::isMultiLingualRevertRiskEnabled( $config );
 
 		// Check if a multilingual configuration exists and is enabled
 		if ( $isLanguageModelEnabledConfig ) {
@@ -172,28 +171,27 @@ class Util {
 
 	/**
 	 * @param Config $config
-	 * @param Config $wikiConfig
 	 * @return float An AutoModeratorRevertProbability threshold  will be chosen depending on the model
 	 */
-	public static function getRevertThreshold( Config $config, Config $wikiConfig ): float {
+	public static function getRevertThreshold( Config $config ): float {
 		if ( self::isWikiMultilingual( $config ) ) {
-			return self::getMultiLingualThreshold( $wikiConfig );
+			return self::getMultiLingualThreshold( $config );
 		} else {
-			$cautionLevel = $wikiConfig->get( 'AutoModeratorCautionLevel' );
+			$cautionLevel = $config->get( 'AutoModeratorCautionLevel' );
 			return self::getCautionLevel( $cautionLevel );
 		}
 	}
 
 	/**
 	 * Returns the revert risk model the revision will be scored from
-	 * @param Config $wikiConfig
+	 * @param Config $config
 	 * @return float
 	 */
-	public static function getMultiLingualThreshold( Config $wikiConfig ) {
-		if ( $wikiConfig->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' ) ) {
-			return $wikiConfig->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' );
+	public static function getMultiLingualThreshold( Config $config ) {
+		if ( $config->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' ) ) {
+			return $config->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' );
 		}
-		$cautionLevel = $wikiConfig->get( 'AutoModeratorMultilingualConfigCautionLevel' );
+		$cautionLevel = $config->get( 'AutoModeratorMultilingualConfigCautionLevel' );
 		return self::getCautionLevel( $cautionLevel );
 	}
 
@@ -205,7 +203,8 @@ class Util {
 	 * @return bool
 	 */
 	public static function isWikiMultilingual( Config $config ): bool {
-		return $config->get( 'AutoModeratorMultiLingualRevertRisk' );
+		return $config->has( 'AutoModeratorMultiLingualRevertRisk' ) &&
+			$config->get( 'AutoModeratorMultiLingualRevertRisk' );
 	}
 
 	/**
@@ -213,22 +212,125 @@ class Util {
 	 * See: https://meta.wikimedia.org/wiki/Machine_learning_models/Production/Multilingual_revert_risk#Motivation
 	 * for more information
 	 * @param Config $config
-	 * @param Config $wikiConfig
 	 * @return bool
 	 */
-	public static function isMultiLingualRevertRiskEnabled( Config $config, Config $wikiConfig ): bool {
-		return $wikiConfig->get( 'AutoModeratorMultilingualConfigEnableMultilingual' ) &&
-			self::isWikiMultilingual( $config )
-			&& !$wikiConfig->get( 'AutoModeratorMultilingualConfigEnableLanguageAgnostic' );
+	public static function isMultiLingualRevertRiskEnabled( Config $config ): bool {
+		return self::isWikiMultilingual( $config ) &&
+			(
+				$config->has( 'AutoModeratorMultilingualConfigEnableMultilingual' ) &&
+				$config->get( 'AutoModeratorMultilingualConfigEnableMultilingual' )
+			) && (
+				!$config->has( 'AutoModeratorMultilingualConfigEnableLanguageAgnostic' ) ||
+				$config->get( 'AutoModeratorMultilingualConfigEnableLanguageAgnostic' ) !== true
+			);
 	}
 
 	/**
 	 * @param Config $config
-	 * @param Config $wikiConfig
+	 * @return mixed
+	 */
+	public static function getFalsePositivePageTitleText( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigFalsePositivePageTitle' ) :
+			$config->get( 'AutoModeratorFalsePositivePageTitle' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getMaxRevertsEnabled( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigEnableUserRevertsPerPage' ) :
+			$config->get( 'AutoModeratorEnableUserRevertsPerPage' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getMaxReverts( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigUserRevertsPerPage' ) :
+			$config->get( 'AutoModeratorUserRevertsPerPage' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getSkipUserRights( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigSkipUserRights' ) :
+			$config->get( 'AutoModeratorSkipUserRights' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getUseEditFlagMinor( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigUseEditFlagMinor' ) :
+			$config->get( 'AutoModeratorUseEditFlagMinor' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getEnableBotFlag( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigEnableBotFlag' ) :
+			$config->get( 'AutoModeratorEnableBotFlag' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getHelpPageLink( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigHelpPageLink' ) :
+			$config->get( 'AutoModeratorHelpPageLink' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getRevertTalkPageMessageEnabled( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' ) :
+			$config->get( 'AutoModeratorRevertTalkPageMessageEnabled' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getRevertTalkPageMessageRegisteredUsersOnly( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly' ) :
+			$config->get( 'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' );
+	}
+
+	/**
+	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getEnableRevisionCheck( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualConfigEnableRevisionCheck' ) :
+			$config->get( 'AutoModeratorEnableRevisionCheck' );
+	}
+
+	/**
+	 * @param Config $config
 	 * @return LiftWingClient
 	 */
-	public static function initializeLiftWingClient( Config $config, Config $wikiConfig ): LiftWingClient {
-		$isMultiLingualModelEnabled = self::isMultiLingualRevertRiskEnabled( $config, $wikiConfig );
+	public static function initializeLiftWingClient( Config $config ): LiftWingClient {
+		$isMultiLingualModelEnabled = self::isMultiLingualRevertRiskEnabled( $config );
 		if ( $isMultiLingualModelEnabled ) {
 			$model = 'revertrisk-multilingual';
 			$hostHeaderKey = 'AutoModeratorLiftWingMultiLingualRevertRiskHostHeader';

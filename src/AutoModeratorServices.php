@@ -2,9 +2,6 @@
 
 namespace AutoModerator;
 
-use AutoModerator\Config\Validation\ConfigValidatorFactory;
-use AutoModerator\Config\WikiPageConfig;
-use AutoModerator\Config\WikiPageConfigLoader;
 use MediaWiki\Config\Config;
 use MediaWiki\MediaWikiServices;
 
@@ -34,33 +31,5 @@ class AutoModeratorServices {
 	 */
 	public function getAutoModeratorConfig(): Config {
 		return $this->coreServices->get( 'AutoModeratorConfig' );
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 */
-	public function getAutoModeratorWikiConfig(): Config {
-		return $this->coreServices->get( 'AutoModeratorWikiConfigLoader' );
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 */
-	public function getWikiPageConfig(): WikiPageConfig {
-		return $this->coreServices->get( 'AutoModeratorWikiPageConfig' );
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 */
-	public function getWikiPageConfigLoader(): WikiPageConfigLoader {
-		return $this->coreServices->get( 'AutoModeratorWikiPageConfigLoader' );
-	}
-
-	/**
-	 * @codeCoverageIgnore
-	 */
-	public function getWikiPageConfigValidatorFactory(): ConfigValidatorFactory {
-		return $this->coreServices->get( 'AutoModeratorConfigValidatorFactory' );
 	}
 }

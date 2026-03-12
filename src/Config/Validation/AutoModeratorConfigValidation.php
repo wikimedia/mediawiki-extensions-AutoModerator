@@ -1,244 +1,169 @@
 <?php
-
+declare( strict_types = 1 );
 namespace AutoModerator\Config\Validation;
 
-use AutoModerator\Config\AutoModeratorWikiConfigLoader;
-use InvalidArgumentException;
+use Iterator;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Extension\CommunityConfiguration\Schema\SchemaBuilder;
+use MediaWiki\Extension\CommunityConfiguration\Validation\IValidator;
+use MediaWiki\Extension\CommunityConfiguration\Validation\ValidationStatus;
+use MediaWiki\Extension\CommunityConfiguration\Validation\ValidatorFactory;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Message\Message;
-use StatusValue;
 
-/**
- * Validation class for MediaWiki:AutoModeratorConfig.json
- */
-class AutoModeratorConfigValidation implements IConfigValidator {
-	use DatatypeValidationTrait;
-
-	/**
-	 * @codeCoverageIgnore
-	 */
-	private function getConfigDescriptors(): array {
-		return [
-			'AutoModeratorEnableRevisionCheck' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorFalsePositivePageTitle' => [
-				'type' => '?string',
-			],
-			'AutoModeratorUseEditFlagMinor' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorRevertTalkPageMessageEnabled' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorRevertTalkPageMessageRegisteredUsersOnly' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorEnableBotFlag' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorSkipUserRights' => [
-				'type' => 'array'
-			],
-			'AutoModeratorCautionLevel' => [
-				'type' => 'string',
-			],
-			'AutoModeratorEnableUserRevertsPerPage' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorUserRevertsPerPage' => [
-				'type' => '?string',
-			],
-			'AutoModeratorHelpPageLink' => [
-				'type' => '?string'
-			],
-			'AutoModeratorMultilingualConfigEnableRevisionCheck' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorMultilingualConfigFalsePositivePageTitle' => [
-				'type' => '?string',
-			],
-			'AutoModeratorMultilingualConfigUseEditFlagMinor' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorMultilingualConfigRevertTalkPageMessageRegisteredUsersOnly' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorMultilingualConfigEnableBotFlag' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorMultilingualConfigSkipUserRights' => [
-				'type' => 'array'
-			],
-			'AutoModeratorMultilingualConfigCautionLevel' => [
-				'type' => 'string',
-			],
-			'AutoModeratorMultilingualConfigEnableUserRevertsPerPage' => [
-				'type' => 'bool',
-			],
-			'AutoModeratorMultilingualConfigUserRevertsPerPage' => [
-				'type' => '?string',
-			],
-			'AutoModeratorMultilingualConfigHelpPageLink' => [
-				'type' => '?string'
-			],
-			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => [
-				'type' => 'bool'
-			],
-			'AutoModeratorMultilingualConfigEnableMultilingual' => [
-				'type' => 'bool'
-			],
-			'AutoModeratorMultilingualConfigMultilingualThreshold' => [
-				'type' => '?string',
-			]
-		];
+class AutoModeratorConfigValidation implements IValidator {
+	public function __construct(
+		private readonly IValidator $jsonSchemaValidator,
+		private readonly mixed $config,
+		private readonly IContextSource $context
+	) {
 	}
 
-	/**
-	 * Validate a given field
-	 *
-	 * @param string $fieldName Name of the field to be validated
-	 * @param array $descriptor Descriptor of the field (
-	 * @param array $data
-	 * @return StatusValue
-	 */
-	private function validateField(
-		string $fieldName,
-		array $descriptor,
-		array $data
-	): StatusValue {
-		// validate is supposed to make sure $data has $field as a key,
-		// so this should not throw key errors.
-		$value = $data[$fieldName];
+	public static function factory(
+		ValidatorFactory $validatorFactory,
+		mixed $config,
+		string $jsonSchema,
+		?IContextSource $context = null
+	): self {
+		$jsonSchemaValidator = $validatorFactory->newValidator(
+			'AutoModerator',
+			'jsonschema',
+			[ $jsonSchema ],
+		);
+		$context ??= RequestContext::getMain();
+		return new self( $jsonSchemaValidator, $config, $context );
+	}
 
-		$expectedType = $descriptor['type'];
-		if ( !$this->validateFieldDatatype( $expectedType, $value ) ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-datatype-mismatch',
-				$fieldName,
-				$expectedType,
-				gettype( $value )
-			);
-		}
-
-		if ( isset( $descriptor['maxSize'] ) && count( $value ) > $descriptor['maxSize'] ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-array-toobig',
-				$fieldName,
-				Message::numParam( $descriptor['maxSize'] )
-			);
-		}
-
-		$isUserRightsField = $fieldName == "AutoModeratorSkipUserRights" ||
-			$fieldName == "AutoModeratorMultilingualConfigSkipUserRights";
-		if ( $isUserRightsField ) {
-			$allPermissions = MediaWikiServices::getInstance()->getPermissionManager()->getAllPermissions();
-			foreach ( $value as $userRight ) {
-				if ( !in_array( $userRight, $allPermissions ) ) {
-					return StatusValue::newFatal(
-						'automoderator-config-validator-userrights-not-allowed',
-						$userRight
-					);
+	/** @inheritDoc */
+	public function validateStrictly( mixed $config, ?string $version = null ): ValidationStatus {
+		$status = new ValidationStatus();
+		$data = json_decode( json_encode( $config ), true );
+		foreach ( $data as $field => $value ) {
+			$isUserRightsField = $field == "AutoModeratorSkipUserRights" ||
+				$field == "AutoModeratorMultilingualConfigSkipUserRights";
+			if ( $isUserRightsField ) {
+				$allPermissions = MediaWikiServices::getInstance()->getPermissionManager()->getAllPermissions();
+				foreach ( $value as $userRight ) {
+					if ( !in_array( $userRight, $allPermissions ) ) {
+						$status->addFatal(
+							$field,
+							"/$field",
+							$this->context->msg(
+								'automoderator-config-validator-userrights-not-allowed',
+								$userRight
+							)->text(),
+						);
+					}
 				}
 			}
-		}
 
-		$isUserRevertsPerPageField = $fieldName == "AutoModeratorUserRevertsPerPage" ||
-			$fieldName == "AutoModeratorMultilingualConfigUserRevertsPerPage";
-		if ( $isUserRevertsPerPageField && $value && !is_numeric( $value ) ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-user-reverts-per-page-not-number',
-				$value
-			);
-		}
-
-		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value && !is_numeric( $value ) ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-multilingual-threshold-not-number',
-				$value
-			);
-		}
-
-		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold" &&
-			$data['AutoModeratorMultilingualConfigEnableMultilingual'] &&
-			( $value < 0.850 || $value > 0.999 ) ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-multilingual-threshold-value-outside-range',
-				$value
-			);
-		}
-		if ( $fieldName == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value &&
-			!$data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-multilingual-threshold-multilingual-not-enabled',
-				$value
-			);
-		}
-
-		if ( $fieldName == "AutoModeratorMultilingualConfigEnableLanguageAgnostic" && $value
-			&& $data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-multilingual-select-only-one-model',
-				$value
-			);
-		}
-
-		if ( $fieldName == "AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled" && $value
-			&& !$data['AutoModeratorMultilingualConfigFalsePositivePageTitle'] ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled',
-				$value
-			);
-		}
-
-		if ( $fieldName == "AutoModeratorRevertTalkPageMessageEnabled" && $value
-			&& !$data['AutoModeratorFalsePositivePageTitle'] ) {
-			return StatusValue::newFatal(
-				'automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled',
-				$value
-			);
-		}
-
-		return StatusValue::newGood();
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function validate( array $data ): StatusValue {
-		$status = StatusValue::newGood();
-		foreach ( $this->getConfigDescriptors() as $field => $descriptor ) {
-			if ( !array_key_exists( $field, $data ) ) {
-				// No need to validate something we're not setting
-				continue;
+			$isUserRevertsPerPageField = $field == "AutoModeratorUserRevertsPerPage" ||
+				$field == "AutoModeratorMultilingualConfigUserRevertsPerPage";
+			if ( $isUserRevertsPerPageField && $value && !is_numeric( $value ) ) {
+				$status->addFatal(
+					$field,
+					"/$field",
+					$this->context->msg( 'automoderator-config-validator-user-reverts-per-page-not-number' )->text(),
+				);
 			}
 
-			$status->merge( $this->validateField( $field, $descriptor, $data ) );
+			if ( $field == "AutoModeratorMultilingualConfigMultilingualThreshold" &&
+				$value && !is_numeric( $value ) ) {
+				$status->addFatal(
+					$field,
+					"/$field",
+					$this->context->msg( 'automoderator-config-validator-multilingual-threshold-not-number' )->text(),
+				);
+			}
+
+			if ( $field == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value !== '' &&
+				( $value < 0.850 || $value > 0.999 ) ) {
+				$status->addFatal(
+					$field,
+					"/$field",
+					$this->context->msg(
+						'automoderator-config-validator-multilingual-threshold-value-outside-range'
+					)->text(),
+				);
+			}
+			if ( $field == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value &&
+				(
+					!array_key_exists( 'AutoModeratorMultilingualConfigEnableMultilingual', $data ) ||
+					!$data['AutoModeratorMultilingualConfigEnableMultilingual']
+				)
+			) {
+				$status->addFatal(
+					$field,
+					"/$field",
+					$this->context->msg(
+						'automoderator-config-validator-multilingual-threshold-multilingual-not-enabled'
+					)->text(),
+				);
+			}
+
+			if ( $field == "AutoModeratorMultilingualConfigEnableLanguageAgnostic" && $value
+				&& $data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
+				$status->addFatal(
+					$field,
+					"/$field",
+					$this->context->msg(
+						'automoderator-config-validator-multilingual-select-only-one-model'
+					)->text(),
+				);
+			}
+
+			if ( $field == "AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled" && $value
+				&& !$data['AutoModeratorMultilingualConfigFalsePositivePageTitle'] ) {
+				$status->addFatal(
+					$field,
+					"/$field",
+					$this->context->msg(
+						'automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled'
+					)->text(),
+				);
+			}
+
+			if ( $field == "AutoModeratorRevertTalkPageMessageEnabled" && $value
+				&& !$data['AutoModeratorFalsePositivePageTitle'] ) {
+				$status->addFatal(
+					$field,
+					"/$field",
+					$this->context->msg(
+						'automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled'
+					)->text(),
+				);
+			}
 		}
 
+		// Validate the config against the JSON schema
+		// This will add any validation errors to the response
+		$status->merge( $this->jsonSchemaValidator->validateStrictly( $config, $version ) );
 		return $status;
 	}
 
-	/**
-	 * @inheritDoc
-	 * @codeCoverageIgnore
-	 */
-	public function validateVariable( string $variable, $value ): void {
-		if ( !in_array( $variable, AutoModeratorWikiConfigLoader::ALLOW_LIST ) ) {
-			throw new InvalidArgumentException(
-				'Invalid attempt to set a variable via WikiPageConfigWriter'
-			);
-		}
+	/** @inheritDoc */
+	public function validatePermissively( $config, ?string $version = null ): ValidationStatus {
+		$configArray = json_decode( json_encode( $config ), true );
+		return $this->jsonSchemaValidator->validatePermissively( $config, $version );
 	}
 
-	/**
-	 * @inheritDoc
-	 * @codeCoverageIgnore
-	 */
-	public function getDefaultContent(): array {
-		return [];
+	/** @inheritDoc */
+	public function areSchemasSupported(): bool {
+		return $this->jsonSchemaValidator->areSchemasSupported();
+	}
+
+	/** @inheritDoc */
+	public function getSchemaBuilder(): SchemaBuilder {
+		return $this->jsonSchemaValidator->getSchemaBuilder();
+	}
+
+	/** @inheritDoc */
+	public function getSchemaIterator(): Iterator {
+		return $this->jsonSchemaValidator->getSchemaIterator();
+	}
+
+	/** @inheritDoc */
+	public function getSchemaVersion(): ?string {
+		return $this->jsonSchemaValidator->getSchemaVersion();
 	}
 }

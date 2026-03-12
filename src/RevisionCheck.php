@@ -37,9 +37,6 @@ use StatusValue;
 class RevisionCheck {
 
 	/** @var Config */
-	private Config $wikiConfig;
-
-	/** @var Config */
 	private Config $config;
 
 	/** @var bool */
@@ -49,18 +46,15 @@ class RevisionCheck {
 	private AutoModeratorRollback $rollbackPage;
 
 	/**
-	 * @param Config $wikiConfig
 	 * @param Config $config
 	 * @param AutoModeratorRollback $rollbackPage
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
-		Config $wikiConfig,
 		Config $config,
 		AutoModeratorRollback $rollbackPage,
 		bool $enforce = false
 	) {
-		$this->wikiConfig = $wikiConfig;
 		$this->config = $config;
 		$this->enforce = $enforce;
 		$this->rollbackPage = $rollbackPage;
@@ -85,14 +79,13 @@ class RevisionCheck {
 	 * @param RestrictionStore $restrictionStore
 	 * @param WikiPageFactory $wikiPageFactory
 	 * @param Config $config
-	 * @param Config $wikiConfig
 	 * @param RevisionRecord $rev
 	 * @param PermissionManager $permissionManager
 	 * @return bool
 	 */
 	public static function revertPreCheck( UserIdentity $user, User $autoModeratorUser, LoggerInterface $logger,
 		RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore, WikiPageFactory $wikiPageFactory,
-		Config $config, Config $wikiConfig, RevisionRecord $rev, PermissionManager $permissionManager
+		Config $config, RevisionRecord $rev, PermissionManager $permissionManager
 	): bool {
 		$wikiPageId = $rev->getPageId();
 		// Skips reverts if AutoModerator is blocked
@@ -150,7 +143,7 @@ class RevisionCheck {
 			}
 		}
 		// Skip edits from editors that have certain user rights
-		if ( self::shouldSkipUser( $permissionManager, $user, $wikiConfig, $config ) ) {
+		if ( self::shouldSkipUser( $permissionManager, $user, $config ) ) {
 			$logger->debug( __METHOD__ . ': AutoModerator skip rev - trusted user rights edits' );
 			return false;
 		}
@@ -192,7 +185,7 @@ class RevisionCheck {
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		// Check if the threshold should be taken from the language-agnostic
 		// or the multilingual model based on what model was chosen in the job
-		if ( $probability > Util::getRevertThreshold( $this->config, $this->wikiConfig ) ) {
+		if ( $probability > Util::getRevertThreshold( $this->config ) ) {
 			if ( $this->enforce ) {
 				$pageRollbackStatus = $this->doRollback();
 				if ( !$pageRollbackStatus->isOK() ) {
@@ -220,15 +213,12 @@ class RevisionCheck {
 	/**
 	 * @param PermissionManager $permissionManager
 	 * @param UserIdentity $user
-	 * @param Config $wikiConfig
+	 * @param Config $config
 	 * @return bool
 	 */
 	public static function shouldSkipUser( PermissionManager $permissionManager,
-		UserIdentity $user, Config $wikiConfig, Config $config ): bool {
-			$isMultiLingualRevertRiskEnabled = Util::isWikiMultilingual( $config );
-		$userRightsToSkip = $isMultiLingualRevertRiskEnabled ?
-			$wikiConfig->get( "AutoModeratorMultilingualConfigSkipUserRights" ) :
-			$wikiConfig->get( 'AutoModeratorSkipUserRights' );
+		UserIdentity $user, Config $config ): bool {
+		$userRightsToSkip = Util::getSkipUserRights( $config );
 		return $permissionManager->userHasAnyRight(
 				$user, ...(array)$userRightsToSkip
 			);

@@ -2,8 +2,6 @@
 
 namespace AutoModerator\Tests\Hooks;
 
-use AutoModerator\Config\AutoModeratorWikiConfigLoader;
-use AutoModerator\Config\WikiPageConfig;
 use AutoModerator\Hooks;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
@@ -28,24 +26,13 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$services = $this->getServiceContainer();
 		$jobQueueGroup = $services->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserRights' => [],
-				'AutoModeratorFalsePositivePageTitle' => 'Test False Positive',
-			] )
-		);
 		$config = new HashConfig( [
-			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorSkipUserRights' => [],
 			'AutoModeratorFalsePositivePageTitle' => 'Test False Positive',
+			'AutoModeratorWikiId' => 'enwiki',
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 
@@ -65,9 +52,7 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 
 		$this->setUserLang( "qqx" );
 		$links = [];
-		( new Hooks(
-			$autoModWikiConfig, $userGroupManager, $config, $mockTitleFactory
-			)
+		( new Hooks( $userGroupManager, $config, $mockTitleFactory )
 		)->onHistoryTools(
 			$revRecord,
 			$links,
@@ -85,24 +70,13 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$services = $this->getServiceContainer();
 		$jobQueueGroup = $services->getJobQueueGroup();
 		$jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->delete();
-		$wikiConfig = $this->createMock( WikiPageConfig::class );
-		$wikiConfig->expects( $this->never() )->method( 'getWithFlags' );
-		$autoModWikiConfig = new AutoModeratorWikiConfigLoader(
-			$wikiConfig,
-			new HashConfig( [
-				'AutoModeratorEnableWikiConfig' => true,
-				'AutoModeratorEnableRevisionCheck' => true,
-				'AutoModeratorUsername' => 'AutoModerator',
-				'AutoModeratorSkipUserRights' => [],
-				'AutoModeratorFalsePositivePageTitle' => null,
-			] )
-		);
 		$config = new HashConfig( [
-			'AutoModeratorEnableWikiConfig' => true,
 			'AutoModeratorEnableRevisionCheck' => true,
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			'AutoModeratorUsername' => 'AutoModerator',
-			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorSkipUserRights' => [],
 			'AutoModeratorFalsePositivePageTitle' => null,
+			'AutoModeratorWikiId' => 'enwiki',
 		] );
 		$userGroupManager = $this->createMock( UserGroupManager::class );
 
@@ -119,7 +93,7 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->setUserLang( "qqx" );
 		$links = [];
 		( new Hooks(
-			$autoModWikiConfig, $userGroupManager, $config, $mockTitleFactory
+			$userGroupManager, $config, $mockTitleFactory
 			)
 		)->onHistoryTools(
 			$revRecord,
