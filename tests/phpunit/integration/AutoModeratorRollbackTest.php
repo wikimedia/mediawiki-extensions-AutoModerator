@@ -20,7 +20,6 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->markTestSkipped( "" );
 	}
 
 	/**
@@ -34,7 +33,10 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 		$config = new HashConfig( [
 			MainConfigNames::UseRCPatrol => true,
 			MainConfigNames::DisableAnonTalk => true,
-		] );
+			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorUseEditFlagMinor' => false,
+			'AutoModeratorEnableBotFlag' => false
+			] );
 
 		$expectedContentAfterRollback = 'any new text';
 		$mediaWikiServices
@@ -93,6 +95,9 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 		$config = new HashConfig( [
 			MainConfigNames::UseRCPatrol => true,
 			MainConfigNames::DisableAnonTalk => true,
+			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorUseEditFlagMinor' => false,
+			'AutoModeratorEnableBotFlag' => false
 		] );
 
 		$contentAfterRollback = 'any new text';
