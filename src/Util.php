@@ -20,18 +20,10 @@
 namespace AutoModerator;
 
 use MediaWiki\Config\Config;
-use MediaWiki\Context\RequestContext;
 use MediaWiki\Http\HttpRequestFactory;
-use MediaWiki\Json\FormatJson;
-use MediaWiki\Linker\LinkTarget;
-use MediaWiki\Logger\LoggerFactory;
-use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
-use MediaWiki\Utils\UrlUtils;
 use MediaWiki\WikiMap\WikiMap;
-use RuntimeException;
-use StatusValue;
 use UnexpectedValueException;
 
 class Util {
@@ -70,16 +62,11 @@ class Util {
 	 * @return string
 	 */
 	public static function getRevertRiskModel( Config $config ) {
-		$languageAgnosticModel = self::getORESLanguageAgnosticModelName();
-		$multiLingualModel = self::getORESMultiLingualModelName();
-
-		$isLanguageModelEnabledConfig = self::isMultiLingualRevertRiskEnabled( $config );
-
 		// Check if a multilingual configuration exists and is enabled
-		if ( $isLanguageModelEnabledConfig ) {
-			return $multiLingualModel;
+		if ( self::isMultiLingualRevertRiskEnabled( $config ) ) {
+			return self::getORESMultiLingualModelName();
 		} else {
-			return $languageAgnosticModel;
+			return self::getORESLanguageAgnosticModelName();
 		}
 	}
 
@@ -104,69 +91,6 @@ class Util {
 			$userGroupManager->addUserToGroup( $autoModeratorUser, 'bot' );
 		}
 		return $autoModeratorUser;
-	}
-
-	/**
-	 * Fetch JSON data from a remote URL, parse it and return the results.
-	 * @param HttpRequestFactory $requestFactory
-	 * @param string $url
-	 * @param bool $isSameFarm Is the URL on the same wiki farm we are making the request from?
-	 * @return StatusValue A status object with the parsed JSON value, or any errors.
-	 *   (Warnings coming from the HTTP library will be logged and not included here.)
-	 */
-	public static function getJsonUrl(
-		HttpRequestFactory $requestFactory, $url, $isSameFarm = false
-	): StatusValue {
-		$options = [
-			'method' => 'GET',
-			'userAgent' => $requestFactory->getUserAgent() . ' AutoModerator',
-		];
-		if ( $isSameFarm ) {
-			$options['originalRequest'] = RequestContext::getMain()->getRequest();
-		}
-		$request = $requestFactory->create( $url, $options, __METHOD__ );
-		$status = $request->execute();
-		if ( $status->isOK() ) {
-			$status->merge( FormatJson::parse( $request->getContent(), FormatJson::FORCE_ASSOC ), true );
-		}
-		// Log warnings here. The caller is expected to handle errors so do not double-log them.
-		[ $errorStatus, $warningStatus ] = $status->splitByErrorType();
-		if ( !$warningStatus->isGood() ) {
-			// @todo replace 'en' with correct language configuration
-			LoggerFactory::getInstance( 'AutoModerator' )->warning(
-				$warningStatus->getWikiText( false, false, 'en' ),
-				[ 'exception' => new RuntimeException ]
-			);
-		}
-		return $errorStatus;
-	}
-
-	/**
-	 * Get the action=raw URL for a (probably remote) title.
-	 * Normal title methods would return nice URLs, which are usually disallowed for action=raw.
-	 * We assume both wikis use the same URL structure.
-	 * @param LinkTarget $title
-	 * @param TitleFactory $titleFactory
-	 * @return string
-	 */
-	public static function getRawUrl(
-		LinkTarget $title,
-		TitleFactory $titleFactory,
-		UrlUtils $urlUtils
-	): string {
-		// Use getFullURL to get the interwiki domain.
-		$url = $titleFactory->newFromLinkTarget( $title )->getFullURL();
-		$parts = $urlUtils->parse( (string)$urlUtils->expand( $url, PROTO_CANONICAL ) );
-		if ( !$parts ) {
-			throw new UnexpectedValueException( 'URL is expected to be valid' );
-		}
-		$baseUrl = $parts['scheme'] . $parts['delimiter'] . $parts['host'];
-		if ( isset( $parts['port'] ) && $parts['port'] ) {
-			$baseUrl .= ':' . $parts['port'];
-		}
-
-		$localPageTitle = $titleFactory->makeTitle( $title->getNamespace(), $title->getDBkey() );
-		return $baseUrl . $localPageTitle->getLocalURL( [ 'action' => 'raw' ] );
 	}
 
 	/**
@@ -336,12 +260,15 @@ class Util {
 	}
 
 	/**
+	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param Config $config
 	 * @return LiftWingClient
 	 */
-	public static function initializeLiftWingClient( Config $config ): LiftWingClient {
-		$isMultiLingualModelEnabled = self::isMultiLingualRevertRiskEnabled( $config );
-		if ( $isMultiLingualModelEnabled ) {
+	public static function initializeLiftWingClient(
+		HttpRequestFactory $httpRequestFactory,
+		Config $config
+	): LiftWingClient {
+		if ( self::isMultiLingualRevertRiskEnabled( $config ) ) {
 			$model = 'revertrisk-multilingual';
 			$hostHeaderKey = 'AutoModeratorLiftWingMultiLingualRevertRiskHostHeader';
 		} else {
@@ -351,6 +278,7 @@ class Util {
 		$hostHeader = $config->get( 'AutoModeratorLiftWingAddHostHeader' ) ? $config->get( $hostHeaderKey ) : null;
 		$lang = self::getLanguageConfiguration( $config );
 		return new LiftWingClient(
+			$httpRequestFactory,
 			$model,
 			$lang,
 			$config->get( 'AutoModeratorLiftWingBaseUrl' ),

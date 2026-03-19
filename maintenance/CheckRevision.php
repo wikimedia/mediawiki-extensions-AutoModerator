@@ -54,6 +54,7 @@ class CheckRevision extends Maintenance {
 		$changeTagsStore = $services->getChangeTagsStore();
 		$config = $autoModeratorServices->getAutoModeratorConfig();
 		$contentHandlerFactory = $services->getContentHandlerFactory();
+		$httpRequestFactory = $services->getHttpRequestFactory();
 		$revisionLookup = $services->getRevisionLookup();
 		$revisionStore = $services->getRevisionStoreFactory()->getRevisionStore();
 		$userGroupManager = $services->getUserGroupManager();
@@ -113,7 +114,7 @@ class CheckRevision extends Maintenance {
 		$score = [];
 		switch ( $this->getOption( 'client', 'liftwing' ) ) {
 			case 'liftwing':
-				$liftWingClient = Util::initializeLiftWingClient( $config );
+				$liftWingClient = Util::initializeLiftWingClient( $httpRequestFactory, $config );
 				$score = $liftWingClient->get( $rev->getId() );
 				break;
 			case 'testfail':

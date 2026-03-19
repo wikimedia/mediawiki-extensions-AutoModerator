@@ -5,6 +5,7 @@ namespace AutoModerator\Tests;
 use AutoModerator\LiftWingClient;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Http\HttpRequestFactory;
 use MediaWikiUnitTestCase;
 
 /**
@@ -13,6 +14,13 @@ use MediaWikiUnitTestCase;
  * @coversDefaultClass \AutoModerator\Util
  */
 class UtilTest extends MediaWikiUnitTestCase {
+
+	/** @var HttpRequestFactory */
+	private $httpRequestFactory;
+
+	public function setUp(): void {
+		$this->httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+	}
 
 	/**
 	 * @covers ::getWikiID
@@ -110,6 +118,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$expectedModel = 'revertrisk-language-agnostic';
 		$expectedLang = 'en';
 		$expectedClient = new LiftWingClient(
+			$this->httpRequestFactory,
 			$expectedModel,
 			$expectedLang,
 			$expectedUrl
@@ -124,7 +133,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => null,
 		] );
 
-		$client = Util::initializeLiftWingClient( $config );
+		$client = Util::initializeLiftWingClient( $this->httpRequestFactory, $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -147,6 +156,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$lang = 'en';
 		$expectedHostHeader = "host-header";
 		$expectedClient = new LiftWingClient(
+			$this->httpRequestFactory,
 			$model,
 			$lang,
 			$expectedUrl,
@@ -164,7 +174,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			'AutoModeratorMultilingualConfigMultilingualThreshold' => null,
 		] );
 
-		$client = Util::initializeLiftWingClient( $config );
+		$client = Util::initializeLiftWingClient( $this->httpRequestFactory, $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),
@@ -187,6 +197,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$lang = 'en';
 		$expectedHostHeader = "host-header";
 		$expectedClient = new LiftWingClient(
+			$this->httpRequestFactory,
 			$model,
 			$lang,
 			$expectedUrl,
@@ -205,7 +216,7 @@ class UtilTest extends MediaWikiUnitTestCase {
 			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
 		] );
 
-		$client = Util::initializeLiftWingClient( $config );
+		$client = Util::initializeLiftWingClient( $this->httpRequestFactory, $config );
 
 		$this->assertSame(
 			$expectedClient->getBaseUrl(),

@@ -23,6 +23,7 @@ use AutoModerator\RevisionCheck;
 use AutoModerator\Util;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\Job;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Logging\ManualLogEntry;
@@ -118,7 +119,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			}
 			$response = false;
 			// Model name defaults to language-agnostic model name
-			$revertRiskModelName = 'revertrisklanguageagnostic';
+			$revertRiskModelName = Util::getRevertRiskModel( $config );
 			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
 				$oresModels = $config->get( 'OresModels' );
 
@@ -131,7 +132,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 			if ( !$response ) {
 				// ORES is not loaded, or a score couldn't be retrieved from the extension
-				$response = $this->getLiftWingRevScore( $config );
+				$response = $this->getLiftWingRevScore( $services->getHttpRequestFactory(), $config );
 			}
 			if ( !$response ) {
 				$error = "score could not be retrieved for {$this->revId}";
@@ -163,6 +164,12 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		} catch ( RuntimeException $exception ) {
 			$logger->debug( __METHOD__ . " - " . $exception->getMessage() );
 			$this->setLastError( $exception->getMessage() );
+			// If a Liftwing exception is thrown, check if error status is 4**
+			// to disallow retries
+			if ( str_contains( $exception->getMessage(), 'LiftWingClient' ) &&
+				str_contains( $exception->getMessage(), '4' ) ) {
+				$this->setAllowRetries( false );
+			}
 			return false;
 		}
 		// Revision reverted
@@ -210,17 +217,13 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 	/**
 	 * Obtains a score from LiftWing API
+	 * @param HttpRequestFactory $httpRequestFactory
 	 * @param Config $config
 	 * @return array|false
 	 */
-	private function getLiftWingRevScore( Config $config ) {
-		$liftWingClient = Util::initializeLiftWingClient( $config );
+	private function getLiftWingRevScore( HttpRequestFactory $httpRequestFactory, Config $config ) {
+		$liftWingClient = Util::initializeLiftWingClient( $httpRequestFactory, $config );
 		$response = $liftWingClient->get( $this->revId );
-		$this->setAllowRetries( $response['allowRetries'] ?? true );
-		if ( isset( $response['errorMessage'] ) ) {
-			$this->setLastError( $response['errorMessage'] );
-			return false;
-		}
 		return $response;
 	}
 

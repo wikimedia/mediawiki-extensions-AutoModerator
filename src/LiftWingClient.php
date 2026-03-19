@@ -19,11 +19,14 @@
 
 namespace AutoModerator;
 
+use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Json\FormatJson;
-use MediaWiki\MediaWikiServices;
 use RuntimeException;
 
 class LiftWingClient {
+
+	/** @var HttpRequestFactory */
+	private $httpRequestFactory;
 
 	/** @var string */
 	private $model;
@@ -41,11 +44,13 @@ class LiftWingClient {
 	private string $userAgent;
 
 	public function __construct(
+		HttpRequestFactory $httpRequestFactory,
 		string $model,
 		string $lang,
 		string $baseUrl,
 		?string $hostHeader = null
 	) {
+		$this->httpRequestFactory = $httpRequestFactory;
 		$this->model = $model;
 		$this->lang = $lang;
 		$this->baseUrl = $baseUrl;
@@ -62,8 +67,7 @@ class LiftWingClient {
 	 */
 	public function get( $revId ) {
 		$url = $this->baseUrl . $this->model . ':predict';
-		$httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
-		$req = $httpRequestFactory->create( $url, [
+		$req = $this->httpRequestFactory->create( $url, [
 			'method' => 'POST',
 			'postData' => json_encode( [
 				'rev_id' => (int)$revId,
@@ -84,11 +88,13 @@ class LiftWingClient {
 				$data['error'] = "$url returned $httpStatus for rev $revId {$this->lang}";
 			}
 
-			$errorMessage = $data['error'] ?? $data['detail'];
+			$errorMessage = $data['error'] ?? $data['detail'] ?? $data['httpReason'] ?? '';
+			// Throw for 4xx errors
 			if ( ( $httpStatus >= 400 ) && ( $httpStatus <= 499 ) ) {
-				return $this->createErrorResponse( $httpStatus, $errorMessage, false );
+				throw new RuntimeException( "LiftWingClient [{$url}]: {$httpStatus} {$errorMessage}" );
+			// Do one retry for non-4xx errors
 			} else {
-				$req = $httpRequestFactory->create( $url, [
+				$req = $this->httpRequestFactory->create( $url, [
 					'method' => 'POST',
 					'postData' => json_encode( [
 						'rev_id' => (int)$revId,
@@ -97,14 +103,14 @@ class LiftWingClient {
 				], __METHOD__ );
 				$response = $req->execute();
 				if ( !$response->isOK() ) {
-					return $this->createErrorResponse( $httpStatus, $errorMessage, true );
+					throw new RuntimeException( "LiftWingClient [{$url}]: {$httpStatus} {$errorMessage}" );
 				}
 			}
 		}
 		$json = $req->getContent();
 		$data = FormatJson::decode( $json, true );
 		if ( !$data || !empty( $data['error'] ) ) {
-			throw new RuntimeException( "Bad response from Lift Wing endpoint [{$url}]: {$json}" );
+			throw new RuntimeException( "LiftWingCient [{$url}]: {$json}" );
 		}
 		return $data;
 	}
@@ -128,23 +134,6 @@ class LiftWingClient {
 	 */
 	public function getUserAgent(): string {
 		return $this->userAgent;
-	}
-
-	/**
-	 * @param int $httpStatus
-	 * @param string $errorMessage
-	 * @return array
-	 */
-	public function createErrorResponse(
-		int $httpStatus,
-		string $errorMessage,
-		bool $allowRetries
-	): array {
-		return [
-			"httpStatus" => $httpStatus,
-			"errorMessage" => $errorMessage,
-			"allowRetries" => $allowRetries
-		];
 	}
 
 }

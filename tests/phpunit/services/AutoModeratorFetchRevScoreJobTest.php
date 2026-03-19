@@ -15,6 +15,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	use CommunityConfigurationTestHelpers;
 	use MockHttpTrait;
 
+	/** @var score */
+	private $score;
+
 	protected function setUp(): void {
 		parent::setUp();
 		$this->overrideConfigValue( 'OresModels', [
@@ -22,6 +25,18 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		] );
 		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 		$this->overrideProviderConfig( [ 'AutoModeratorEnableLogOnlyMode' => false ], 'AutoModerator' );
+		$this->score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
 	}
 
 	/**
@@ -38,27 +53,49 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
+	 * @return void
+	 */
+	private function enableMultilingual(): void {
+		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
+		$this->overrideConfigValue( 'AutoModeratorMultilingualConfigEnableLanguageAgnostic', false );
+		$this->overrideConfigValue( 'AutoModeratorMultilingualConfigEnableMultilingual', true );
+		$this->score[ 'model_name' ] = 'revertrisk-multilingual';
+	}
+
+	private function ensureOresModel( $name ) {
+		$modelInfo = [
+			'oresm_name' => $name,
+			'oresm_version' => '0.0.1',
+			'oresm_is_current' => 1
+		];
+		$model = $this->getDb()->newSelectQueryBuilder()
+			->select( 'oresm_id' )
+			->from( 'ores_model' )
+			->where( $modelInfo )
+			->fetchField();
+		if ( $model ) {
+			return $model;
+		}
+
+		$this->getDb()->newInsertQueryBuilder()
+			->insertInto( 'ores_model' )
+			->row( $modelInfo )
+			->caller( __METHOD__ )
+			->execute();
+
+		return $this->getDb()->insertId();
+	}
+
+	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * @group Database
 	 */
 	public function testRunSuccess() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
-		$score = [
-			'model_name' => 'revertrisk-language-agnostic',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
-
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+		$this->score[ 'revision_id' ] = $rev->getId();
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -211,26 +248,15 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * @group Database
 	 */
 	public function testRunSuccessWithMinorEditFlagTrue() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorUseEditFlagMinor' => true ], 'AutoModerator' );
-		$score = [
-			'model_name' => 'revertrisk-language-agnostic',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
+		$this->score[ 'revision_id' ] = $rev->getId();
 
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -254,26 +280,15 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * @group Database
 	 */
 	public function testRunSuccessWithMinorEditFlagFalse() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorUseEditFlagMinor' => false ], 'AutoModerator' );
-		$score = [
-			'model_name' => 'revertrisk-language-agnostic',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
+		$this->score[ 'revision_id' ] = $rev->getId();
 
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -297,26 +312,15 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * @group Database
 	 */
 	public function testRunSuccessWithBotFlagTrue() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorEnableBotFlag' => true ], 'AutoModerator' );
-		$score = [
-			'model_name' => 'revertrisk-language-agnostic',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
+		$this->score[ 'revision_id' ] = $rev->getId();
 
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -342,26 +346,15 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * @group Database
 	 */
 	public function testRunSuccessWithBotFlagFalse() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorEnableBotFlag' => false ], 'AutoModerator' );
-		$score = [
-			'model_name' => 'revertrisk-language-agnostic',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
+		$this->score[ 'revision_id' ] = $rev->getId();
 
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -387,6 +380,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 */
 	public function testRunSuccessManualRevert() {
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
@@ -399,20 +393,9 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content44' );
 		$title = $wikiPage['title'];
 
-		$score = [
-			'model_name' => 'revertrisk-language-agnostic',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+		$this->score[ 'revision_id' ] = $rev->getId();
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -432,6 +415,43 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
+	 */
+	public function testRunSuccessManualRevertMultilingualEnabled() {
+		$this->enableMultilingual();
+
+		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
+		$user = $this->getTestUser()->getUserIdentity();
+		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content' );
+		$revisionStore = $this->getServiceContainer()->getRevisionStore();
+		$rev = $revisionStore->getRevisionByPageId( $wikiPage['id'] );
+		// Add more edits so that $rev is not the most recent revision, causing a revert conflict
+		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content33' );
+		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content44' );
+		$title = $wikiPage['title'];
+
+		$this->score[ 'revision_id' ] = $rev->getId();
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage['id'],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'scores' => null,
+			]
+		);
+
+		$success = $job->run();
+		$this->assertTrue( $success );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * when there is a bad request response returns false
 	 */
 	public function testRunWithBadRequestReturnsFailure() {
@@ -460,6 +480,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * when there is an unexpected 5xx response returns false
 	 */
 	public function testRunWithUnexpectedExceptionReturnsFalse() {
@@ -488,6 +509,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * when there is a server timeout 504 response returns false
 	 */
 	public function testRunWithServerTimeoutReturnsFalse() {
@@ -516,26 +538,15 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 
 	/**
 	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
 	 * when the revision lookup fails
 	 */
 	public function testRunWithBadRevisionId() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
-		$score = [
-			'model_name' => 'revertrisk-language-agnostic',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
+		$this->score[ 'revision_id' ] = $rev->getId();
 
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $this->score ) ) );
 
 		$job = new AutoModeratorFetchRevScoreJob( $title,
 			[
@@ -709,76 +720,5 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$success = $job->run();
 
 		$this->assertTrue( $success );
-	}
-
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 */
-	public function testRunSuccessManualRevertMultilingualEnabled() {
-		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
-
-		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
-		$user = $this->getTestUser()->getUserIdentity();
-		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content' );
-		$revisionStore = $this->getServiceContainer()->getRevisionStore();
-		$rev = $revisionStore->getRevisionByPageId( $wikiPage['id'] );
-		// Add more edits so that $rev is not the most recent revision, causing a revert conflict
-		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content33' );
-		$this->editPage( $this->getExistingTestPage( $wikiPage['title'] ), 'Content44' );
-		$title = $wikiPage['title'];
-
-		$score = [
-			'model_name' => 'revertrisk-multilingual',
-			'model_version' => '3',
-			'wiki_db' => 'enwiki',
-			'revision_id' => $rev->getId(),
-			'output' => [
-				'prediction' => true,
-				'probabilities' => [
-					'true' => 0.9987422,
-					'false' => 0.00012578,
-				],
-			],
-		];
-		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
-
-		$job = new AutoModeratorFetchRevScoreJob( $title,
-			[
-				'wikiPageId' => $wikiPage['id'],
-				'revId' => $rev->getId(),
-				'originalRevId' => false,
-				'userId' => $user->getId(),
-				'userName' => $user->getName(),
-				'tags' => [],
-				'scores' => null,
-			]
-		);
-
-		$success = $job->run();
-		$this->assertTrue( $success );
-	}
-
-	private function ensureOresModel( $name ) {
-		$modelInfo = [
-			'oresm_name' => $name,
-			'oresm_version' => '0.0.1',
-			'oresm_is_current' => 1
-		];
-		$model = $this->getDb()->newSelectQueryBuilder()
-			->select( 'oresm_id' )
-			->from( 'ores_model' )
-			->where( $modelInfo )
-			->fetchField();
-		if ( $model ) {
-			return $model;
-		}
-
-		$this->getDb()->newInsertQueryBuilder()
-			->insertInto( 'ores_model' )
-			->row( $modelInfo )
-			->caller( __METHOD__ )
-			->execute();
-
-		return $this->getDb()->insertId();
 	}
 }
