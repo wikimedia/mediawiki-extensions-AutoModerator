@@ -21,6 +21,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
 		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
+		$this->overrideConfigValue( 'AutoModeratorEnableLogOnlyMode', false );
 	}
 
 	/**
@@ -74,6 +75,138 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$success = $job->run();
 
 		$this->assertTrue( $success );
+		$pageAfter = $this->getExistingTestPage( $wikiPage['title'] );
+		$revisionAfter = $pageAfter->getRevisionRecord()->getId();
+		// ensure revert occurred
+		$this->assertNotEquals( $rev->getId(), $revisionAfter );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @group Database
+	 */
+	public function testRunSuccessInLogOnlyMode() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+		$this->overrideConfigValue( 'AutoModeratorEnableLogOnlyMode', true );
+		$score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => $rev->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.9987422,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage['id'],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'scores' => null,
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertTrue( $success );
+		$this->runDeferredUpdates();
+
+		// ensure logging happened successfully
+		$logEntry = $this->getDb()->newSelectQueryBuilder()
+			->select( '*' )
+			->from( 'logging' )
+			->where( [
+				'log_namespace' => $title->getNamespace(),
+				'log_title' => $title->getDBkey(),
+			] )
+			->orderBy( 'log_id', 'DESC' )
+			->caller( __METHOD__ )
+			->fetchRow();
+		$this->assertEquals( "automoderator", $logEntry->log_type );
+		$this->assertEquals( "revert_decision", $logEntry->log_action );
+		$this->assertStringContainsString( "4::revId", $logEntry->log_params );
+		$this->assertStringContainsString( "5::user", $logEntry->log_params );
+		$this->assertStringContainsString( "6::score", $logEntry->log_params );
+		$this->assertStringContainsString( $rev->getId(), $logEntry->log_params );
+		$this->assertStringContainsString( $user->getName(), $logEntry->log_params );
+		$this->assertStringContainsString( "0.9987", $logEntry->log_params );
+		$pageAfter = $this->getExistingTestPage( $wikiPage['title'] );
+		$revisionAfter = $pageAfter->getRevisionRecord()->getId();
+		// ensure no revert occurred
+		$this->assertSame( $rev->getId(), $revisionAfter );
+	}
+
+	/**
+	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
+	 * @group Database
+	 */
+	public function testRunSuccessInLogOnlyModeFailingScore() {
+		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
+		$this->overrideConfigValue( 'AutoModeratorEnableLogOnlyMode', true );
+		$score = [
+			'model_name' => 'revertrisk-language-agnostic',
+			'model_version' => '3',
+			'wiki_db' => 'enwiki',
+			'revision_id' => $rev->getId(),
+			'output' => [
+				'prediction' => true,
+				'probabilities' => [
+					'true' => 0.0000001,
+					'false' => 0.00012578,
+				],
+			],
+		];
+
+		$this->installMockHttp( $this->makeFakeHttpRequest( json_encode( $score ) ) );
+
+		$job = new AutoModeratorFetchRevScoreJob( $title,
+			[
+				'wikiPageId' => $wikiPage['id'],
+				'revId' => $rev->getId(),
+				'originalRevId' => false,
+				'userId' => $user->getId(),
+				'userName' => $user->getName(),
+				'tags' => [],
+				'scores' => null,
+			]
+		);
+
+		$success = $job->run();
+
+		$this->assertTrue( $success );
+		$this->runDeferredUpdates();
+
+		// ensure logging happened successfully
+		$logEntry = $this->getDb()->newSelectQueryBuilder()
+			->select( '*' )
+			->from( 'logging' )
+			->where( [
+				'log_namespace' => $title->getNamespace(),
+				'log_title' => $title->getDBkey(),
+			] )
+			->orderBy( 'log_id', 'DESC' )
+			->caller( __METHOD__ )
+			->fetchRow();
+		$this->assertNotEquals( "automoderator", $logEntry->log_type );
+		$this->assertNotEquals( "revert_decision", $logEntry->log_action );
+		$this->assertStringNotContainsString( "4::revId", $logEntry->log_params );
+		$this->assertStringNotContainsString( "5::user", $logEntry->log_params );
+		$this->assertStringNotContainsString( "6::score", $logEntry->log_params );
+		$this->assertStringNotContainsString( "0.9987", $logEntry->log_params );
+		$pageAfter = $this->getExistingTestPage( $wikiPage['title'] );
+		$revisionAfter = $pageAfter->getRevisionRecord()->getId();
+		// ensure no revert occurred
+		$this->assertSame( $rev->getId(), $revisionAfter );
 	}
 
 	/**

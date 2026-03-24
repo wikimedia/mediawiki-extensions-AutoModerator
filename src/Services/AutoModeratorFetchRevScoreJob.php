@@ -25,9 +25,12 @@ use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\JobQueue\Job;
 use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\Logging\ManualLogEntry;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -67,9 +70,9 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 */
 	public function __construct( Title $title, array $params ) {
 		parent::__construct( 'AutoModeratorFetchRevScoreJob', $title, $params );
-		$this->wikiPageId = $params[ 'wikiPageId' ];
-		$this->revId = $params[ 'revId' ];
-		$this->scores = $params[ 'scores' ];
+		$this->wikiPageId = $params['wikiPageId'];
+		$this->revId = $params['revId'];
+		$this->scores = $params['scores'];
 	}
 
 	public function run(): bool {
@@ -120,7 +123,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				$oresModels = $config->get( 'OresModels' );
 
 				if ( array_key_exists( $revertRiskModelName, $oresModels ) &&
-					$oresModels[ $revertRiskModelName ][ 'enabled' ] ) {
+					$oresModels[$revertRiskModelName]['enabled'] ) {
 					// ORES is loaded and the model is enabled, fetching the score from there
 					$response = $this->getOresRevScore( $connectionProvider, $revertRiskModelName, $wikiId, $logger );
 				}
@@ -155,7 +158,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 				),
 				true
 			);
-			$reverted = $revisionCheck->maybeRollback( $response, $revertRiskModelName );
+			$rollbackStatus = $revisionCheck->maybeRollback( $response );
 
 		} catch ( RuntimeException $exception ) {
 			$logger->debug( __METHOD__ . " - " . $exception->getMessage() );
@@ -163,29 +166,40 @@ class AutoModeratorFetchRevScoreJob extends Job {
 			return false;
 		}
 		// Revision reverted
-		if ( array_key_exists( '1', $reverted ) && $reverted['1'] === 'success' ) {
+		if ( $rollbackStatus->isReverted() && $rollbackStatus->getStatus() === 'success' ) {
 			return true;
 		}
 		// Revert attempted but failed
-		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'failure' ) {
+		if ( !$rollbackStatus->isReverted() && $rollbackStatus->getStatus() === 'failure' ) {
 			$this->setLastError( 'Revision ' . $this->revId . ' requires a manual revert.' );
 			$this->setAllowRetries( false );
 			return false;
 		}
-		// Revision passed check; noop.
-		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'Not reverted' ) {
+		// Revision passed check;
+		if ( !$rollbackStatus->isReverted() && $rollbackStatus->getStatus() === 'Not reverted' ) {
+			if ( $config->get( "AutoModeratorEnableLogOnlyMode" )
+				&& $rollbackStatus->shouldRevert()
+				&& $wikiPageFactory->newFromID( $this->wikiPageId ) ) {
+				$this->addAutoModeratorLog(
+					$response['output']['probabilities']['true'],
+					$autoModeratorUser,
+					$wikiPageFactory->newFromID( $this->wikiPageId ),
+					$user,
+					$services
+				);
+			}
 			return true;
 		}
 		// Revision unable to be reverted due to an edit conflict or race condition in the job queue
-		if ( array_key_exists( '0', $reverted ) && $reverted['0'] === 'success' ) {
-			$logger->debug( __METHOD__ . " - " . $reverted['0'] );
+		if ( !$rollbackStatus->isReverted() && $rollbackStatus->getStatus() === 'success' ) {
+			$logger->debug( __METHOD__ . " - " . $rollbackStatus->getStatus() );
 			$this->setAllowRetries( false );
 			return true;
 		}
 		// Revert attempted but failed to save revision record due to unknown reason
-		if ( array_key_exists( '0', $reverted ) ) {
-			$logger->debug( __METHOD__ . " - " . $reverted['0'] );
-			$this->setLastError( $reverted['0'] );
+		if ( !$rollbackStatus->isReverted() ) {
+			$logger->debug( __METHOD__ . " - " . $rollbackStatus->getStatus() );
+			$this->setLastError( $rollbackStatus->getStatus() );
 			$this->setAllowRetries( true );
 			return false;
 		}
@@ -202,7 +216,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	private function getLiftWingRevScore( Config $config ) {
 		$liftWingClient = Util::initializeLiftWingClient( $config );
 		$response = $liftWingClient->get( $this->revId );
-		$this->setAllowRetries( $response[ 'allowRetries' ] ?? true );
+		$this->setAllowRetries( $response['allowRetries'] ?? true );
 		if ( isset( $response['errorMessage'] ) ) {
 			$this->setLastError( $response['errorMessage'] );
 			return false;
@@ -219,14 +233,14 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 * @return array|false
 	 */
 	private function getOresRevScore( IConnectionProvider $connectionProvider, string $revertRiskModelName,
-		string $wikiId, LoggerInterface $logger ) {
+									 string $wikiId, LoggerInterface $logger ) {
 		if ( $this->scores ) {
 			foreach ( $this->scores as $rev_id => $score ) {
 				if ( $rev_id === $this->revId && array_key_exists( $revertRiskModelName, $score ) ) {
 					return [
 						'output' => [
 							'probabilities' => [
-								'true' => $score[ $revertRiskModelName ][ 'score' ][ 'probability' ][ 'true' ]
+								'true' => $score[$revertRiskModelName]['score']['probability']['true']
 							]
 						]
 					];
@@ -274,6 +288,30 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	 */
 	public function ignoreDuplicates(): bool {
 		return true;
+	}
+
+	/**
+	 * @param float $score
+	 * @param User $autoModeratorUser
+	 * @param WikiPage $page
+	 * @param User $user
+	 * @param MediaWikiServices $services
+	 * @return void
+	 */
+	public function addAutoModeratorLog( float $score,
+										 User $autoModeratorUser,
+										 WikiPage $page,
+										 User $user, MediaWikiServices $services ): void {
+		$log = new ManualLogEntry( 'automoderator', 'revert_decision' );
+		$log->setPerformer( $autoModeratorUser );
+		$log->setTarget( $page->getTitle() );
+		$log->setParameters( [
+			"4::revId" => $this->revId,
+			"5::user" => $user->getName(),
+			"6::score" => round( $score, 4 ),
+		] );
+		$logId = $log->insert( $services->getDBLoadBalancerFactory()->getPrimaryDatabase() );
+		$log->publish( $logId );
 	}
 
 }

@@ -100,5 +100,9 @@
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "Error returned by AutoModerator configuration validator when the multilingual threshold field is not in the specified range.",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Error returned by AutoModerator configuration when the multilingual model was not enabled, but a threshold was set.",
 	"automoderator-config-validator-multilingual-select-only-one-model": "Error returned by AutoModerator configuration when the language-agnostic and multilingual models have been selected.",
-	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Error returned when the talk page message is enabled, but the false positive page field is empty"
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Error returned when the talk page message is enabled, but the false positive page field is empty",
+	"log-name-automoderator": "Log name for AutoModerator log only mode",
+	"logentry-automoderator-revert_decision": "Log type for AutoModerator log only mode \n\n* $1 is the AutoModerator user.",
+	"logentry-automoderator-revert_decision-comment": "Custom message added to AutoModerator logs in log only mode.\n\n* $1 is the revision id that links to the diff AutoModerator would revert\n $2 is the user who made the edit\n $3 is the revert risk score associated with the edit",
+	"log-description-automoderator": "This is a description message that explains what the Automoderator logs are for at the top of the Special:Log page."
 }

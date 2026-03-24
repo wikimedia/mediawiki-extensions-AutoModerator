@@ -176,17 +176,21 @@ class RevisionCheck {
 	/**
 	 * Check revision; revert if it meets configured critera
 	 * @param array $score
-	 * @param string $revertRiskModelName
-	 * @return array
+	 * @return RollbackStatus
 	 */
-	public function maybeRollback( array $score, string $revertRiskModelName ): array {
+	public function maybeRollback( array $score ): RollbackStatus {
 		$reverted = 0;
 		$status = 'Not reverted';
 		$probability = $score[ 'output' ][ 'probabilities' ][ 'true' ];
 		// Check if the threshold should be taken from the language-agnostic
 		// or the multilingual model based on what model was chosen in the job
 		if ( $probability > Util::getRevertThreshold( $this->config ) ) {
+			$shouldRevert = true;
 			if ( $this->enforce ) {
+				// early return if we are in log only mode
+				if ( $this->config->get( "AutoModeratorEnableLogOnlyMode" ) ) {
+					return new RollbackStatus( $reverted, $status, $shouldRevert );
+				}
 				$pageRollbackStatus = $this->doRollback();
 				if ( !$pageRollbackStatus->isOK() ) {
 					$errorMessages = $pageRollbackStatus->getMessages( 'error' );
@@ -197,17 +201,17 @@ class RevisionCheck {
 						( $errorMessages[0]->getKey() === "alreadyrolled"
 							|| $errorMessages[0]->getKey() === "edit-conflict" ) ) {
 						$status = 'success';
-						return [ $reverted => $status ];
+						return new RollbackStatus( $reverted, $status, $shouldRevert );
 					}
-					return [ $reverted => $errorMessages ?
-						wfMessage( $errorMessages[0] )->inLanguage( "en" )->plain()
-						: "Failed to save revision" ];
+					return new RollbackStatus( $reverted, $errorMessages ?
+							wfMessage( $errorMessages[0] )->inLanguage( "en" )->plain()
+							: "Failed to save revision", $shouldRevert );
 				}
 			}
 			$reverted = 1;
 			$status = 'success';
 		}
-		return [ $reverted => $status ];
+		return new RollbackStatus( $reverted, $status );
 	}
 
 	/**

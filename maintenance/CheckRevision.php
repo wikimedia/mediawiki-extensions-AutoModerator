@@ -149,8 +149,7 @@ class CheckRevision extends Maintenance {
 			default:
 				break;
 		}
-		$revertRiskModelName = Util::getRevertRiskModel( $config );
-		$reverted = json_encode( $revisionCheck->maybeRollback( $score, $revertRiskModelName ),
+		$reverted = json_encode( $revisionCheck->maybeRollback( $score ),
 			JSON_FORCE_OBJECT,
 			JSON_PRETTY_PRINT );
 		$scoreStr = json_encode( $score, JSON_PRETTY_PRINT );

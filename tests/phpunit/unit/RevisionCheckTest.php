@@ -128,6 +128,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
 			'AutoModeratorUseEditFlagMinor' => false,
 			'AutoModeratorCautionLevel' => 'very-cautious',
+			'AutoModeratorEnableLogOnlyMode' => false,
 		] );
 		$this->title = $this->makeMockTitle( 'Main_Page', [ 'id' => 1 ] );
 		$this->lang = $this->createMock( Language::class );
@@ -199,11 +200,66 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->rollbackPage,
 			true
 		);
-		$reverted = array_key_first( $revisionCheck->maybeRollback(
-			$this->failingScore,
-			'revertrisklanguageagnostic'
-		) );
-		$this->assertSame( 1, $reverted );
+		$reverted = $revisionCheck->maybeRollback(
+			$this->failingScore
+		)->isReverted();
+		$this->assertSame( true, $reverted );
+	}
+
+	/**
+	 * @covers ::maybeRollback
+	 */
+	public function testMaybeRollbackBadEditInLogOnlyMode() {
+		$this->config = new HashConfig( [
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'DisableAnonTalk' => false,
+			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
+			'AutoModeratorUseEditFlagMinor' => false,
+			'AutoModeratorCautionLevel' => 'very-cautious',
+			'AutoModeratorEnableLogOnlyMode' => true,
+		] );
+		$revisionCheck = new RevisionCheck(
+			$this->config,
+			$this->rollbackPage,
+			true
+		);
+		$rollbackStatus = $revisionCheck->maybeRollback(
+			$this->failingScore
+		);
+		$this->assertSame( false, $rollbackStatus->isReverted() );
+		$this->assertSame( "Not reverted", $rollbackStatus->getStatus() );
+		$this->assertSame( true, $rollbackStatus->shouldRevert() );
+	}
+
+	/**
+	 * @covers ::maybeRollback
+	 */
+	public function testMaybeRollbackGoodEditInLogOnlyMode() {
+		$this->config = new HashConfig( [
+			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
+			'AutoModeratorUsername' => 'AutoModerator',
+			'DisableAnonTalk' => false,
+			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorSkipUserRights' => [ 'bot', 'autopatrol' ],
+			'AutoModeratorUseEditFlagMinor' => false,
+			'AutoModeratorCautionLevel' => 'very-cautious',
+			'AutoModeratorEnableLogOnlyMode' => true,
+		] );
+		$revisionCheck = new RevisionCheck(
+			$this->config,
+			$this->rollbackPage,
+			true
+		);
+		$rollbackStatus = $revisionCheck->maybeRollback(
+			$this->passingScore
+		);
+		$this->assertSame( false, $rollbackStatus->isReverted() );
+		$this->assertSame( "Not reverted", $rollbackStatus->getStatus() );
+		$this->assertSame( false, $rollbackStatus->shouldRevert() );
 	}
 
 	/**
@@ -223,12 +279,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$rollbackPage,
 			true
 		);
-		$reverted = $revisionCheck->maybeRollback(
+		$rollbackStatus = $revisionCheck->maybeRollback(
 			$this->failingScore,
-			'revertrisklanguageagnostic'
 		);
-		$this->assertSame( 0, array_key_first( $reverted ) );
-		$this->assertSame( "Generic Error Message", $reverted[0] );
+		$this->assertSame( false, $rollbackStatus->isReverted() );
+		$this->assertSame( "Generic Error Message", $rollbackStatus->getStatus() );
 	}
 
 	/**
@@ -248,12 +303,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$rollbackPage,
 			true
 		);
-		$reverted = $revisionCheck->maybeRollback(
-			$this->failingScore,
-			'revertrisklanguageagnostic'
+		$rollbackStatus = $revisionCheck->maybeRollback(
+			$this->failingScore
 		);
-		$this->assertSame( 0, array_key_first( $reverted ) );
-		$this->assertSame( "success", $reverted[0] );
+		$this->assertSame( false, $rollbackStatus->isReverted() );
+		$this->assertSame( "success", $rollbackStatus->getStatus() );
 	}
 
 	/**
@@ -273,12 +327,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$rollbackPage,
 			true
 		);
-		$reverted = $revisionCheck->maybeRollback(
-			$this->failingScore,
-			'revertrisklanguageagnostic'
+		$rollbackStatus = $revisionCheck->maybeRollback(
+			$this->failingScore
 		);
-		$this->assertSame( 0, array_key_first( $reverted ) );
-		$this->assertSame( "success", $reverted[0] );
+		$this->assertSame( false, $rollbackStatus->isReverted() );
+		$this->assertSame( "success", $rollbackStatus->getStatus() );
 	}
 
 	/**
@@ -297,12 +350,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$rollbackPage,
 			true
 		);
-		$reverted = $revisionCheck->maybeRollback(
-			$this->failingScore,
-			'revertrisklanguageagnostic'
+		$rollbackStatus = $revisionCheck->maybeRollback(
+			$this->failingScore
 		);
-		$this->assertSame( 0, array_key_first( $reverted ) );
-		$this->assertSame( "Failed to save revision", $reverted[0] );
+		$this->assertSame( false, $rollbackStatus->isReverted() );
+		$this->assertSame( "Failed to save revision", $rollbackStatus->getStatus() );
 	}
 
 	/**
@@ -313,12 +365,11 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->config,
 			$this->rollbackPage
 		);
-		$reverted = $revisionCheck->maybeRollback(
-			$this->passingScore,
-			'revertrisklanguageagnostic'
+		$rollbackStatus = $revisionCheck->maybeRollback(
+			$this->passingScore
 		);
-		$this->assertSame( 0, array_key_first( $reverted ) );
-		$this->assertSame( 'Not reverted', $reverted[0] );
+		$this->assertSame( false, $rollbackStatus->isReverted() );
+		$this->assertSame( 'Not reverted', $rollbackStatus->getStatus() );
 	}
 
 	/**
@@ -330,11 +381,10 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			$this->rollbackPage
 		);
 
-		$reverted = array_key_first( $revisionCheck->maybeRollback(
-			$this->passingScore,
-			'revertrisklanguageagnostic'
-		) );
-		$this->assertSame( 0, $reverted );
+		$reverted = $revisionCheck->maybeRollback(
+			$this->passingScore
+		)->isReverted();
+		$this->assertSame( false, $reverted );
 	}
 
 	/**
@@ -347,11 +397,10 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			true
 		);
 
-		$reverted = array_key_first( $revisionCheck->maybeRollback(
+		$reverted = $revisionCheck->maybeRollback(
 			$this->failingScore,
-			'revertrisklanguageagnostic'
-		) );
-		$this->assertSame( 1, $reverted );
+		)->isReverted();
+		$this->assertSame( true, $reverted );
 	}
 
 	/**

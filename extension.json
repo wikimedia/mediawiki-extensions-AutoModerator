@@ -20,6 +20,14 @@
 		"AutoModerator\\": "src/",
 		"AutoModerator\\Maintenance\\": "maintenance/"
 	},
+	"LogActionsHandlers": {
+		"automoderator/*": {
+			"class": "AutoModerator\\AutoModeratorLogFormatter"
+		}
+	},
+	"LogTypes": [
+		"automoderator"
+	],
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php"
 	],
@@ -83,6 +91,10 @@
 	"config": {
 		"AutoModeratorEnableRevisionCheck": {
 			"description": "Enable AutoModerator automatic revision checks.",
+			"value": false
+		},
+		"AutoModeratorEnableLogOnlyMode": {
+			"description": "Enable AutoModerator automatic revision checks that creates logs instead of reverting",
 			"value": false
 		},
 		"AutoModeratorUsername": {
