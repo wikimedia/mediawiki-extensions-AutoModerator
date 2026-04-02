@@ -17,6 +17,8 @@
 	"automoderator-wiki-revertpage-nouser": "Gizlədilmiş istifadəçi tərəfindən edilmiş {{PLURAL:$7|$7 redaktə}} geri qaytarılaraq {{GENDER:$1|[[User:$1|$1]]}} tərəfindən yaradılan sonuncu versiya bərpa olundu",
 	"automoderator-wiki-revertpage-anon": "[[Special:Contributions/$2|$2]] tərəfindən edilmiş {{PLURAL:$7|$7 redaktə}} geri qaytarılaraq [[User:$1|$1]] tərəfindən yaradılan sonuncu versiya bərpa olundu",
 	"automoderator-wiki-revertpage": "[[Special:Contributions/$2|$2]] ([[User talk:$2|müzakirə]]) tərəfindən edilmiş {{PLURAL:$7|$7 redaktə}} geri qaytarılaraq [[User:$1|$1]] tərəfindən yaradılan sonuncu versiya bərpa olundu",
+	"log-name-automoderator": "Avtomoderator",
+	"logentry-automoderator-revert_decision": "$1 redaktəni geri qaytaracaq",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "İstifadəçi hüquqları",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Avtomoderator aktivləşdirilib.",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "AutoModerator tərəfindən edilən geri qaytarmalar kiçik redaktə hesab ediləcək.",

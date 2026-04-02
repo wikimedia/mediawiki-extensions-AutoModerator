@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Amire80",
-			"Jsn.sherman"
+			"Jsn.sherman",
+			"Toliño"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "Error returned by validator of AutoModerator config\n\n$1 is a variable name, $2 is the number of maximum allowed items.",
@@ -18,6 +19,10 @@
 	"automoderator-wiki-revertpage-nouser": "Summary message shown after rollbacking when the username of the version is hidden with RevisionDelete.\n\nIn other cases, the message {{msg-mw|Revertpage}} or {{msg-mw|Revertpage-anon}} is used.\n\nParameters:\n* $1 - username of the author of the edit that is being restored\n* $7 - the number of edits that have been reverted\n\nThese parameters are passed, but not used in the message ([https://phabricator.wikimedia.org/T337092 T337092]):\n* $2 - username of the author of the edits that are being reverted\n* $3 - revision ID of the revision reverted to\n* $4 - timestamp of the revision reverted to\n* $5 - revision ID of the revision reverted from\n* $6 - timestamp of the revision reverted from\n\nSee also:\n* {{msg-mw|Revertpage}}\n* {{msg-mw|Revertpage-anon}}",
 	"automoderator-wiki-revertpage-anon": "Summary message shown after rollbacking anonymous user's edits.\n\nParameters:\n* $1 - username of the author of the edit that is being restored\n* $2 - username of the author of the edits that are being reverted\n* $7 - the number of edits that have been reverted\n\nThese parameters are passed, but not used in the message ([https://phabricator.wikimedia.org/T337092 T337092]):\n* $3 - revision ID of the revision reverted to\n* $4 - timestamp of the revision reverted to\n* $5 - revision ID of the revision reverted from\n* $6 - timestamp of the revision reverted from\n\nSee also:\n* {{msg-mw|Revertpage}}\n* {{msg-mw|Revertpage-nouser}}\n{{Identical|Revert}}",
 	"automoderator-wiki-revertpage": "Summary message shown after rollbacking.\n\nParameters:\n* $1 - username of the author of the edit that is being restored\n* $2 - username of the author of the edits that are being reverted\n* $7 - the number of edits that have been reverted\n\nThese parameters are passed, but not used in the message ([https://phabricator.wikimedia.org/T337092 T337092]):\n* $3 - revision ID of the revision reverted to\n* $4 - timestamp of the revision reverted to\n* $5 - revision ID of the revision reverted from\n* $6 - timestamp of the revision reverted from\n\nSee also:\n* {{msg-mw|Revertpage-anon}}\n* {{msg-mw|Revertpage-nouser}}\n{{Identical|Revert}}",
+	"log-name-automoderator": "Log name for AutoModerator log only mode",
+	"logentry-automoderator-revert_decision": "Log type for AutoModerator log only mode \n\n* $1 is the AutoModerator user.",
+	"logentry-automoderator-revert_decision-comment": "Custom message added to AutoModerator logs in log only mode.\n\n* $1 is the revision id that links to the diff AutoModerator would revert\n* $2 is the user who made the edit\n* $3 is the revert risk score associated with the edit",
+	"log-description-automoderator": "This is a description message that explains what the Automoderator logs are for at the top of the Special:Log page.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Label for the rights to skip field on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Control Label for enabling AutoModerator on the community configuration form for AutoModerator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Control Label for enabling minor edit field on the community configuration form for AutoModerator",
@@ -100,9 +105,5 @@
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "Error returned by AutoModerator configuration validator when the multilingual threshold field is not in the specified range.",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "Error returned by AutoModerator configuration when the multilingual model was not enabled, but a threshold was set.",
 	"automoderator-config-validator-multilingual-select-only-one-model": "Error returned by AutoModerator configuration when the language-agnostic and multilingual models have been selected.",
-	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Error returned when the talk page message is enabled, but the false positive page field is empty",
-	"log-name-automoderator": "Log name for AutoModerator log only mode",
-	"logentry-automoderator-revert_decision": "Log type for AutoModerator log only mode \n\n* $1 is the AutoModerator user.",
-	"logentry-automoderator-revert_decision-comment": "Custom message added to AutoModerator logs in log only mode.\n\n* $1 is the revision id that links to the diff AutoModerator would revert\n $2 is the user who made the edit\n $3 is the revert risk score associated with the edit",
-	"log-description-automoderator": "This is a description message that explains what the Automoderator logs are for at the top of the Special:Log page."
+	"automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled": "Error returned when the talk page message is enabled, but the false positive page field is empty"
 }
