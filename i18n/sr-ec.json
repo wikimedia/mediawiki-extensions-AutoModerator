@@ -11,6 +11,7 @@
 	"automoderator-wiki-revert-message-follow-up": "Ја сам такође вратио једну од Ваших [[Special:Diff/$1|скорашњих измена]] на [[$2]], зато што је изгледала неконструктивно.",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Враћена измена|Враћене измене}} корисника [[Special:Contributions/$2|$2]] на последњу измену корисника [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Враћена измена|Враћене измене}} корисника [[Special:Contributions/$2|$2]] ([[User talk:$2|разговор]]) на последњу измену корисника [[User:$1|$1]]",
+	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] [[User:$2|$2]] са оценом $3",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Корисничка права",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Аутомодератор је укључен",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Враћања која је направио Аутомодератор ће бити сматрана малим изменама.",
