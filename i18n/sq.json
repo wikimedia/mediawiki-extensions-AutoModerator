@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"INNERLMNT",
 			"Klein Muçi"
 		]
 	},
@@ -17,6 +18,7 @@
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|U kthye|U kthyen}} {{PLURAL:$7|redaktimi|redaktimet}} nga një përdorues i fshehur në versionin e fundit nga {{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "{{PLURAL|U kthye|U kthyen}} {{PLURAL:$7|redaktimi|redaktimet}} nga [[Special:Contributions/$2|$2]] në versionin e fundit nga [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:U kthye|U kthyen}} {{PLURAL:$7|redaktimi|redaktimet}} nga [[Special:Contributions/$2|$2]] ([[User talk:$2|diskuto]]) në versionin e fundit nga [[User:$1|$1]]",
+	"logentry-automoderator-revert_decision": "$1 do të rikthente ndryshimin",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Të drejtat e përdoruesit",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderatori është i aktivizuar",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Kthimet nga AutoModeratori do të konsiderohen redaktime të vogla.",
