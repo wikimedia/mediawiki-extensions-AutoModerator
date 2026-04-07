@@ -17,7 +17,7 @@
 	"automoderator-wiki-undo-summary": "Annullata la modifica [[Special:Diff/$1|$1]] di [[Special:Contributions/$2|$2]] ([[User talk:$2|discussione]])",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Diritti utente",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator è attivo",
-	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Gli annullamenti effettuati da AutoModerator saranno considerate modifiche minori.",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Gli annullamenti effettuati da AutoModerator saranno considerati modifiche minori.",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Messaggio nella pagina di discussione",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Il messaggio nella pagina di discussione è attivo",
 	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Pagina di segnalazione dei falsi positivi",
