@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Renvoy",
+			"Repakr",
 			"Ата"
 		]
 	},
@@ -47,5 +48,18 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Вкажіть, скільки разів Автомодератор може відкидати правки одного і того ж користувача на певній сторінці протягом 24 годин. Якщо таке обмеження увімкнено, а цей параметр не встановлено, Автомодератор відкидатиме правки одного і того ж користувача необмежену кількість разів.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Увімкнути обмеження відкотів",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Дозволяє вказати, скільки разів Автомодератор може відкинути правки одного і того ж користувача на певній сторінці протягом 24 годин.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "Значення, введене для параметра \"Кількість відкотів за сторінкою\", не є числом, будь ласка, спробуйте ввести інше."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Значення, введене для параметра \"Кількість відкотів за сторінкою\", не є числом, будь ласка, спробуйте ввести інше.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Цільова сторінка",
+	"communityconfiguration-automoderatormultilingual-title": "Автомодератор",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Автомодератор",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-control-label": "Автомодератор увімкнений",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigconfigurethreshold-label": "Налаштувати поріг",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "Незначні редагування",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "Повідомлення на сторінці обговорення",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-control-label": "Повідомлення на сторінці обговорення ввімкнено",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-url-label": "Цільова сторінка",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguserrevertsperpage-label": "Кількість відкотів за сторінкою",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "Права користувачів",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-description": "Вкажіть права користувача, власників яких Автомодератор ніколи не повинен скасовувати.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigfalsepositivepagetitle-label": "Сторінка для повідомлень про помилкові спрацювання"
 }
