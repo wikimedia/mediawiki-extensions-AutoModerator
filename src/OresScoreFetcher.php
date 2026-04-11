@@ -35,7 +35,7 @@ class OresScoreFetcher {
 
 	/**
 	 * @param int $revId
-	 * @return mixed|false
+	 * @return \stdClass|false
 	 */
 	public function getOresScore( int $revId ) {
 		return $this->dbr->newSelectQueryBuilder()
