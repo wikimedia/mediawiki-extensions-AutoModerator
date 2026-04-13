@@ -19,8 +19,8 @@
 
 namespace AutoModerator;
 
+use MediaWiki\Actions\Hook\HistoryToolsHook;
 use MediaWiki\Config\Config;
-use MediaWiki\Hook\HistoryToolsHook;
 use MediaWiki\Html\Html;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
