@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Renvoy",
-			"Ата"
+			"Ата",
+			"Repakr"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 містить забагато елементів (максимум $2 {{PLURAL:$2| дозволено|дозволено}})",
