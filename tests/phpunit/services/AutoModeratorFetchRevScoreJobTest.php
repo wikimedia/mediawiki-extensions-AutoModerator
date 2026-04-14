@@ -21,7 +21,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 			'revertrisklanguageagnostic' => [ 'enabled' => false, 'namespaces' => [ 0 ] ]
 		] );
 		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
-		$this->overrideConfigValue( 'AutoModeratorEnableLogOnlyMode', false );
+		$this->overrideProviderConfig( [ 'AutoModeratorEnableLogOnlyMode' => false ], 'AutoModerator' );
 	}
 
 	/**
@@ -87,7 +87,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testRunSuccessInLogOnlyMode() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
-		$this->overrideConfigValue( 'AutoModeratorEnableLogOnlyMode', true );
+		$this->overrideProviderConfig( [ 'AutoModeratorEnableLogOnlyMode' => true ], 'AutoModerator' );
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',
@@ -152,7 +152,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	 */
 	public function testRunSuccessInLogOnlyModeFailingScore() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
-		$this->overrideConfigValue( 'AutoModeratorEnableLogOnlyMode', true );
+		$this->overrideProviderConfig( [ 'AutoModeratorEnableLogOnlyMode' => true ], 'AutoModerator' );
 		$score = [
 			'model_name' => 'revertrisk-language-agnostic',
 			'model_version' => '3',

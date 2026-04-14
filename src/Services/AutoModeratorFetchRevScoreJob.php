@@ -177,8 +177,8 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		}
 		// Revision passed check;
 		if ( !$rollbackStatus->isReverted() && $rollbackStatus->getStatus() === 'Not reverted' ) {
-			if ( $config->get( "AutoModeratorEnableLogOnlyMode" )
-				&& $rollbackStatus->shouldRevert()
+			$logModeEnabled = Util::getEnableLogOnlyMode( $config );
+			if ( $logModeEnabled && $rollbackStatus->shouldRevert()
 				&& $wikiPageFactory->newFromID( $this->wikiPageId ) ) {
 				$this->addAutoModeratorLog(
 					$response['output']['probabilities']['true'],

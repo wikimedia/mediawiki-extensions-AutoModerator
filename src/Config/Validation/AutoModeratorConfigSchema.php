@@ -14,6 +14,11 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		self::DEFAULT => false,
 	];
 
+	public const AutoModeratorEnableLogOnlyMode = [
+		self::TYPE => self::TYPE_BOOLEAN,
+		self::DEFAULT => false,
+	];
+
 	public const AutoModeratorCautionLevel = [
 		self::TYPE => self::TYPE_STRING,
 		self::REQUIRED => false,

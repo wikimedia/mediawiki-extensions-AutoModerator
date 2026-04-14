@@ -172,6 +172,10 @@
 			"description": "Enable AutoModerator automatic revision checks.",
 			"value": false
 		},
+		"AutoModeratorMultilingualEnableLogOnlyMode": {
+			"description": "Enable AutoModerator automatic revision checks that creates logs instead of reverting",
+			"value": false
+		},
 		"AutoModeratorMultilingualConfigFalsePositivePageTitle": {
 			"description": "The page title of the false positive reporting page.",
 			"value": null

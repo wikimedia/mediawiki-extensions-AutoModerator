@@ -327,6 +327,16 @@ class Util {
 
 	/**
 	 * @param Config $config
+	 * @return mixed
+	 */
+	public static function getEnableLogOnlyMode( Config $config ): mixed {
+		return self::isWikiMultilingual( $config ) ?
+			$config->get( 'AutoModeratorMultilingualEnableLogOnlyMode' ) :
+			$config->get( 'AutoModeratorEnableLogOnlyMode' );
+	}
+
+	/**
+	 * @param Config $config
 	 * @return LiftWingClient
 	 */
 	public static function initializeLiftWingClient( Config $config ): LiftWingClient {

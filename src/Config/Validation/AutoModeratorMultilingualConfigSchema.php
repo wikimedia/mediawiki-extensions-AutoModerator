@@ -14,6 +14,11 @@ class AutoModeratorMultilingualConfigSchema extends JsonSchema {
 		self::DEFAULT => false,
 	];
 
+	public const AutoModeratorMultilingualEnableLogOnlyMode = [
+		self::TYPE => self::TYPE_BOOLEAN,
+		self::DEFAULT => false,
+	];
+
 	public const AutoModeratorMultilingualConfigConfigureThreshold = [
 		self::TYPE => self::TYPE_OBJECT,
 		self::REQUIRED => false,

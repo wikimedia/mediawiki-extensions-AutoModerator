@@ -188,7 +188,8 @@ class RevisionCheck {
 			$shouldRevert = true;
 			if ( $this->enforce ) {
 				// early return if we are in log only mode
-				if ( $this->config->get( "AutoModeratorEnableLogOnlyMode" ) ) {
+				$logModeEnabled = Util::getEnableLogOnlyMode( $this->config );
+				if ( $logModeEnabled ) {
 					return new RollbackStatus( $reverted, $status, $shouldRevert );
 				}
 				$pageRollbackStatus = $this->doRollback();

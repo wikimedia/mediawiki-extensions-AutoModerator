@@ -3,6 +3,7 @@
 // This file was automatically generated. Please update it via extensions/CommunityConfiguration/UpdateEmergencyDefaults.php maintenance script
 return (object) array(
    'AutoModeratorEnableRevisionCheck' => false,
+   'AutoModeratorEnableLogOnlyMode' => false,
    'AutoModeratorCautionLevel' => 'very-cautious',
    'AutoModeratorUseEditFlagMinor' => false,
    'AutoModeratorEnableBotFlag' => false,

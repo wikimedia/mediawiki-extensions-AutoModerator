@@ -353,4 +353,34 @@ class UtilTest extends MediaWikiUnitTestCase {
 
 		$this->assertSame( $expectedThreshold, $threshold );
 	}
+
+	/**
+	 * @covers ::getEnableLogOnlyMode
+	 */
+	public function testGetEnableLogOnlyModeLanguageAgnostic() {
+		$config = new HashConfig( [
+			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorEnableLogOnlyMode' => false
+		] );
+
+		$logModeEnabled = Util::getEnableLogOnlyMode( $config );
+
+		$this->assertFalse( $logModeEnabled );
+	}
+
+	/**
+	 * @covers ::getEnableLogOnlyMode
+	 */
+	public function testGetEnableLogOnlyModeMultilingual() {
+		$config = new HashConfig( [
+			'AutoModeratorWikiId' => 'enwiki',
+			'AutoModeratorMultiLingualRevertRisk' => true,
+			'AutoModeratorMultilingualEnableLogOnlyMode' => false
+		] );
+
+		$logModeEnabled = Util::getEnableLogOnlyMode( $config );
+
+		$this->assertFalse( $logModeEnabled );
+	}
 }

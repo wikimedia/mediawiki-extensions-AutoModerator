@@ -3,6 +3,7 @@
 // This file was automatically generated. Please update it via extensions/CommunityConfiguration/UpdateEmergencyDefaults.php maintenance script
 return (object) array(
    'AutoModeratorMultilingualConfigEnableRevisionCheck' => false,
+   'AutoModeratorMultilingualEnableLogOnlyMode' => false,
    'AutoModeratorMultilingualConfigConfigureThreshold' => 
   (object) array(
      'scalar' => '',
