@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Renvoy",
-			"Ата"
+			"Ата",
+			"Repakr"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 містить забагато елементів (максимум $2 {{PLURAL:$2| дозволено|дозволено}})",
@@ -47,5 +48,6 @@
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-description": "Вкажіть, скільки разів Автомодератор може відкидати правки одного і того ж користувача на певній сторінці протягом 24 годин. Якщо таке обмеження увімкнено, а цей параметр не встановлено, Автомодератор відкидатиме правки одного і того ж користувача необмежену кількість разів.",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "Увімкнути обмеження відкотів",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-control-label": "Дозволяє вказати, скільки разів Автомодератор може відкинути правки одного і того ж користувача на певній сторінці протягом 24 годин.",
-	"automoderator-config-validator-user-reverts-per-page-not-number": "Значення, введене для параметра \"Кількість відкотів за сторінкою\", не є числом, будь ласка, спробуйте ввести інше."
+	"automoderator-config-validator-user-reverts-per-page-not-number": "Значення, введене для параметра \"Кількість відкотів за сторінкою\", не є числом, будь ласка, спробуйте ввести інше.",
+	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Цільова сторінка"
 }
