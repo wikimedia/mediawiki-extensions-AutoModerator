@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Samoasambia"
+			"Samoasambia",
+			"Wikipeedikko"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 sisältää liian monta kohdetta (enintään $2 {{PLURAL:$2|on sallittu}})",
@@ -17,6 +18,7 @@
 	"automoderator-wiki-revertpage-nouser": "Piilotetun käyttäjän {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän {{GENDER:$1|[[User:$1|$1]]}} tekemään versioon",
 	"automoderator-wiki-revertpage-anon": "Käyttäjän [[Special:Contributions/$2|$2]] {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän [[User:$1|$1]] tekemään versioon.",
 	"automoderator-wiki-revertpage": "Käyttäjän [[Special:Contributions/$2|$2]] ([[User talk:$2|keskustelu]]) {{PLURAL:$7|muokkaus|muokkaukset}} kumottiin ja sivu palautettiin viimeisimpään käyttäjän [[User:$1|$1]] tekemään versioon.",
+	"log-name-automoderator": "Automaattimoderaattori",
 	"logentry-automoderator-revert_decision": "$1 olisi kumonnut muokkauksen",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Käyttöoikeudet",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator on käytössä",
