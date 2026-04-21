@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Samoasambia"
+			"Samoasambia",
+			"Wikipeedikko"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 sisältää liian monta kohdetta (enintään $2 {{PLURAL:$2|on sallittu}})",

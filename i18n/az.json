@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Nemoralis"
+			"Nemoralis",
+			"Gadir"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 həddindən çox element var (maksimum $2 {{PLURAL:$2|icazə verilir}})",
