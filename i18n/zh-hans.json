@@ -15,7 +15,8 @@
 			"Peterxy12",
 			"范",
 			"Libamidi",
-			"Stang"
+			"Stang",
+			"TigerZhang"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1包含太多项（最多{{PLURAL:$2|允许}}$2项）",
