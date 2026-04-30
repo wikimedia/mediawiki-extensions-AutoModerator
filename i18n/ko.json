@@ -5,21 +5,31 @@
 			"Suleiman the Magnificent Television",
 			"YeBoy371",
 			"Ykhwong",
-			"Ellif"
+			"Ellif",
+			"Tensama0415"
 		]
 	},
+	"automoderator-wiki-report-false-positive": "거짓 양성 보고하기",
 	"automoderator-wiki-revert-message-help-page": "* 편집에 대해 자세히 알아보려면 이 도움말 페이지를 참고하세요: [[$1]].",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "사용자 권한",
 	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "토론 문서 메시지",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "거짓 양성 보고 문서",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "한계치 설정",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "사소한 편집",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "봇 편집",
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "문서 당 사용자 되돌리기",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "문서 당 사용자 되돌리기 활성화",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "대상 문서",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigconfigurethreshold-label": "한계치 설정",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-label": "다언어 모델",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-control-label": "다국어 모델 선택",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-label": "한계치",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "사소한 편집",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "봇 편집",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "토론 문서 메시지",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-url-label": "대상 문서",
-	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "사용자 권한"
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguserrevertsperpage-label": "문서 당 사용자 되돌리기",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenableuserrevertsperpage-label": "문서 당 사용자 되돌리기 활성화",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "사용자 권한",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigfalsepositivepagetitle-label": "거짓 양성 보고 문서"
 }
