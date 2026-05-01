@@ -17,6 +17,8 @@
 	"automoderator-wiki-revertpage-nouser": "Modification{{PLURAL:$7||es}} de un usator celate revertite; ultime version de {{GENDER:$1|[[User:$1|$1]]}} restaurate",
 	"automoderator-wiki-revertpage-anon": "Modification{{PLURAL:$7||es}} de [[Special:Contributions/$2|$2]] revertite; ultime version de [[User:$1|$1]] restaurate",
 	"automoderator-wiki-revertpage": "Modification{{PLURAL:$7||es}} de [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]]) revertite; ultime version de [[User:$1|$1]] restaurate",
+	"log-name-automoderator": "Automoderator",
+	"logentry-automoderator-revert_decision": "$1 reverterea le modification",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Derectos de usator",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator es active",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Le reversiones de AutoModerator essera marcate como modificationes minor.",
