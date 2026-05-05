@@ -16,5 +16,6 @@
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Edições menores",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Especifique os direitos de usuário cujos titulares o Automoderator nunca deve reverter.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "As reversões feitas pelo Automoderador serão consideradas edições de bots.",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edição de robô"
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Edição de robô",
+	"communityconfiguration-automoderator-description": "Configure as definições do Automoderator para que o modelo possa identificar e reverter edições potencialmente inadequadas na Wikipédia."
 }
