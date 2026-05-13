@@ -19,6 +19,8 @@
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "자동조정자",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "사소한 편집",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "봇 편집",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:Minor edit]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
 	"communityconfiguration-automoderator-automoderatoruserrevertsperpage-label": "문서 당 사용자 되돌리기",
 	"communityconfiguration-automoderator-automoderatorenableuserrevertsperpage-label": "문서 당 사용자 되돌리기 활성화",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "대상 문서",
