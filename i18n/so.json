@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"AhmedG612"
+		]
+	},
+	"communityconfiguration-automoderator-automoderatorenablelogonlymode-control-label": "Habka kaliya ee diiwaangelinta",
+	"communityconfiguration-automoderator-automoderatorenablelogonlymode-description": "Haddii habka diiwaangelin-keliya la hawlgeliyo, Automoderator ma celin doono wax ka beddel kasta, balse wuxuu [{{fullurl:Special:Log|type=automoderator}} diiwaangelin doonaa go'aannada] uu qaadan lahaa.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualenablelogonlymode-description": "Haddii habka diiwaangelinta-keliya la daaro, Automoderator ma celin doono wax ka beddel kasta, balse wuxuu [{{fullurl:Special:Log|type=automoderator}} diiwaangelin doonaa go'aannada] uu qaadan lahaa."
+}
