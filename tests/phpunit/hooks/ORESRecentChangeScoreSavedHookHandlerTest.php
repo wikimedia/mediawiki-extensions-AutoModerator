@@ -24,6 +24,11 @@ use Wikimedia\Rdbms\IConnectionProvider;
  */
 class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
+	protected function setUp(): void {
+		parent::setUp();
+		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
+	}
+
 	public static function provideOnOresRecentChangesScoreSavedQueued(): array {
 		$revSpec = [
 			'id' => 1000,
@@ -42,7 +47,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 	 * @dataProvider provideOnOresRecentChangesScoreSavedQueued
 	 */
 	public function testOnOresRecentChangesScoreSavedQueued( $needsWikiPage, $revSpec ) {
-		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
 		] );
@@ -154,7 +158,6 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 	public function testOnOresRecentChangesScoreSavedNotQueued(
 		bool $needsWikiPage, ?array $revSpec, bool $needsScore
 	) {
-		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
 		$this->overrideConfigValue( 'OresModels', [
 			'revertrisklanguageagnostic' => [ 'enabled' => true, 'namespaces' => [ 0 ] ]
 		] );
