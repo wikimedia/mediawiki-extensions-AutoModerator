@@ -4,7 +4,8 @@
 			"Beta16",
 			"Laos è una regione",
 			"Titore",
-			"Superpes15"
+			"Superpes15",
+			"ZioNicco"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 ha troppi elementi ({{PLURAL:$2|è consentito|sono consentiti}} massimo $2)",
