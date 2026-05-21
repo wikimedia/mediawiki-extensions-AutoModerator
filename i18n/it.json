@@ -4,7 +4,8 @@
 			"Beta16",
 			"Laos è una regione",
 			"Superpes15",
-			"Titore"
+			"Titore",
+			"ZioNicco"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 ha troppi elementi ({{PLURAL:$2|è consentito|sono consentiti}} massimo $2)",
@@ -77,7 +78,7 @@
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-description": "Inserisci un valore compreso tra 0.850 e 0.999",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-help-text": "<b>Campo oggetto</b><p>Il campo oggetto delle modifiche di Automoderator può essere tradotto su translatewiki e sovrascritto localmente.</p> <b>Azioni</b><ul><li>Si prega di aggiungere le traduzioni tramite [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>Per un messaggio personalizzato nella pagina di discussione sovrascrivi il testo nei [{{fullurl:Special:AllMessages|prefix=automoderator-wiki&filter=all&limit=50}} messaggi di sistema].</li></ul>",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "Modifiche minori",
-	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-control-label": "Gli annullamenti effettuati da AutoModerator saranno considerate modifiche minori.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-control-label": "Gli annullamenti effettuati da AutoModerator saranno considerati modifiche minori.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Aiuto:Modifica minore]",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "Modifica di un bot",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-control-label": "Gli annullamenti fatti da Automoderator saranno considerati modifiche di un bot.",
