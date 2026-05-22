@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"McDutchie",
-			"Siebrand"
+			"Siebrand",
+			"ItsNyoty"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 bevat te veel items (er {{PLURAL:$2|is|zijn}} maximaal $2 toegestaan)",
@@ -19,8 +20,8 @@
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] teruggedraaid naar de laatste versie van [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] ([[User talk:$2|Overleg]]) teruggedraaid naar de laatste versie van [[User:$1|$1]]",
 	"log-name-automoderator": "AutoModerator",
-	"logentry-automoderator-revert_decision": "$1 zou de bewerking ongedaan maken",
-	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] door [[User:$2|$2]] met score $3",
+	"logentry-automoderator-revert_decision": "$1 zou bewerking",
+	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] door [[User:$2|$2]] ongedaan maken met score $3",
 	"log-description-automoderator": "Dit is een logboek van bewerkingen die AutoModerator ongedaan zou hebben gemaakt, gezien de instellingen op het moment van de logboekvermelding.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gebruikersrechten",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator is ingeschakeld",
