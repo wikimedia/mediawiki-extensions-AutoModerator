@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"McDutchie",
-			"Siebrand"
+			"Siebrand",
+			"ItsNyoty"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 bevat te veel items (er {{PLURAL:$2|is|zijn}} maximaal $2 toegestaan)",

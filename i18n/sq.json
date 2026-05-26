@@ -2,13 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Klein Muçi",
-			"INNERLMNT"
+			"INNERLMNT",
+			"Jsn.sherman"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 ka shumë artikuj ({{PLURAL:$2| lejohet|lejohen}} maksimalisht $2)",
 	"automoderator-config-validator-contentmodel-mismatch": "Mospërputhja e modelit të përmbajtjes: dokumenti i konfigurimit duhet të ketë model të përmbajtjes JSON, u vu re $1",
 	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> pritet të jetë <code>$2</code>, por është <code>$3</code>",
-	"automoderator-desc": "Rikthen automatikisht ndryshimet e gabuara bazuar në pikëzimin e një modeli të të mësuarit automatik.",
+	"automoderator-desc": "Kthen automatikisht ndryshimet e gabuara bazuar në pikëzimin e një modeli të të mësuarit automatik.",
 	"automoderator-wiki-report-false-positive": "Raporto rezultate pozitive të rreme",
 	"automoderator-wiki-revert-edit-summary": "Njoftim për kthim automatik te [[$1]]",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Të drejtat e përdoruesit",
@@ -29,10 +30,10 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Kthimet nga Automoderatori do të konsiderohen si redaktime robotësh.",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Redaktim roboti",
 	"communityconfiguration-automoderator-info-text": "Kujdes! Kur bëhen ndryshime, ato do të ndikojnë menjëherë te të gjithë përdoruesit në komunitetin tuaj. Është e rëndësishme të jeni të kujdesshëm dhe të veproni me mendje. Diskutoni dhe arrini një vendim të përbashkët para se të bëni ndryshime në konfigurim.",
-	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Ky shtesë përdor modelet e reja të rrezikut të rikthimit, të cilat mund të llogarisin një pikë për çdo rishikim që tregon sa është e mundshme që redaktimi të duhet rikthyer. Modelet mbështesin vetëm projektet e Wikipedia-s dhe janë trajnuar në hapësirën kryesore (artikujt). Përcaktoni një prag, mbi të cilin redaktimet do të rikthehen automatikisht. Pragje më të ulëta do të thonë se rikthehen më shumë redaktime, por me saktësi më të ulët, ndërsa pragje më të larta rezultojnë në rikthimin e pak redaktimeve, por me saktësi më të mirë.",
-	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Pasi Automoderatori rikthen një redaktim, një mesazh në faqen e bisedës mund të dërgohet automatikisht tek redaktuesi, duke shpjeguar çfarë ndodhi dhe duke ofruar lidhje të dobishme.",
-	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[[https://www.mediawiki.org/wiki/Help](https://www.mediawiki.org/wiki/Help):Minor_edit Ndihmë: Redaktim i vogël]",
-	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[[https://www.mediawiki.org/wiki/Manual](https://www.mediawiki.org/wiki/Manual):Bots#The_%22bot%22_flag Manual:Bots]",
-	"communityconfiguration-automoderator-description": "Konfiguroni cilësimet e Automoderatorit, në mënyrë që modeli të mund të identifikojë dhe të rikthejë redaktime potencialisht problematike në Wikipedia.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Ky shtesë përdor modelet e reja të rrezikut të rikthimit, të cilat mund të llogarisin një pikë për çdo rishikim që tregon sa është e mundshme që redaktimi të duhet kthyer. Modelet mbështesin vetëm projektet e Wikipedia-s dhe janë trajnuar në hapësirën kryesore (artikujt). Përcaktoni një prag, mbi të cilin redaktimet do të rikthehen automatikisht. Pragje më të ulëta do të thonë se kthehen më shumë redaktime, por me saktësi më të ulët, ndërsa pragje më të larta rezultojnë në kthimin e pak redaktimeve, por me saktësi më të mirë.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Pasi Automoderatori kthen një redaktim, një mesazh në faqen e bisedës mund të dërgohet automatikisht tek redaktuesi, duke shpjeguar çfarë ndodhi dhe duke ofruar lidhje të dobishme.",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Ndihmë: Redaktim i vogël]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Bots]",
+	"communityconfiguration-automoderator-description": "Konfiguroni cilësimet e Automoderatorit, në mënyrë që modeli të mund të identifikojë dhe të kthejë redaktime potencialisht problematike në Wikipedia.",
 	"automoderator-config-validator-userrights-not-allowed": "E drejta e përdoruesit $1 nuk ekziston. Ju lutemi provoni një tjetër."
 }

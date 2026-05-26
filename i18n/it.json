@@ -4,7 +4,8 @@
 			"Beta16",
 			"Laos è una regione",
 			"Titore",
-			"Superpes15"
+			"Superpes15",
+			"ZioNicco"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 ha troppi elementi ({{PLURAL:$2|è consentito|sono consentiti}} massimo $2)",
@@ -34,7 +35,7 @@
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Modifica di un bot",
 	"communityconfiguration-automoderator-info-text": "Attenzione! Le modifiche apportate avranno effetto immediato su tutti gli utenti della comunità. È importante che ciò avvenga in maniera prudente e consapevole. Discutete e raggiungete una decisione collettiva prima di apportare modifiche alla configurazione.",
 	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Questa estensione sfrutta i nuovi modelli di rischio degli annullamenti, che possono calcolare un punteggio per ogni versione indicando la probabilità che la modifica debba essere annullata. I modelli supportano solo i progetti Wikipedia e sono stati addestrati sul namespace principale (Voce). Imposta una soglia, al di sopra della quale le modifiche verranno automaticamente annullate. Soglie più basse comportano che verrà annullato un numero maggiore di modifiche, ma con una precisione inferiore, mentre soglie più alte comportano un numero minore di annullamenti, ma con una precisione maggiore.",
-	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Dopo che Automoderator ha annullato una modifica, è possibile inviare automaticamente un messaggio nella pagina di discussione dell'utente che ha modificato, spiegando cosa è successo e fornendo collegamenti utili.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Dopo che Automoderator ha annullato una modifica, è possibile inviare automaticamente un messaggio nella pagina di discussione dell'autore, per spiegare l'accaduto e fornire collegamenti utili.",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Aiuto:Modifica minore]",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manuale:Bot]",
 	"communityconfiguration-automoderator-description": "Configura le impostazioni di Automoderator, in modo che il modello possa identificare e annullare modifiche potenzialmente errate su Wikipedia.",
