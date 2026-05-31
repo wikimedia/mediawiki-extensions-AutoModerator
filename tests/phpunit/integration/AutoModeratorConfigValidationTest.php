@@ -5,8 +5,6 @@ namespace AutoModerator\Tests;
 use AutoModerator\Config\Validation\AutoModeratorConfigSchema;
 use AutoModerator\Config\Validation\AutoModeratorConfigValidation;
 use AutoModerator\Config\Validation\AutoModeratorMultilingualConfigSchema;
-use MediaWiki\Extension\CommunityConfiguration\Validation\ValidationStatus;
-use MediaWiki\Extension\CommunityConfiguration\Validation\ValidatorFactory;
 
 /**
  * @coversDefaultClass \AutoModerator\Config\Validation\AutoModeratorConfigValidation
@@ -15,10 +13,8 @@ use MediaWiki\Extension\CommunityConfiguration\Validation\ValidatorFactory;
 class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	private array $config;
 	private array $multilingualConfig;
-	private ValidatorFactory $validatorFactory;
 
 	protected function setUp(): void {
-		$services = $this->getServiceContainer();
 		$this->config = [
 			'AutoModeratorEnableRevisionCheck' => false,
 			'AutoModeratorFalsePositivePageTitle' => '',
@@ -53,45 +49,42 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
 			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
 		];
-		$this->validatorFactory = $services->getService( 'CommunityConfiguration.ValidatorFactory' );
 	}
 
 	private function validate( $class ) {
-		switch ( $class ) {
-			case 'AutoModerator\Config\Validation\AutoModeratorConfigSchema':
-				$config = (object)$this->config;
-				break;
-			case 'AutoModerator\Config\Validation\AutoModeratorMultilingualConfigSchema':
-				$config = (object)$this->multilingualConfig;
-				$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
-				break;
-
-		}
 		// CC validators expect objects
-		$validator = AutoModeratorConfigValidation::factory( $this->validatorFactory, $config, $class );
+		$config = (object)match ( $class ) {
+			AutoModeratorConfigSchema::class => $this->config,
+			AutoModeratorMultilingualConfigSchema::class => $this->multilingualConfig,
+		};
+		$services = $this->getServiceContainer();
+		$validator = AutoModeratorConfigValidation::factory(
+			$services->getService( 'CommunityConfiguration.ValidatorFactory' ),
+			$services->getPermissionManager(),
+			$class
+		);
 		return $validator->validateStrictly( $config );
 	}
 
 	/**
-	 * @covers ::validateStrictly when user right valid
+	 * when user right valid
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRightValid() {
 		$this->config[ 'AutoModeratorSkipUserRights' ] = [ 'bot' ];
 		$result = $this->validate( AutoModeratorConfigSchema::class );
-		$this->assertEquals( ValidationStatus::newGood(), $result );
+		$this->assertStatusGood( $result );
 	}
 
 	/**
-	 * @covers ::validateStrictly when user right invalid
+	 * when user right invalid
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRightInvalid() {
 		$this->config[ 'AutoModeratorSkipUserRights' ] = [ 'bot-2' ];
 		$result = $this->validate( AutoModeratorConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 1, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -102,19 +95,18 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validateStrictly when user reverts per page not a number
+	 * when user reverts per page not a number
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageNotANumber() {
 		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = 'not a number';
 		$result = $this->validate( AutoModeratorConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 1, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -125,61 +117,60 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validateStrictly when user reverts per page not set
+	 * when user reverts per page not set
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageNotSet() {
 		unset( $this->config[ 'AutoModeratorUserRevertsPerPage' ] );
 		$result = $this->validate( AutoModeratorConfigSchema::class );
-		$this->assertEquals( ValidationStatus::newGood(), $result );
+		$this->assertStatusGood( $result );
 	}
 
 	/**
-	 * @covers ::validateStrictly when user reverts per page not set
+	 * when user reverts per page not set
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageNotSetEmptyString() {
 		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = '';
 		$result = $this->validate( AutoModeratorConfigSchema::class );
-		$this->assertEquals( ValidationStatus::newGood(), $result );
+		$this->assertStatusGood( $result );
 	}
 
 	/**
-	 * @covers ::validateStrictly when user reverts per page is a number
+	 * when user reverts per page is a number
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenUserRevertPerPageIsANumber() {
 		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = '25';
 		$result = $this->validate( AutoModeratorConfigSchema::class );
-		$this->assertEquals( ValidationStatus::newGood(), $result );
+		$this->assertStatusGood( $result );
 	}
 
 	/**
-	 * @covers ::validateStrictly when multilingual threshold is a number
+	 * when multilingual threshold is a number
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdIsANumber() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.992';
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
 		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
-		$this->assertEquals( ValidationStatus::newGood(), $result );
+		$this->assertStatusGood( $result );
 	}
 
 	/**
-	 * @covers ::validateStrictly when multilingual threshold is not a number
+	 * when multilingual threshold is not a number
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdIsNotANumber() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = 'oopsie';
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
 		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 2, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -198,30 +189,30 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validateStrictly when multilingual threshold is within range
+	 * when multilingual threshold is within range
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdIsWithinRange() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.992';
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
 		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
-		$this->assertEquals( ValidationStatus::newGood(), $result );
+		$this->assertStatusGood( $result );
 	}
 
 	/**
-	 * @covers ::validateStrictly when multilingual threshold is out of range
+	 * when multilingual threshold is out of range
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdIsNotWithinRange() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.001';
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
 		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 1, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -232,20 +223,19 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validateStrictly when multilingual threshold is added but the model is not enabled
+	 * when multilingual threshold is added but the model is not enabled
 	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualThresholdAddedModelNotEnabled() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.967';
 		unset( $this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] );
 		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 1, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -257,19 +247,19 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validateStrictly when the multilingual and the language-agnostic models are both enabled
+	 * when the multilingual and the language-agnostic models are both enabled
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenMultilingualModelAndLanguageAgnosticEnabled() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableLanguageAgnostic' ] = true;
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableMultilingual' ] = true;
 		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 1, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -281,19 +271,19 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validateStrictly when the talk page message is enabled, but the false positive page is empty
+	 * when the talk page message is enabled, but the false positive page is empty
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenTalkPageEnabledNoFalsePositivePage() {
 		$this->config[ 'AutoModeratorRevertTalkPageMessageEnabled' ] = true;
 		$this->config[ 'AutoModeratorFalsePositivePageTitle' ] = '';
 		$result = $this->validate( AutoModeratorConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 1, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -304,19 +294,19 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 
 	/**
-	 * @covers ::validateStrictly when the talk page message is enabled, but the false positive page is empty
+	 * when the talk page message is enabled, but the false positive page is empty
+	 * @covers ::validateStrictly
 	 */
 	public function testValidateWhenTalkPageEnabledNoFalsePositivePageMultilingual() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' ] = true;
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigFalsePositivePageTitle' ] = '';
 		$result = $this->validate( AutoModeratorMultilingualConfigSchema::class );
-		$this->assertFalse( $result->isGood() );
+		$this->assertStatusNotGood( $result );
 		$errors = $result->getErrors();
-		$this->assertCount( 1, $errors );
 		$expected = [
 			[
 				'type' => 'error',
@@ -327,6 +317,6 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expected, $errors );
+		$this->assertSame( $expected, $errors );
 	}
 }

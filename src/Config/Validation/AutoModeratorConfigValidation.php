@@ -9,19 +9,19 @@ use MediaWiki\Extension\CommunityConfiguration\Schema\SchemaBuilder;
 use MediaWiki\Extension\CommunityConfiguration\Validation\IValidator;
 use MediaWiki\Extension\CommunityConfiguration\Validation\ValidationStatus;
 use MediaWiki\Extension\CommunityConfiguration\Validation\ValidatorFactory;
-use MediaWiki\MediaWikiServices;
+use MediaWiki\Permissions\PermissionManager;
 
 class AutoModeratorConfigValidation implements IValidator {
 	public function __construct(
 		private readonly IValidator $jsonSchemaValidator,
-		private readonly mixed $config,
+		private readonly PermissionManager $permissionManager,
 		private readonly IContextSource $context
 	) {
 	}
 
 	public static function factory(
 		ValidatorFactory $validatorFactory,
-		mixed $config,
+		PermissionManager $permissionManager,
 		string $jsonSchema,
 		?IContextSource $context = null
 	): self {
@@ -31,7 +31,7 @@ class AutoModeratorConfigValidation implements IValidator {
 			[ $jsonSchema ],
 		);
 		$context ??= RequestContext::getMain();
-		return new self( $jsonSchemaValidator, $config, $context );
+		return new self( $jsonSchemaValidator, $permissionManager, $context );
 	}
 
 	/** @inheritDoc */
@@ -42,7 +42,7 @@ class AutoModeratorConfigValidation implements IValidator {
 			$isUserRightsField = $field == "AutoModeratorSkipUserRights" ||
 				$field == "AutoModeratorMultilingualConfigSkipUserRights";
 			if ( $isUserRightsField ) {
-				$allPermissions = MediaWikiServices::getInstance()->getPermissionManager()->getAllPermissions();
+				$allPermissions = $this->permissionManager->getAllPermissions();
 				foreach ( $value as $userRight ) {
 					if ( !in_array( $userRight, $allPermissions ) ) {
 						$status->addFatal(

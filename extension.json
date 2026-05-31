@@ -42,7 +42,7 @@
 					"factory": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
 					"services": [
 						"CommunityConfiguration.ValidatorFactory",
-						"MainConfig"
+						"PermissionManager"
 					],
 					"args": [
 						"AutoModerator\\Config\\Validation\\AutoModeratorConfigSchema"
@@ -53,7 +53,7 @@
 					"factory": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
 					"services": [
 						"CommunityConfiguration.ValidatorFactory",
-						"MainConfig"
+						"PermissionManager"
 					],
 					"args": [
 						"AutoModerator\\Config\\Validation\\AutoModeratorMultilingualConfigSchema"
