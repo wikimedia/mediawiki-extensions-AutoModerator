@@ -38,100 +38,110 @@ class AutoModeratorConfigValidation implements IValidator {
 	public function validateStrictly( mixed $config, ?string $version = null ): ValidationStatus {
 		$status = new ValidationStatus();
 		$data = json_decode( json_encode( $config ), true );
+		'@phan-var array<string,mixed> $data';
 		foreach ( $data as $field => $value ) {
-			$isUserRightsField = $field == "AutoModeratorSkipUserRights" ||
-				$field == "AutoModeratorMultilingualConfigSkipUserRights";
-			if ( $isUserRightsField ) {
-				$allPermissions = $this->permissionManager->getAllPermissions();
-				foreach ( $value as $userRight ) {
-					if ( !in_array( $userRight, $allPermissions ) ) {
+			switch ( $field ) {
+				case 'AutoModeratorSkipUserRights':
+				case 'AutoModeratorMultilingualConfigSkipUserRights':
+					$allPermissions = $this->permissionManager->getAllPermissions();
+					foreach ( $value as $userRight ) {
+						if ( !in_array( $userRight, $allPermissions ) ) {
+							$status->addFatal(
+								$field,
+								"/$field",
+								$this->context->msg(
+									'automoderator-config-validator-userrights-not-allowed',
+									$userRight
+								)->text(),
+							);
+						}
+					}
+					break;
+
+				case 'AutoModeratorUserRevertsPerPage':
+				case 'AutoModeratorMultilingualConfigUserRevertsPerPage':
+					if ( $value && !is_numeric( $value ) ) {
 						$status->addFatal(
 							$field,
 							"/$field",
 							$this->context->msg(
-								'automoderator-config-validator-userrights-not-allowed',
-								$userRight
+								'automoderator-config-validator-user-reverts-per-page-not-number'
 							)->text(),
 						);
 					}
-				}
-			}
+					break;
 
-			$isUserRevertsPerPageField = $field == "AutoModeratorUserRevertsPerPage" ||
-				$field == "AutoModeratorMultilingualConfigUserRevertsPerPage";
-			if ( $isUserRevertsPerPageField && $value && !is_numeric( $value ) ) {
-				$status->addFatal(
-					$field,
-					"/$field",
-					$this->context->msg( 'automoderator-config-validator-user-reverts-per-page-not-number' )->text(),
-				);
-			}
+				case 'AutoModeratorMultilingualConfigMultilingualThreshold':
+					if ( $value && !is_numeric( $value ) ) {
+						$status->addFatal(
+							$field,
+							"/$field",
+							$this->context->msg(
+								'automoderator-config-validator-multilingual-threshold-not-number'
+							)->text(),
+						);
+					}
+					if ( $value !== '' && ( $value < 0.850 || $value > 0.999 ) ) {
+						$status->addFatal(
+							$field,
+							"/$field",
+							$this->context->msg(
+								'automoderator-config-validator-multilingual-threshold-value-outside-range'
+							)->text(),
+						);
+					}
+					if ( $value &&
+						(
+							!array_key_exists( 'AutoModeratorMultilingualConfigEnableMultilingual', $data ) ||
+							!$data['AutoModeratorMultilingualConfigEnableMultilingual']
+						)
+					) {
+						$status->addFatal(
+							$field,
+							"/$field",
+							$this->context->msg(
+								'automoderator-config-validator-multilingual-threshold-multilingual-not-enabled'
+							)->text(),
+						);
+					}
+					break;
 
-			if ( $field == "AutoModeratorMultilingualConfigMultilingualThreshold" &&
-				$value && !is_numeric( $value ) ) {
-				$status->addFatal(
-					$field,
-					"/$field",
-					$this->context->msg( 'automoderator-config-validator-multilingual-threshold-not-number' )->text(),
-				);
-			}
+				case 'AutoModeratorMultilingualConfigEnableLanguageAgnostic':
+					if ( $value && $data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
+						$status->addFatal(
+							$field,
+							"/$field",
+							$this->context->msg(
+								'automoderator-config-validator-multilingual-select-only-one-model'
+							)->text(),
+						);
+					}
+					break;
 
-			if ( $field == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value !== '' &&
-				( $value < 0.850 || $value > 0.999 ) ) {
-				$status->addFatal(
-					$field,
-					"/$field",
-					$this->context->msg(
-						'automoderator-config-validator-multilingual-threshold-value-outside-range'
-					)->text(),
-				);
-			}
-			if ( $field == "AutoModeratorMultilingualConfigMultilingualThreshold" && $value &&
-				(
-					!array_key_exists( 'AutoModeratorMultilingualConfigEnableMultilingual', $data ) ||
-					!$data['AutoModeratorMultilingualConfigEnableMultilingual']
-				)
-			) {
-				$status->addFatal(
-					$field,
-					"/$field",
-					$this->context->msg(
-						'automoderator-config-validator-multilingual-threshold-multilingual-not-enabled'
-					)->text(),
-				);
-			}
+				case 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled':
+					if ( $value && !$data['AutoModeratorMultilingualConfigFalsePositivePageTitle'] ) {
+						$status->addFatal(
+							$field,
+							"/$field",
+							$this->context->msg(
+								// phpcs:ignore Generic.Files.LineLength.TooLong
+								'automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled'
+							)->text(),
+						);
+					}
+					break;
 
-			if ( $field == "AutoModeratorMultilingualConfigEnableLanguageAgnostic" && $value
-				&& $data['AutoModeratorMultilingualConfigEnableMultilingual'] ) {
-				$status->addFatal(
-					$field,
-					"/$field",
-					$this->context->msg(
-						'automoderator-config-validator-multilingual-select-only-one-model'
-					)->text(),
-				);
-			}
-
-			if ( $field == "AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled" && $value
-				&& !$data['AutoModeratorMultilingualConfigFalsePositivePageTitle'] ) {
-				$status->addFatal(
-					$field,
-					"/$field",
-					$this->context->msg(
-						'automoderator-config-validator-multilingual-add-false-positive-page-talk-page-msg-enabled'
-					)->text(),
-				);
-			}
-
-			if ( $field == "AutoModeratorRevertTalkPageMessageEnabled" && $value
-				&& !$data['AutoModeratorFalsePositivePageTitle'] ) {
-				$status->addFatal(
-					$field,
-					"/$field",
-					$this->context->msg(
-						'automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled'
-					)->text(),
-				);
+				case 'AutoModeratorRevertTalkPageMessageEnabled':
+					if ( $value && !$data['AutoModeratorFalsePositivePageTitle'] ) {
+						$status->addFatal(
+							$field,
+							"/$field",
+							$this->context->msg(
+								'automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled'
+							)->text(),
+						);
+					}
+					break;
 			}
 		}
 
