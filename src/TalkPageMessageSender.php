@@ -23,8 +23,9 @@ use AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob;
 use Exception;
 use MediaWiki\Config\Config;
 use MediaWiki\JobQueue\JobQueueGroup;
+use MediaWiki\Language\Language;
+use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MainConfigNames;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\Title\Title;
@@ -35,12 +36,17 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class TalkPageMessageSender {
 
+	private readonly LoggerInterface $logger;
+
 	public function __construct(
 		private readonly RevisionStore $revisionStore,
 		private readonly Config $config,
 		private readonly JobQueueGroup $jobQueueGroup,
 		private readonly TitleFactory $titleFactory,
+		private readonly Language $contentLanguage,
+		?LoggerInterface $logger = null
 	) {
+		$this->logger = $logger ?? LoggerFactory::getInstance( 'AutoModerator' );
 	}
 
 	/**
@@ -48,15 +54,12 @@ class TalkPageMessageSender {
 	 * @param int $revId
 	 * @param int $rollbackRevId
 	 * @param User $autoModeratorUser
-	 * @param LoggerInterface $logger
-	 * @return void
 	 */
 	public function insertAutoModeratorSendRevertTalkPageMsgJob(
 		Title $title,
 		int $revId,
 		int $rollbackRevId,
-		User $autoModeratorUser,
-		LoggerInterface $logger
+		User $autoModeratorUser
 	): void {
 		if ( !ExtensionRegistry::getInstance()->isLoaded( 'DiscussionTools' ) ) {
 			// Discussion Tools is not loaded, we will not push a new job to the queue
@@ -65,13 +68,12 @@ class TalkPageMessageSender {
 		try {
 			$rev = $this->revisionStore->getRevisionById( $revId );
 			if ( $rev === null ) {
-				$logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
+				$this->logger->debug( __METHOD__ . ': AutoModerator skip rev - new page creation' );
 				return;
 			}
-			$language = MediaWikiServices::getInstance()->getContentLanguage();
 			$timestamp = new ConvertibleTimestamp();
 			if ( $this->config->get( MainConfigNames::TranslateNumerals ) ) {
-				$year = $language->formatNumNoSeparators( $timestamp->format( 'Y' ) );
+				$year = $this->contentLanguage->formatNumNoSeparators( $timestamp->format( 'Y' ) );
 			} else {
 				$year = $timestamp->format( 'Y' );
 			}
@@ -102,21 +104,22 @@ class TalkPageMessageSender {
 					'autoModeratorUserName' => $autoModeratorUser->getName(),
 					'talkPageMessageHeader' => wfMessage( 'automoderator-wiki-revert-message-header' )
 						->params(
-							$language->getMonthName( (int)$timestamp->format( 'n' ) ),
+							$this->contentLanguage->getMonthName( (int)$timestamp->format( 'n' ) ),
 							$year,
-							$autoModeratorUser->getName() )->plain(),
+							$autoModeratorUser->getName()
+						)->plain(),
 					'talkPageMessageEditSummary' => wfMessage( 'automoderator-wiki-revert-edit-summary' )
 						->params( $title->getPrefixedText() )->plain(),
 					'falsePositiveReportPageTitle' => $falsePositivePageURL . $falsePositiveParams
 				]
 			);
 			$this->jobQueueGroup->push( $userTalkPageJob );
-			$logger->debug( 'AutoModeratorSendRevertTalkPageMsgJob pushed for {rev}', [
+			$this->logger->debug( 'AutoModeratorSendRevertTalkPageMsgJob pushed for {rev}', [
 				'rev' => $revId,
 			] );
 		} catch ( Exception $e ) {
 			$msg = $e->getMessage();
-			$logger->error( 'AutoModeratorSendRevertTalkPageMsgJob push failed for {rev}: {msg}', [
+			$this->logger->error( 'AutoModeratorSendRevertTalkPageMsgJob push failed for {rev}: {msg}', [
 				'rev' => $revId,
 				'msg' => $msg
 			] );

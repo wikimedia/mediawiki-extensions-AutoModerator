@@ -6,6 +6,7 @@ use AutoModerator\Hooks\RollbackCompleteHookHandler;
 use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
@@ -18,7 +19,7 @@ use MediaWiki\User\UserIdentity;
 /**
  * @group AutoModerator
  * @group Database
- * @covers \AutoModerator\Hooks\RevisionFromEditCompleteHookHandler
+ * @covers \AutoModerator\Hooks\RollbackCompleteHookHandler
  */
 class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 
@@ -153,7 +154,8 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			$revisionStore,
 			$config,
 			$jobQueueGroup,
-			$titleFactory
+			$titleFactory,
+			$this->getServiceContainer()->getContentLanguage()
 		);
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 
@@ -202,7 +204,8 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			$revisionStore,
 			$config,
 			$jobQueueGroup,
-			$titleFactory
+			$titleFactory,
+			$this->createMock( Language::class )
 		);
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 
@@ -246,7 +249,8 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			$revisionStore,
 			$config,
 			$jobQueueGroup,
-			$titleFactory
+			$titleFactory,
+			$this->createMock( Language::class )
 		);
 		$user = $this->createMock( UserIdentity::class );
 		$user->method( 'getId' )->willReturn( 1001 );
@@ -295,7 +299,8 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			$revisionStore,
 			$config,
 			$jobQueueGroup,
-			$titleFactory
+			$titleFactory,
+			$this->createMock( Language::class )
 		);
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 
@@ -342,7 +347,8 @@ class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 			$revisionStore,
 			$config,
 			$jobQueueGroup,
-			$titleFactory
+			$titleFactory,
+			$this->getServiceContainer()->getContentLanguage()
 		);
 		$user = Util::getAutoModeratorUser( $config, $userGroupManager );
 

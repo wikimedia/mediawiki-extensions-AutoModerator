@@ -21,7 +21,8 @@ return [
 			$services->getRevisionStore(),
 			$autoModeratorServices->getAutoModeratorConfig(),
 			$services->getJobQueueGroup(),
-			$services->getTitleFactory()
+			$services->getTitleFactory(),
+			$services->getContentLanguage()
 		);
 	},
 

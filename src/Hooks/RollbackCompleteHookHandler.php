@@ -5,7 +5,6 @@ namespace AutoModerator\Hooks;
 use AutoModerator\TalkPageMessageSender;
 use AutoModerator\Util;
 use MediaWiki\Config\Config;
-use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\Hook\RollbackCompleteHook;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
@@ -35,11 +34,11 @@ class RollbackCompleteHookHandler implements RollbackCompleteHook {
 		if ( $autoModeratorUser->getId() === $user->getId() ) {
 			if ( $this->shouldSendTalkPageMessage( $current ) ) {
 				$this->talkPageMessageSender->insertAutoModeratorSendRevertTalkPageMsgJob(
-						$wikiPage->getTitle(),
-						$revId,
-						$rollbackRevId,
-						$autoModeratorUser,
-						LoggerFactory::getInstance( 'AutoModerator' ) );
+					$wikiPage->getTitle(),
+					$revId,
+					$rollbackRevId,
+					$autoModeratorUser
+				);
 			}
 		}
 	}
