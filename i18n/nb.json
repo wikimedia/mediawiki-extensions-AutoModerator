@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Astryger",
-			"Jon Harald Søby"
+			"Jon Harald Søby",
+			"EdoAug"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 har for mange elementer (maksimalt $2 {{PLURAL:$2|er}} tillatt)",
