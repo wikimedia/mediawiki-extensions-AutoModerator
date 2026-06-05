@@ -16,7 +16,8 @@
 			"ZhaoFJx",
 			"人间百态",
 			"沈澄心",
-			"范"
+			"范",
+			"Peterxy"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1包含太多项（最多{{PLURAL:$2|允许}}$2项）",
@@ -32,6 +33,10 @@
 	"automoderator-wiki-revertpage-nouser": "已还原某用户的{{PLURAL:$7|编辑}}至最后由{{GENDER:$1|[[User:$1|$1]]}}所修订的版本",
 	"automoderator-wiki-revertpage-anon": "已还原[[Special:Contributions/$2|$2]]的{{PLURAL:$7|编辑}}至最后由[[User:$1|$1]]所修订的版本",
 	"automoderator-wiki-revertpage": "已还原[[Special:Contributions/$2|$2]]（[[User talk:$2|讨论]]）的{{PLURAL:$7|编辑}}至最后由[[User:$1|$1]]修订的版本",
+	"log-name-automoderator": "AutoModerator",
+	"logentry-automoderator-revert_decision": "$1会回退编辑",
+	"logentry-automoderator-revert_decision-comment": "由[[User:$2|$2]]做出的编辑[[Special:Diff/$1|$1]]得分为$3",
+	"log-description-automoderator": "根据产生日志时的配置，这是Automoderator会采取回退措施的编辑的日志。",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "用户权限",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "开启Automoderator",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "AutoModerator所做的回退将被视为小修改。",
@@ -67,6 +72,7 @@
 	"communityconfiguration-automoderator-automoderatorhelppagelink-label": "链接到一个页面以助编辑",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "目标页面",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-description": "未注册贡献者的讨论页消息将显示一个页面链接，以帮助他们编辑。\n此链接可配置为wiki中的任何链接。",
+	"communityconfiguration-automoderator-automoderatorenablelogonlymode-control-label": "仅日志模式",
 	"automoderator-config-validator-help-page-link-not-filled": "目标页面字段和标签字段都需要填写。",
 	"automoderator-config-validator-add-false-positive-page-talk-page-msg-enabled": "当讨论页面消息启用时，您需要添加误报报告页面",
 	"communityconfiguration-automoderatormultilingual-title": "Automoderator",
@@ -109,6 +115,7 @@
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-description": "指定Automoderator不应回退持有哪些用户权限的用户的编辑。",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigfalsepositivepagetitle-label": "误报反馈页面",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualenablelogonlymode-description": "如果启用仅日志模式，自动审核员将不会撤销任何编辑，而是会将它做出的决定记录在[{{fullurl:Special:Log/AutoModerator}} Special:Log/AutoModerator]。",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualenablelogonlymode-control-label": "仅日志模式",
 	"automoderator-config-validator-multilingual-threshold-not-number": "多语言阈值必须是一个数字。",
 	"automoderator-config-validator-multilingual-threshold-value-outside-range": "阈值输入超出范围。请输入介于0.850和0.999之间的数值。",
 	"automoderator-config-validator-multilingual-threshold-multilingual-not-enabled": "多语言模型未启用，但设置了阈值。请启用多语言模型。",

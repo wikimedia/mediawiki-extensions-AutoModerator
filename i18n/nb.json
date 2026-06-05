@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Astryger",
-			"Jon Harald Søby"
+			"Jon Harald Søby",
+			"EdoAug"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 har for mange elementer (maksimalt $2 {{PLURAL:$2|er}} tillatt)",
@@ -18,6 +19,8 @@
 	"automoderator-wiki-revertpage-nouser": "Tilbakestilte {{PLURAL:$7|endring|endringer}} av skjult bruker til siste versjon av\n{{GENDER:$1|[[User:$1|$1]]}}",
 	"automoderator-wiki-revertpage-anon": "Tilbakestilte {{PLURAL:$7|endring|endringer}} av [[Special:Contributions/$2|$2]] til siste versjon av [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "Tilbakestilte {{PLURAL:$7|endring|endringer}} av [[Special:Contributions/$2|$2]] ([[User talk:$2|brukerdiskusjon]]) til siste versjon av [[User:$1|$1]]",
+	"log-name-automoderator": "Automoderator",
+	"logentry-automoderator-revert_decision": "$1 hadde tilbakestilt endring",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Brukerrettigheter",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderatoren er aktivert",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Tilbakestillinger av automoderatoren skal anses som mindre endringer.",
