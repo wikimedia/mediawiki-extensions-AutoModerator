@@ -4,6 +4,7 @@
 			"Eduardoaddad"
 		]
 	},
+	"automoderator-wiki-report-false-positive": "relatar falso positivo",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gestão de privilégios {{GENDER:{{BASEPAGENAME}}|do usuário|da usuária|de usuário(a)}}",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "O Automoderador está ativado",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "As reversões feitas pelo AutoModerator serão consideradas edições menores.",

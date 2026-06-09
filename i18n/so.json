@@ -3,5 +3,35 @@
 		"authors": [
 			"AhmedG612"
 		]
-	}
+	},
+	"automoderator-config-validator-array-toobig": "$1 waxa ku jira waxyaabo aad u badan (ugu badnaan $2 {{PLURAL:$2|waa la oggol yahay|ayaa la oggol yahay}})",
+	"automoderator-config-validator-contentmodel-mismatch": "Iswaafajin la'aan nooca nuxurka: faylka habayntu waa inuu lahaadaa nooca nuxurka JSON, balse $1 ayaa la ogaaday",
+	"automoderator-config-validator-datatype-mismatch": "<code>$1</code> waxaa la filayey inuu noqdo <code>$2</code>, balse waa <code>$3</code>",
+	"automoderator-desc": "Si toos ah ayuu u celiyaa wax ka beddellada xun isagoo ku salaynaya qiimeyn ay bixisay nooc waxbarasho mashiin.",
+	"automoderator-wiki-report-false-positive": "Warbixin togan oo been ah",
+	"automoderator-wiki-revert-edit-summary": "Ogeysiis ku saabsan ka noqoshada otomaatiga ah ee [[$1]]",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Xuquuqda isticmaalaha",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator waa shidanyahay",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-control-label": "Dib u celin uu sameeyo AutoModerator waxaa loo tixgelin doonaa wax ka beddello yaryar.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "Fariin bogga wadahadalka",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "Fariinta bogga wadahadalka waa shidantahay",
+	"communityconfiguration-automoderator-automoderatorfalsepositivepagetitle-label": "Bogga warbixinta been ee togan",
+	"communityconfiguration-automoderator-title": "Iska hagaha otomaatiga ah",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-very-cautious-label": "Ugu taxaddar badan (caadi): wax ka beddellada ugu yar ayaa la celin doonaa, balse saxnaanta ayaa noqon doonta tan ugu sarreysa.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-cautious-label": "Taxaddar leh: wax ka beddello yar ayaa la celin doonaa, balse saxnaantu waxay noqon doontaa dhexdhexaad.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-somewhat-cautious-label": "Si dhexdhexaad ah taxaddar leh: wax ka beddello badan ayaa la celin doonaa, balse saxnaantu waxay noqon doontaa mid hoose.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-option-less-cautious-label": "Ugu yar ee taxaddarka: tirada ugu badan ee wax ka beddellada ayaa la celin doonaa, balse saxnaantu waxay noqon doontaa tan ugu hooseysa.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-label": "Deji xadka",
+	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "Iska hagaha otomaatiga ah",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Wax ka beddelidda yaryar",
+	"communityconfiguration-automoderator-automoderatorskipuserrights-description": "Cadee xuquuqaha isticmaalaha ee dadka haysta aanay Automoderator waligiis dib u celin doonin.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-control-label": "Dib u celinta uu sameeyo Automoderator waxaa loo tixgelin doonaa wax ka beddello bot ah.",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Wax ka bedelka bot",
+	"communityconfiguration-automoderator-info-text": "Digniin! Marka isbeddello la sameeyo, waxay si toos ah u saameyn doonaan dhammaan isticmaalayaasha bulshadaada. Waa muhiim in si taxaddar iyo si ula kac ah loo shaqeeyo. Ka dood oo gaadh go’aan wadajir ah ka hor inta aanad samayn isbeddello ku saabsan qaabaynta.",
+	"communityconfiguration-automoderator-automoderatorcautionlevel-description": "Kordhintu wuxuu adeegsadaa moodallo cusub oo qiimeynaya khatarta dib u celinta, kuwaas oo xisaabin kara dhibco u gaar ah wax ka beddel kasta si loo muujiyo suurtogalnimada in wax ka beddelkaas la celiyo. Moodalladani waxay taageeraan oo keliya mashaariicda Wikipedia, waxaana lagu tababaray qaybta ugu weyn (maqaalka). Deji xad  kaas oo ka sarreeya wax ka beddellada si toos ah loo celin doono. Xad hoose wuxuu ka dhigan yahay in wax ka beddello badan la celinayo, balse saxnaantu way yaraanaysaa; halka xad sare uu keeno in wax ka beddello yar la celiyo, balse saxnaantu ay ka fiicnaato.",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-description": "Ka dib marka Automoderator uu dib u celiyay wax ka beddel, si otomaatig ah ayaa fariin loogu diri karaa bogga wadahadalka ee tafatiraha, taas oo sharxaysa waxa dhacay isla markaana bixinaysa xiriirro waxtar leh.",
+	"communityconfiguration-automoderator-automoderatoruseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Help:Wax ka beddel yar]",
+	"communityconfiguration-automoderator-automoderatorenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Botyada]",
+	"communityconfiguration-automoderator-description": "Deji dejinta Automoderator si moodalku u awoodo inuu aqoonsado oo uu dib u celiyo wax ka beddellada laga yaabo inay xun yihiin ee Wikipedia.",
+	"automoderator-config-validator-userrights-not-allowed": "Xuquuqda isticmaalaha $1 ma jirto. Fadlan isku day mid kale."
 }
