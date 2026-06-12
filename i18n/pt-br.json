@@ -4,6 +4,7 @@
 			"Eduardoaddad"
 		]
 	},
+	"automoderator-wiki-report-false-positive": "relatar falso positivo",
 	"log-name-automoderator": "AutoModerador",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gestão de privilégios {{GENDER:{{BASEPAGENAME}}|do usuário|da usuária|de usuário(a)}}",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "O Automoderador está ativado",
@@ -23,11 +24,15 @@
 	"communityconfiguration-automoderatormultilingual-title": "Automoderador",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderador",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-label": "Modelo multilíngue",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-control-label": "Selecionar modelo multilíngue",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-label": "Limiar",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-description": "Insira um valor entre 0,850 e 0,999",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "Edições menores",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-control-label": "As reversões feitas pelo AutoModerator serão consideradas edições menores.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-help-text": "[https://www.mediawiki.org/wiki/Help:Minor_edit Ajuda:Edição menor]",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "Edição de robô",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-control-label": "As reversões feitas pelo Automoderador serão consideradas edições de bots.",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-help-text": "[https://www.mediawiki.org/wiki/Manual:Bots#The_%22bot%22_flag Manual:Robôs]",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "Mensagem da página de discussão",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-control-label": "A mensagem da página de discussão está ativada",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageregisteredusersonly-control-label": "Enviar mensagens na página de discussão apenas para usuários registrados",

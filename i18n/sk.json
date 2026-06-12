@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"KormiSK"
+			"KormiSK",
+			"Wizzard"
 		]
 	},
 	"log-name-automoderator": "AutoModerator",
-	"logentry-automoderator-revert_decision-comment": "[[Špeciálne:Rozdiel/$1|$1]] od [[Redaktor:$2|$2]] so skóre $3",
+	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] od [[User:$2|$2]] so skóre $3",
 	"log-description-automoderator": "Toto je záznam úprav, ktoré by Automoderator vrátil naspäť pri jeho nastavení v čase zápisu do záznamu."
 }
