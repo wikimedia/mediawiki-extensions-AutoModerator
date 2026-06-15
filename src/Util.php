@@ -151,9 +151,9 @@ class Util {
 
 	/**
 	 * @param Config $config
-	 * @return mixed
+	 * @return ?string
 	 */
-	public static function getFalsePositivePageTitleText( Config $config ): mixed {
+	public static function getFalsePositivePageTitleText( Config $config ): ?string {
 		return self::isWikiMultilingual( $config ) ?
 			$config->get( 'AutoModeratorMultilingualConfigFalsePositivePageTitle' ) :
 			$config->get( 'AutoModeratorFalsePositivePageTitle' );
