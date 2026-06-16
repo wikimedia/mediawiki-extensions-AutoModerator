@@ -3,7 +3,8 @@
 		"authors": [
 			"Klein Muçi",
 			"INNERLMNT",
-			"Jsn.sherman"
+			"Jsn.sherman",
+			"MusikAnimal"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 ka shumë artikuj ({{PLURAL:$2| lejohet|lejohen}} maksimalisht $2)",
