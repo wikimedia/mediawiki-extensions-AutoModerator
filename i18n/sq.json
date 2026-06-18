@@ -3,7 +3,8 @@
 		"authors": [
 			"Klein Muçi",
 			"INNERLMNT",
-			"Jsn.sherman"
+			"Jsn.sherman",
+			"MusikAnimal"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 ka shumë artikuj ({{PLURAL:$2| lejohet|lejohen}} maksimalisht $2)",
@@ -84,7 +85,7 @@
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-label": "Mesazhi i faqeve të diskutimit",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-control-label": "Mesazhet në faqet e diskutimit janë aktivizuar",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-description": "Pasi Automoderatori kthen një redaktim, mund të dërgohet automatikisht një mesazh në faqen e diskutimeve të përdoruesit që shpjegon çfarë ndodhi dhe ofron lidhje ndihmuese.",
-	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-help-text": "<b>Veprimet</b><ul><li>Ju lutemi shtoni përkthimet përmes [[https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter=](https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter=) translatewiki].</li><li>Për një mesazh të personalizuar në faqen e diskutimeve, mbishkruani tekstin te mesazhi i sistemit [{{fullurl:Special:AllMessages|prefix=automoderator-wiki&filter=all&limit=50}}].</li></ul>",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigreverttalkpagemessageenabled-help-text": "<b>Veprimet</b><ul><li>Ju lutemi shtoni përkthimet përmes [https://translatewiki.net/w/i.php?title=Special%3ATranslate&group=ext-automoderator&language={{CONTENTLANGUAGE}}&action=translate&filter= translatewiki].</li><li>Për një mesazh të personalizuar në faqen e diskutimeve, mbishkruani tekstin te [{{fullurl:Special:AllMessages|prefix=automoderator-wiki&filter=all&limit=50}} mesazhi i sistemit].</li></ul>",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-label": "Lidhje për një faqe që ndihmon me redaktimin",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-url-label": "Faqja",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguserrevertsperpage-label": "Kthime përdoruesi për faqe",
