@@ -31,7 +31,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Title\Title;
-use MediaWiki\User\User;
+use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -84,7 +84,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$revisionStore = $services->getRevisionStore();
 		$userGroupManager = $services->getUserGroupManager();
 		$connectionProvider = $services->getConnectionProvider();
-		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager );
+		$autoModeratorUser = Util::getAutoModeratorUser( $config, $userGroupManager )->getUser();
 		$wikiId = Util::getWikiID( $config );
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$userFactory = $services->getUserFactory();
@@ -153,7 +153,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 					$services->getActorMigration(),
 					$services->getActorNormalization(),
 					$wikiPageFactory->newFromID( $this->wikiPageId ),
-					$autoModeratorUser->getUser(),
+					$autoModeratorUser,
 					$user,
 					$config
 				),
@@ -295,16 +295,16 @@ class AutoModeratorFetchRevScoreJob extends Job {
 
 	/**
 	 * @param float $score
-	 * @param User $autoModeratorUser
+	 * @param UserIdentity $autoModeratorUser
 	 * @param WikiPage $page
-	 * @param User $user
+	 * @param UserIdentity $user
 	 * @param MediaWikiServices $services
 	 * @return void
 	 */
 	public function addAutoModeratorLog( float $score,
-										 User $autoModeratorUser,
+										 UserIdentity $autoModeratorUser,
 										 WikiPage $page,
-										 User $user, MediaWikiServices $services ): void {
+										 UserIdentity $user, MediaWikiServices $services ): void {
 		$log = new ManualLogEntry( 'automoderator', 'revert_decision' );
 		$log->setPerformer( $autoModeratorUser );
 		$log->setTarget( $page->getTitle() );
