@@ -29,7 +29,6 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Logging\ManualLogEntry;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\WikiPage;
-use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
@@ -89,6 +88,8 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$userFactory = $services->getUserFactory();
 
+		$logger->debug( __METHOD__ . ": Running AutoModeratorFetchRevScoreJob for rev {$this->revId}" );
+
 		$rev = $revisionStore->getRevisionById( $this->revId );
 		if ( $rev === null ) {
 			$error = "rev {$this->revId} not found";
@@ -113,30 +114,27 @@ class AutoModeratorFetchRevScoreJob extends Job {
 					$maxReverts
 				);
 				if ( $autoModeratorRevisionStore->hasReachedMaxRevertsForUser() ) {
-					$logger->debug( __METHOD__ . " - AutoModerator has reached the maximum reverts for this user" );
+					$logger->debug( __METHOD__ . ': AutoModerator has reached the maximum reverts for this user' );
 					return true;
 				}
 			}
 			$response = false;
 			// Model name defaults to language-agnostic model name
 			$revertRiskModelName = Util::getRevertRiskModel( $config );
-			if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
-				$oresModels = $config->get( 'OresModels' );
-
-				if ( array_key_exists( $revertRiskModelName, $oresModels ) &&
-					$oresModels[$revertRiskModelName]['enabled'] ) {
-					// ORES is loaded and the model is enabled, fetching the score from there
-					$response = $this->getOresRevScore( $connectionProvider, $revertRiskModelName, $wikiId, $logger );
-				}
+			if ( Util::doesORESSupportRevertRiskModel( $config ) ) {
+				// ORES is loaded and the model is enabled, fetching the score from there
+				$response = $this->getOresRevScore( $connectionProvider, $revertRiskModelName, $wikiId, $logger );
+				$logger->debug( __METHOD__ . ': ORES response: {0}', [ json_encode( $response ) ] );
 			}
 
 			if ( !$response ) {
 				// ORES is not loaded, or a score couldn't be retrieved from the extension
 				$response = $this->getLiftWingRevScore( $services->getHttpRequestFactory(), $config );
+				$logger->debug( __METHOD__ . ': LiftWing response: {0}', [ json_encode( $response ) ] );
 			}
 			if ( !$response ) {
 				$error = "score could not be retrieved for {$this->revId}";
-				$logger->debug( __METHOD__ . " - " . $error );
+				$logger->debug( __METHOD__ . ": $error" );
 				$this->setLastError( $error );
 				$this->setAllowRetries( true );
 				return false;

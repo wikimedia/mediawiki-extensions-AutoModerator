@@ -21,6 +21,8 @@ namespace AutoModerator;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Logger\LoggerFactory;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\User\User;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\WikiMap\WikiMap;
@@ -54,6 +56,30 @@ class Util {
 	public static function getORESMultiLingualModelName() {
 		// TODO: This hasn't been added to ORES; check if the name matches the model name when it is
 		return 'revertriskmultilingual';
+	}
+
+	/**
+	 * @param Config $config
+	 * @param ?ExtensionRegistry $extensionRegistry For use in unit tests.
+	 * @return bool Whether ORES is loaded and the configured revert risk model is enabled.
+	 */
+	public static function doesORESSupportRevertRiskModel(
+		Config $config,
+		?ExtensionRegistry $extensionRegistry = null,
+	): bool {
+		$extensionRegistry ??= ExtensionRegistry::getInstance();
+		$logger = LoggerFactory::getInstance( 'AutoModerator' );
+		if ( !$extensionRegistry->isLoaded( 'ORES' ) ) {
+			$logger->debug( __METHOD__ . ': ORES is not loaded; cannot check if revert risk model is supported' );
+			return false;
+		}
+		$oresModels = $config->get( 'OresModels' );
+		$revertRiskModelName = self::getRevertRiskModel( $config );
+		$supported = $oresModels[ $revertRiskModelName ][ 'enabled' ] ?? false;
+		if ( $supported ) {
+			$logger->debug( __METHOD__ . ': ORES is loaded and model {0} is enabled', [ $revertRiskModelName ] );
+		}
+		return $supported;
 	}
 
 	/**

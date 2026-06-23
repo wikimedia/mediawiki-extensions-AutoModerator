@@ -6,6 +6,7 @@ use AutoModerator\LiftWingClient;
 use AutoModerator\Util;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWikiUnitTestCase;
 
 /**
@@ -393,5 +394,37 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$logModeEnabled = Util::getEnableLogOnlyMode( $config );
 
 		$this->assertFalse( $logModeEnabled );
+	}
+
+	/**
+	 * @covers ::doesORESSupportRevertRiskModel
+	 */
+	public function testDoesORESSupportRevertRiskModel(): void {
+		$config = new HashConfig( [
+			'OresModels' => [
+				'revertrisk-language-agnostic' => [ 'enabled' => false ],
+				'damaging' => [ 'enabled' => true ],
+				'goodfaith' => [ 'enabled' => true ],
+				'reverted' => [ 'enabled' => false ],
+				'articlequality' => [ 'enabled' => false ],
+				'draftquality' => [ 'enabled' => false ],
+			],
+			'AutoModeratorMultilingualConfigEnableMultilingual' => true,
+			'AutoModeratorMultilingualConfigEnableLanguageAgnostic' => false,
+			'AutoModeratorMultiLingualRevertRisk' => true,
+		] );
+		$extensionRegistry = $this->createConfiguredMock( ExtensionRegistry::class, [
+			'isLoaded' => true,
+		] );
+
+		static::assertFalse( Util::doesORESSupportRevertRiskModel( $config, $extensionRegistry ) );
+
+		// Again, but when ORES does support multilingual.
+		$config->set( 'OresModels', [
+			...$config->get( 'OresModels' ),
+			Util::getORESMultiLingualModelName() => [ 'enabled' => true ],
+		] );
+
+		static::assertTrue( Util::doesORESSupportRevertRiskModel( $config, $extensionRegistry ) );
 	}
 }

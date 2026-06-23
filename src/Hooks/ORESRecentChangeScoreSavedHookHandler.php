@@ -39,6 +39,16 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 	 * @param array $scores
 	 */
 	public function onORESRecentChangeScoreSavedHook( $revision, $scores ) {
+		$logger = LoggerFactory::getInstance( 'AutoModerator' );
+		$logger->debug( 'onORESRecentChangeScoreSavedHook called for {rev}', [
+			'rev' => $revision ? $revision->getId() : 'null',
+		] );
+
+		if ( !Util::doesORESSupportRevertRiskModel( $this->config ) ) {
+			// ORES does not support the revert risk model; not calling the job from this hook handler.
+			return;
+		}
+
 		if ( !$revision || !$scores ) {
 			return;
 		}
@@ -62,7 +72,6 @@ class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSave
 		$revId = $revision->getId();
 		$dbr = $this->connectionProvider->getReplicaDatabase();
 		$tags = $this->changeTagsStore->getTags( $dbr, null, $revId, null );
-		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
 		$userId = $user->getId();
 		if ( !RevisionCheck::revertPreCheck(

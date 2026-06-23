@@ -13,7 +13,6 @@ use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Permissions\RestrictionStore;
-use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserGroupManager;
 
@@ -34,16 +33,9 @@ class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHoo
 	 * @inheritDoc
 	 */
 	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
-		if ( ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
-			$oresModels = $this->config->get( 'OresModels' );
-			$revertRiskModelName = Util::getRevertRiskModel( $this->config );
-
-			if ( array_key_exists( $revertRiskModelName, $oresModels ) &&
-				$oresModels[ $revertRiskModelName ][ 'enabled' ]
-			) {
-				// ORES is loaded and model is enabled; not calling the job from this hook handler
-				return;
-			}
+		if ( Util::doesORESSupportRevertRiskModel( $this->config ) ) {
+			// ORES is loaded and model is enabled; not calling the job from this hook handler.
+			return;
 		}
 
 		if ( !$wikiPage || !$rev || !$user ) {
