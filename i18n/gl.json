@@ -19,7 +19,6 @@
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Reverteuse a edición|Revertéronse as edicións}} de [[Special:Contributions/$2|$2]] ([[User talk:$2|conversa]]); cambiado á última versión feita por [[User:$1|$1]]",
 	"log-name-automoderator": "Automoderador",
 	"logentry-automoderator-revert_decision": "$1 revertería a edición",
-	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] feita por [[User:$2|$2]] cunha puntuación de $3",
 	"log-description-automoderator": "Este é un rexistro das edicións que o automoderador revertiría, segundo a súa configuración, no momento da entrada do rexistro.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Dereitos de usuario",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "O automoderador está activado",

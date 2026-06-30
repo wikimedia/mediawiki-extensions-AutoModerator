@@ -22,7 +22,6 @@
 	"automoderator-wiki-revertpage": "{{PLURAL:U kthye|U kthyen}} {{PLURAL:$7|redaktimi|redaktimet}} nga [[Special:Contributions/$2|$2]] ([[User talk:$2|diskuto]]) në versionin e fundit nga [[User:$1|$1]]",
 	"log-name-automoderator": "Automoderatori",
 	"logentry-automoderator-revert_decision": "$1 do të kthente ndryshimin",
-	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] nga [[User:$2|$2]] me rezultatin $3",
 	"log-description-automoderator": "Ky është një regjistër ndryshimesh që Automoderatori do të kishte kthyer, duke pasur parasysh konfigurimin e tij në kohën e shënimit në regjistër.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Të drejtat e përdoruesit",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderatori është i aktivizuar",

@@ -20,7 +20,6 @@
 	"automoderator-wiki-revertpage": "[[Special:Contributions/$2|$2]] ([[User talk:$2|müzakirə]]) tərəfindən edilmiş {{PLURAL:$7|$7 redaktə}} geri qaytarılaraq [[User:$1|$1]] tərəfindən yaradılan sonuncu versiya bərpa olundu",
 	"log-name-automoderator": "Avtomoderator",
 	"logentry-automoderator-revert_decision": "$1 redaktəni geri qaytaracaq",
-	"logentry-automoderator-revert_decision-comment": "[[User:$2|$2]] istifadəçinin etdiyi [[Special:Diff/$1|$1]] redaktəsi, $3 xal",
 	"log-description-automoderator": "Bu, qeyd aparıldığı vaxtkı konfiqurasiyaya əsasən Avtomoderatorun geri qaytaracağı redaktələrin jurnalıdır.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "İstifadəçi hüquqları",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Avtomoderator aktivləşdirilib.",

@@ -20,7 +20,6 @@
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Suntingan}} oleh [[Special:Contributions/$2|$2]] ([[User talk:$2|perbincangan]]) dikembalikan kepada semakan terdahulu oleh [[User:$1|$1]]",
 	"log-name-automoderator": "AutoModerator",
 	"logentry-automoderator-revert_decision": "$1 akan membalikkan suntingan",
-	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] oleh [[User:$2|$2]] dengan markah $3",
 	"log-description-automoderator": "Ini merupakan log suntingan yang sepatutnya dibalikkan oleh Automoderator, memandangkan konfigurasinya semasa entri log dibuat.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Hak pengguna",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator dihidupkan",

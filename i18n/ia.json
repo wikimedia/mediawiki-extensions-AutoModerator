@@ -19,7 +19,6 @@
 	"automoderator-wiki-revertpage": "Modification{{PLURAL:$7||es}} de [[Special:Contributions/$2|$2]] ([[User talk:$2|discussion]]) revertite; ultime version de [[User:$1|$1]] restaurate",
 	"log-name-automoderator": "Automoderator",
 	"logentry-automoderator-revert_decision": "$1 reverterea le modification",
-	"logentry-automoderator-revert_decision-comment": "[[Special:Diff/$1|$1]] de [[User:$2|$2]] con score $3",
 	"log-description-automoderator": "Isto es un registro de modificationes que Automoderator haberea revertite secundo su configuration al momento de addition del entrata al registro.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Derectos de usator",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator es active",
