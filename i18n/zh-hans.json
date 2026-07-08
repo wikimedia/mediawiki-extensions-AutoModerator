@@ -34,7 +34,7 @@
 	"automoderator-wiki-revertpage-anon": "已还原[[Special:Contributions/$2|$2]]的{{PLURAL:$7|编辑}}至最后由[[User:$1|$1]]所修订的版本",
 	"automoderator-wiki-revertpage": "已还原[[Special:Contributions/$2|$2]]（[[User talk:$2|讨论]]）的{{PLURAL:$7|编辑}}至最后由[[User:$1|$1]]修订的版本",
 	"log-name-automoderator": "AutoModerator",
-	"logentry-automoderator-revert_decision": "$1会回退编辑",
+	"logentry-automoderator-revert_decision": "$1会以得分$6回退由$5做出的编辑$4",
 	"log-description-automoderator": "根据产生日志时的配置，这是Automoderator会采取回退措施的编辑的日志。",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "用户权限",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "开启Automoderator",

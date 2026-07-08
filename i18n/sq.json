@@ -4,6 +4,7 @@
 			"INNERLMNT",
 			"Jsn.sherman",
 			"Klein Muçi",
+			"Matěj Suchánek",
 			"MusikAnimal"
 		]
 	},
@@ -18,8 +19,8 @@
 	"automoderator-wiki-revert-message-follow-up": "Gjithashtu, ktheva një nga [[Special:Diff/$1|redaktimet]] e tua te [[$2]] sepse ngjante jokonstruktiv.",
 	"automoderator-wiki-revert-edit-summary": "Njoftim për kthim automatik te [[$1]]",
 	"automoderator-wiki-revertpage-nouser": "{{PLURAL:$7|U kthye|U kthyen}} {{PLURAL:$7|redaktimi|redaktimet}} nga një përdorues i fshehur në versionin e fundit nga {{GENDER:$1|[[User:$1|$1]]}}",
-	"automoderator-wiki-revertpage-anon": "{{PLURAL|U kthye|U kthyen}} {{PLURAL:$7|redaktimi|redaktimet}} nga [[Special:Contributions/$2|$2]] në versionin e fundit nga [[User:$1|$1]]",
-	"automoderator-wiki-revertpage": "{{PLURAL:U kthye|U kthyen}} {{PLURAL:$7|redaktimi|redaktimet}} nga [[Special:Contributions/$2|$2]] ([[User talk:$2|diskuto]]) në versionin e fundit nga [[User:$1|$1]]",
+	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|U kthye redaktimi|U kthyen redaktimet}} nga [[Special:Contributions/$2|$2]] në versionin e fundit nga [[User:$1|$1]]",
+	"automoderator-wiki-revertpage": "{{PLURAL:$7|U kthye redaktimi|U kthyen redaktimet}} nga [[Special:Contributions/$2|$2]] ([[User talk:$2|diskuto]]) në versionin e fundit nga [[User:$1|$1]]",
 	"log-name-automoderator": "Automoderatori",
 	"logentry-automoderator-revert_decision": "$1 do të kthente ndryshimin",
 	"log-description-automoderator": "Ky është një regjistër ndryshimesh që Automoderatori do të kishte kthyer, duke pasur parasysh konfigurimin e tij në kohën e shënimit në regjistër.",

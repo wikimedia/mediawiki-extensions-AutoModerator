@@ -20,7 +20,7 @@
 	"automoderator-wiki-revertpage-anon": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] teruggedraaid naar de laatste versie van [[User:$1|$1]]",
 	"automoderator-wiki-revertpage": "{{PLURAL:$7|Wijziging|Wijzigingen}} van [[Special:Contributions/$2|$2]] ([[User talk:$2|Overleg]]) teruggedraaid naar de laatste versie van [[User:$1|$1]]",
 	"log-name-automoderator": "AutoModerator",
-	"logentry-automoderator-revert_decision": "$1 zou bewerking",
+	"logentry-automoderator-revert_decision": "$1 zou bewerking $4 van $5 met score $6 terugdraaien",
 	"log-description-automoderator": "Dit is een logboek van bewerkingen die AutoModerator ongedaan zou hebben gemaakt, gezien de instellingen op het moment van de logboekvermelding.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Gebruikersrechten",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "Automoderator is ingeschakeld",

@@ -23,7 +23,7 @@
 	"automoderator-wiki-revertpage-anon": "[[Special:Contributions/$2|$2]]의 {{PLURAL:$7|편집}}을 [[User:$1|$1]]의 마지막 판으로 되돌림",
 	"automoderator-wiki-revertpage": "[[Special:Contributions/$2|$2]]([[User talk:$2|토론]])의 {{PLURAL:$7|편집}}을 [[User:$1|$1]]의 마지막 판으로 되돌림",
 	"log-name-automoderator": "자동조정자",
-	"logentry-automoderator-revert_decision": "$1님이 편집을 되돌렸을 것입니다",
+	"logentry-automoderator-revert_decision": "$1님이 $5님의 $4 편집을 $6의 점수로 되돌렸을 것입니다",
 	"log-description-automoderator": "이 로그는 자동조정자가 로그 항목 입력 당시의 설정에 따라 되돌렸을 편집 로그을 보여줍니다.",
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "사용자 권한",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-control-label": "자동조정자가 켜져 있습니다",
