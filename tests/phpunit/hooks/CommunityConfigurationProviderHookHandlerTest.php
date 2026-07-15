@@ -1,19 +1,19 @@
 <?php
 
-namespace AutoModerator\Tests\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\Hooks\CommunityConfigurationProviderHookHandler;
+namespace MediaWiki\Extension\AutoModerator\Tests\Hooks;
+
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\AutoModerator\Hooks\CommunityConfigurationProviderHookHandler;
 use MediaWikiIntegrationTestCase;
 
+/**
+ * @covers \MediaWiki\Extension\AutoModerator\Hooks\CommunityConfigurationProviderHookHandler
+ */
 class CommunityConfigurationProviderHookHandlerTest extends MediaWikiIntegrationTestCase {
 
-	/**
-	 * @covers \AutoModerator\Hooks\CommunityConfigurationProviderHookHandler
-	 */
 	public function testOnCommunityConfigurationProviderAutoModConfig() {
-		$services = $this->getServiceContainer();
-		$titleFactory = $services->getTitleFactory();
 		$config = new HashConfig( [
 			'AutoModeratorEnableRevisionCheck' => true,
 			'AutoModeratorUsername' => 'AutoModerator',
@@ -31,21 +31,14 @@ class CommunityConfigurationProviderHookHandlerTest extends MediaWikiIntegration
 		$this->assertArrayHasKey( 'AutomoderatorMultilingual', $providers );
 		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', false );
 
-		( new CommunityConfigurationProviderHookHandler(
-			$config,
-			$titleFactory
-		) )->onCommunityConfigurationProvider_initList( $providers );
+		( new CommunityConfigurationProviderHookHandler( $config ) )
+			->onCommunityConfigurationProvider_initList( $providers );
 
 		$this->assertArrayHasKey( 'AutoModerator', $providers );
 		$this->assertArrayNotHasKey( 'AutomoderatorMultilingual', $providers );
 	}
 
-	/**
-	 * @covers \AutoModerator\Hooks\CommunityConfigurationProviderHookHandler
-	 */
 	public function testOnCommunityConfigurationProviderMultilingualConfig() {
-		$services = $this->getServiceContainer();
-		$titleFactory = $services->getTitleFactory();
 		$config = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableRevisionCheck' => true,
 			'AutoModeratorMultilingualConfigFalsePositivePageTitle' => 'Test False Positive',
@@ -63,10 +56,8 @@ class CommunityConfigurationProviderHookHandlerTest extends MediaWikiIntegration
 		$this->assertArrayHasKey( 'AutomoderatorMultilingual', $providers );
 		$this->overrideConfigValue( 'AutoModeratorMultiLingualRevertRisk', true );
 
-		( new CommunityConfigurationProviderHookHandler(
-			$config,
-			$titleFactory
-		) )->onCommunityConfigurationProvider_initList( $providers );
+		( new CommunityConfigurationProviderHookHandler( $config ) )
+			->onCommunityConfigurationProvider_initList( $providers );
 
 		$this->assertArrayHasKey( 'AutomoderatorMultilingual', $providers );
 		$this->assertArrayNotHasKey( 'AutoModerator', $providers );

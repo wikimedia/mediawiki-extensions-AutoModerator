@@ -1,6 +1,8 @@
 <?php
 
-namespace AutoModerator;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator;
 
 class RollbackStatus {
 	private int $reverted;

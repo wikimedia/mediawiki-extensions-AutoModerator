@@ -17,12 +17,12 @@
 		}
 	},
 	"AutoloadNamespaces": {
-		"AutoModerator\\": "src/",
-		"AutoModerator\\Maintenance\\": "maintenance/"
+		"MediaWiki\\Extension\\AutoModerator\\": "src/",
+		"MediaWiki\\Extension\\AutoModerator\\Maintenance\\": "maintenance/"
 	},
 	"LogActionsHandlers": {
 		"automoderator/*": {
-			"class": "AutoModerator\\AutoModeratorLogFormatter"
+			"class": "MediaWiki\\Extension\\AutoModerator\\AutoModeratorLogFormatter"
 		}
 	},
 	"LogTypes": [
@@ -38,25 +38,25 @@
 		"CommunityConfiguration": {
 			"Validators": {
 				"AutoModerator": {
-					"class": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation",
-					"factory": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
+					"class": "MediaWiki\\Extension\\AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation",
+					"factory": "MediaWiki\\Extension\\AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
 					"services": [
 						"CommunityConfiguration.ValidatorFactory",
 						"PermissionManager"
 					],
 					"args": [
-						"AutoModerator\\Config\\Validation\\AutoModeratorConfigSchema"
+						"MediaWiki\\Extension\\AutoModerator\\Config\\Validation\\AutoModeratorConfigSchema"
 					]
 				},
 				"AutoModeratorMultilingual": {
-					"class": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation",
-					"factory": "AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
+					"class": "MediaWiki\\Extension\\AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation",
+					"factory": "MediaWiki\\Extension\\AutoModerator\\Config\\Validation\\AutoModeratorConfigValidation::factory",
 					"services": [
 						"CommunityConfiguration.ValidatorFactory",
 						"PermissionManager"
 					],
 					"args": [
-						"AutoModerator\\Config\\Validation\\AutoModeratorMultilingualConfigSchema"
+						"MediaWiki\\Extension\\AutoModerator\\Config\\Validation\\AutoModeratorMultilingualConfigSchema"
 					]
 				}
 			},
@@ -234,7 +234,7 @@
 	},
 	"HookHandlers": {
 		"main": {
-			"class": "AutoModerator\\Hooks",
+			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks",
 			"services": [
 				"UserGroupManager",
 				"AutoModeratorConfig",
@@ -242,7 +242,7 @@
 			]
 		},
 		"revisionfromedit": {
-			"class": "AutoModerator\\Hooks\\RevisionFromEditCompleteHookHandler",
+			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks\\RevisionFromEditCompleteHookHandler",
 			"services": [
 				"UserGroupManager",
 				"AutoModeratorConfig",
@@ -255,7 +255,7 @@
 			]
 		},
 		"ores": {
-			"class": "AutoModerator\\Hooks\\ORESRecentChangeScoreSavedHookHandler",
+			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks\\ORESRecentChangeScoreSavedHookHandler",
 			"services": [
 				"UserGroupManager",
 				"AutoModeratorConfig",
@@ -270,7 +270,7 @@
 			]
 		},
 		"articlerollback": {
-			"class": "AutoModerator\\Hooks\\RollbackCompleteHookHandler",
+			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks\\RollbackCompleteHookHandler",
 			"services": [
 				"UserGroupManager",
 				"AutoModeratorConfig",
@@ -279,10 +279,9 @@
 			]
 		},
 		"communityconfiguration": {
-			"class": "AutoModerator\\Hooks\\CommunityConfigurationProviderHookHandler",
+			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks\\CommunityConfigurationProviderHookHandler",
 			"services": [
-				"MainConfig",
-				"TitleFactory"
+				"MainConfig"
 			]
 		}
 	},
@@ -294,8 +293,8 @@
 		"CommunityConfigurationProvider_initList": "communityconfiguration"
 	},
 	"JobClasses": {
-		"AutoModeratorFetchRevScoreJob": "AutoModerator\\Services\\AutoModeratorFetchRevScoreJob",
-		"AutoModeratorSendRevertTalkPageMsgJob": "AutoModerator\\Services\\AutoModeratorSendRevertTalkPageMsgJob"
+		"AutoModeratorFetchRevScoreJob": "MediaWiki\\Extension\\AutoModerator\\Services\\AutoModeratorFetchRevScoreJob",
+		"AutoModeratorSendRevertTalkPageMsgJob": "MediaWiki\\Extension\\AutoModerator\\Services\\AutoModeratorSendRevertTalkPageMsgJob"
 	},
 	"MessagesDirs": {
 		"AutoModerator": [

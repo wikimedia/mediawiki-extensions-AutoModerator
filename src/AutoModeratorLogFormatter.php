@@ -1,6 +1,8 @@
 <?php
 
-namespace AutoModerator;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator;
 
 use MediaWiki\Logging\LogFormatter;
 use MediaWiki\Message\Message;
@@ -8,17 +10,17 @@ use MediaWiki\SpecialPage\SpecialPage;
 
 class AutoModeratorLogFormatter extends LogFormatter {
 	/** @inheritDoc */
-	protected function getMessageParameters() {
+	protected function getMessageParameters(): array {
 		$params = parent::getMessageParameters();
 
 		$entryParams = $this->entry->getParameters();
 
 		$revId = $entryParams['4::revId'];
 		$diffTitle = SpecialPage::getTitleFor( 'Diff', (string)$revId );
-		$params[3] = Message::rawParam( $this->makePageLink( $diffTitle, [], (string)$revId ) );
+		$params[ 3 ] = Message::rawParam( $this->makePageLink( $diffTitle, [], (string)$revId ) );
 
 		$username = $entryParams['5::user'];
-		$params[4] = $this->formatParameterValue( 'user-link', $username );
+		$params[ 4 ] = $this->formatParameterValue( 'user-link', $username );
 
 		return $params;
 	}

@@ -1,10 +1,12 @@
 <?php
 
-namespace AutoModerator\Tests\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler;
+namespace MediaWiki\Extension\AutoModerator\Tests\Hooks;
+
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
@@ -15,14 +17,15 @@ use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
+use MediaWikiIntegrationTestCase;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @group AutoModerator
  * @group Database
- * @covers \AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler
+ * @covers \MediaWiki\Extension\AutoModerator\Hooks\ORESRecentChangeScoreSavedHookHandler
  */
-class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTestCase {
+class ORESRecentChangeScoreSavedHookHandlerTest extends MediaWikiIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -204,8 +207,7 @@ class ORESRecentChangeScoreSavedHookHandlerTest extends \MediaWikiIntegrationTes
 			$mockPermissionManager,
 			$mockConnectionProvider
 			)
-		)
-			->onORESRecentChangeScoreSavedHook( $rev, $scores );
+		)->onORESRecentChangeScoreSavedHook( $rev, $scores );
 
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorFetchRevScoreJob' )->pop() );
 	}

@@ -1,20 +1,16 @@
 <?php
 
-namespace AutoModerator\Tests;
+namespace MediaWiki\Extension\AutoModerator\Tests;
 
-use AutoModerator\AutoModeratorRevisionStore;
+use MediaWiki\Extension\AutoModerator\AutoModeratorRevisionStore;
 
 /**
  * @group AutoModerator
  * @group Database
- * @covers \AutoModerator\AutoModeratorRevisionStore
+ * @covers \MediaWiki\Extension\AutoModerator\AutoModeratorRevisionStore
  */
 class AutoModeratorRevisionStoreTest extends \MediaWikiIntegrationTestCase {
 
-	/**
-	 * @covers \AutoModerator\AutoModeratorRevisionStore::getAutoModeratorReverts
-	 * @group Database
-	 */
 	public function testGetAutoModeratorReverts() {
 		$db = $this->getServiceContainer()->getConnectionProvider()->getPrimaryDatabase();
 		$revisionStore = $this->getServiceContainer()->getRevisionStore();
@@ -34,10 +30,6 @@ class AutoModeratorRevisionStoreTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( 1, $result->count() );
 	}
 
-	/**
-	 * @covers \AutoModerator\AutoModeratorRevisionStore::getAutoModeratorReverts
-	 * @group Database
-	 */
 	public function testGetAutoModeratorRevertsMultipleReverts() {
 		$db = $this->getServiceContainer()->getConnectionProvider()->getPrimaryDatabase();
 		$revisionStore = $this->getServiceContainer()->getRevisionStore();
@@ -65,10 +57,6 @@ class AutoModeratorRevisionStoreTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( 3, $result->count() );
 	}
 
-	/**
-	 * @covers \AutoModerator\AutoModeratorRevisionStore::getAutoModeratorReverts
-	 * @group Database
-	 */
 	public function testGetAutoModeratorRevertsNoReverts() {
 		$db = $this->getServiceContainer()->getConnectionProvider()->getPrimaryDatabase();
 		$revisionStore = $this->getServiceContainer()->getRevisionStore();
@@ -88,10 +76,6 @@ class AutoModeratorRevisionStoreTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( 0, $result->count() );
 	}
 
-	/**
-	 * @covers \AutoModerator\AutoModeratorRevisionStore::hasReachedMaxRevertsForUser
-	 * @group Database
-	 */
 	public function testHasReachedMaxRevertsForUser() {
 		$db = $this->getServiceContainer()->getConnectionProvider()->getPrimaryDatabase();
 		$revisionStore = $this->getServiceContainer()->getRevisionStore();
@@ -111,10 +95,6 @@ class AutoModeratorRevisionStoreTest extends \MediaWikiIntegrationTestCase {
 		$this->assertTrue( $result );
 	}
 
-	/**
-	 * @covers \AutoModerator\AutoModeratorRevisionStore::hasReachedMaxRevertsForUser
-	 * @group Database
-	 */
 	public function testHasReachedMaxRevertsForUserMoreThanOne() {
 		$db = $this->getServiceContainer()->getConnectionProvider()->getPrimaryDatabase();
 		$revisionStore = $this->getServiceContainer()->getRevisionStore();
@@ -138,10 +118,6 @@ class AutoModeratorRevisionStoreTest extends \MediaWikiIntegrationTestCase {
 		$this->assertTrue( $result );
 	}
 
-	/**
-	 * @covers \AutoModerator\AutoModeratorRevisionStore::hasReachedMaxRevertsForUser
-	 * @group Database
-	 */
 	public function testHasReachedMaxRevertsFalseWhenThereAreNoReverts() {
 		$db = $this->getServiceContainer()->getConnectionProvider()->getPrimaryDatabase();
 		$revisionStore = $this->getServiceContainer()->getRevisionStore();

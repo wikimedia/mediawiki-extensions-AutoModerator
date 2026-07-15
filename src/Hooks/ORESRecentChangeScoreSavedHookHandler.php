@@ -1,13 +1,15 @@
 <?php
 
-namespace AutoModerator\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\RevisionCheck;
-use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Hooks;
+
 use Exception;
 use MediaWiki\ChangeTags\ChangeTagsStore;
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\AutoModerator\RevisionCheck;
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorFetchRevScoreJob;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\WikiPageFactory;
@@ -19,29 +21,25 @@ use MediaWiki\User\UserGroupManager;
 use ORES\Hooks\ORESRecentChangeScoreSavedHook;
 use Wikimedia\Rdbms\IConnectionProvider;
 
-class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSavedHook {
+readonly class ORESRecentChangeScoreSavedHookHandler implements ORESRecentChangeScoreSavedHook {
 
 	public function __construct(
-		private readonly UserGroupManager $userGroupManager,
-		private readonly Config $config,
-		private readonly WikiPageFactory $wikiPageFactory,
-		private readonly RevisionStore $revisionStore,
-		private readonly RestrictionStore $restrictionStore,
-		private readonly JobQueueGroup $jobQueueGroup,
-		private readonly ChangeTagsStore $changeTagsStore,
-		private readonly PermissionManager $permissionManager,
-		private readonly IConnectionProvider $connectionProvider,
+		private UserGroupManager $userGroupManager,
+		private Config $config,
+		private WikiPageFactory $wikiPageFactory,
+		private RevisionStore $revisionStore,
+		private RestrictionStore $restrictionStore,
+		private JobQueueGroup $jobQueueGroup,
+		private ChangeTagsStore $changeTagsStore,
+		private PermissionManager $permissionManager,
+		private IConnectionProvider $connectionProvider,
 	) {
 	}
 
-	/**
-	 * @param RevisionRecord|null $revision
-	 * @param array $scores
-	 */
-	public function onORESRecentChangeScoreSavedHook( $revision, $scores ) {
+	public function onORESRecentChangeScoreSavedHook( ?RevisionRecord $revision, ?array $scores ): void {
 		$logger = LoggerFactory::getInstance( 'AutoModerator' );
 		$logger->debug( 'onORESRecentChangeScoreSavedHook called for {rev}', [
-			'rev' => $revision ? $revision->getId() : 'null',
+			'rev' => $revision?->getId(),
 		] );
 
 		if ( !Util::doesORESSupportRevertRiskModel( $this->config ) ) {

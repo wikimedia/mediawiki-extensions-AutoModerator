@@ -1,53 +1,26 @@
 <?php
 
-namespace AutoModerator;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator;
 
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserIdentity;
 use Wikimedia\Rdbms\IReadableDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
 
-class AutoModeratorRevisionStore {
+readonly class AutoModeratorRevisionStore {
 
-	/** @var IReadableDatabase */
-	private IReadableDatabase $dbr;
-
-	/** @var UserIdentity */
-	private UserIdentity $user;
-
-	/** @var UserIdentity */
-	private UserIdentity $autoModeratorUser;
-
-	/** @var int */
-	private int $wikiPageId;
-
-	/** @var RevisionStore */
-	private RevisionStore $revisionStore;
-
-	/** @var int */
-	private int $maxReverts;
-
-	/**
-	 * @param IReadableDatabase $dbr
-	 * @param UserIdentity $user
-	 * @param UserIdentity $autoModeratorUser
-	 * @param int $wikiPageId
-	 * @param RevisionStore $revisionStore
-	 * @param int $maxReverts
-	 */
-	public function __construct( IReadableDatabase $dbr, UserIdentity $user,
-		UserIdentity $autoModeratorUser, int $wikiPageId, RevisionStore $revisionStore, int $maxReverts ) {
-		$this->dbr = $dbr;
-		$this->user = $user;
-		$this->autoModeratorUser = $autoModeratorUser;
-		$this->wikiPageId = $wikiPageId;
-		$this->revisionStore = $revisionStore;
-		$this->maxReverts = $maxReverts;
+	public function __construct(
+		private IReadableDatabase $dbr,
+		private UserIdentity $user,
+		private UserIdentity $autoModeratorUser,
+		private int $wikiPageId,
+		private RevisionStore $revisionStore,
+		private int $maxReverts,
+	) {
 	}
 
-	/**
-	 * @return IResultWrapper
-	 */
 	public function getAutoModeratorReverts(): IResultWrapper {
 		return $this->dbr->newSelectQueryBuilder()
 			->select( [ 'rc_this_oldid', 'rc_last_oldid' ] )
@@ -59,9 +32,6 @@ class AutoModeratorRevisionStore {
 			] )->distinct()->caller( __METHOD__ )->fetchResultSet();
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function hasReachedMaxRevertsForUser(): bool {
 		$autoModeratorReverts = $this->getAutoModeratorReverts();
 		if ( $autoModeratorReverts->count() < $this->maxReverts ) {

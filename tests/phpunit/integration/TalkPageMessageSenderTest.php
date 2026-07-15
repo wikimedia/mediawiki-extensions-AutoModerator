@@ -1,10 +1,12 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\TalkPageMessageSender;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\AutoModerator\TalkPageMessageSender;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Language\Language;
 use MediaWiki\MainConfigNames;
 use MediaWiki\Revision\RevisionRecord;
@@ -19,13 +21,10 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 /**
  * @group AutoModerator
  * @group Database
- * @coversDefaultClass \AutoModerator\TalkPageMessageSender
+ * @covers \MediaWiki\Extension\AutoModerator\TalkPageMessageSender
  */
 class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 
-	/**
-	 * @covers ::insertAutoModeratorSendRevertTalkPageMsgJob
-	 */
 	public function testTalkPageMessageSenderNotQueuedRevNull() {
 		$this->markTestSkippedIfExtensionNotLoaded( 'DiscussionTools' );
 
@@ -59,9 +58,6 @@ class TalkPageMessageSenderTest extends \MediaWikiIntegrationTestCase {
 		$this->assertFalse( $jobQueueGroup->get( 'AutoModeratorSendRevertTalkPageMsgJob' )->pop() );
 	}
 
-	/**
-	 * @covers ::insertAutoModeratorSendRevertTalkPageMsgJob
-	 */
 	public function testTalkPageMessageSenderQueued() {
 		$this->markTestSkippedIfExtensionNotLoaded( 'DiscussionTools' );
 

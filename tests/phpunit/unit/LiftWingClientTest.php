@@ -1,19 +1,22 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Http\MWHttpRequest;
 use MediaWiki\Status\Status;
 use MediaWikiUnitTestCase;
 
+/**
+ * @covers \MediaWiki\Extension\AutoModerator\LiftWingClient
+ */
 class LiftWingClientTest extends MediaWikiUnitTestCase {
-	/** @var config */
-	private $config;
-	/** @var HttpRequestFactory */
-	private $httpRequestFactory;
+	private HashConfig $config;
+	private HttpRequestFactory $httpRequestFactory;
 
 	public function setUp(): void {
 		$this->config = new HashConfig( [
@@ -31,25 +34,16 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 		$this->httpRequestFactory->method( 'create' )->willReturn( $httpRequestMock );
 	}
 
-	/**
-	 * @covers \AutoModerator\LiftWingClient::getBaseUrl
-	 */
 	public function testGetBaseUrl() {
 		$client = Util::initializeLiftWingClient( $this->httpRequestFactory, $this->config );
 		$this->assertEquals( 'http://example.com/', $client->getBaseUrl() );
 	}
 
-	/**
-	 * @covers \AutoModerator\LiftWingClient::getUserAgent
-	 */
 	public function testGetUserAgentHeader() {
 		$client = Util::initializeLiftWingClient( $this->httpRequestFactory, $this->config );
 		$this->assertEquals( 'mediawiki.ext.AutoModerator.id', $client->getUserAgent() );
 	}
 
-	/**
-	 * @covers \AutoModerator\LiftWingClient::getHostHeader
-	 */
 	public function testGetHostHeader() {
 		// no host header
 		$client = Util::initializeLiftWingClient( $this->httpRequestFactory, $this->config );
@@ -68,9 +62,6 @@ class LiftWingClientTest extends MediaWikiUnitTestCase {
 		$this->assertEquals( 'ml.revertrisk.example.com', $client->getHostHeader() );
 	}
 
-	/**
-	 * @covers \AutoModerator\LiftWingClient::get
-	 */
 	public function testGet() {
 		$client = Util::initializeLiftWingClient( $this->httpRequestFactory, $this->config );
 		$expected = [ 'data' => '' ];

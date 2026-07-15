@@ -1,12 +1,14 @@
 <?php
 
-namespace AutoModerator\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\RevisionCheck;
-use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Hooks;
+
 use Exception;
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\AutoModerator\RevisionCheck;
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorFetchRevScoreJob;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\JobQueue\JobQueueGroup;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Page\Hook\RevisionFromEditCompleteHook;
@@ -16,23 +18,23 @@ use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionStore;
 use MediaWiki\User\UserGroupManager;
 
-class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHook {
+readonly class RevisionFromEditCompleteHookHandler implements RevisionFromEditCompleteHook {
 
 	public function __construct(
-		private readonly UserGroupManager $userGroupManager,
-		private readonly Config $config,
-		private readonly WikiPageFactory $wikiPageFactory,
-		private readonly RevisionStore $revisionStore,
-		private readonly RestrictionStore $restrictionStore,
-		private readonly JobQueueGroup $jobQueueGroup,
-		private readonly PermissionManager $permissionManager,
+		private UserGroupManager $userGroupManager,
+		private Config $config,
+		private WikiPageFactory $wikiPageFactory,
+		private RevisionStore $revisionStore,
+		private RestrictionStore $restrictionStore,
+		private JobQueueGroup $jobQueueGroup,
+		private PermissionManager $permissionManager,
 	) {
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ) {
+	public function onRevisionFromEditComplete( $wikiPage, $rev, $originalRevId, $user, &$tags ): void {
 		if ( Util::doesORESSupportRevertRiskModel( $this->config ) ) {
 			// ORES is loaded and model is enabled; not calling the job from this hook handler.
 			return;

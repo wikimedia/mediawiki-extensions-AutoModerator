@@ -1,10 +1,12 @@
 <?php
 
-namespace AutoModerator\Tests\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\Hooks;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Tests\Hooks;
+
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\AutoModerator\Hooks;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
@@ -14,14 +16,12 @@ use MediaWiki\User\UserIdentity;
 use MediaWikiIntegrationTestCase;
 
 /**
+ * @covers \MediaWiki\Extension\AutoModerator\Hooks
  * @group AutoModerator
  * @group Database
  */
 class HooksTest extends MediaWikiIntegrationTestCase {
 
-	/**
-	 * @covers AutoModerator\Hooks::onHistoryTools
-	 */
 	public function testOnHistoryToolsShows() {
 		$services = $this->getServiceContainer();
 		$jobQueueGroup = $services->getJobQueueGroup();
@@ -63,9 +63,6 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 		$this->assertStringContainsString( 'automoderator-wiki-report-false-positive', $links[0] );
 	}
 
-	/**
-	 * @covers AutoModerator\Hooks::onHistoryTools
-	 */
 	public function testOnHistoryToolsNoShow() {
 		$services = $this->getServiceContainer();
 		$jobQueueGroup = $services->getJobQueueGroup();

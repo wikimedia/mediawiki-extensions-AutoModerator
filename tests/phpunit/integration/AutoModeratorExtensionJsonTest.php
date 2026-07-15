@@ -1,6 +1,8 @@
 <?php
 
-namespace AutoModerator\Tests\Integration;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator\Tests\Integration;
 
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Tests\ExtensionJsonTestBase;

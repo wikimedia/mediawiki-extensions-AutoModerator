@@ -1,11 +1,13 @@
 <?php
 
-namespace AutoModerator\Services;
+declare( strict_types = 1 );
 
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Services;
+
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\HookContainer\HookRunner;
 use MediaWiki\Language\RawMessage;
@@ -37,15 +39,12 @@ use Wikimedia\Rdbms\SelectQueryBuilder;
  * which is not currently possible in the existing RollbackPage implementation.
  */
 class AutoModeratorRollback {
-	public const CONSTRUCTOR_OPTIONS = [
+	public const array CONSTRUCTOR_OPTIONS = [
 		MainConfigNames::UseRCPatrol,
 		MainConfigNames::DisableAnonTalk,
 	];
 
-	/** @var string */
 	private string $summary = '';
-
-	/** @var bool */
 	private bool $bot = false;
 
 	/** @var string[] */
@@ -257,16 +256,12 @@ class AutoModeratorRollback {
 
 	/**
 	 * Set patrolling and bot flag on the edits which get rolled back.
-	 *
-	 * @param IDatabase $dbw
-	 * @param RevisionRecord $current
-	 * @param RevisionRecord $target
 	 */
 	private function updateRecentChange(
 		IDatabase $dbw,
 		RevisionRecord $current,
 		RevisionRecord $target
-	) {
+	): void {
 		$useRCPatrol = $this->options->get( MainConfigNames::UseRCPatrol );
 		if ( !$this->bot && !$useRCPatrol ) {
 			return;

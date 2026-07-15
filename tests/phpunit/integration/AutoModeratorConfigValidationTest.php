@@ -1,13 +1,15 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\Config\Validation\AutoModeratorConfigSchema;
-use AutoModerator\Config\Validation\AutoModeratorConfigValidation;
-use AutoModerator\Config\Validation\AutoModeratorMultilingualConfigSchema;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
+use MediaWiki\Extension\AutoModerator\Config\Validation\AutoModeratorConfigSchema;
+use MediaWiki\Extension\AutoModerator\Config\Validation\AutoModeratorConfigValidation;
+use MediaWiki\Extension\AutoModerator\Config\Validation\AutoModeratorMultilingualConfigSchema;
 
 /**
- * @coversDefaultClass \AutoModerator\Config\Validation\AutoModeratorConfigValidation
+ * @covers \MediaWiki\Extension\AutoModerator\Config\Validation\AutoModeratorConfigValidation
  * @group Database
  */
 class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
@@ -67,8 +69,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when user right valid
-	 * @covers ::validateStrictly
+	 * When user right valid.
 	 */
 	public function testValidateWhenUserRightValid() {
 		$this->config[ 'AutoModeratorSkipUserRights' ] = [ 'bot' ];
@@ -77,8 +78,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when user right invalid
-	 * @covers ::validateStrictly
+	 * When user right invalid.
 	 */
 	public function testValidateWhenUserRightInvalid() {
 		$this->config[ 'AutoModeratorSkipUserRights' ] = [ 'bot-2' ];
@@ -99,8 +99,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when user reverts per page not a number
-	 * @covers ::validateStrictly
+	 * When user reverts per page not a number.
 	 */
 	public function testValidateWhenUserRevertPerPageNotANumber() {
 		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = 'not a number';
@@ -121,8 +120,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when user reverts per page not set
-	 * @covers ::validateStrictly
+	 * When user reverts per page not set.
 	 */
 	public function testValidateWhenUserRevertPerPageNotSet() {
 		unset( $this->config[ 'AutoModeratorUserRevertsPerPage' ] );
@@ -131,8 +129,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when user reverts per page not set
-	 * @covers ::validateStrictly
+	 * When user reverts per page not set.
 	 */
 	public function testValidateWhenUserRevertPerPageNotSetEmptyString() {
 		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = '';
@@ -141,8 +138,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when user reverts per page is a number
-	 * @covers ::validateStrictly
+	 * When user reverts per page is a number.
 	 */
 	public function testValidateWhenUserRevertPerPageIsANumber() {
 		$this->config[ 'AutoModeratorUserRevertsPerPage' ] = '25';
@@ -151,8 +147,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when multilingual threshold is a number
-	 * @covers ::validateStrictly
+	 * When multilingual threshold is a number.
 	 */
 	public function testValidateWhenMultilingualThresholdIsANumber() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.992';
@@ -162,8 +157,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when multilingual threshold is not a number
-	 * @covers ::validateStrictly
+	 * When multilingual threshold is not a number.
 	 */
 	public function testValidateWhenMultilingualThresholdIsNotANumber() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = 'oopsie';
@@ -193,8 +187,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when multilingual threshold is within range
-	 * @covers ::validateStrictly
+	 * When multilingual threshold is within range.
 	 */
 	public function testValidateWhenMultilingualThresholdIsWithinRange() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.992';
@@ -204,8 +197,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when multilingual threshold is out of range
-	 * @covers ::validateStrictly
+	 * When multilingual threshold is out of range.
 	 */
 	public function testValidateWhenMultilingualThresholdIsNotWithinRange() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.001';
@@ -227,8 +219,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when multilingual threshold is added but the model is not enabled
-	 * @covers ::validateStrictly
+	 * When multilingual threshold is added but the model is not enabled.
 	 */
 	public function testValidateWhenMultilingualThresholdAddedModelNotEnabled() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigMultilingualThreshold' ] = '0.967';
@@ -251,8 +242,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when the multilingual and the language-agnostic models are both enabled
-	 * @covers ::validateStrictly
+	 * When the multilingual and the language-agnostic models are both enabled.
 	 */
 	public function testValidateWhenMultilingualModelAndLanguageAgnosticEnabled() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigEnableLanguageAgnostic' ] = true;
@@ -275,8 +265,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when the talk page message is enabled, but the false positive page is empty
-	 * @covers ::validateStrictly
+	 * When the talk page message is enabled, but the false positive page is empty.
 	 */
 	public function testValidateWhenTalkPageEnabledNoFalsePositivePage() {
 		$this->config[ 'AutoModeratorRevertTalkPageMessageEnabled' ] = true;
@@ -298,8 +287,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * when the talk page message is enabled, but the false positive page is empty
-	 * @covers ::validateStrictly
+	 * When the talk page message is enabled, but the false positive page is empty.
 	 */
 	public function testValidateWhenTalkPageEnabledNoFalsePositivePageMultilingual() {
 		$this->multilingualConfig[ 'AutoModeratorMultilingualConfigRevertTalkPageMessageEnabled' ] = true;

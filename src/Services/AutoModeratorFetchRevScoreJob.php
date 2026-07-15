@@ -1,28 +1,16 @@
 <?php
-/**
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
-namespace AutoModerator\Services;
+declare( strict_types = 1 );
 
-use AutoModerator\AutoModeratorRevisionStore;
-use AutoModerator\AutoModeratorServices;
-use AutoModerator\OresScoreFetcher;
-use AutoModerator\RevisionCheck;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Services;
+
 use MediaWiki\Config\Config;
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\AutoModerator\AutoModeratorRevisionStore;
+use MediaWiki\Extension\AutoModerator\AutoModeratorServices;
+use MediaWiki\Extension\AutoModerator\OresScoreFetcher;
+use MediaWiki\Extension\AutoModerator\RevisionCheck;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\JobQueue\Job;
 use MediaWiki\Logger\LoggerFactory;
@@ -37,25 +25,10 @@ use Wikimedia\Rdbms\IConnectionProvider;
 
 class AutoModeratorFetchRevScoreJob extends Job {
 
-	/**
-	 * @var int
-	 */
-	private $wikiPageId;
-
-	/**
-	 * @var int
-	 */
-	private $revId;
-
-	/**
-	 * @var bool
-	 */
+	private int $wikiPageId;
+	private int $revId;
 	private bool $isRetryable = true;
-
-	/**
-	 * @var ?array
-	 */
-	private $scores;
+	private ?array $scores;
 
 	/**
 	 * @param Title $title
@@ -214,27 +187,22 @@ class AutoModeratorFetchRevScoreJob extends Job {
 	}
 
 	/**
-	 * Obtains a score from LiftWing API
-	 * @param HttpRequestFactory $httpRequestFactory
-	 * @param Config $config
-	 * @return array|false
+	 * Obtains a score from LiftWing API.
 	 */
-	private function getLiftWingRevScore( HttpRequestFactory $httpRequestFactory, Config $config ) {
+	private function getLiftWingRevScore( HttpRequestFactory $httpRequestFactory, Config $config ): array {
 		$liftWingClient = Util::initializeLiftWingClient( $httpRequestFactory, $config );
-		$response = $liftWingClient->get( $this->revId );
-		return $response;
+		return $liftWingClient->get( $this->revId );
 	}
 
 	/**
 	 * Obtains a score from ORES classification table
-	 * @param IConnectionProvider $connectionProvider
-	 * @param string $revertRiskModelName
-	 * @param string $wikiId
-	 * @param LoggerInterface $logger
-	 * @return array|false
 	 */
-	private function getOresRevScore( IConnectionProvider $connectionProvider, string $revertRiskModelName,
-									 string $wikiId, LoggerInterface $logger ) {
+	private function getOresRevScore(
+		IConnectionProvider $connectionProvider,
+		string $revertRiskModelName,
+		string $wikiId,
+		LoggerInterface $logger
+	): array|false {
 		if ( $this->scores ) {
 			foreach ( $this->scores as $rev_id => $score ) {
 				if ( $rev_id === $this->revId && array_key_exists( $revertRiskModelName, $score ) ) {
@@ -271,7 +239,7 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		];
 	}
 
-	private function setAllowRetries( bool $isRetryable ) {
+	private function setAllowRetries( bool $isRetryable ): void {
 		$this->isRetryable = $isRetryable;
 	}
 
@@ -291,18 +259,13 @@ class AutoModeratorFetchRevScoreJob extends Job {
 		return true;
 	}
 
-	/**
-	 * @param float $score
-	 * @param UserIdentity $autoModeratorUser
-	 * @param WikiPage $page
-	 * @param UserIdentity $user
-	 * @param MediaWikiServices $services
-	 * @return void
-	 */
-	public function addAutoModeratorLog( float $score,
-										 UserIdentity $autoModeratorUser,
-										 WikiPage $page,
-										 UserIdentity $user, MediaWikiServices $services ): void {
+	public function addAutoModeratorLog(
+		float $score,
+		UserIdentity $autoModeratorUser,
+		WikiPage $page,
+		UserIdentity $user,
+		MediaWikiServices $services
+	): void {
 		$log = new ManualLogEntry( 'automoderator', 'revert_decision' );
 		$log->setPerformer( $autoModeratorUser );
 		$log->setTarget( $page->getTitle() );

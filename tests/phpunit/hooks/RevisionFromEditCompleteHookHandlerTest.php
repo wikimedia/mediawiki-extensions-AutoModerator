@@ -1,10 +1,12 @@
 <?php
 
-namespace AutoModerator\Tests\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
+namespace MediaWiki\Extension\AutoModerator\Tests\Hooks;
+
 use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\AutoModerator\Hooks\RevisionFromEditCompleteHookHandler;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
@@ -20,7 +22,7 @@ use MediaWiki\User\UserIdentity;
 /**
  * @group AutoModerator
  * @group Database
- * @covers \AutoModerator\Hooks\RevisionFromEditCompleteHookHandler
+ * @covers \MediaWiki\Extension\AutoModerator\Hooks\RevisionFromEditCompleteHookHandler
  */
 class RevisionFromEditCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
 

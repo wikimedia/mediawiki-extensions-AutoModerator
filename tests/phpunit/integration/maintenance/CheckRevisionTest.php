@@ -1,15 +1,17 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\Maintenance\CheckRevision;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
+use MediaWiki\Extension\AutoModerator\Maintenance\CheckRevision;
 use MediaWiki\Tests\Maintenance\MaintenanceBaseTestCase;
 
 /**
  * @group AutoModerator
  * @group extensions
  * @group Database
- * @covers \AutoModerator\Maintenance\CheckRevision
+ * @covers \MediaWiki\Extension\AutoModerator\Maintenance\CheckRevision
  */
 class CheckRevisionTest extends MaintenanceBaseTestCase {
 	public function getMaintenanceClass() {

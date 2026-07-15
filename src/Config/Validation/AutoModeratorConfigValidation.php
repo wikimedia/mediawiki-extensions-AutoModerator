@@ -1,6 +1,8 @@
 <?php
+
 declare( strict_types = 1 );
-namespace AutoModerator\Config\Validation;
+
+namespace MediaWiki\Extension\AutoModerator\Config\Validation;
 
 use Iterator;
 use MediaWiki\Context\IContextSource;
@@ -11,11 +13,11 @@ use MediaWiki\Extension\CommunityConfiguration\Validation\ValidationStatus;
 use MediaWiki\Extension\CommunityConfiguration\Validation\ValidatorFactory;
 use MediaWiki\Permissions\PermissionManager;
 
-class AutoModeratorConfigValidation implements IValidator {
+readonly class AutoModeratorConfigValidation implements IValidator {
 	public function __construct(
-		private readonly IValidator $jsonSchemaValidator,
-		private readonly PermissionManager $permissionManager,
-		private readonly IContextSource $context
+		private IValidator $jsonSchemaValidator,
+		private PermissionManager $permissionManager,
+		private IContextSource $context
 	) {
 	}
 
@@ -153,7 +155,6 @@ class AutoModeratorConfigValidation implements IValidator {
 
 	/** @inheritDoc */
 	public function validatePermissively( $config, ?string $version = null ): ValidationStatus {
-		$configArray = json_decode( json_encode( $config ), true );
 		return $this->jsonSchemaValidator->validatePermissively( $config, $version );
 	}
 

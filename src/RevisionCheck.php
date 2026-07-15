@@ -1,27 +1,12 @@
 <?php
-/**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * @file
- */
 
-namespace AutoModerator;
+declare( strict_types = 1 );
 
-use AutoModerator\Services\AutoModeratorRollback;
+namespace MediaWiki\Extension\AutoModerator;
+
 use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorRollback;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
@@ -34,16 +19,7 @@ use MediaWiki\User\UserIdentity;
 use Psr\Log\LoggerInterface;
 use StatusValue;
 
-class RevisionCheck {
-
-	/** @var Config */
-	private Config $config;
-
-	/** @var bool */
-	private bool $enforce;
-
-	/** @var AutoModeratorRollback */
-	private AutoModeratorRollback $rollbackPage;
+readonly class RevisionCheck {
 
 	/**
 	 * @param Config $config
@@ -51,17 +27,14 @@ class RevisionCheck {
 	 * @param bool $enforce Perform reverts if true, take no action if false
 	 */
 	public function __construct(
-		Config $config,
-		AutoModeratorRollback $rollbackPage,
-		bool $enforce = false
+		private Config $config,
+		private AutoModeratorRollback $rollbackPage,
+		private bool $enforce = false,
 	) {
-		$this->config = $config;
-		$this->enforce = $enforce;
-		$this->rollbackPage = $rollbackPage;
 	}
 
 	/**
-	 * Perform rollback
+	 * Perform rollback.
 	 */
 	private function doRollback(): StatusValue {
 		return $this->rollbackPage
@@ -69,23 +42,19 @@ class RevisionCheck {
 	}
 
 	/**
-	 * Precheck a revision; if any of the checks don't pass,
-	 * a revision won't be scored
-	 * @param UserIdentity $user
-	 * @param User $autoModeratorUser
-	 * @param LoggerInterface $logger
-	 * @param RevisionStore $revisionStore
-	 * @param string[] $tags
-	 * @param RestrictionStore $restrictionStore
-	 * @param WikiPageFactory $wikiPageFactory
-	 * @param Config $config
-	 * @param RevisionRecord $rev
-	 * @param PermissionManager $permissionManager
-	 * @return bool
+	 * Precheck a revision; if any of the checks don't pass, a revision won't be scored.
 	 */
-	public static function revertPreCheck( UserIdentity $user, User $autoModeratorUser, LoggerInterface $logger,
-		RevisionStore $revisionStore, array $tags, RestrictionStore $restrictionStore, WikiPageFactory $wikiPageFactory,
-		Config $config, RevisionRecord $rev, PermissionManager $permissionManager
+	public static function revertPreCheck(
+		UserIdentity $user,
+		User $autoModeratorUser,
+		LoggerInterface $logger,
+		RevisionStore $revisionStore,
+		array $tags,
+		RestrictionStore $restrictionStore,
+		WikiPageFactory $wikiPageFactory,
+		Config $config,
+		RevisionRecord $rev,
+		PermissionManager $permissionManager
 	): bool {
 		$wikiPageId = $rev->getPageId();
 		// Skips reverts if AutoModerator is blocked
@@ -175,8 +144,6 @@ class RevisionCheck {
 
 	/**
 	 * Check revision; revert if it meets configured critera
-	 * @param array $score
-	 * @return RollbackStatus
 	 */
 	public function maybeRollback( array $score ): RollbackStatus {
 		$reverted = 0;
@@ -215,43 +182,24 @@ class RevisionCheck {
 		return new RollbackStatus( $reverted, $status );
 	}
 
-	/**
-	 * @param PermissionManager $permissionManager
-	 * @param UserIdentity $user
-	 * @param Config $config
-	 * @return bool
-	 */
-	public static function shouldSkipUser( PermissionManager $permissionManager,
-		UserIdentity $user, Config $config ): bool {
+	public static function shouldSkipUser(
+		PermissionManager $permissionManager,
+		UserIdentity $user,
+		Config $config
+	): bool {
 		$userRightsToSkip = Util::getSkipUserRights( $config );
-		return $permissionManager->userHasAnyRight(
-				$user, ...(array)$userRightsToSkip
-			);
+		return $permissionManager->userHasAnyRight( $user, ...(array)$userRightsToSkip );
 	}
 
-	/**
-	 * @param UserIdentity $user
-	 * @param UserIdentity $autoModeratorUser
-	 * @return bool
-	 */
 	public static function areUsersEqual( UserIdentity $user, UserIdentity $autoModeratorUser ): bool {
 		return $user->equals( $autoModeratorUser );
 	}
 
-	/**
-	 * @param RestrictionStore $restrictionStore
-	 * @param WikiPage $wikiPage
-	 * @return bool
-	 */
 	public static function isProtectedPage( RestrictionStore $restrictionStore, WikiPage $wikiPage ): bool {
 		return $restrictionStore->isProtected( $wikiPage )
 			&& !$restrictionStore->isSemiProtected( $wikiPage );
 	}
 
-	/**
-	 * @param int|null $parentId
-	 * @return bool
-	 */
 	public static function isNewPageCreation( ?int $parentId ): bool {
 		return $parentId === null || $parentId === 0;
 	}

@@ -1,23 +1,8 @@
 <?php
-/**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * @file
- */
 
-namespace AutoModerator;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator;
 
 use MediaWiki\Actions\Hook\HistoryToolsHook;
 use MediaWiki\Config\Config;
@@ -25,21 +10,19 @@ use MediaWiki\Html\Html;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
 
-class Hooks implements
-	HistoryToolsHook
-{
+readonly class Hooks implements HistoryToolsHook {
 
 	public function __construct(
-		private readonly UserGroupManager $userGroupManager,
-		private readonly Config $config,
-		private readonly TitleFactory $titleFactory,
+		private UserGroupManager $userGroupManager,
+		private Config $config,
+		private TitleFactory $titleFactory,
 	) {
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onHistoryTools( $revRecord, &$links, $prevRevRecord, $userIdentity ) {
+	public function onHistoryTools( $revRecord, &$links, $prevRevRecord, $userIdentity ): void {
 		$revUser = $revRecord->getUser();
 
 		$falsePositivePageText = Util::getFalsePositivePageTitleText( $this->config );
@@ -53,20 +36,23 @@ class Hooks implements
 			// The false positive page title has been configured, but the page has not been created
 			return;
 		}
-		$falsePositivePageUrl = $falsePositivePageTitle->getFullURL();
 		// Add parameters to false positive page
-		$falsePositivePreloadTemplate = $falsePositivePageTitle->getNsText() . ":" .
-			$falsePositivePageTitle->getDBkey() . '/Preload';
+		$falsePositivePreloadTemplate = $falsePositivePageTitle->getPrefixedDBkey() . '/Preload';
 		$pageTitle = $this->titleFactory->newFromPageIdentity( $revRecord->getPage() )->getDBkey();
-		$falsePositiveParams = '?action=edit&section=new&nosummary=true&preload=' . $falsePositivePreloadTemplate .
-			'&preloadparams[]=' . $revRecord->getId() . '&preloadparams[]=' . $pageTitle;
+		$falsePositiveParams = [
+			'action' => 'edit',
+			'section' => 'new',
+			'nosummary' => 'true',
+			'preload' => $falsePositivePreloadTemplate,
+			'preloadparams' => [ $revRecord->getId(), $pageTitle ],
+		];
 		// Only add the report link if it's an AutoModerator revert
 		if ( $autoModeratorUser->getId() === $revUser->getId() ) {
 			$links[] = Html::element(
 				'a',
 				[
 					'class' => 'mw-automoderator-report-link',
-					'href' => $falsePositivePageUrl . $falsePositiveParams,
+					'href' => $falsePositivePageTitle->getFullURL( $falsePositiveParams ),
 					'title' => wfMessage( 'automoderator-wiki-report-false-positive' )->text(),
 				],
 				wfMessage( 'automoderator-wiki-report-false-positive' )->text()

@@ -1,23 +1,23 @@
 <?php
 
-namespace AutoModerator\Hooks;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator\Hooks;
 
 use MediaWiki\Config\Config;
 use MediaWiki\Extension\CommunityConfiguration\Hooks\CommunityConfigurationProvider_initListHook;
-use MediaWiki\Title\TitleFactory;
 
-class CommunityConfigurationProviderHookHandler implements CommunityConfigurationProvider_initListHook {
+readonly class CommunityConfigurationProviderHookHandler implements CommunityConfigurationProvider_initListHook {
 
 	public function __construct(
-		private readonly Config $config,
-		private readonly TitleFactory $titleFactory,
+		private Config $config,
 	) {
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function onCommunityConfigurationProvider_initList( array &$providers ) {
+	public function onCommunityConfigurationProvider_initList( array &$providers ): void {
 		if (
 			$this->config->has( 'AutoModeratorMultiLingualRevertRisk' ) &&
 			$this->config->get( 'AutoModeratorMultiLingualRevertRisk' )

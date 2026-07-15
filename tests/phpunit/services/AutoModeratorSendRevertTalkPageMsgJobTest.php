@@ -1,14 +1,16 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
 use MediaWiki\Api\ApiMain;
 use MediaWiki\Api\ApiQueryTokens;
 use MediaWiki\Api\ApiUsageException;
 use MediaWiki\Context\DerivativeContext;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Session\SessionManager;
 use MediaWiki\User\User;
@@ -19,7 +21,9 @@ use Wikimedia\Timestamp\ConvertibleTimestamp;
 /**
  * @group AutoModerator
  * @group Database
- * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob
+ * @covers \MediaWiki\Extension\AutoModerator\ApiClient
+ * @covers \MediaWiki\Extension\AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob
+ * @covers \MediaWiki\Extension\AutoModerator\Util
  */
 class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTestCase {
 	use MockHttpTrait;
@@ -47,12 +51,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		return $this->insertPage( $talkPageTitle, $name );
 	}
 
-	/**
-	 * @param User $autoModeratorUser
-	 * @param array $wikiTalkPageCreated
-	 * @return array
-	 */
-	private function createPageInfoResponse( User $autoModeratorUser, array $wikiTalkPageCreated ) {
+	private function createPageInfoResponse( User $autoModeratorUser, array $wikiTalkPageCreated ): array {
 		$session = SessionManager::singleton()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
@@ -72,13 +71,11 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		return $api->getResult()->getResultData();
 	}
 
-	/**
-	 * @param User $autoModeratorUser
-	 * @param array $wikiTalkPageCreated
-	 * @param string $header
-	 * @return array
-	 */
-	private function createFindCommentResponse( User $autoModeratorUser, array $wikiTalkPageCreated, string $header ) {
+	private function createFindCommentResponse(
+		User $autoModeratorUser,
+		array $wikiTalkPageCreated,
+		string $header
+	): array {
 		$session = SessionManager::singleton()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
@@ -102,13 +99,11 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		return $api->getResult()->getResultData();
 	}
 
-	/**
-	 * @param User $autoModeratorUser
-	 * @param array $wikiTalkPageCreated
-	 * @param string $header
-	 * @return array
-	 */
-	private function createAddTopicResponse( User $autoModeratorUser, array $wikiTalkPageCreated, string $header ) {
+	private function createAddTopicResponse(
+		User $autoModeratorUser,
+		array $wikiTalkPageCreated,
+		string $header
+	): array {
 		$session = SessionManager::singleton()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
@@ -140,36 +135,33 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		return $api->getResult()->getResultData();
 	}
 
-	/**
-	 * @param User $autoModeratorUser
-	 * @param array $wikiTalkPageCreated
-	 * @param string $commentId
-	 * @param string $followUpComment
-	 * @return array
-	 */
-	private function createAddFollowUpCommentResponse( User $autoModeratorUser, array $wikiTalkPageCreated,
-		string $commentId, string $followUpComment ) {
+	private function createAddFollowUpCommentResponse(
+		User $autoModeratorUser,
+		array $wikiTalkPageCreated,
+		string $commentId,
+		string $followUpComment
+	): array {
 		$session = SessionManager::singleton()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
 		$context->setUser( $autoModeratorUser );
 		$queryParams = [
-			"action" => "discussiontoolsedit",
-			"format" => "json",
-			"paction" => "addcomment",
-			"page" => $wikiTalkPageCreated['title'],
-			"commentid" => $commentId,
-			"wikitext" => $followUpComment,
-			"token" => ApiQueryTokens::getToken(
+			'action' => 'discussiontoolsedit',
+			'format' => 'json',
+			'paction' => 'addcomment',
+			'page' => $wikiTalkPageCreated['title'],
+			'commentid' => $commentId,
+			'wikitext' => $followUpComment,
+			'token' => ApiQueryTokens::getToken(
 				$autoModeratorUser,
 				$session,
 				ApiQueryTokens::getTokenTypeSalts()['csrf']
 			)
 		];
 
-		$context->setRequest( new FauxRequest( $queryParams, true, $session ) );
+		$context->setRequest( new FauxRequest( $queryParams, wasPosted: true, session: $session ) );
 
-		$api = new ApiMain( $context, true );
+		$api = new ApiMain( $context, enableWrite: true );
 		try {
 			$api->execute();
 		} catch ( ApiUsageException $th ) {
@@ -179,16 +171,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		return $api->getResult()->getResultData();
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob::run
-	 * @covers AutoModerator\ApiClient::findComment
-	 * @covers AutoModerator\ApiClient::checkCommentRedirects
-	 * @covers AutoModerator\ApiClient::getUserTalkPageInfo
-	 * @covers AutoModerator\ApiClient::addTopic
-	 * @covers AutoModerator\Util::initializeApiClient
-	 * @group Database
-	 */
-	public function testRunSuccessSendsTalkPageMessageAddTopic() {
+	public function testRunSuccessSendsTalkPageMessageAddTopic(): void {
 		[ $user, $title ] = $this->createTestPage();
 		$wikiTalkPageCreated = $this->createTestWikiTalkPage( $user->getName() );
 		$expectedFalsePositiveReportPage = "false-positive-page";
@@ -228,20 +211,11 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		$expectedTalkPageHeaderMessageContent = "Hello! I am [[User:AutoModerator|AutoModerator]]";
 
 		$this->assertStringContainsString( $expectedTalkPageHeaderMessageContent, $currentTalkPageContent );
-		$this->assertStringContainsString( $title, $currentTalkPageContent );
+		$this->assertStringContainsString( $title->getPrefixedText(), $currentTalkPageContent );
 		$this->assertStringContainsString( $expectedFalsePositiveReportPage, $currentTalkPageContent );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob::run
-	 * @covers AutoModerator\ApiClient::findComment
-	 * @covers AutoModerator\ApiClient::checkCommentRedirects
-	 * @covers AutoModerator\ApiClient::getUserTalkPageInfo
-	 * @covers AutoModerator\ApiClient::addFollowUpComment
-	 * @covers AutoModerator\Util::initializeApiClient
-	 * @group Database
-	 */
-	public function testRunSuccessSendsTalkPageMessageAddFollowUpComment() {
+	public function testRunSuccessSendsTalkPageMessageAddFollowUpComment(): void {
 		[ $user, $title ] = $this->createTestPage();
 		$language = $this->getServiceContainer()->getContentLanguage();
 		$timestamp = new ConvertibleTimestamp();
@@ -295,15 +269,11 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 			$title . "]] because it seemed unconstructive.";
 
 		$this->assertStringContainsString( $expectedTalkPageFollowUpComment, $currentTalkPageContent );
-		$this->assertStringContainsString( $title, $currentTalkPageContent );
+		$this->assertStringContainsString( $title->getPrefixedText(), $currentTalkPageContent );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob::run
-	 * @group Database
-	 */
-	public function testRunFailureWhenNoRevision() {
-		[ $user, $title ] = $this->createTestPage();
+	public function testRunFailureWhenNoRevision(): void {
+		[ , $title ] = $this->createTestPage();
 		$mediaWikiServices = $this->getServiceContainer();
 		$expectedFalsePositiveReportPage = "false-positive-page";
 		$autoModeratorUser = Util::getAutoModeratorUser( $mediaWikiServices->getMainConfig(),

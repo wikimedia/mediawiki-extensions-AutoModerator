@@ -1,8 +1,10 @@
 <?php
 
-use AutoModerator\AutoModeratorServices;
-use AutoModerator\TalkPageMessageSender;
+declare( strict_types = 1 );
+
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\AutoModerator\AutoModeratorServices;
+use MediaWiki\Extension\AutoModerator\TalkPageMessageSender;
 use MediaWiki\MediaWikiServices;
 
 /**

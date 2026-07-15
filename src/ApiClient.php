@@ -1,23 +1,8 @@
 <?php
-/**
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
- *
- * @file
- */
 
-namespace AutoModerator;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator;
 
 use MediaWiki\Api\ApiMain;
 use MediaWiki\Api\ApiUsageException;
@@ -37,29 +22,30 @@ class ApiClient {
 	 *
 	 * @return array Decoded response
 	 */
-	public function findComment( string $commentHeader, Title $userTalkPageTitle ) {
+	public function findComment( string $commentHeader, Title $userTalkPageTitle ): array {
 		try {
 			$context = new DerivativeContext( RequestContext::getMain() );
-			$headerNoEqualsSymbol = trim( str_replace( "==", "", $commentHeader ) );
-			$headerWithoutSpaces = str_replace( " ", "_", $headerNoEqualsSymbol );
-			$userTalkPageString = str_replace( "_", " ", $userTalkPageTitle->getTalkNsText() ) .
-				':' . $userTalkPageTitle->getText();
+			$headerNoEqualsSymbol = trim( str_replace( '==', '', $commentHeader ) );
+			$headerWithoutSpaces = str_replace( ' ', '_', $headerNoEqualsSymbol );
+			$userTalkPageString = $userTalkPageTitle->getPrefixedText();
 			$queryParams = [
-				"action" => "discussiontoolsfindcomment",
-				"format" => "json",
-				"heading" => $headerWithoutSpaces,
-				"page" => $userTalkPageString,
-				"formatversion" => "2"
+				'action' => 'discussiontoolsfindcomment',
+				'format' => 'json',
+				'heading' => $headerWithoutSpaces,
+				'page' => $userTalkPageString,
+				'formatversion' => '2',
 			];
 			$data = $this->executeApiQuery( $context, $queryParams );
 		} catch ( ApiUsageException ) {
 			return [];
 		}
 
-		if ( array_key_exists( "discussiontoolsfindcomment", $data ) ) {
+		if ( array_key_exists( 'discussiontoolsfindcomment', $data ) ) {
 			// From findcomment, we only need the comment id and couldredirect
-			return $this->checkCommentRedirects( $data[ "discussiontoolsfindcomment" ],
-				$userTalkPageString );
+			return $this->checkCommentRedirects(
+				$data['discussiontoolsfindcomment'],
+				$userTalkPageString
+			);
 		} else {
 			return [];
 		}
@@ -70,19 +56,17 @@ class ApiClient {
 	 *
 	 * @return array Decoded response
 	 */
-	public function getUserTalkPageInfo( Title $userTalkPageTitle ) {
+	public function getUserTalkPageInfo( Title $userTalkPageTitle ): array {
 		$context = new DerivativeContext( RequestContext::getMain() );
 		$queryParams = [
-			"action" => "discussiontoolspageinfo",
-			"format" => "json",
-			"page" => $userTalkPageTitle->getTalkNsText() . ':' . $userTalkPageTitle->getText(),
-			"prop" => "threaditemshtml",
-			"formatversion" => "2"
+			'action' => 'discussiontoolspageinfo',
+			'format' => 'json',
+			'page' => $userTalkPageTitle->getPrefixedText(),
+			'prop' => 'threaditemshtml',
+			'formatversion' => '2',
 		];
 
-		$data = $this->executeApiQuery( $context, $queryParams );
-
-		return $data;
+		return $this->executeApiQuery( $context, $queryParams );
 	}
 
 	/**
@@ -95,27 +79,29 @@ class ApiClient {
 	 *
 	 * @return array Decoded response
 	 */
-	public function addFollowUpComment( string $commentId, Title $userTalkPageTitle, string $followUpComment,
-		User $autoModeratorUser ) {
+	public function addFollowUpComment(
+		string $commentId,
+		Title $userTalkPageTitle,
+		string $followUpComment,
+		User $autoModeratorUser
+	): array {
 		$requestContext = RequestContext::getMain();
 		$requestContext->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( $requestContext );
 		$context->setUser( $autoModeratorUser );
 		$token = $autoModeratorUser->getEditTokenObject( '', $context->getRequest() )->toString();
 		$queryParams = [
-			"action" => "discussiontoolsedit",
-			"format" => "json",
-			"paction" => "addcomment",
-			"page" => $userTalkPageTitle->getTalkNsText() . ':' . $userTalkPageTitle->getText(),
-			"commentid" => $commentId,
-			"wikitext" => $followUpComment,
-			"token" => $token,
-			"formatversion" => "2"
+			'action' => 'discussiontoolsedit',
+			'format' => 'json',
+			'paction' => 'addcomment',
+			'page' => $userTalkPageTitle->getPrefixedText(),
+			'commentid' => $commentId,
+			'wikitext' => $followUpComment,
+			'token' => $token,
+			'formatversion' => '2'
 		];
 
-		$data = $this->executeApiQuery( $context, $queryParams );
-
-		return $data;
+		return $this->executeApiQuery( $context, $queryParams );
 	}
 
 	/**
@@ -129,50 +115,43 @@ class ApiClient {
 	 *
 	 * @return array Decoded response
 	 */
-	public function addTopic( string $commentHeader, Title $userTalkPageTitle, string $talkPageMessage,
-		string $editSummary, User $autoModeratorUser ) {
+	public function addTopic(
+		string $commentHeader,
+		Title $userTalkPageTitle,
+		string $talkPageMessage,
+		string $editSummary,
+		User $autoModeratorUser
+	): array {
 		$requestContext = RequestContext::getMain();
 		$requestContext->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( $requestContext );
 		$context->setUser( $autoModeratorUser );
 		$token = $autoModeratorUser->getEditTokenObject( '', $context->getRequest() )->toString();
 		$queryParams = [
-			"action" => "discussiontoolsedit",
-			"format" => "json",
-			"paction" => "addtopic",
-			"page" => $userTalkPageTitle->getTalkNsText() . ':' . $userTalkPageTitle->getText(),
-			"wikitext" => $talkPageMessage,
-			"sectiontitle" => $commentHeader,
-			"summary" => $editSummary,
-			"token" => $token,
-			"formatversion" => "2"
+			'action' => 'discussiontoolsedit',
+			'format' => 'json',
+			'paction' => 'addtopic',
+			'page' => $userTalkPageTitle->getPrefixedText(),
+			'wikitext' => $talkPageMessage,
+			'sectiontitle' => $commentHeader,
+			'summary' => $editSummary,
+			'token' => $token,
+			'formatversion' => '2'
 		];
 
-		$data = $this->executeApiQuery( $context, $queryParams );
-
-		return $data;
+		return $this->executeApiQuery( $context, $queryParams );
 	}
 
-	/**
-	 * @param DerivativeContext $context
-	 * @param array $queryParams
-	 *
-	 * @return array $data
-	 */
-	private function executeApiQuery( DerivativeContext $context, array $queryParams ) {
+	private function executeApiQuery( DerivativeContext $context, array $queryParams ): array {
 		$context->setRequest(
 			new DerivativeRequest(
 				$context->getRequest(),
 				$queryParams
 			)
 		);
-		$api = new ApiMain(
-			$context,
-			true
-		);
+		$api = new ApiMain( $context, enableWrite: true );
 		$api->execute();
-		$data = $api->getResult()->getResultData();
-		return $data;
+		return $api->getResult()->getResultData();
 	}
 
 	/**
@@ -182,15 +161,15 @@ class ApiClient {
 	 * @param string $userTalkPageString
 	 * @return array
 	 */
-	private function checkCommentRedirects( array $comments, string $userTalkPageString ) {
+	private function checkCommentRedirects( array $comments, string $userTalkPageString ): array {
 		$couldRedirect = false;
-		$commentId = "";
+		$commentId = '';
 		foreach ( $comments as $comment ) {
-			if ( $comment[ "couldredirect" ] && $comment[ "title" ] === $userTalkPageString ) {
+			if ( $comment['couldredirect'] && $comment['title'] === $userTalkPageString ) {
 				$couldRedirect = true;
-				$commentId = $comment[ "id" ];
+				$commentId = $comment['id'];
 			}
 		}
-		return [ "couldredirect" => $couldRedirect, "id" => $commentId ];
+		return [ 'couldredirect' => $couldRedirect, 'id' => $commentId ];
 	}
 }

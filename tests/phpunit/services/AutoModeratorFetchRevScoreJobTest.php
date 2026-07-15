@@ -1,22 +1,25 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\Services\AutoModeratorFetchRevScoreJob;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorFetchRevScoreJob;
 use MediaWiki\Extension\CommunityConfiguration\Tests\CommunityConfigurationTestHelpers;
+use MediaWikiIntegrationTestCase;
 use MockHttpTrait;
 
 /**
  * @group AutoModerator
  * @group Database
- * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob
+ * @covers \MediaWiki\Extension\AutoModerator\Services\AutoModeratorFetchRevScoreJob
+ * @covers \MediaWiki\Extension\AutoModerator\OresScoreFetcher
  */
-class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
+class AutoModeratorFetchRevScoreJobTest extends MediaWikiIntegrationTestCase {
 	use CommunityConfigurationTestHelpers;
 	use MockHttpTrait;
 
-	/** @var score */
-	private $score;
+	private array $score;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -86,11 +89,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		return $this->getDb()->insertId();
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * @group Database
-	 */
 	public function testRunSuccess() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 
@@ -118,10 +116,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertNotEquals( $rev->getId(), $revisionAfter );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @group Database
-	 */
 	public function testRunSuccessInLogOnlyMode() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorEnableLogOnlyMode' => true ], 'AutoModerator' );
@@ -174,7 +168,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertStringContainsString( "4::revId", $logEntry->log_params );
 		$this->assertStringContainsString( "5::user", $logEntry->log_params );
 		$this->assertStringContainsString( "6::score", $logEntry->log_params );
-		$this->assertStringContainsString( $rev->getId(), $logEntry->log_params );
+		$this->assertStringContainsString( (string)$rev->getId(), $logEntry->log_params );
 		$this->assertStringContainsString( $user->getName(), $logEntry->log_params );
 		$this->assertStringContainsString( "0.9987", $logEntry->log_params );
 		$pageAfter = $this->getExistingTestPage( $wikiPage['title'] );
@@ -183,10 +177,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( $rev->getId(), $revisionAfter );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @group Database
-	 */
 	public function testRunSuccessInLogOnlyModeFailingScore() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorEnableLogOnlyMode' => true ], 'AutoModerator' );
@@ -246,11 +236,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( $rev->getId(), $revisionAfter );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * @group Database
-	 */
 	public function testRunSuccessWithMinorEditFlagTrue() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorUseEditFlagMinor' => true ], 'AutoModerator' );
@@ -278,11 +263,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertTrue( $newRevisionRecord->isMinor() );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * @group Database
-	 */
 	public function testRunSuccessWithMinorEditFlagFalse() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorUseEditFlagMinor' => false ], 'AutoModerator' );
@@ -310,11 +290,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertFalse( $newRevisionRecord->isMinor() );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * @group Database
-	 */
 	public function testRunSuccessWithBotFlagTrue() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorEnableBotFlag' => true ], 'AutoModerator' );
@@ -344,11 +319,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( '1', $isBotChange->rc_bot );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * @group Database
-	 */
 	public function testRunSuccessWithBotFlagFalse() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
 		$this->overrideProviderConfig( [ 'AutoModeratorEnableBotFlag' => false ], 'AutoModerator' );
@@ -378,10 +348,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( '0', $isBotChange->rc_bot );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 */
 	public function testRunSuccessManualRevert() {
 		$wikiPage = $this->insertPage( 'TestJob', 'Test text' );
 		$user = $this->getTestUser()->getUserIdentity();
@@ -413,10 +379,6 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 		$this->assertTrue( $success );
 	}
 
-	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 */
 	public function testRunSuccessManualRevertMultilingualEnabled() {
 		$this->enableMultilingual();
 
@@ -450,9 +412,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * when there is a bad request response returns false
+	 * When there is a bad request response returns false.
 	 */
 	public function testRunWithBadRequestReturnsFailure() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
@@ -479,9 +439,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * when there is an unexpected 5xx response returns false
+	 * When there is an unexpected 5xx response returns false.
 	 */
 	public function testRunWithUnexpectedExceptionReturnsFalse() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
@@ -508,9 +466,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * when there is a server timeout 504 response returns false
+	 * When there is a server timeout 504 response returns false.
 	 */
 	public function testRunWithServerTimeoutReturnsFalse() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
@@ -537,9 +493,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * when the revision lookup fails
+	 * When the revision lookup fails.
 	 */
 	public function testRunWithBadRevisionId() {
 		[ $wikiPage, $user, $rev, $title ] = $this->createTestPage();
@@ -566,9 +520,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getOresRevScore
-	 * Tests fetching the score from ORES extension. Will get scores from the parameters
+	 * Tests fetching the score from ORES extension. Will get scores from the parameters.
 	 */
 	public function testRunWithORESExtensionWithScoresSuccess() {
 		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
@@ -610,10 +562,7 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getOresRevScore
-	 * @covers AutoModerator\OresScoreFetcher::getOresScore
-	 * Tests fetching the score from ORES extension. Will get scores from a DB query
+	 * Tests fetching the score from ORES extension. Will get scores from a DB query.
 	 */
 	public function testRunWithORESExtensionWithNoScoresSuccess() {
 		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );
@@ -664,12 +613,8 @@ class AutoModeratorFetchRevScoreJobTest extends \MediaWikiIntegrationTestCase {
 	}
 
 	/**
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::run
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getLiftWingRevScore
-	 * @covers AutoModerator\Services\AutoModeratorFetchRevScoreJob::getOresRevScore
-	 * @covers AutoModerator\OresScoreFetcher::getOresScore
 	 * Tests fetching the score from ORES extension. There are no scores in the job params
-	 * or in the database. Resorting to Liftwing API query
+	 * or in the database. Resorting to Liftwing API query.
 	 */
 	public function testRunWithORESExtensionNoORESDataSuccess() {
 		$this->markTestSkippedIfExtensionNotLoaded( 'ORES' );

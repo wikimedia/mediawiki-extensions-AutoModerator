@@ -1,12 +1,14 @@
 <?php
 
-namespace AutoModerator\Maintenance;
+declare( strict_types = 1 );
 
-use AutoModerator\AutoModeratorServices;
-use AutoModerator\RevisionCheck;
-use AutoModerator\Services\AutoModeratorRollback;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Maintenance;
+
 use MediaWiki\Config\ServiceOptions;
+use MediaWiki\Extension\AutoModerator\AutoModeratorServices;
+use MediaWiki\Extension\AutoModerator\RevisionCheck;
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorRollback;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\MediaWikiServices;

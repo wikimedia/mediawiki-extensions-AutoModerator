@@ -1,14 +1,16 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\RevisionCheck;
-use AutoModerator\Services\AutoModeratorRollback;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
 use MediaWiki\Block\AbstractBlock;
 use MediaWiki\ChangeTags\ChangeTags;
 use MediaWiki\Config\Config;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Content\ContentHandler;
+use MediaWiki\Extension\AutoModerator\RevisionCheck;
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorRollback;
 use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Page\WikiPageFactory;
@@ -17,7 +19,6 @@ use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\MutableRevisionRecord;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\RevisionStore;
-use MediaWiki\Revision\RevisionStoreRecord;
 use MediaWiki\Tests\Mocks\Content\DummyContentForTesting;
 use MediaWiki\Tests\Unit\MockServiceDependenciesTrait;
 use MediaWiki\Title\Title;
@@ -27,12 +28,12 @@ use MediaWikiUnitTestCase;
 use MockHttpTrait;
 use MockTitleTrait;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use StatusValue;
 
 /**
  * @group AutoModerator
- * @group extensions
- * @coversDefaultClass \AutoModerator\RevisionCheck
+ * @covers \MediaWiki\Extension\AutoModerator\RevisionCheck
  */
 class RevisionCheckTest extends MediaWikiUnitTestCase {
 	use MockHttpTrait;
@@ -52,70 +53,13 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	private User $autoModeratorUser;
 	private array $tags;
 	private ContentHandler $contentHandler;
-	private \Psr\Log\LoggerInterface $logger;
+	private LoggerInterface $logger;
 	private RestrictionStore $restrictionStore;
 	private WikiPageFactory $wikiPageFactory;
 	private RevisionStore $revisionStoreMock;
 	private Config $config;
 	private PermissionManager $permissionManager;
-	private AutoModeratorRollback $rollbackPage;
-
-	/**
-	 * cribbed from MediaWiki\Tests\Rest\Handler\UserContributionsHandlerTest
-	 *
-	 * @return MutableRevisionRecord[]
-	 */
-	private function makeFakeRevisions( int $numRevs, int $limit, int $segment = 1 ) {
-		$mockRevisionRecord = $this->createMock( RevisionStoreRecord::class );
-		$revisions = [];
-		for ( $i = $numRevs; $i >= 1; $i-- ) {
-			$rev = $this->createMock( RevisionRecord::class );
-			$rev->method( 'getId' )->willReturn( $i );
-			$rev->method( 'getContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
-			$rev->method( 'getUser' )->willReturn( $this->user );
-			$revisions[] = $rev;
-		}
-		return array_slice( $revisions, $segment - 1, $limit );
-	}
-
-	/**
-	 * @param int $ns
-	 * @return WikiPage|MockObject
-	 */
-	private function getMockPageAndRollbackPage( int $ns, bool $isOk = true, array $errorMessages = [] ): array {
-		$ret = $this->createMock( WikiPage::class );
-		$ret->method( 'getNamespace' )->willReturn( $ns );
-		$ret->method( 'canExist' )->willReturn( true );
-		$ret->method( 'exists' )->willReturn( true );
-		$ret->method( 'getId' )->willReturn( 1 );
-		$title = $this->title;
-		$title->method( 'getPrefixedText' )->willReturn( 'Foo' );
-		$title->method( 'getText' )->willReturn( 'Foo' );
-		$title->method( 'getDBkey' )->willReturn( 'Foo' );
-		$title->method( 'getPageLanguage' )->willReturn( $this->createMock( Language::class ) );
-		$ret->method( 'getTitle' )->willReturn( $title );
-		$mockStatus = $this->createMock( StatusValue::class );
-		$mockStatus->method( 'isOK' )->willReturn( $isOk );
-		$mockStatus->method( 'getMessages' )->willReturn( $errorMessages );
-		$rollbackPage = $this->createMock( AutoModeratorRollback::class );
-		$rollbackPage->method( 'setSummary' )->willReturn( $rollbackPage );
-		$rollbackPage->method( "rollback" )->willReturn( $mockStatus );
-		return [ $ret, $rollbackPage ];
-	}
-
-	/**
-	 * @param MutableRevisionRecord[] $fakeRevisions
-	 * @param RevisionStoreRecord $rev
-	 * @return RevisionStore|MockObject
-	 */
-	private function getMockRevisionStore( $fakeRevisions, $rev ): RevisionStore {
-		$ret = $this->createMock( RevisionStore::class );
-		end( $fakeRevisions );
-		prev( $fakeRevisions );
-		$ret->method( 'getPreviousRevision' )->willReturn( $rev );
-		$ret->method( 'getRevisionById' )->willReturn( $rev );
-		return $ret;
-	}
+	private AutoModeratorRollback&MockObject $rollbackPage;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -143,8 +87,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->anonUser = $this->createMock( User::class );
 		$this->anonUser->method( 'getName' )->willReturn( '127.0.0.1' );
 		$this->anonUser->method( 'isRegistered' )->willReturn( false );
-		$this->wikiPageMock = $this->getMockPageAndRollbackPage( NS_MAIN )[0];
-		$this->rollbackPage = $this->getMockPageAndRollbackPage( NS_MAIN )[1];
+		[ $this->wikiPageMock, $this->rollbackPage ] = $this->getMockPageAndRollbackPage( NS_MAIN );
 		$this->fakeRevisions = $this->makeFakeRevisions( 3, 3 );
 		$this->rev = current( $this->fakeRevisions );
 		$this->rev->method( 'getParentId' )->willReturn( 1 );
@@ -184,7 +127,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$contentHandler = $this->createMock( ContentHandler::class );
 		$this->contentHandler = new $contentHandler( CONTENT_MODEL_TEXT, 'text/plain' );
 		$this->contentHandler->method( 'getUndoContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
-		$this->logger = $this->createMock( \Psr\Log\LoggerInterface::class );
+		$this->logger = $this->createMock( LoggerInterface::class );
 		$this->restrictionStore = $this->createMock( RestrictionStore::class );
 		$this->wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$this->wikiPageFactory->method( 'newFromID' )->willReturn( $this->wikiPageMock );
@@ -192,8 +135,52 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers ::maybeRollback
+	 * cribbed from MediaWiki\Tests\Rest\Handler\UserContributionsHandlerTest
+	 *
+	 * @return MutableRevisionRecord[]
 	 */
+	private function makeFakeRevisions( int $numRevs, int $limit, int $segment = 1 ): array {
+		$revisions = [];
+		for ( $i = $numRevs; $i >= 1; $i-- ) {
+			$rev = $this->createMock( RevisionRecord::class );
+			$rev->method( 'getId' )->willReturn( $i );
+			$rev->method( 'getContent' )->willReturn( new DummyContentForTesting( 'Lorem Ipsum' ) );
+			$rev->method( 'getUser' )->willReturn( $this->user );
+			$revisions[] = $rev;
+		}
+		return array_slice( $revisions, $segment - 1, $limit );
+	}
+
+	private function getMockPageAndRollbackPage( int $ns, bool $isOk = true, array $errorMessages = [] ): array {
+		$wikiPage = $this->createMock( WikiPage::class );
+		$wikiPage->method( 'getNamespace' )->willReturn( $ns );
+		$wikiPage->method( 'canExist' )->willReturn( true );
+		$wikiPage->method( 'exists' )->willReturn( true );
+		$wikiPage->method( 'getId' )->willReturn( 1 );
+		$title = $this->title;
+		$title->method( 'getPrefixedText' )->willReturn( 'Foo' );
+		$title->method( 'getText' )->willReturn( 'Foo' );
+		$title->method( 'getDBkey' )->willReturn( 'Foo' );
+		$title->method( 'getPageLanguage' )->willReturn( $this->createMock( Language::class ) );
+		$wikiPage->method( 'getTitle' )->willReturn( $title );
+		$mockStatus = $this->createMock( StatusValue::class );
+		$mockStatus->method( 'isOK' )->willReturn( $isOk );
+		$mockStatus->method( 'getMessages' )->willReturn( $errorMessages );
+		$rollbackPage = $this->createMock( AutoModeratorRollback::class );
+		$rollbackPage->method( 'setSummary' )->willReturn( $rollbackPage );
+		$rollbackPage->method( "rollback" )->willReturn( $mockStatus );
+		return [ $wikiPage, $rollbackPage ];
+	}
+
+	private function getMockRevisionStore( $fakeRevisions, $rev ): RevisionStore&MockObject {
+		$ret = $this->createMock( RevisionStore::class );
+		end( $fakeRevisions );
+		prev( $fakeRevisions );
+		$ret->method( 'getPreviousRevision' )->willReturn( $rev );
+		$ret->method( 'getRevisionById' )->willReturn( $rev );
+		return $ret;
+	}
+
 	public function testMaybeRollbackBadEdit() {
 		$revisionCheck = new RevisionCheck(
 			$this->config,
@@ -206,9 +193,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( true, $reverted );
 	}
 
-	/**
-	 * @covers ::maybeRollback
-	 */
 	public function testMaybeRollbackBadEditInLogOnlyMode() {
 		$this->config = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
@@ -234,9 +218,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( true, $rollbackStatus->shouldRevert() );
 	}
 
-	/**
-	 * @covers ::maybeRollback
-	 */
 	public function testMaybeRollbackGoodEditInLogOnlyMode() {
 		$this->config = new HashConfig( [
 			'AutoModeratorMultilingualConfigEnableMultilingual' => false,
@@ -262,9 +243,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( false, $rollbackStatus->shouldRevert() );
 	}
 
-	/**
-	 * @covers ::maybeRollback
-	 */
 	public function testMaybeRollbackBadSaveStatus() {
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiTestPages = $this->getMockPageAndRollbackPage( NS_MAIN,
@@ -286,9 +264,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( "Generic Error Message", $rollbackStatus->getStatus() );
 	}
 
-	/**
-	 * @covers ::maybeRollback
-	 */
 	public function testMaybeRollbackBadSaveStatusEditConflict() {
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiTestPages = $this->getMockPageAndRollbackPage( NS_MAIN,
@@ -310,9 +285,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( "success", $rollbackStatus->getStatus() );
 	}
 
-	/**
-	 * @covers ::maybeRollback
-	 */
 	public function testMaybeRollbackBadSaveStatusAlreadyRolled() {
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiTestPages = $this->getMockPageAndRollbackPage( NS_MAIN,
@@ -334,9 +306,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( "success", $rollbackStatus->getStatus() );
 	}
 
-	/**
-	 * @covers ::maybeRollback
-	 */
 	public function testMaybeRollbackBadSaveStatusNoMessage() {
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiTestPages = $this->getMockPageAndRollbackPage( NS_MAIN,
@@ -357,9 +326,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( "Failed to save revision", $rollbackStatus->getStatus() );
 	}
 
-	/**
-	 * @covers ::maybeRollback
-	 */
 	public function testMaybeRollbackGoodEdit() {
 		$revisionCheck = new RevisionCheck(
 			$this->config,
@@ -373,7 +339,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers ::maybeRollback with lower than minimum threshold configured and passing score
+	 * With lower than minimum threshold configured and passing score.
 	 */
 	public function testMaybeRollbackWithLowThresholdSuccess() {
 		$revisionCheck = new RevisionCheck(
@@ -388,7 +354,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers ::maybeRollback with lower than minimum threshold configured and failing score
+	 * With lower than minimum threshold configured and failing score.
 	 */
 	public function testMaybeRollbackWithLowThresholdFailing() {
 		$revisionCheck = new RevisionCheck(
@@ -403,9 +369,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertSame( true, $reverted );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckAutoModeratorEdit() {
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->selfUser,
@@ -422,9 +385,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testSelfRevertPreCheckTagRevertEdit() {
 		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -442,9 +402,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckAutoModeratorBlocked() {
 		$block = $this->createMock( AbstractBlock::class );
 		$block->method( 'appliesToPage' )->willReturn( true );
@@ -463,9 +420,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		) );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckAutoModeratorBlockedButNotOnPage() {
 		$block = $this->createMock( AbstractBlock::class );
 		$block->method( 'appliesToPage' )->willReturn( false );
@@ -484,9 +438,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		) );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckAutoModeratorNotBlocked() {
 		$this->autoModeratorUser->method( 'getBlock' )->willReturn( null );
 		$this->assertTrue( RevisionCheck::revertPreCheck(
@@ -503,9 +454,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		) );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testOthersRevertPreCheckTagRevertEdit() {
 		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -523,9 +471,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testSelfRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -543,9 +488,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testOthersRevertPreCheckTagRollbackEdit() {
 		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -563,9 +505,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testSelfRevertPreCheckTagUndoEdit() {
 		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -583,9 +522,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testOthersRevertPreCheckTagUndoEdit() {
 		$this->tags = [ ChangeTags::TAG_ROLLBACK ];
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -613,7 +549,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 	}
 
 	/**
-	 * @covers ::revertPreCheck
 	 * @dataProvider provideRevertPreCheckSkipsOthersTaggedEdit
 	 */
 	public function testRevertPreCheckSkipsTaggedEdit( string $tag ) {
@@ -633,9 +568,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckSysOp() {
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -653,9 +585,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckBot() {
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
 		$passedPreCheck = RevisionCheck::revertPreCheck(
@@ -673,9 +602,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckFalseWhenExternalUser() {
 		$this->user = $this->createMock( User::class );
 		$this->user->method( 'getName' )->willReturn( 'ATestUser>' );
@@ -696,9 +622,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckFalseWhenSelfRevert() {
 		$this->user = $this->createMock( User::class );
 		$this->user->method( 'getName' )->willReturn( 'ATestUser' );
@@ -733,9 +656,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckTrueWhenNotSelfRevert() {
 		$this->user = $this->createMock( User::class );
 		$this->user->method( 'getName' )->willReturn( 'ATestUser' );
@@ -770,9 +690,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckFalseWhenAutoModeratorIsParentRev() {
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->autoModeratorUser->method( 'equals' )->willReturn( true );
@@ -806,9 +723,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckTrueWhenAutoModeratorIsNotParentRev() {
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->autoModeratorUser->method( 'equals' )->willReturn( false );
@@ -842,9 +756,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckFalseWhenNoParentRevision() {
 		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
@@ -873,9 +784,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckTrueWhenParentRevision() {
 		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
@@ -904,9 +812,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckFalseWhenNoParentRevisionUser() {
 		$this->tags = [ ChangeTags::TAG_MANUAL_REVERT ];
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
@@ -932,9 +837,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckTrueWhenParentRevisionUser() {
 		$this->autoModeratorUser = $this->createMock( User::class );
 		$this->autoModeratorUser->method( 'equals' )->willReturn( true );
@@ -943,7 +845,7 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->revisionStoreMock = $this->createMock( RevisionStore::class );
 
 		$mockRevision = $this->createMock( RevisionRecord::class );
-		$mockRevision->method( "getParentId" )->willReturn( 1 );
+		$mockRevision->method( 'getParentId' )->willReturn( 1 );
 		$mockRevision->method( 'getUser' )->willReturn( $this->user );
 		$mockRevision->method( "getId" )->willReturn( 2 );
 
@@ -964,9 +866,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckMainSpaceEdit() {
 		$passedPreCheck = RevisionCheck::revertPreCheck(
 			$this->user,
@@ -983,9 +882,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertTrue( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckNonMainSpaceEdit() {
 		$wikiPageMock = $this->getMockPageAndRollbackPage( NS_TALK )[0];
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
@@ -1005,9 +901,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckNewPage() {
 		// Override revisionStoreMock method
 		$fakeRevisions = $this->makeFakeRevisions( 3, 3 );
@@ -1028,9 +921,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckProtectedPage() {
 		// Override revisionStoreMock method
 		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
@@ -1049,9 +939,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::revertPreCheck
-	 */
 	public function testRevertPreCheckNullPage() {
 		$wikiPageFactory = $this->createMock( WikiPageFactory::class );
 		$wikiPageFactory->method( 'newFromID' )->willReturn( null );
@@ -1070,9 +957,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $passedPreCheck );
 	}
 
-	/**
-	 * @covers ::shouldSkipUser
-	 */
 	public function testShouldSkipUserTrue() {
 		$this->config->set( 'AutoModeratorSkipUserRights', 'bot' );
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( true );
@@ -1082,9 +966,6 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 		);
 	}
 
-	/**
-	 * @covers ::shouldSkipUser
-	 */
 	public function testShouldSkipUserFalse() {
 		$this->config->set( 'AutoModeratorSkipUserRights', 'bot' );
 		$this->permissionManager->method( 'userHasAnyRight' )->willReturn( false );
@@ -1092,64 +973,40 @@ class RevisionCheckTest extends MediaWikiUnitTestCase {
 			RevisionCheck::shouldSkipUser( $this->permissionManager, $this->user, $this->config ) );
 	}
 
-	/**
-	 * @covers ::areUsersEqual
-	 */
 	public function testAreUsersEqual() {
 		$this->autoModeratorUser->method( "equals" )->willReturn( true );
 		$this->assertTrue( RevisionCheck::areUsersEqual( $this->autoModeratorUser, $this->autoModeratorUser ) );
 	}
 
-	/**
-	 * @covers ::areUsersEqual
-	 */
 	public function testAreUsersEqualNotEqual() {
 		$this->assertFalse( RevisionCheck::areUsersEqual( $this->user, $this->autoModeratorUser ) );
 	}
 
-	/**
-	 * @covers ::isProtectedPage
-	 */
 	public function testIsProtectedPageTrue() {
 		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
 		$this->restrictionStore->method( 'isSemiProtected' )->willReturn( false );
 		$this->assertTrue( RevisionCheck::isProtectedPage( $this->restrictionStore, $this->wikiPageMock ) );
 	}
 
-	/**
-	 * @covers ::isProtectedPage
-	 */
 	public function testIsProtectedPageFalse() {
 		$this->restrictionStore->method( 'isProtected' )->willReturn( false );
 		$this->assertFalse( RevisionCheck::isProtectedPage( $this->restrictionStore, $this->wikiPageMock ) );
 	}
 
-	/**
-	 * @covers ::isProtectedPage
-	 */
 	public function testIsProtectedPageFalseWhenSemiProtected() {
 		$this->restrictionStore->method( 'isProtected' )->willReturn( true );
 		$this->restrictionStore->method( 'isSemiProtected' )->willReturn( true );
 		$this->assertFalse( RevisionCheck::isProtectedPage( $this->restrictionStore, $this->wikiPageMock ) );
 	}
 
-	/**
-	 * @covers ::isNewPageCreation
-	 */
 	public function testIsNewPageCreationTrueWhenParentIdIsNull() {
 		$this->assertTrue( RevisionCheck::isNewPageCreation( null ) );
 	}
 
-	/**
-	 * @covers ::isNewPageCreation
-	 */
 	public function testIsNewPageCreationTrueWhenParentIdIsZero() {
 		$this->assertTrue( RevisionCheck::isNewPageCreation( 0 ) );
 	}
 
-	/**
-	 * @covers ::isNewPageCreation
-	 */
 	public function testIsNewPageCreationFalseWhenSet() {
 		$this->assertFalse( RevisionCheck::isNewPageCreation( 2 ) );
 	}

@@ -1,19 +1,21 @@
 <?php
 
-namespace AutoModerator\Tests;
+declare( strict_types = 1 );
 
-use AutoModerator\Services\AutoModeratorRollback;
+namespace MediaWiki\Extension\AutoModerator\Tests;
+
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Content\ContentHandler;
+use MediaWiki\Extension\AutoModerator\Services\AutoModeratorRollback;
 use MediaWiki\MainConfigNames;
 use MediaWiki\Revision\SlotRecord;
 use MockHttpTrait;
 
 /**
  * @group Database
- * @covers AutoModerator\Services\AutoModeratorRollback
+ * @covers \MediaWiki\Extension\AutoModerator\Services\AutoModeratorRollback
  */
 class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 	use MockHttpTrait;
@@ -22,10 +24,6 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 		parent::setUp();
 	}
 
-	/**
-	 * @group Database
-	 * @covers AutoModerator\Services\AutoModeratorRollback::rollback
-	 */
 	public function testRollback() {
 		$mediaWikiServices = $this->getServiceContainer();
 		$title = $mediaWikiServices->getTitleFactory()->newFromText( "Title" );
@@ -84,10 +82,6 @@ class AutoModeratorRollbackTest extends \MediaWikiIntegrationTestCase {
 		$this->assertSame( $expectedContentAfterRollback, $latestRevisionRecord );
 	}
 
-	/**
-	 * @group Database
-	 * @covers AutoModerator\Services\AutoModeratorRollback::rollback
-	 */
 	public function testRollbackNoAction() {
 		$mediaWikiServices = $this->getServiceContainer();
 		$title = $mediaWikiServices->getTitleFactory()->newFromText( "Title" );

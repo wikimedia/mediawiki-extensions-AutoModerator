@@ -1,11 +1,13 @@
 <?php
 
-namespace AutoModerator\Tests\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\Hooks\RollbackCompleteHookHandler;
-use AutoModerator\TalkPageMessageSender;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Tests\Hooks;
+
 use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\AutoModerator\Hooks\RollbackCompleteHookHandler;
+use MediaWiki\Extension\AutoModerator\TalkPageMessageSender;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
@@ -15,15 +17,16 @@ use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
+use MediaWikiIntegrationTestCase;
 
 /**
  * @group AutoModerator
  * @group Database
- * @covers \AutoModerator\Hooks\RollbackCompleteHookHandler
+ * @covers \MediaWiki\Extension\AutoModerator\Hooks\RollbackCompleteHookHandler
  */
-class RollbackCompleteHookHandlerTest extends \MediaWikiIntegrationTestCase {
+class RollbackCompleteHookHandlerTest extends MediaWikiIntegrationTestCase {
 
-	private function prepareMocks( bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec ) {
+	private function prepareMocks( bool $needsWikiPage, ?array $revSpec, ?array $rollbackRevisionSpec ): array {
 		if ( $needsWikiPage ) {
 			$wikiPage = $this->createMock( WikiPage::class );
 			$wikiPage->method( 'getId' )->willReturn( 1 );

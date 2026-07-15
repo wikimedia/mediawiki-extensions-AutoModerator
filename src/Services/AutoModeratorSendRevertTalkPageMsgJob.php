@@ -1,23 +1,11 @@
 <?php
-/**
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http:www.gnu.org/licenses/>.
- */
 
-namespace AutoModerator\Services;
+declare( strict_types = 1 );
 
-use AutoModerator\AutoModeratorServices;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Services;
+
+use MediaWiki\Extension\AutoModerator\AutoModeratorServices;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\JobQueue\Job;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
@@ -26,54 +14,20 @@ use RuntimeException;
 
 class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 
-	/**
-	 * @var bool
-	 */
 	private bool $isRetryable = true;
-
-	/**
-	 * @var int
-	 */
-	private $revId;
-
-	/**
-	 * @var ?string
-	 */
+	private int $revId;
 	private ?string $pageTitle;
-
-	/**
-	 * @var int
-	 */
 	private int $autoModeratorUserId;
-
-	/**
-	 * @var string
-	 */
 	private string $autoModeratorUserName;
-
-	/**
-	 * @var string
-	 */
 	private string $talkPageMessageHeader;
-
-	/**
-	 * @var string
-	 */
 	private string $talkPageMessageEditSummary;
-
-	/**
-	 * @var string
-	 */
 	private string $falsePositiveReportPageTitle;
+	private int $rollbackRevId;
 
-	private const NO_USER_TALK_PAGE_ERROR_MESSAGE = 'Failed to retrieve user talk page title '
+	private const string NO_USER_TALK_PAGE_ERROR_MESSAGE = 'Failed to retrieve user talk page title '
 		. 'for sending AutoModerator revert talk page message.';
 
-	private const NO_PARENT_REVISION_FOUND = 'Failed to retrieve reverted revision from revision store.';
-	/**
-	 * @var int
-	 */
-	private $rollbackRevId;
+	private const string NO_PARENT_REVISION_FOUND = 'Failed to retrieve reverted revision from revision store.';
 
 	/**
 	 * @param Title $title
@@ -134,18 +88,19 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 				$findApiResponse = $apiClient->findComment( $this->talkPageMessageHeader, $userTalkPageTitle );
 			}
 
-			if ( array_key_exists( "couldredirect", $findApiResponse ) &&
-				$findApiResponse[ "couldredirect" ] ) {
+			if ( array_key_exists( 'couldredirect', $findApiResponse ) &&
+				$findApiResponse['couldredirect']
+			) {
 				// AutoModerator has already posted on this User Talk page this month
 				// and the topic has not been deleted, adding a follow-up comment instead
 				$pageInfoResponse = $apiClient->getUserTalkPageInfo( $userTalkPageTitle );
 				// Getting the pageInformation to get the comment's id
-				$headerId = $findApiResponse[ "id" ];
-				$threadItems = $pageInfoResponse[ "discussiontoolspageinfo" ][ "threaditemshtml" ];
+				$headerId = $findApiResponse['id'];
+				$threadItems = $pageInfoResponse['discussiontoolspageinfo']['threaditemshtml'];
 				foreach ( $threadItems as $threadItem ) {
-					if ( $threadItem[ "id" ] === $headerId ) {
+					if ( $threadItem['id'] === $headerId ) {
 						// Getting the first reply id from this thread item
-						$commentId = $threadItem[ "replies" ][ 0 ][ "id" ];
+						$commentId = $threadItem['replies'][0]['id'];
 						$followUpComment = wfMessage( 'automoderator-wiki-revert-message-follow-up' )->params(
 							$this->rollbackRevId,
 							$this->pageTitle
@@ -187,7 +142,7 @@ class AutoModeratorSendRevertTalkPageMsgJob extends Job {
 		return true;
 	}
 
-	private function setAllowRetries( bool $isRetryable ) {
+	private function setAllowRetries( bool $isRetryable ): void {
 		$this->isRetryable = $isRetryable;
 	}
 

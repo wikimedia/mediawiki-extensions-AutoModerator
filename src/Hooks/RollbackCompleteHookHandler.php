@@ -1,10 +1,12 @@
 <?php
 
-namespace AutoModerator\Hooks;
+declare( strict_types = 1 );
 
-use AutoModerator\TalkPageMessageSender;
-use AutoModerator\Util;
+namespace MediaWiki\Extension\AutoModerator\Hooks;
+
 use MediaWiki\Config\Config;
+use MediaWiki\Extension\AutoModerator\TalkPageMessageSender;
+use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Page\Hook\RollbackCompleteHook;
 use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
@@ -12,12 +14,12 @@ use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 use MediaWiki\User\UserIdentityUtils;
 
-class RollbackCompleteHookHandler implements RollbackCompleteHook {
+readonly class RollbackCompleteHookHandler implements RollbackCompleteHook {
 	public function __construct(
-		private readonly UserGroupManager $userGroupManager,
-		private readonly Config $config,
-		private readonly TalkPageMessageSender $talkPageMessageSender,
-		private readonly UserIdentityUtils $userIdentityUtils,
+		private UserGroupManager $userGroupManager,
+		private Config $config,
+		private TalkPageMessageSender $talkPageMessageSender,
+		private UserIdentityUtils $userIdentityUtils,
 	) {
 	}
 

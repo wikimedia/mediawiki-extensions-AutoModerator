@@ -1,70 +1,72 @@
 <?php
 
-namespace AutoModerator\Config\Validation;
+declare( strict_types = 1 );
+
+namespace MediaWiki\Extension\AutoModerator\Config\Validation;
 
 use MediaWiki\Extension\CommunityConfiguration\Schema\JsonSchema;
 use MediaWiki\Extension\CommunityConfiguration\Schemas\MediaWiki\MediaWikiDefinitions;
 
 // phpcs:disable Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase
 class AutoModeratorConfigSchema extends JsonSchema {
-	public const VERSION = '1.0.0';
+	public const string VERSION = '1.0.0';
 
-	public const AutoModeratorEnableRevisionCheck = [
+	public const array AutoModeratorEnableRevisionCheck = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false,
 	];
 
-	public const AutoModeratorEnableLogOnlyMode = [
+	public const array AutoModeratorEnableLogOnlyMode = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false,
 	];
 
-	public const AutoModeratorCautionLevel = [
+	public const array AutoModeratorCautionLevel = [
 		self::TYPE => self::TYPE_STRING,
 		self::REQUIRED => false,
 		self::DEFAULT => "very-cautious",
 		self::ENUM => [ 'very-cautious', 'cautious', 'somewhat-cautious', 'less-cautious' ]
 	];
 
-	public const AutoModeratorUseEditFlagMinor = [
+	public const array AutoModeratorUseEditFlagMinor = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false
 	];
 
-	public const AutoModeratorEnableBotFlag = [
+	public const array AutoModeratorEnableBotFlag = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false
 	];
 
-	public const AutoModeratorRevertTalkPageMessageEnabled = [
+	public const array AutoModeratorRevertTalkPageMessageEnabled = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false
 	];
 
-	public const AutoModeratorRevertTalkPageMessageRegisteredUsersOnly = [
+	public const array AutoModeratorRevertTalkPageMessageRegisteredUsersOnly = [
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false
 	];
 
-	public const AutoModeratorHelpPageLink = [
+	public const array AutoModeratorHelpPageLink = [
 		self::REQUIRED => false,
 		self::REF => [ 'class' => MediaWikiDefinitions::class, 'field' => 'PageTitle' ],
-		self::DEFAULT => "",
+		self::DEFAULT => '',
 	];
 
-	public const AutoModeratorEnableUserRevertsPerPage = [
+	public const array AutoModeratorEnableUserRevertsPerPage = [
 		self::REQUIRED => true,
 		self::TYPE => self::TYPE_BOOLEAN,
 		self::DEFAULT => false
 	];
 
-	public const AutoModeratorUserRevertsPerPage = [
+	public const array AutoModeratorUserRevertsPerPage = [
 		self::REQUIRED => false,
 		self::TYPE => self::TYPE_STRING,
 		self::DEFAULT => '',
 	];
 
-	public const AutoModeratorSkipUserRights = [
+	public const array AutoModeratorSkipUserRights = [
 		self::TYPE => self::TYPE_ARRAY,
 		self::REQUIRED => false,
 		self::DEFAULT => [ 'bot', 'autopatrol' ],
@@ -73,8 +75,8 @@ class AutoModeratorConfigSchema extends JsonSchema {
 		],
 	];
 
-	public const AutoModeratorFalsePositivePageTitle = [
+	public const array AutoModeratorFalsePositivePageTitle = [
 		self::REF => [ 'class' => MediaWikiDefinitions::class, 'field' => 'PageTitle' ],
-		self::DEFAULT => "",
+		self::DEFAULT => '',
 	];
 }
