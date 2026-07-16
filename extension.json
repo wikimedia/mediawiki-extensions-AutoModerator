@@ -12,8 +12,13 @@
 	"requires": {
 		"MediaWiki": ">= 1.47.0",
 		"extensions": {
-			"DiscussionTools": "*",
-			"CommunityConfiguration": "*"
+			"DiscussionTools": "*"
+		}
+	},
+	"suggests": {
+		"extensions": {
+			"CommunityConfiguration": "*",
+			"ORES": "*"
 		}
 	},
 	"AutoloadNamespaces": {

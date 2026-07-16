@@ -18,8 +18,11 @@ class AutoModeratorExtensionJsonTest extends ExtensionJsonTestBase {
 	protected static string $extensionJsonPath = __DIR__ . '/../../../extension.json';
 
 	public static function provideHookHandlerNames(): iterable {
+		$extRegistry = ExtensionRegistry::getInstance();
 		foreach ( self::getExtensionJson()['HookHandlers'] ?? [] as $name => $specification ) {
-			if ( $name === 'ores' && !ExtensionRegistry::getInstance()->isLoaded( 'ORES' ) ) {
+			if ( ( $name === 'ores' && !$extRegistry->isLoaded( 'ORES' ) ) ||
+				( $name === 'communityconfiguration' && !$extRegistry->isLoaded( 'CommunityConfiguration' ) )
+			) {
 				continue;
 			}
 			yield [ $name ];

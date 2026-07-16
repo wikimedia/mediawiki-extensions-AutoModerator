@@ -14,7 +14,9 @@ use MediaWiki\MediaWikiServices;
 return [
 
 	'AutoModeratorConfig' => static function ( MediaWikiServices $services ): Config {
-		return $services->getService( 'CommunityConfiguration.MediaWikiConfigRouter' );
+		return $services->getExtensionRegistry()->isLoaded( 'CommunityConfiguration' ) ?
+			$services->getService( 'CommunityConfiguration.MediaWikiConfigRouter' ) :
+			$services->getMainConfig();
 	},
 
 	'AutoModeratorTalkPageMessageSender' => static function ( MediaWikiServices $services ) {

@@ -5,7 +5,8 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\AutoModerator\Tests;
 
 use MediaWiki\Extension\AutoModerator\Services\AutoModeratorFetchRevScoreJob;
-use MediaWiki\Extension\CommunityConfiguration\Tests\CommunityConfigurationTestHelpers;
+use MediaWiki\Extension\CommunityConfiguration\CommunityConfigurationServices;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWikiIntegrationTestCase;
 use MockHttpTrait;
 
@@ -16,10 +17,10 @@ use MockHttpTrait;
  * @covers \MediaWiki\Extension\AutoModerator\OresScoreFetcher
  */
 class AutoModeratorFetchRevScoreJobTest extends MediaWikiIntegrationTestCase {
-	use CommunityConfigurationTestHelpers;
 	use MockHttpTrait;
 
 	private array $score;
+	private array $overriddenProviders = [];
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -40,6 +41,29 @@ class AutoModeratorFetchRevScoreJobTest extends MediaWikiIntegrationTestCase {
 				],
 			],
 		];
+	}
+
+	/**
+	 * Copied from CommunityConfigurationTestHelpers to allow tests to run when CC is disabled.
+	 *
+	 * @param array $newConfig
+	 * @param string $providerId
+	 */
+	public function overrideProviderConfig( array $newConfig, string $providerId ): void {
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'CommunityConfiguration' ) ) {
+			$providerSpec = CommunityConfigurationServices::wrap( $this->getServiceContainer() )
+				->getConfigurationProviderFactory()
+				->getProviderSpec( $providerId );
+
+			$providerSpec['store'] = [
+				'type' => 'static',
+				'args' => [ $newConfig ],
+			];
+			$this->overriddenProviders[$providerId] = $providerSpec;
+			$this->overrideConfigValue( 'CommunityConfigurationProviders', $this->overriddenProviders );
+		} else {
+			$this->overrideConfigValues( $newConfig );
+		}
 	}
 
 	/**

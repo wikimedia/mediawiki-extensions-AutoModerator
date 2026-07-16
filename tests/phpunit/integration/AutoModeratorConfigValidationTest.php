@@ -17,6 +17,7 @@ class AutoModeratorConfigValidationTest extends \MediaWikiIntegrationTestCase {
 	private array $multilingualConfig;
 
 	protected function setUp(): void {
+		$this->markTestSkippedIfExtensionNotLoaded( 'CommunityConfiguration' );
 		$this->config = [
 			'AutoModeratorEnableRevisionCheck' => false,
 			'AutoModeratorFalsePositivePageTitle' => '',

@@ -5,6 +5,12 @@ declare( strict_types = 1 );
 namespace MediaWiki\Extension\AutoModerator\Tests\Integration;
 
 use MediaWiki\Extension\CommunityConfiguration\Tests\SchemaProviderTestCase;
+use MediaWiki\Registration\ExtensionRegistry;
+
+if ( !ExtensionRegistry::getInstance()->isLoaded( 'CommunityConfiguration' ) ) {
+	// Skip all tests in this class if CommunityConfiguration is not loaded.
+	return;
+}
 
 /**
  * @coversNothing

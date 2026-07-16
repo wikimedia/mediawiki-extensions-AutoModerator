@@ -6,7 +6,13 @@ namespace MediaWiki\Extension\AutoModerator\Tests\Hooks;
 
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Extension\AutoModerator\Hooks\CommunityConfigurationProviderHookHandler;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWikiIntegrationTestCase;
+
+if ( !ExtensionRegistry::getInstance()->isLoaded( 'CommunityConfiguration' ) ) {
+	// Skip all tests in this class if CommunityConfiguration is not loaded.
+	return;
+}
 
 /**
  * @covers \MediaWiki\Extension\AutoModerator\Hooks\CommunityConfigurationProviderHookHandler
