@@ -12,7 +12,6 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\AutoModerator\Services\AutoModeratorSendRevertTalkPageMsgJob;
 use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Request\FauxRequest;
-use MediaWiki\Session\SessionManager;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use MockHttpTrait;
@@ -52,7 +51,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 	}
 
 	private function createPageInfoResponse( User $autoModeratorUser, array $wikiTalkPageCreated ): array {
-		$session = SessionManager::singleton()->getEmptySession();
+		$session = $this->getServiceContainer()->getSessionManager()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
 		$context->setUser( $autoModeratorUser );
@@ -76,7 +75,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		array $wikiTalkPageCreated,
 		string $header
 	): array {
-		$session = SessionManager::singleton()->getEmptySession();
+		$session = $this->getServiceContainer()->getSessionManager()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
 		$context->setUser( $autoModeratorUser );
@@ -104,7 +103,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		array $wikiTalkPageCreated,
 		string $header
 	): array {
-		$session = SessionManager::singleton()->getEmptySession();
+		$session = $this->getServiceContainer()->getSessionManager()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
 		$context->setUser( $autoModeratorUser );
@@ -141,7 +140,7 @@ class AutoModeratorSendRevertTalkPageMsgJobTest extends MediaWikiIntegrationTest
 		string $commentId,
 		string $followUpComment
 	): array {
-		$session = SessionManager::singleton()->getEmptySession();
+		$session = $this->getServiceContainer()->getSessionManager()->getEmptySession();
 		$session->setUser( $autoModeratorUser );
 		$context = new DerivativeContext( RequestContext::getMain() );
 		$context->setUser( $autoModeratorUser );
