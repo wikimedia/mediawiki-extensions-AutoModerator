@@ -319,6 +319,41 @@ class UtilTest extends MediaWikiUnitTestCase {
 		$this->assertSame( $expectedThreshold, $threshold );
 	}
 
+	public function testGetMultiLingualThresholdFromString() {
+		$config = new HashConfig( [
+			'AutoModeratorMultilingualConfigMultilingualThreshold' => '0.987',
+		] );
+
+		$this->assertSame( 0.987, Util::getMultiLingualThreshold( $config ) );
+	}
+
+	public function testGetMaxRevertsLanguageAgnostic() {
+		$config = new HashConfig( [
+			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorUserRevertsPerPage' => '3',
+		] );
+
+		$this->assertSame( 3, Util::getMaxReverts( $config ) );
+	}
+
+	public function testGetMaxRevertsMultilingual() {
+		$config = new HashConfig( [
+			'AutoModeratorMultiLingualRevertRisk' => true,
+			'AutoModeratorMultilingualConfigUserRevertsPerPage' => '5',
+		] );
+
+		$this->assertSame( 5, Util::getMaxReverts( $config ) );
+	}
+
+	public function testGetMaxRevertsNotConfigured() {
+		$config = new HashConfig( [
+			'AutoModeratorMultiLingualRevertRisk' => false,
+			'AutoModeratorUserRevertsPerPage' => null,
+		] );
+
+		$this->assertSame( 0, Util::getMaxReverts( $config ) );
+	}
+
 	public function testGetEnableLogOnlyModeLanguageAgnostic() {
 		$config = new HashConfig( [
 			'AutoModeratorWikiId' => 'enwiki',
