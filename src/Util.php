@@ -114,8 +114,10 @@ class Util {
 	 * Returns the revert risk model the revision will be scored from.
 	 */
 	public static function getMultiLingualThreshold( Config $config ): float {
-		if ( $config->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' ) ) {
-			return $config->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' );
+		// The threshold is stored as a string in the on-wiki configuration.
+		$threshold = $config->get( 'AutoModeratorMultilingualConfigMultilingualThreshold' );
+		if ( $threshold ) {
+			return (float)$threshold;
 		}
 		$cautionLevel = $config->get( 'AutoModeratorMultilingualConfigCautionLevel' );
 		return self::getCautionLevel( $cautionLevel );
@@ -161,10 +163,14 @@ class Util {
 			$config->get( 'AutoModeratorEnableUserRevertsPerPage' );
 	}
 
-	public static function getMaxReverts( Config $config ): mixed {
-		return self::isWikiMultilingual( $config ) ?
+	/**
+	 * The number of reverts is stored as a string in the on-wiki
+	 * configuration; 0 means no limit is configured.
+	 */
+	public static function getMaxReverts( Config $config ): int {
+		return intval( self::isWikiMultilingual( $config ) ?
 			$config->get( 'AutoModeratorMultilingualConfigUserRevertsPerPage' ) :
-			$config->get( 'AutoModeratorUserRevertsPerPage' );
+			$config->get( 'AutoModeratorUserRevertsPerPage' ) );
 	}
 
 	public static function getSkipUserRights( Config $config ): mixed {
