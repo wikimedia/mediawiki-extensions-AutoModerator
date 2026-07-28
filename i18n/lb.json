@@ -8,6 +8,7 @@
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Benotzerrechter",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleng Ännerungen",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botännerung",
+	"automoderator-config-validator-userrights-not-allowed": "D'Benotzerrecht $1 gëtt et net. Probéiert wgl. en anert.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zilsäit",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigmultilingualthreshold-description": "Gitt e Wäert tëscht 0,850 an 0,999 an",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguseeditflagminor-label": "Kleng Ännerungen",
