@@ -8,6 +8,7 @@
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "Benotzerrechter",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "Kleng Ännerungen",
 	"communityconfiguration-automoderator-automoderatorenablebotflag-label": "Botännerung",
+	"automoderator-config-validator-userrights-not-allowed": "D'Benotzerrecht $1 gëtt et net. Probéiert wgl. en anert.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Zilsäit",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfiguseeditflagminor-label": "Kleng Ännerungen",
 	"communityconfiguration-multilingualconfig-automoderatormultilingualconfigenablebotflag-label": "Botännerung",
