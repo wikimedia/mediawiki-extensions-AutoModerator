@@ -19,5 +19,7 @@
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablebotflag-label": "روباټ سمون",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfighelppagelink-url-label": "موخې‌وړ مخ",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfiguserrevertsperpage-label": "په هر مخ د کارن پرڅټ‌گرځونې",
-	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "کارن رښتې"
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigskipuserrights-label": "کارن رښتې",
+	"communityconfiguration-automoderatormultilingual-automoderatormultilingualenablelogonlymode-control-label": "يوازې ننتلو ونگ‌ډول",
+	"automoderator-config-validator-multilingual-threshold-not-number": "څوژبيزه بريد بايد يوه شمېره وي."
 }
