@@ -11,7 +11,6 @@ use MediaWiki\Extension\AutoModerator\Services\AutoModeratorRollback;
 use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\Maintenance\Maintenance;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 
@@ -50,7 +49,7 @@ class CheckRevision extends Maintenance {
 		}
 
 		// setup dependencies that we get for free when running in a hook.
-		$services = MediaWikiServices::getInstance();
+		$services = $this->getServiceContainer();
 		$autoModeratorServices = AutoModeratorServices::wrap( $services );
 
 		$changeTagsStore = $services->getChangeTagsStore();
