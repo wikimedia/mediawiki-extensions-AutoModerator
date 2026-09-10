@@ -303,17 +303,5 @@
 			"i18n"
 		]
 	},
-	"ResourceModules": {
-		"ext.autoModerator": {
-			"localBasePath": "resources/ext.autoModerator",
-			"remoteExtPath": "AutoModerator/resources/ext.autoModerator",
-			"dependencies": [],
-			"styles": [],
-			"packageFiles": [
-				"init.js"
-			],
-			"messages": []
-		}
-	},
 	"manifest_version": 2
 }
