@@ -36,9 +36,6 @@
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php"
 	],
-	"ConfigRegistry": {
-		"AutoModerator": "MediaWiki\\Config\\GlobalVarConfig::newInstance"
-	},
 	"attributes": {
 		"CommunityConfiguration": {
 			"Validators": {
