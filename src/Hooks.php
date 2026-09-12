@@ -33,7 +33,7 @@ readonly class Hooks implements HistoryToolsHook {
 		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
 		$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageText );
 		if ( $falsePositivePageTitle === null ) {
-			// The false positive page title has been configured, but the page has not been created
+			// The false positive page title has been configured but is not a valid title
 			return;
 		}
 		// Add parameters to false positive page
