@@ -8,12 +8,10 @@ use MediaWiki\Actions\Hook\HistoryToolsHook;
 use MediaWiki\Config\Config;
 use MediaWiki\Html\Html;
 use MediaWiki\Title\TitleFactory;
-use MediaWiki\User\UserGroupManager;
 
 readonly class Hooks implements HistoryToolsHook {
 
 	public function __construct(
-		private UserGroupManager $userGroupManager,
 		private Config $config,
 		private TitleFactory $titleFactory,
 	) {
@@ -24,13 +22,16 @@ readonly class Hooks implements HistoryToolsHook {
 	 */
 	public function onHistoryTools( $revRecord, &$links, $prevRevRecord, $userIdentity ): void {
 		$revUser = $revRecord->getUser();
-
-		$falsePositivePageText = Util::getFalsePositivePageTitleText( $this->config );
-		if ( $revUser === null || $falsePositivePageText === null ) {
-			// Cannot see the user or the false positive page isn't configured
+		// Only add the report link if the user can be seen and it's an AutoModerator revert
+		if ( $revUser === null || $this->config->get( 'AutoModeratorUsername' ) !== $revUser->getName() ) {
 			return;
 		}
-		$autoModeratorUser = Util::getAutoModeratorUser( $this->config, $this->userGroupManager );
+
+		$falsePositivePageText = Util::getFalsePositivePageTitleText( $this->config );
+		if ( $falsePositivePageText === null ) {
+			// The false positive page isn't configured
+			return;
+		}
 		$falsePositivePageTitle = $this->titleFactory->newFromText( $falsePositivePageText );
 		if ( $falsePositivePageTitle === null ) {
 			// The false positive page title has been configured but is not a valid title
@@ -46,17 +47,14 @@ readonly class Hooks implements HistoryToolsHook {
 			'preload' => $falsePositivePreloadTemplate,
 			'preloadparams' => [ $revRecord->getId(), $pageTitle ],
 		];
-		// Only add the report link if it's an AutoModerator revert
-		if ( $autoModeratorUser->getId() === $revUser->getId() ) {
-			$links[] = Html::element(
-				'a',
-				[
-					'class' => 'mw-automoderator-report-link',
-					'href' => $falsePositivePageTitle->getFullURL( $falsePositiveParams ),
-					'title' => wfMessage( 'automoderator-wiki-report-false-positive' )->text(),
-				],
-				wfMessage( 'automoderator-wiki-report-false-positive' )->text()
-			);
-		}
+		$links[] = Html::element(
+			'a',
+			[
+				'class' => 'mw-automoderator-report-link',
+				'href' => $falsePositivePageTitle->getFullURL( $falsePositiveParams ),
+				'title' => wfMessage( 'automoderator-wiki-report-false-positive' )->text(),
+			],
+			wfMessage( 'automoderator-wiki-report-false-positive' )->text()
+		);
 	}
 }

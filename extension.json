@@ -238,7 +238,6 @@
 		"main": {
 			"class": "MediaWiki\\Extension\\AutoModerator\\Hooks",
 			"services": [
-				"UserGroupManager",
 				"AutoModeratorConfig",
 				"TitleFactory"
 			]

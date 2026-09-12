@@ -6,12 +6,10 @@ namespace MediaWiki\Extension\AutoModerator\Tests\Hooks;
 
 use MediaWiki\Config\HashConfig;
 use MediaWiki\Extension\AutoModerator\Hooks;
-use MediaWiki\Extension\AutoModerator\Util;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\Title\TitleFactory;
 use MediaWiki\User\User;
-use MediaWiki\User\UserGroupManager;
 use MediaWiki\User\UserIdentity;
 use MediaWikiIntegrationTestCase;
 
@@ -34,16 +32,13 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 			'AutoModeratorFalsePositivePageTitle' => 'Test False Positive',
 			'AutoModeratorWikiId' => 'enwiki',
 		] );
-		$userGroupManager = $this->createMock( UserGroupManager::class );
 
 		$user = $this->createMock( User::class );
-		// Make it match AutoMod user ID
-		$user->method( 'getId' )->willReturn( 1 );
+		// Make it match AutoMod user name
+		$user->method( 'getName' )->willReturn( 'AutoModerator' );
 		$revRecord = $this->createMock( RevisionRecord::class );
 		$revRecord->method( 'getUser' )->willReturn( $user );
 		$revRecord->method( 'getId' )->willReturn( 1000 );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $user );
 		$mockUserIdentity = $this->createMock( UserIdentity::class );
 		$mockTitle = $this->createMock( Title::class );
 		$mockTitle->method( 'getFullURL' )->willReturn( 'test.url.com' );
@@ -52,8 +47,7 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 
 		$this->setUserLang( "qqx" );
 		$links = [];
-		( new Hooks( $userGroupManager, $config, $mockTitleFactory )
-		)->onHistoryTools(
+		( new Hooks( $config, $mockTitleFactory ) )->onHistoryTools(
 			$revRecord,
 			$links,
 			null,
@@ -75,24 +69,18 @@ class HooksTest extends MediaWikiIntegrationTestCase {
 			'AutoModeratorFalsePositivePageTitle' => null,
 			'AutoModeratorWikiId' => 'enwiki',
 		] );
-		$userGroupManager = $this->createMock( UserGroupManager::class );
 
 		$user = $this->createMock( User::class );
 		$revRecord = $this->createMock( RevisionRecord::class );
 		$revRecord->method( 'getUser' )->willReturn( $user );
 		$revRecord->method( 'getId' )->willReturn( 1000 );
-		$mockUtil = $this->createMock( Util::class );
-		$mockUtil->method( 'getAutoModeratorUser' )->willReturn( $this->createMock( User::class ) );
 		$mockUserIdentity = $this->createMock( UserIdentity::class );
 		$mockTitleFactory = $this->createMock( TitleFactory::class );
 		$mockTitleFactory->method( 'newFromText' )->willReturn( null );
 
 		$this->setUserLang( "qqx" );
 		$links = [];
-		( new Hooks(
-			$userGroupManager, $config, $mockTitleFactory
-			)
-		)->onHistoryTools(
+		( new Hooks( $config, $mockTitleFactory ) )->onHistoryTools(
 			$revRecord,
 			$links,
 			null,
