@@ -22,6 +22,7 @@
 	"communityconfiguration-automoderator-description": "Configure as definições do Automoderator para que o modelo possa identificar e reverter edições potencialmente inadequadas na Wikipédia.",
 	"communityconfiguration-automoderator-automoderatorhelppagelink-url-label": "Página de destino",
 	"communityconfiguration-automoderatormultilingual-title": "Automoderador",
+	"communityconfiguration-automoderatormultilingual-description": "Configure as configurações do Automoderator para que o modelo possa identificar e reverter edições potencialmente inadequadas na Wikipédia.",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablerevisioncheck-label": "Automoderador",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-label": "Modelo multilíngue",
 	"communityconfiguration-automoderatormultilingual-automoderatormultilingualconfigenablemultilingual-control-label": "Selecionar modelo multilíngue",
