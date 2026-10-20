@@ -10,7 +10,8 @@
 			"Plantaest",
 			"Minh Nguyen",
 			"Nvdtn19",
-			"Veritas Sapientiae"
+			"Veritas Sapientiae",
+			"NgocAnMaster"
 		]
 	},
 	"automoderator-config-validator-array-toobig": "$1 có quá nhiều mục (tối đa $2 {{PLURAL:$2|mục được phép}})",
