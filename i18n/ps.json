@@ -5,6 +5,8 @@
 		]
 	},
 	"communityconfiguration-automoderator-automoderatorskipuserrights-label": "کارن رښتې",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-label": "د خبرو اترو مخ پيغام",
+	"communityconfiguration-automoderator-automoderatorreverttalkpagemessageenabled-control-label": "د خبرو اترو مخ پيغام بل شوی دی",
 	"communityconfiguration-automoderator-title": "خپلکاره‌مدير",
 	"communityconfiguration-automoderator-automoderatorenablerevisioncheck-label": "خپلکاره‌مدير",
 	"communityconfiguration-automoderator-automoderatoruseeditflagminor-label": "کوچني سمونونه",
