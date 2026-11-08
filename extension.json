@@ -251,8 +251,7 @@
 				"RevisionStore",
 				"RestrictionStore",
 				"JobQueueGroup",
-				"PermissionManager",
-				"AutoModeratorTalkPageMessageSender"
+				"PermissionManager"
 			]
 		},
 		"ores": {
@@ -266,8 +265,7 @@
 				"JobQueueGroup",
 				"ChangeTagsStore",
 				"PermissionManager",
-				"ConnectionProvider",
-				"AutoModeratorTalkPageMessageSender"
+				"ConnectionProvider"
 			]
 		},
 		"articlerollback": {
